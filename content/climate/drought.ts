@@ -121,6 +121,7 @@ export const drought: ClimateContent = {
     { type: 'climate', slug: 'heat-stress' },
   ],
   connections: [
+    { type: 'crop', slug: 'saffron' },
     { type: 'irrigation-method', slug: 'drip-irrigation' },
     { type: 'irrigation-method', slug: 'sprinkler-irrigation' },
     { type: 'soil-topic', slug: 'soil-water-retention' },

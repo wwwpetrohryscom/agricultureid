@@ -117,6 +117,7 @@ export const sulfur: NutrientContent = {
     { type: 'nutrient', slug: 'phosphorus' },
   ],
   connections: [
+    { type: 'crop', slug: 'mustard' },
     { type: 'fertilizer', slug: 'ammonium-sulfate' },
     { type: 'fertilizer', slug: 'single-superphosphate' },
     { type: 'fertilizer', slug: 'npk-compound-fertilizer' },

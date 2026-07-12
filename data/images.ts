@@ -83,6 +83,21 @@ export const IMAGE_MAP: Record<string, ImageMeta> = {
     attribution: 'Mahdikarimi70, via Wikimedia Commons (CC BY-SA 4.0)',
     subject: 'alfalfa lucerne field crop',
   },
+  'crop:almond': {
+    src: '/images/almond.jpg',
+    alt: 'An almond orchard',
+    width: 1280,
+    height: 853,
+    creator: 'Birding In Spain',
+    sourceUrl:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Almond_tree_in_flower.jpg/1280px-Almond_tree_in_flower.jpg',
+    originalPage:
+      'https://commons.wikimedia.org/wiki/File:Almond_tree_in_flower.jpg',
+    license: 'CC BY-SA 4.0',
+    licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0',
+    attribution: 'Birding In Spain, via Wikimedia Commons (CC BY-SA 4.0)',
+    subject: 'almond tree orchard nuts',
+  },
   'crop:aloe-vera': {
     src: '/images/aloe-vera.jpg',
     alt: 'An aloe vera plant',
@@ -113,6 +128,51 @@ export const IMAGE_MAP: Record<string, ImageMeta> = {
     attribution: 'UnpetitproleX, via Wikimedia Commons (CC BY-SA 4.0)',
     subject: 'apple orchard fruit tree',
   },
+  'crop:apricot': {
+    src: '/images/apricot.jpg',
+    alt: 'Apricots on a tree',
+    width: 1280,
+    height: 853,
+    creator: 'Chris Light',
+    sourceUrl:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Apricots_7841.jpg/1280px-Apricots_7841.jpg',
+    originalPage: 'https://commons.wikimedia.org/wiki/File:Apricots_7841.jpg',
+    license: 'CC BY-SA 4.0',
+    licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0',
+    attribution: 'Chris Light, via Wikimedia Commons (CC BY-SA 4.0)',
+    subject: 'apricot tree fruit',
+  },
+  'crop:artichoke': {
+    src: '/images/artichoke.jpg',
+    alt: 'A globe artichoke plant',
+    width: 1280,
+    height: 960,
+    creator:
+      "Kolforn (Kolforn) I'd appreciate if you could mail me (Kolforn@gmail.com) if you want to use this picture out of the Wikimedia project scope. This file is licensed under the Creative Commons Attribution-Share Alike 4.0 International license. You are free: to share – to copy, distribute and transmit the work to remix – to adapt the work Under the following conditions: attribution – You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use. share alike – If you remix, transform, or build upon the material, you must distribute your contributions under the same or compatible license as the original.https://creativecommons.org/licenses/by-sa/4.0CC BY-SA 4.0 Creative Commons Attribution-Share Alike 4.0 truetrue",
+    sourceUrl:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/-2022-04-17_Globe_artichoke_plant%2C_Trimingham%2C_Norfolk.JPG/1280px--2022-04-17_Globe_artichoke_plant%2C_Trimingham%2C_Norfolk.JPG',
+    originalPage:
+      'https://commons.wikimedia.org/wiki/File:-2022-04-17_Globe_artichoke_plant,_Trimingham,_Norfolk.JPG',
+    license: 'CC BY-SA 4.0',
+    licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0',
+    attribution:
+      "Kolforn (Kolforn) I'd appreciate if you could mail me (Kolforn@gmail.com) if you want to use this picture out of the Wikimedia project scope. This file is licensed under the Creative Commons Attribution-Share Alike 4.0 International license. You are free: to share – to copy, distribute and transmit the work to remix – to adapt the work Under the following conditions: attribution – You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use. share alike – If you remix, transform, or build upon the material, you must distribute your contributions under the same or compatible license as the original.https://creativecommons.org/licenses/by-sa/4.0CC BY-SA 4.0 Creative Commons Attribution-Share Alike 4.0 truetrue, via Wikimedia Commons (CC BY-SA 4.0)",
+    subject: 'globe artichoke plant Cynara',
+  },
+  'crop:avocado': {
+    src: '/images/avocado.jpg',
+    alt: 'Avocados on a tree',
+    width: 1280,
+    height: 853,
+    creator: 'USDAgov',
+    sourceUrl:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/FARMERS_GOV-_Dragon_Fruit_Farmer_Leonardo_Aguila_%2820181113-FPAC-LSC-0776%29.jpg/1280px-FARMERS_GOV-_Dragon_Fruit_Farmer_Leonardo_Aguila_%2820181113-FPAC-LSC-0776%29.jpg',
+    originalPage:
+      'https://commons.wikimedia.org/wiki/File:FARMERS_GOV-_Dragon_Fruit_Farmer_Leonardo_Aguila_(20181113-FPAC-LSC-0776).jpg',
+    license: 'Public domain',
+    attribution: 'USDAgov, via Wikimedia Commons (Public domain)',
+    subject: 'avocado tree fruit orchard',
+  },
   'crop:banana': {
     src: '/images/banana.jpg',
     alt: 'Bananas growing on a plant',
@@ -141,6 +201,21 @@ export const IMAGE_MAP: Record<string, ImageMeta> = {
     licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0',
     attribution: 'Cassiville, via Wikimedia Commons (CC BY-SA 4.0)',
     subject: 'barley field crop',
+  },
+  'crop:basil': {
+    src: '/images/basil.jpg',
+    alt: 'A basil plant',
+    width: 1280,
+    height: 1294,
+    creator: 'BernaBotto',
+    sourceUrl:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Ocimum_Basilicum_leaf_lighted_by_the_left.jpg/1280px-Ocimum_Basilicum_leaf_lighted_by_the_left.jpg',
+    originalPage:
+      'https://commons.wikimedia.org/wiki/File:Ocimum_Basilicum_leaf_lighted_by_the_left.jpg',
+    license: 'CC BY-SA 4.0',
+    licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0',
+    attribution: 'BernaBotto, via Wikimedia Commons (CC BY-SA 4.0)',
+    subject: 'basil herb plant Ocimum',
   },
   'crop:beetroot': {
     src: '/images/beetroot.jpg',
@@ -237,6 +312,21 @@ export const IMAGE_MAP: Record<string, ImageMeta> = {
     attribution: 'Jonathan Billinger, via Wikimedia Commons (CC BY-SA 2.0)',
     subject: 'cabbage field crop',
   },
+  'crop:cardamom': {
+    src: '/images/cardamom.jpg',
+    alt: 'A cardamom plant',
+    width: 1280,
+    height: 720,
+    creator: 'Mokkie',
+    sourceUrl:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Cardamom_%28Elettaria_cardamomum%29.jpg/1280px-Cardamom_%28Elettaria_cardamomum%29.jpg',
+    originalPage:
+      'https://commons.wikimedia.org/wiki/File:Cardamom_(Elettaria_cardamomum).jpg',
+    license: 'CC BY-SA 3.0',
+    licenseUrl: 'https://creativecommons.org/licenses/by-sa/3.0',
+    attribution: 'Mokkie, via Wikimedia Commons (CC BY-SA 3.0)',
+    subject: 'cardamom plant pods Elettaria',
+  },
   'crop:carrot': {
     src: '/images/carrot.jpg',
     alt: 'Freshly harvested carrots',
@@ -250,6 +340,21 @@ export const IMAGE_MAP: Record<string, ImageMeta> = {
     licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0',
     attribution: 'Adimora chidinma, via Wikimedia Commons (CC BY-SA 4.0)',
     subject: 'carrot roots harvest',
+  },
+  'crop:cashew': {
+    src: '/images/cashew.jpg',
+    alt: 'Cashew fruit on a tree',
+    width: 1280,
+    height: 857,
+    creator: 'Ben Tavener',
+    sourceUrl:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Cashew_apple_with_nut_-_Caju.jpg/1280px-Cashew_apple_with_nut_-_Caju.jpg',
+    originalPage:
+      'https://commons.wikimedia.org/wiki/File:Cashew_apple_with_nut_-_Caju.jpg',
+    license: 'CC BY 2.0',
+    licenseUrl: 'https://creativecommons.org/licenses/by/2.0',
+    attribution: 'Ben Tavener, via Wikimedia Commons (CC BY 2.0)',
+    subject: 'cashew tree nut apple Anacardium',
   },
   'crop:cassava': {
     src: '/images/cassava.jpg',
@@ -296,6 +401,51 @@ export const IMAGE_MAP: Record<string, ImageMeta> = {
       'Henry G. Gilbert Nursery and Seed Trade Catalog Collection.; Peter Henderson &amp; Co., via Wikimedia Commons (Public domain)',
     subject: 'celery plant crop field',
   },
+  'crop:chamomile': {
+    src: '/images/chamomile.jpg',
+    alt: 'Chamomile flowers',
+    width: 1280,
+    height: 823,
+    creator: 'JackyM59',
+    sourceUrl:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/Camomille_sauvage_%28Matricaria_chamomilla%29_et_coquelicots_%28Papaver_rhoeas%29_au_bord_d%27un_champ_d%27orge_%28Hordeum_vulgare%29.jpg/1280px-Camomille_sauvage_%28Matricaria_chamomilla%29_et_coquelicots_%28Papaver_rhoeas%29_au_bord_d%27un_champ_d%27orge_%28Hordeum_vulgare%29.jpg',
+    originalPage:
+      'https://commons.wikimedia.org/wiki/File:Camomille_sauvage_(Matricaria_chamomilla)_et_coquelicots_(Papaver_rhoeas)_au_bord_d%27un_champ_d%27orge_(Hordeum_vulgare).jpg',
+    license: 'CC BY-SA 4.0',
+    licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0',
+    attribution: 'JackyM59, via Wikimedia Commons (CC BY-SA 4.0)',
+    subject: 'chamomile flower plant Matricaria',
+  },
+  'crop:cherry': {
+    src: '/images/cherry.jpg',
+    alt: 'Cherries on a tree',
+    width: 1280,
+    height: 853,
+    creator: 'Chris Light',
+    sourceUrl:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/7/76/Sweetheart_Cherry_tree_7835.jpg/1280px-Sweetheart_Cherry_tree_7835.jpg',
+    originalPage:
+      'https://commons.wikimedia.org/wiki/File:Sweetheart_Cherry_tree_7835.jpg',
+    license: 'CC BY-SA 4.0',
+    licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0',
+    attribution: 'Chris Light, via Wikimedia Commons (CC BY-SA 4.0)',
+    subject: 'cherry tree fruit orchard',
+  },
+  'crop:chestnut': {
+    src: '/images/chestnut.jpg',
+    alt: 'Chestnuts on a tree',
+    width: 1280,
+    height: 853,
+    creator: 'Grzegorz Gigol',
+    sourceUrl:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Sweet_Chestnut_Fruits.jpg/1280px-Sweet_Chestnut_Fruits.jpg',
+    originalPage:
+      'https://commons.wikimedia.org/wiki/File:Sweet_Chestnut_Fruits.jpg',
+    license: 'CC BY-SA 3.0',
+    licenseUrl: 'https://creativecommons.org/licenses/by-sa/3.0',
+    attribution: 'Grzegorz Gigol, via Wikimedia Commons (CC BY-SA 3.0)',
+    subject: 'chestnut tree nuts Castanea',
+  },
   'crop:chickpea': {
     src: '/images/chickpea.jpg',
     alt: 'Chickpea plants',
@@ -340,6 +490,21 @@ export const IMAGE_MAP: Record<string, ImageMeta> = {
     licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0',
     attribution: 'Vidarshana sandaruwan, via Wikimedia Commons (CC BY-SA 4.0)',
     subject: 'cinnamon tree bark Cinnamomum',
+  },
+  'crop:clove': {
+    src: '/images/clove.jpg',
+    alt: 'Clove buds',
+    width: 1280,
+    height: 960,
+    creator: 'Yercaud-elango',
+    sourceUrl:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Syzygium_aromaticum-2-mailapatti-yercaud-salem-India.jpg/1280px-Syzygium_aromaticum-2-mailapatti-yercaud-salem-India.jpg',
+    originalPage:
+      'https://commons.wikimedia.org/wiki/File:Syzygium_aromaticum-2-mailapatti-yercaud-salem-India.jpg',
+    license: 'CC BY-SA 4.0',
+    licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0',
+    attribution: 'Yercaud-elango, via Wikimedia Commons (CC BY-SA 4.0)',
+    subject: 'clove tree buds Syzygium aromaticum',
   },
   'crop:cocoa': {
     src: '/images/cocoa.jpg',
@@ -401,6 +566,21 @@ export const IMAGE_MAP: Record<string, ImageMeta> = {
       'Unknown authorUnknown author, via Wikimedia Commons (Public domain)',
     subject: 'common bean Phaseolus plant pods',
   },
+  'crop:coriander': {
+    src: '/images/coriander.jpg',
+    alt: 'A coriander plant',
+    width: 1280,
+    height: 957,
+    creator: 'စာကလေး SarKaLay',
+    sourceUrl:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/%E1%80%96%E1%80%80%E1%80%BA%E1%80%96%E1%80%9A%E1%80%BA%E1%80%95%E1%80%84%E1%80%BA.jpg/1280px-%E1%80%96%E1%80%80%E1%80%BA%E1%80%96%E1%80%9A%E1%80%BA%E1%80%95%E1%80%84%E1%80%BA.jpg',
+    originalPage:
+      'https://commons.wikimedia.org/wiki/File:%E1%80%96%E1%80%80%E1%80%BA%E1%80%96%E1%80%9A%E1%80%BA%E1%80%95%E1%80%84%E1%80%BA.jpg',
+    license: 'CC0',
+    licenseUrl: 'http://creativecommons.org/publicdomain/zero/1.0/deed.en',
+    attribution: 'စာကလေး SarKaLay, via Wikimedia Commons (CC0)',
+    subject: 'coriander cilantro herb plant',
+  },
   'crop:cotton': {
     src: '/images/cotton.jpg',
     alt: 'A cotton field with open bolls',
@@ -445,6 +625,52 @@ export const IMAGE_MAP: Record<string, ImageMeta> = {
     attribution: 'Nikodem Nijaki, via Wikimedia Commons (CC BY-SA 3.0)',
     subject: 'cucumber plant fruit',
   },
+  'crop:cumin': {
+    src: '/images/cumin.jpg',
+    alt: 'A cumin crop',
+    width: 1280,
+    height: 850,
+    creator: 'Retro Lenses',
+    sourceUrl:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Cuminum_seeds.jpg/1280px-Cuminum_seeds.jpg',
+    originalPage: 'https://commons.wikimedia.org/wiki/File:Cuminum_seeds.jpg',
+    license: 'CC BY 4.0',
+    licenseUrl: 'https://creativecommons.org/licenses/by/4.0',
+    attribution: 'Retro Lenses, via Wikimedia Commons (CC BY 4.0)',
+    subject: 'cumin plant seeds Cuminum',
+  },
+  'crop:date-palm': {
+    src: '/images/date-palm.jpg',
+    alt: 'A date palm with fruit',
+    width: 1280,
+    height: 914,
+    creator: 'Krzysztof Ziarnek, Kenraiz',
+    sourceUrl:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Phoenix_dactylifera_kz07.jpg/1280px-Phoenix_dactylifera_kz07.jpg',
+    originalPage:
+      'https://commons.wikimedia.org/wiki/File:Phoenix_dactylifera_kz07.jpg',
+    license: 'CC BY-SA 4.0',
+    licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0',
+    attribution:
+      'Krzysztof Ziarnek, Kenraiz, via Wikimedia Commons (CC BY-SA 4.0)',
+    subject: 'date palm tree fruit Phoenix dactylifera',
+  },
+  'crop:dill': {
+    src: '/images/dill.jpg',
+    alt: 'A dill plant',
+    width: 1280,
+    height: 850,
+    creator: 'cyclonebill from Copenhagen, Denmark',
+    sourceUrl:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Restaurant_Noma_R%C3%A5_knivmusling_med_persillegele%2C_peberrodssne_og_dildolie_%284959798276%29.jpg/1280px-Restaurant_Noma_R%C3%A5_knivmusling_med_persillegele%2C_peberrodssne_og_dildolie_%284959798276%29.jpg',
+    originalPage:
+      'https://commons.wikimedia.org/wiki/File:Restaurant_Noma_R%C3%A5_knivmusling_med_persillegele,_peberrodssne_og_dildolie_(4959798276).jpg',
+    license: 'CC BY-SA 2.0',
+    licenseUrl: 'https://creativecommons.org/licenses/by-sa/2.0',
+    attribution:
+      'cyclonebill from Copenhagen, Denmark, via Wikimedia Commons (CC BY-SA 2.0)',
+    subject: 'dill herb plant Anethum',
+  },
   'crop:eggplant': {
     src: '/images/eggplant.jpg',
     alt: 'Eggplants on the plant',
@@ -459,6 +685,38 @@ export const IMAGE_MAP: Record<string, ImageMeta> = {
     licenseUrl: 'https://creativecommons.org/licenses/by/4.0',
     attribution: 'Unknown author, via Wikimedia Commons (CC BY 4.0)',
     subject: 'eggplant aubergine fruit plant',
+  },
+  'crop:fennel': {
+    src: '/images/fennel.jpg',
+    alt: 'A fennel plant',
+    width: 1280,
+    height: 960,
+    creator:
+      "Kolforn (Kolforn) I'd appreciate if you could mail me (Kolforn@gmail.com) if you want to use this picture out of the Wikimedia project scope. This file is licensed under the Creative Commons Attribution-Share Alike 4.0 International license. You are free: to share – to copy, distribute and transmit the work to remix – to adapt the work Under the following conditions: attribution – You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use. share alike – If you remix, transform, or build upon the material, you must distribute your contributions under the same or compatible license as the original.https://creativecommons.org/licenses/by-sa/4.0CC BY-SA 4.0 Creative Commons Attribution-Share Alike 4.0 truetrue",
+    sourceUrl:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/-2019-03-07_Fennel_%28Foeniculum%29%2C_Trimingham_%281%29.JPG/1280px--2019-03-07_Fennel_%28Foeniculum%29%2C_Trimingham_%281%29.JPG',
+    originalPage:
+      'https://commons.wikimedia.org/wiki/File:-2019-03-07_Fennel_(Foeniculum),_Trimingham_(1).JPG',
+    license: 'CC BY-SA 4.0',
+    licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0',
+    attribution:
+      "Kolforn (Kolforn) I'd appreciate if you could mail me (Kolforn@gmail.com) if you want to use this picture out of the Wikimedia project scope. This file is licensed under the Creative Commons Attribution-Share Alike 4.0 International license. You are free: to share – to copy, distribute and transmit the work to remix – to adapt the work Under the following conditions: attribution – You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use. share alike – If you remix, transform, or build upon the material, you must distribute your contributions under the same or compatible license as the original.https://creativecommons.org/licenses/by-sa/4.0CC BY-SA 4.0 Creative Commons Attribution-Share Alike 4.0 truetrue, via Wikimedia Commons (CC BY-SA 4.0)",
+    subject: 'fennel plant bulb Foeniculum',
+  },
+  'crop:fig': {
+    src: '/images/fig.jpg',
+    alt: 'Figs on a tree',
+    width: 1280,
+    height: 871,
+    creator: 'Chapelle Musa 2',
+    sourceUrl:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Cluster_Fig_Fruit_%28Ficus_racemosa%29.png/1280px-Cluster_Fig_Fruit_%28Ficus_racemosa%29.png',
+    originalPage:
+      'https://commons.wikimedia.org/wiki/File:Cluster_Fig_Fruit_(Ficus_racemosa).png',
+    license: 'CC BY-SA 4.0',
+    licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0',
+    attribution: 'Chapelle Musa 2, via Wikimedia Commons (CC BY-SA 4.0)',
+    subject: 'fig tree fruit Ficus',
   },
   'crop:flax': {
     src: '/images/flax.jpg',
@@ -522,6 +780,21 @@ export const IMAGE_MAP: Record<string, ImageMeta> = {
     attribution: 'Ian Schneider on Unsplash, via Wikimedia Commons (CC0)',
     subject: 'grape vineyard bunches',
   },
+  'crop:grapefruit': {
+    src: '/images/grapefruit.jpg',
+    alt: 'Grapefruit on a tree',
+    width: 1280,
+    height: 960,
+    creator: 'Syrio',
+    sourceUrl:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Trauttmansdorff_gardens_-_Citrus_x_paradisi_01.JPG/1280px-Trauttmansdorff_gardens_-_Citrus_x_paradisi_01.JPG',
+    originalPage:
+      'https://commons.wikimedia.org/wiki/File:Trauttmansdorff_gardens_-_Citrus_x_paradisi_01.JPG',
+    license: 'CC BY-SA 4.0',
+    licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0',
+    attribution: 'Syrio, via Wikimedia Commons (CC BY-SA 4.0)',
+    subject: 'grapefruit citrus tree fruit',
+  },
   'crop:groundnut': {
     src: '/images/groundnut.jpg',
     alt: 'A groundnut (peanut) crop',
@@ -535,6 +808,35 @@ export const IMAGE_MAP: Record<string, ImageMeta> = {
     licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0',
     attribution: 'Suglo20, via Wikimedia Commons (CC BY-SA 4.0)',
     subject: 'peanut groundnut plant Arachis',
+  },
+  'crop:guava': {
+    src: '/images/guava.jpg',
+    alt: 'Guavas on a tree',
+    width: 1280,
+    height: 965,
+    creator: 'Sarang',
+    sourceUrl:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Guava_-_Psidium_guajava_fruit_of_Cuba.jpg/1280px-Guava_-_Psidium_guajava_fruit_of_Cuba.jpg',
+    originalPage:
+      'https://commons.wikimedia.org/wiki/File:Guava_-_Psidium_guajava_fruit_of_Cuba.jpg',
+    license: 'Public domain',
+    attribution: 'Sarang, via Wikimedia Commons (Public domain)',
+    subject: 'guava tree fruit Psidium',
+  },
+  'crop:hazelnut': {
+    src: '/images/hazelnut.jpg',
+    alt: 'Hazelnuts on a tree',
+    width: 1280,
+    height: 960,
+    creator: 'Делфина',
+    sourceUrl:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/%D0%9F%D0%BB%D0%BE%D0%B4_%D0%BE%D0%B4_%D0%BB%D0%B5%D1%88%D0%BD%D0%B8%D0%BA_Corylus_avellana.jpg/1280px-%D0%9F%D0%BB%D0%BE%D0%B4_%D0%BE%D0%B4_%D0%BB%D0%B5%D1%88%D0%BD%D0%B8%D0%BA_Corylus_avellana.jpg',
+    originalPage:
+      'https://commons.wikimedia.org/wiki/File:%D0%9F%D0%BB%D0%BE%D0%B4_%D0%BE%D0%B4_%D0%BB%D0%B5%D1%88%D0%BD%D0%B8%D0%BA_Corylus_avellana.jpg',
+    license: 'CC0',
+    licenseUrl: 'http://creativecommons.org/publicdomain/zero/1.0/deed.en',
+    attribution: 'Делфина, via Wikimedia Commons (CC0)',
+    subject: 'hazelnut tree nuts Corylus',
   },
   'crop:jute': {
     src: '/images/jute.jpg',
@@ -565,6 +867,36 @@ export const IMAGE_MAP: Record<string, ImageMeta> = {
     attribution: 'USDAgov, via Wikimedia Commons (Public domain)',
     subject: 'kale plant leaves crop',
   },
+  'crop:kiwifruit': {
+    src: '/images/kiwifruit.jpg',
+    alt: 'Kiwifruit on the vine',
+    width: 1280,
+    height: 960,
+    creator: 'Ivar Leidus',
+    sourceUrl:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Kiwifruit_%27Red_Passion%27_cross_section_-_Italy.jpg/1280px-Kiwifruit_%27Red_Passion%27_cross_section_-_Italy.jpg',
+    originalPage:
+      'https://commons.wikimedia.org/wiki/File:Kiwifruit_%27Red_Passion%27_cross_section_-_Italy.jpg',
+    license: 'CC BY-SA 4.0',
+    licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0',
+    attribution: 'Ivar Leidus, via Wikimedia Commons (CC BY-SA 4.0)',
+    subject: 'kiwifruit vine fruit Actinidia',
+  },
+  'crop:lavender': {
+    src: '/images/lavender.jpg',
+    alt: 'A lavender field',
+    width: 1280,
+    height: 853,
+    creator: 'Loïc Mermilliod loacfr',
+    sourceUrl:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Worker_bee_on_purple_lavender_%28Unsplash%29.jpg/1280px-Worker_bee_on_purple_lavender_%28Unsplash%29.jpg',
+    originalPage:
+      'https://commons.wikimedia.org/wiki/File:Worker_bee_on_purple_lavender_(Unsplash).jpg',
+    license: 'CC0',
+    licenseUrl: 'http://creativecommons.org/publicdomain/zero/1.0/deed.en',
+    attribution: 'Loïc Mermilliod loacfr, via Wikimedia Commons (CC0)',
+    subject: 'lavender field plant Lavandula',
+  },
   'crop:leek': {
     src: '/images/leek.jpg',
     alt: 'Leeks growing in a field',
@@ -580,6 +912,21 @@ export const IMAGE_MAP: Record<string, ImageMeta> = {
     attribution: 'Acabashi, via Wikimedia Commons (CC BY-SA 4.0)',
     subject: 'leek plant crop Allium',
   },
+  'crop:lemon': {
+    src: '/images/lemon.jpg',
+    alt: 'Lemons on a tree',
+    width: 1280,
+    height: 853,
+    creator: 'Ivar Leidus',
+    sourceUrl:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Lemon_-_whole_and_split.jpg/1280px-Lemon_-_whole_and_split.jpg',
+    originalPage:
+      'https://commons.wikimedia.org/wiki/File:Lemon_-_whole_and_split.jpg',
+    license: 'CC BY-SA 4.0',
+    licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0',
+    attribution: 'Ivar Leidus, via Wikimedia Commons (CC BY-SA 4.0)',
+    subject: 'lemon citrus tree fruit',
+  },
   'crop:lettuce': {
     src: '/images/lettuce.jpg',
     alt: 'Lettuce growing in a field',
@@ -594,6 +941,35 @@ export const IMAGE_MAP: Record<string, ImageMeta> = {
     licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0',
     attribution: 'HOWELLCREATIVE, via Wikimedia Commons (CC BY-SA 4.0)',
     subject: 'lettuce crop field',
+  },
+  'crop:lime': {
+    src: '/images/lime.jpg',
+    alt: 'Limes on a tree',
+    width: 1280,
+    height: 960,
+    creator: 'Chris Olszewski',
+    sourceUrl:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/Limes_growing_on_a_tree_at_the_Gold_Coast%2C_Queensland%2C_2025.jpg/1280px-Limes_growing_on_a_tree_at_the_Gold_Coast%2C_Queensland%2C_2025.jpg',
+    originalPage:
+      'https://commons.wikimedia.org/wiki/File:Limes_growing_on_a_tree_at_the_Gold_Coast,_Queensland,_2025.jpg',
+    license: 'CC BY-SA 4.0',
+    licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0',
+    attribution: 'Chris Olszewski, via Wikimedia Commons (CC BY-SA 4.0)',
+    subject: 'lime citrus tree fruit',
+  },
+  'crop:lychee': {
+    src: '/images/lychee.jpg',
+    alt: 'Lychees on a tree',
+    width: 1280,
+    height: 881,
+    creator: 'Sanjay Acharya',
+    sourceUrl:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Lychee_Fruit.jpg/1280px-Lychee_Fruit.jpg',
+    originalPage: 'https://commons.wikimedia.org/wiki/File:Lychee_Fruit.jpg',
+    license: 'CC BY-SA 4.0',
+    licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0',
+    attribution: 'Sanjay Acharya, via Wikimedia Commons (CC BY-SA 4.0)',
+    subject: 'lychee tree fruit Litchi',
   },
   'crop:maize': {
     src: '/images/maize.jpg',
@@ -624,6 +1000,21 @@ export const IMAGE_MAP: Record<string, ImageMeta> = {
     attribution: 'Ivar Leidus, via Wikimedia Commons (CC BY-SA 4.0)',
     subject: 'mango fruit tree',
   },
+  'crop:melon': {
+    src: '/images/melon.jpg',
+    alt: 'A melon on the plant',
+    width: 1280,
+    height: 1707,
+    creator: 'Bint awwal',
+    sourceUrl:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Sweet_melon_and_Dates.jpg/1280px-Sweet_melon_and_Dates.jpg',
+    originalPage:
+      'https://commons.wikimedia.org/wiki/File:Sweet_melon_and_Dates.jpg',
+    license: 'CC0',
+    licenseUrl: 'http://creativecommons.org/publicdomain/zero/1.0/deed.en',
+    attribution: 'Bint awwal, via Wikimedia Commons (CC0)',
+    subject: 'melon cantaloupe plant fruit',
+  },
   'crop:millet': {
     src: '/images/millet.jpg',
     alt: 'A millet crop',
@@ -638,6 +1029,34 @@ export const IMAGE_MAP: Record<string, ImageMeta> = {
     licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0',
     attribution: 'Shikoha Tautiko, via Wikimedia Commons (CC BY-SA 4.0)',
     subject: 'pearl millet crop field',
+  },
+  'crop:mint': {
+    src: '/images/mint.jpg',
+    alt: 'A mint plant',
+    width: 1280,
+    height: 1678,
+    creator: 'စာကလေး',
+    sourceUrl:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Mint_Pu-Si-Nam.jpg/1280px-Mint_Pu-Si-Nam.jpg',
+    originalPage: 'https://commons.wikimedia.org/wiki/File:Mint_Pu-Si-Nam.jpg',
+    license: 'CC0',
+    licenseUrl: 'http://creativecommons.org/publicdomain/zero/1.0/deed.en',
+    attribution: 'စာကလေး, via Wikimedia Commons (CC0)',
+    subject: 'mint herb plant Mentha',
+  },
+  'crop:nutmeg': {
+    src: '/images/nutmeg.jpg',
+    alt: 'Nutmeg fruit on a tree',
+    width: 1280,
+    height: 960,
+    creator: "Filo gèn'",
+    sourceUrl:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Noix_de_muscade.jpg/1280px-Noix_de_muscade.jpg',
+    originalPage: 'https://commons.wikimedia.org/wiki/File:Noix_de_muscade.jpg',
+    license: 'CC BY-SA 4.0',
+    licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0',
+    attribution: "Filo gèn', via Wikimedia Commons (CC BY-SA 4.0)",
+    subject: 'nutmeg tree fruit Myristica',
   },
   'crop:oats': {
     src: '/images/oats.jpg',
@@ -726,6 +1145,51 @@ export const IMAGE_MAP: Record<string, ImageMeta> = {
     attribution: 'Dietmar Rabich, via Wikimedia Commons (CC BY-SA 4.0)',
     subject: 'orange citrus fruit tree',
   },
+  'crop:oregano': {
+    src: '/images/oregano.jpg',
+    alt: 'An oregano plant',
+    width: 1280,
+    height: 853,
+    creator: 'Dietmar Rabich',
+    sourceUrl:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/M%C3%BCnster%2C_Wochenmarkt_--_2015_--_7402.jpg/1280px-M%C3%BCnster%2C_Wochenmarkt_--_2015_--_7402.jpg',
+    originalPage:
+      'https://commons.wikimedia.org/wiki/File:M%C3%BCnster,_Wochenmarkt_--_2015_--_7402.jpg',
+    license: 'CC BY-SA 4.0',
+    licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0',
+    attribution: 'Dietmar Rabich, via Wikimedia Commons (CC BY-SA 4.0)',
+    subject: 'oregano herb plant Origanum',
+  },
+  'crop:papaya': {
+    src: '/images/papaya.jpg',
+    alt: 'Papayas on a tree',
+    width: 1280,
+    height: 853,
+    creator: 'Ivar Leidus',
+    sourceUrl:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Papaya_-_longitudinal_section.jpg/1280px-Papaya_-_longitudinal_section.jpg',
+    originalPage:
+      'https://commons.wikimedia.org/wiki/File:Papaya_-_longitudinal_section.jpg',
+    license: 'CC BY-SA 4.0',
+    licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0',
+    attribution: 'Ivar Leidus, via Wikimedia Commons (CC BY-SA 4.0)',
+    subject: 'papaya tree fruit',
+  },
+  'crop:parsley': {
+    src: '/images/parsley.jpg',
+    alt: 'A parsley plant',
+    width: 1280,
+    height: 960,
+    creator: 'Horacio Cambeiro',
+    sourceUrl:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Perejil_%28Petroselinum_crispum%29.jpg/1280px-Perejil_%28Petroselinum_crispum%29.jpg',
+    originalPage:
+      'https://commons.wikimedia.org/wiki/File:Perejil_(Petroselinum_crispum).jpg',
+    license: 'CC BY 3.0',
+    licenseUrl: 'https://creativecommons.org/licenses/by/3.0',
+    attribution: 'Horacio Cambeiro, via Wikimedia Commons (CC BY 3.0)',
+    subject: 'parsley herb plant Petroselinum',
+  },
   'crop:pea': {
     src: '/images/pea.jpg',
     alt: 'Pea pods on the plant',
@@ -740,6 +1204,127 @@ export const IMAGE_MAP: Record<string, ImageMeta> = {
     attribution:
       'Japanese fine prints, pre-1915, via Wikimedia Commons (Public domain)',
     subject: 'pea plant pods field',
+  },
+  'crop:peach': {
+    src: '/images/peach.jpg',
+    alt: 'Peaches on a tree',
+    width: 1280,
+    height: 1498,
+    creator: 'PJakopin',
+    sourceUrl:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Peaches_on_a_tree_at_Dehibolo_2023.jpg/1280px-Peaches_on_a_tree_at_Dehibolo_2023.jpg',
+    originalPage:
+      'https://commons.wikimedia.org/wiki/File:Peaches_on_a_tree_at_Dehibolo_2023.jpg',
+    license: 'CC BY 4.0',
+    licenseUrl: 'https://creativecommons.org/licenses/by/4.0',
+    attribution: 'PJakopin, via Wikimedia Commons (CC BY 4.0)',
+    subject: 'peach tree fruit orchard',
+  },
+  'crop:pear': {
+    src: '/images/pear.jpg',
+    alt: 'Pears on a tree',
+    width: 1280,
+    height: 1805,
+    creator: '{{Own}}',
+    sourceUrl:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Pyrus_communis_orchard%2C_perenboomgaard.jpg/1280px-Pyrus_communis_orchard%2C_perenboomgaard.jpg',
+    originalPage:
+      'https://commons.wikimedia.org/wiki/File:Pyrus_communis_orchard,_perenboomgaard.jpg',
+    license: 'CC BY-SA 3.0',
+    licenseUrl: 'https://creativecommons.org/licenses/by-sa/3.0',
+    attribution: '{{Own}}, via Wikimedia Commons (CC BY-SA 3.0)',
+    subject: 'pear tree fruit orchard',
+  },
+  'crop:pecan': {
+    src: '/images/pecan.jpg',
+    alt: 'Pecans on a tree',
+    width: 1280,
+    height: 848,
+    creator: 'Lance Cheung/U.S. Department of Agriculture',
+    sourceUrl:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/20111209-NRCS-LSC-0283_-_Flickr_-_USDAgov.jpg/1280px-20111209-NRCS-LSC-0283_-_Flickr_-_USDAgov.jpg',
+    originalPage:
+      'https://commons.wikimedia.org/wiki/File:20111209-NRCS-LSC-0283_-_Flickr_-_USDAgov.jpg',
+    license: 'CC BY 2.0',
+    licenseUrl: 'https://creativecommons.org/licenses/by/2.0',
+    attribution:
+      'Lance Cheung/U.S. Department of Agriculture, via Wikimedia Commons (CC BY 2.0)',
+    subject: 'pecan tree nuts orchard',
+  },
+  'crop:persimmon': {
+    src: '/images/persimmon.jpg',
+    alt: 'Persimmons on a tree',
+    width: 1280,
+    height: 853,
+    creator: 'Frank Schulenburg',
+    sourceUrl:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Fuyu_persimmon_fruits%2C_one_cut_open.jpg/1280px-Fuyu_persimmon_fruits%2C_one_cut_open.jpg',
+    originalPage:
+      'https://commons.wikimedia.org/wiki/File:Fuyu_persimmon_fruits,_one_cut_open.jpg',
+    license: 'CC BY-SA 4.0',
+    licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0',
+    attribution: 'Frank Schulenburg, via Wikimedia Commons (CC BY-SA 4.0)',
+    subject: 'persimmon tree fruit Diospyros',
+  },
+  'crop:pineapple': {
+    src: '/images/pineapple.jpg',
+    alt: 'A pineapple plant',
+    width: 1280,
+    height: 957,
+    creator: 'Haoreima',
+    sourceUrl:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Pineapple_crop_plantation_in_a_slope_of_the_Nongmaiching_Ching_%28meaning_%22Nongmaijing_Hill%22_in_Classical_Meitei_language%29_in_Imphal_East_District%2C_Kangleipak_%28Manipur%29_02.jpg/1280px-thumbnail.jpg',
+    originalPage:
+      'https://commons.wikimedia.org/wiki/File:Pineapple_crop_plantation_in_a_slope_of_the_Nongmaiching_Ching_(meaning_%22Nongmaijing_Hill%22_in_Classical_Meitei_language)_in_Imphal_East_District,_Kangleipak_(Manipur)_02.jpg',
+    license: 'CC BY 4.0',
+    licenseUrl: 'https://creativecommons.org/licenses/by/4.0',
+    attribution: 'Haoreima, via Wikimedia Commons (CC BY 4.0)',
+    subject: 'pineapple plant fruit field',
+  },
+  'crop:pistachio': {
+    src: '/images/pistachio.jpg',
+    alt: 'Pistachios on a tree',
+    width: 1280,
+    height: 1024,
+    creator: 'Frank Schulenburg',
+    sourceUrl:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Pistachio_mummies_at_Roney_Farms_%282024%29-104A6826.jpg/1280px-Pistachio_mummies_at_Roney_Farms_%282024%29-104A6826.jpg',
+    originalPage:
+      'https://commons.wikimedia.org/wiki/File:Pistachio_mummies_at_Roney_Farms_(2024)-104A6826.jpg',
+    license: 'CC BY-SA 4.0',
+    licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0',
+    attribution: 'Frank Schulenburg, via Wikimedia Commons (CC BY-SA 4.0)',
+    subject: 'pistachio tree nuts orchard',
+  },
+  'crop:plum': {
+    src: '/images/plum.jpg',
+    alt: 'Plums on a tree',
+    width: 1201,
+    height: 1600,
+    creator: 'Rajani Gairshail',
+    sourceUrl:
+      'https://upload.wikimedia.org/wikipedia/commons/b/b6/Plum_Tree%2C_Kullu_district%2C_Himachal_Pradesh.jpg',
+    originalPage:
+      'https://commons.wikimedia.org/wiki/File:Plum_Tree,_Kullu_district,_Himachal_Pradesh.jpg',
+    license: 'CC BY-SA 4.0',
+    licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0',
+    attribution: 'Rajani Gairshail, via Wikimedia Commons (CC BY-SA 4.0)',
+    subject: 'plum tree fruit orchard',
+  },
+  'crop:pomegranate': {
+    src: '/images/pomegranate.jpg',
+    alt: 'Pomegranates on a tree',
+    width: 1280,
+    height: 853,
+    creator: 'Ivar Leidus',
+    sourceUrl:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Pomegranate_fruit_-_whole_and_piece_with_arils.jpg/1280px-Pomegranate_fruit_-_whole_and_piece_with_arils.jpg',
+    originalPage:
+      'https://commons.wikimedia.org/wiki/File:Pomegranate_fruit_-_whole_and_piece_with_arils.jpg',
+    license: 'CC BY-SA 4.0',
+    licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0',
+    attribution: 'Ivar Leidus, via Wikimedia Commons (CC BY-SA 4.0)',
+    subject: 'pomegranate fruit tree',
   },
   'crop:potato': {
     src: '/images/potato.jpg',
@@ -802,6 +1387,21 @@ export const IMAGE_MAP: Record<string, ImageMeta> = {
     attribution: 'Basile Morin, via Wikimedia Commons (CC BY-SA 4.0)',
     subject: 'rice paddy field',
   },
+  'crop:rosemary': {
+    src: '/images/rosemary.jpg',
+    alt: 'A rosemary plant',
+    width: 1280,
+    height: 1024,
+    creator: 'Christian Ferrer',
+    sourceUrl:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Rosmarinus_officinalis_in_Vieussan.jpg/1280px-Rosmarinus_officinalis_in_Vieussan.jpg',
+    originalPage:
+      'https://commons.wikimedia.org/wiki/File:Rosmarinus_officinalis_in_Vieussan.jpg',
+    license: 'CC BY 4.0',
+    licenseUrl: 'https://creativecommons.org/licenses/by/4.0',
+    attribution: 'Christian Ferrer, via Wikimedia Commons (CC BY 4.0)',
+    subject: 'rosemary herb plant Salvia rosmarinus',
+  },
   'crop:rubber': {
     src: '/images/rubber.jpg',
     alt: 'A rubber plantation',
@@ -846,6 +1446,36 @@ export const IMAGE_MAP: Record<string, ImageMeta> = {
     licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0',
     attribution: 'MGB CEE, via Wikimedia Commons (CC BY-SA 4.0)',
     subject: 'safflower flower crop Carthamus',
+  },
+  'crop:saffron': {
+    src: '/images/saffron.jpg',
+    alt: 'Saffron crocus flowers',
+    width: 1280,
+    height: 853,
+    creator: 'Emilie40',
+    sourceUrl:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Crocus_sativus%2C_saffron_%2836%29.jpg/1280px-Crocus_sativus%2C_saffron_%2836%29.jpg',
+    originalPage:
+      'https://commons.wikimedia.org/wiki/File:Crocus_sativus,_saffron_(36).jpg',
+    license: 'CC0',
+    licenseUrl: 'http://creativecommons.org/publicdomain/zero/1.0/deed.en',
+    attribution: 'Emilie40, via Wikimedia Commons (CC0)',
+    subject: 'saffron crocus flower stigma',
+  },
+  'crop:sage': {
+    src: '/images/sage.jpg',
+    alt: 'A sage plant',
+    width: 1280,
+    height: 853,
+    creator: 'Krzysztof Golik',
+    sourceUrl:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Salvia_officinalis_in_Cardaillac_%281%29.jpg/1280px-Salvia_officinalis_in_Cardaillac_%281%29.jpg',
+    originalPage:
+      'https://commons.wikimedia.org/wiki/File:Salvia_officinalis_in_Cardaillac_(1).jpg',
+    license: 'CC BY-SA 4.0',
+    licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0',
+    attribution: 'Krzysztof Golik, via Wikimedia Commons (CC BY-SA 4.0)',
+    subject: 'sage herb plant Salvia officinalis',
   },
   'crop:sesame': {
     src: '/images/sesame.jpg',
@@ -995,6 +1625,22 @@ export const IMAGE_MAP: Record<string, ImageMeta> = {
     attribution: 'Yercaud-elango, via Wikimedia Commons (CC BY-SA 4.0)',
     subject: 'sweet potato plant tuber Ipomoea',
   },
+  'crop:sweetcorn': {
+    src: '/images/sweetcorn.jpg',
+    alt: 'Sweet corn on the plant',
+    width: 1280,
+    height: 1626,
+    creator:
+      'Henry G. Gilbert Nursery and Seed Trade Catalog Collection.; Wm. C. Beckert (Firm)',
+    sourceUrl:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Beckert%27s_garden_field_and_flower_seeds_%2816560161772%29.jpg/1280px-Beckert%27s_garden_field_and_flower_seeds_%2816560161772%29.jpg',
+    originalPage:
+      'https://commons.wikimedia.org/wiki/File:Beckert%27s_garden_field_and_flower_seeds_(16560161772).jpg',
+    license: 'Public domain',
+    attribution:
+      'Henry G. Gilbert Nursery and Seed Trade Catalog Collection.; Wm. C. Beckert (Firm), via Wikimedia Commons (Public domain)',
+    subject: 'sweet corn cob plant field',
+  },
   'crop:tea': {
     src: '/images/tea.jpg',
     alt: 'A tea plantation',
@@ -1009,6 +1655,21 @@ export const IMAGE_MAP: Record<string, ImageMeta> = {
     licenseUrl: 'http://creativecommons.org/licenses/by-sa/3.0/',
     attribution: 'Dr. Zeynel Cebeci, via Wikimedia Commons (CC BY-SA 3.0)',
     subject: 'tea plantation Camellia sinensis field',
+  },
+  'crop:thyme': {
+    src: '/images/thyme.jpg',
+    alt: 'A thyme plant',
+    width: 1280,
+    height: 872,
+    creator: 'Rijksmuseum',
+    sourceUrl:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Zilverschoon_en_klein_tijm%2C_RP-F-2001-7-612-35.jpg/1280px-Zilverschoon_en_klein_tijm%2C_RP-F-2001-7-612-35.jpg',
+    originalPage:
+      'https://commons.wikimedia.org/wiki/File:Zilverschoon_en_klein_tijm,_RP-F-2001-7-612-35.jpg',
+    license: 'CC0',
+    licenseUrl: 'http://creativecommons.org/publicdomain/zero/1.0/deed.en',
+    attribution: 'Rijksmuseum, via Wikimedia Commons (CC0)',
+    subject: 'thyme herb plant Thymus',
   },
   'crop:tobacco': {
     src: '/images/tobacco.jpg',
@@ -1070,6 +1731,53 @@ export const IMAGE_MAP: Record<string, ImageMeta> = {
     licenseUrl: 'https://creativecommons.org/licenses/by-sa/3.0',
     attribution: 'Simon A. Eugster, via Wikimedia Commons (CC BY-SA 3.0)',
     subject: 'turmeric plant rhizome Curcuma',
+  },
+  'crop:vanilla': {
+    src: '/images/vanilla.jpg',
+    alt: 'Vanilla pods',
+    width: 1280,
+    height: 960,
+    creator: 'Dinesh Valke from Thane, India',
+    sourceUrl:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Vanilla_%286789062336%29.jpg/1280px-Vanilla_%286789062336%29.jpg',
+    originalPage:
+      'https://commons.wikimedia.org/wiki/File:Vanilla_(6789062336).jpg',
+    license: 'CC BY-SA 2.0',
+    licenseUrl: 'https://creativecommons.org/licenses/by-sa/2.0',
+    attribution:
+      'Dinesh Valke from Thane, India, via Wikimedia Commons (CC BY-SA 2.0)',
+    subject: 'vanilla orchid pods Vanilla planifolia',
+  },
+  'crop:walnut': {
+    src: '/images/walnut.jpg',
+    alt: 'Walnuts on a tree',
+    width: 1186,
+    height: 1748,
+    creator:
+      'Bountiful Ridge Nurseries.; Henry G. Gilbert Nursery and Seed Trade Catalog Collection.',
+    sourceUrl:
+      'https://upload.wikimedia.org/wikipedia/commons/0/0a/Planting_guide_%2815755232653%29.jpg',
+    originalPage:
+      'https://commons.wikimedia.org/wiki/File:Planting_guide_(15755232653).jpg',
+    license: 'CC BY 2.0',
+    licenseUrl: 'https://creativecommons.org/licenses/by/2.0',
+    attribution:
+      'Bountiful Ridge Nurseries.; Henry G. Gilbert Nursery and Seed Trade Catalog Collection., via Wikimedia Commons (CC BY 2.0)',
+    subject: 'walnut tree nuts orchard',
+  },
+  'crop:watermelon': {
+    src: '/images/watermelon.jpg',
+    alt: 'Watermelons in a field',
+    width: 1280,
+    height: 853,
+    creator: 'USDAgov',
+    sourceUrl:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/2018_USDA_Farmers_Market_-_Watermelon_%2820180803-AMS-LSC-0898%29.jpg/1280px-2018_USDA_Farmers_Market_-_Watermelon_%2820180803-AMS-LSC-0898%29.jpg',
+    originalPage:
+      'https://commons.wikimedia.org/wiki/File:2018_USDA_Farmers_Market_-_Watermelon_(20180803-AMS-LSC-0898).jpg',
+    license: 'Public domain',
+    attribution: 'USDAgov, via Wikimedia Commons (Public domain)',
+    subject: 'watermelon plant fruit field',
   },
   'crop:wheat': {
     src: '/images/wheat.jpg',
@@ -1391,6 +2099,21 @@ export const IMAGE_MAP: Record<string, ImageMeta> = {
     attribution: 'Art Anderson, via Wikimedia Commons (CC BY-SA 3.0)',
     subject: 'alpaca farm livestock',
   },
+  'livestock:bison': {
+    src: '/images/bison.jpg',
+    alt: 'Bison',
+    width: 1280,
+    height: 853,
+    creator: 'Mr. Satterly',
+    sourceUrl:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Tourists_get_close_to_a_wild_herd_of_American_Bison_%28Bison_bison%29_to_take_a_photo_at_Yellowstone_National_Park_in_Wyoming.jpg/1280px-Tourists_get_close_to_a_wild_herd_of_American_Bison_%28Bison_bison%29_to_take_a_photo_at_Yellowstone_National_Park_in_Wyoming.jpg',
+    originalPage:
+      'https://commons.wikimedia.org/wiki/File:Tourists_get_close_to_a_wild_herd_of_American_Bison_(Bison_bison)_to_take_a_photo_at_Yellowstone_National_Park_in_Wyoming.jpg',
+    license: 'CC0',
+    licenseUrl: 'http://creativecommons.org/publicdomain/zero/1.0/deed.en',
+    attribution: 'Mr. Satterly, via Wikimedia Commons (CC0)',
+    subject: 'american bison herd Bison bison',
+  },
   'livestock:camels': {
     src: '/images/camels.jpg',
     alt: 'A camel',
@@ -1513,6 +2236,21 @@ export const IMAGE_MAP: Record<string, ImageMeta> = {
     attribution: 'Lisbeth Bergh, via Wikimedia Commons (CC BY-SA 4.0)',
     subject: 'goats farm pasture',
   },
+  'livestock:guinea-fowl': {
+    src: '/images/guinea-fowl.jpg',
+    alt: 'Guinea fowl',
+    width: 1280,
+    height: 850,
+    creator: 'Dennis G. Jarvis',
+    sourceUrl:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Nova_Scotia_DGJ_4140_-_Guinea_fowl_%286179186808%29.jpg/1280px-Nova_Scotia_DGJ_4140_-_Guinea_fowl_%286179186808%29.jpg',
+    originalPage:
+      'https://commons.wikimedia.org/wiki/File:Nova_Scotia_DGJ_4140_-_Guinea_fowl_(6179186808).jpg',
+    license: 'CC BY-SA 2.0',
+    licenseUrl: 'https://creativecommons.org/licenses/by-sa/2.0',
+    attribution: 'Dennis G. Jarvis, via Wikimedia Commons (CC BY-SA 2.0)',
+    subject: 'guinea fowl bird farm',
+  },
   'livestock:honey-bees': {
     src: '/images/honey-bees.jpg',
     alt: 'Honey bees on a frame',
@@ -1541,6 +2279,50 @@ export const IMAGE_MAP: Record<string, ImageMeta> = {
     licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0',
     attribution: 'EgorovaSvetlana, via Wikimedia Commons (CC BY-SA 4.0)',
     subject: 'horse farm pasture',
+  },
+  'livestock:mule': {
+    src: '/images/mule.jpg',
+    alt: 'A mule',
+    width: 1280,
+    height: 2049,
+    creator: 'Plumb, Charles S.',
+    sourceUrl:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Types_and_breeds_of_farm_animals_%28Page_162%29_BHL23742106.jpg/1280px-Types_and_breeds_of_farm_animals_%28Page_162%29_BHL23742106.jpg',
+    originalPage:
+      'https://commons.wikimedia.org/wiki/File:Types_and_breeds_of_farm_animals_(Page_162)_BHL23742106.jpg',
+    license: 'Public domain',
+    attribution: 'Plumb, Charles S., via Wikimedia Commons (Public domain)',
+    subject: 'mule farm animal',
+  },
+  'livestock:ostrich': {
+    src: '/images/ostrich.jpg',
+    alt: 'Farmed ostriches',
+    width: 1280,
+    height: 891,
+    creator: 'ImagePerson',
+    sourceUrl:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Common_Ostrich_Struthio_camelus_not_long_from_egg_at_Curacao_farm_0205.jpg/1280px-Common_Ostrich_Struthio_camelus_not_long_from_egg_at_Curacao_farm_0205.jpg',
+    originalPage:
+      'https://commons.wikimedia.org/wiki/File:Common_Ostrich_Struthio_camelus_not_long_from_egg_at_Curacao_farm_0205.jpg',
+    license: 'CC BY 4.0',
+    licenseUrl: 'https://creativecommons.org/licenses/by/4.0',
+    attribution: 'ImagePerson, via Wikimedia Commons (CC BY 4.0)',
+    subject: 'ostrich farm bird Struthio',
+  },
+  'livestock:pheasant': {
+    src: '/images/pheasant.jpg',
+    alt: 'A pheasant',
+    width: 1280,
+    height: 848,
+    creator: 'Shahzaib Damn Cruze',
+    sourceUrl:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Ring-necked_Pheasant_%28Lahore_Zoo%29_by_Damn_Cruze.jpg/1280px-Ring-necked_Pheasant_%28Lahore_Zoo%29_by_Damn_Cruze.jpg',
+    originalPage:
+      'https://commons.wikimedia.org/wiki/File:Ring-necked_Pheasant_(Lahore_Zoo)_by_Damn_Cruze.jpg',
+    license: 'CC BY-SA 4.0',
+    licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0',
+    attribution: 'Shahzaib Damn Cruze, via Wikimedia Commons (CC BY-SA 4.0)',
+    subject: 'pheasant bird farm Phasianus',
   },
   'livestock:pigs': {
     src: '/images/pigs.jpg',
@@ -1630,6 +2412,21 @@ export const IMAGE_MAP: Record<string, ImageMeta> = {
     licenseUrl: 'https://creativecommons.org/licenses/by-sa/3.0',
     attribution: 'Wald1siedel, via Wikimedia Commons (CC BY-SA 3.0)',
     subject: 'water buffalo farm Bubalus',
+  },
+  'livestock:yak': {
+    src: '/images/yak.jpg',
+    alt: 'A domestic yak',
+    width: 1280,
+    height: 853,
+    creator: '0x010C',
+    sourceUrl:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/2016-09_zoo_sauvage_de_Saint-F%C3%A9licien_-_Bos_grunniens_02.jpg/1280px-2016-09_zoo_sauvage_de_Saint-F%C3%A9licien_-_Bos_grunniens_02.jpg',
+    originalPage:
+      'https://commons.wikimedia.org/wiki/File:2016-09_zoo_sauvage_de_Saint-F%C3%A9licien_-_Bos_grunniens_02.jpg',
+    license: 'CC BY-SA 4.0',
+    licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0',
+    attribution: '0x010C, via Wikimedia Commons (CC BY-SA 4.0)',
+    subject: 'domestic yak Bos grunniens',
   },
   'machinery:agricultural-drone': {
     src: '/images/agricultural-drone.jpg',
@@ -2030,6 +2827,36 @@ export const IMAGE_MAP: Record<string, ImageMeta> = {
     attribution: 'Forest and Kim Starr, via Wikimedia Commons (CC BY 3.0 us)',
     subject: 'leaf miner damage mine leaf',
   },
+  'pest:leafhoppers': {
+    src: '/images/leafhoppers.jpg',
+    alt: 'A leafhopper',
+    width: 1280,
+    height: 1593,
+    creator: 'Brandon Antonio Segura Torres &amp; Priscilla Vieto Bonilla',
+    sourceUrl:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Chicharrita_de_la_Familia_Cicadellidae.jpg/1280px-Chicharrita_de_la_Familia_Cicadellidae.jpg',
+    originalPage:
+      'https://commons.wikimedia.org/wiki/File:Chicharrita_de_la_Familia_Cicadellidae.jpg',
+    license: 'CC BY-SA 4.0',
+    licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0',
+    attribution:
+      'Brandon Antonio Segura Torres &amp; Priscilla Vieto Bonilla, via Wikimedia Commons (CC BY-SA 4.0)',
+    subject: 'leafhopper insect Cicadellidae',
+  },
+  'pest:root-aphids': {
+    src: '/images/root-aphids.jpg',
+    alt: 'Root aphids',
+    width: 1280,
+    height: 800,
+    creator: 'Dandy1022',
+    sourceUrl:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Thimble_cactus.jpg/1280px-Thimble_cactus.jpg',
+    originalPage: 'https://commons.wikimedia.org/wiki/File:Thimble_cactus.jpg',
+    license: 'CC BY-SA 4.0',
+    licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0',
+    attribution: 'Dandy1022, via Wikimedia Commons (CC BY-SA 4.0)',
+    subject: 'root aphid soil pest',
+  },
   'pest:root-knot-nematode': {
     src: '/images/root-knot-nematode.jpg',
     alt: 'Root-knot nematode galls on roots',
@@ -2046,6 +2873,21 @@ export const IMAGE_MAP: Record<string, ImageMeta> = {
     attribution:
       'Photo by William Wergin and Richard Sayre. Colorized by Stephen Ausmus. U.S. Department of Agriculture, via Wikimedia Commons (CC BY 2.0)',
     subject: 'root knot nematode galls roots Meloidogyne',
+  },
+  'pest:sawflies': {
+    src: '/images/sawflies.jpg',
+    alt: 'A sawfly larva',
+    width: 1280,
+    height: 1707,
+    creator: 'Natalka Ukraine',
+    sourceUrl:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Arge_ochropus_larvae_on_a_rose_leaf_in_Dnipro_by_baby-bear.org_07.07.2026.jpg_2.jpg/1280px-Arge_ochropus_larvae_on_a_rose_leaf_in_Dnipro_by_baby-bear.org_07.07.2026.jpg_2.jpg',
+    originalPage:
+      'https://commons.wikimedia.org/wiki/File:Arge_ochropus_larvae_on_a_rose_leaf_in_Dnipro_by_baby-bear.org_07.07.2026.jpg_2.jpg',
+    license: 'CC BY 4.0',
+    licenseUrl: 'https://creativecommons.org/licenses/by/4.0',
+    attribution: 'Natalka Ukraine, via Wikimedia Commons (CC BY 4.0)',
+    subject: 'sawfly larva pest plant',
   },
   'pest:scale-insects': {
     src: '/images/scale-insects.jpg',

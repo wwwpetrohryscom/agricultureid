@@ -155,6 +155,8 @@ export const chillingRequirement: ClimateContent = {
     { type: 'climate', slug: 'growing-degree-days' },
   ],
   connections: [
+    { type: 'crop', slug: 'kiwifruit' },
+    { type: 'crop', slug: 'persimmon' },
     { type: 'crop', slug: 'apple' },
     { type: 'crop', slug: 'blueberry' },
     { type: 'crop', slug: 'grape' },

@@ -160,6 +160,7 @@ export const aquaponics: FarmingSystemContent = {
     { type: 'farming-system', slug: 'vertical-farming' },
   ],
   connections: [
+    { type: 'crop', slug: 'watercress' },
     { type: 'crop', slug: 'lettuce' },
     { type: 'crop', slug: 'tomato' },
     { type: 'crop', slug: 'cucumber' },

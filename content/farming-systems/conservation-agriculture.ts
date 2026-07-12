@@ -194,6 +194,9 @@ export const conservationAgriculture: FarmingSystemContent = {
     { type: 'farming-system', slug: 'precision-agriculture' },
   ],
   connections: [
+    { type: 'pest', slug: 'leafhoppers' },
+    { type: 'pest', slug: 'mole-crickets' },
+    { type: 'pest', slug: 'root-aphids' },
     { type: 'soil-topic', slug: 'soil-organic-matter' },
     { type: 'soil-topic', slug: 'soil-biology' },
     { type: 'soil-topic', slug: 'soil-structure' },

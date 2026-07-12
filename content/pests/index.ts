@@ -12,11 +12,18 @@ import { fleaBeetles } from './flea-beetles';
 import { fruitFlies } from './fruit-flies';
 import { grasshoppers } from './grasshoppers';
 import { leafMiners } from './leaf-miners';
+import { leafRollers } from './leaf-rollers';
+import { leafhoppers } from './leafhoppers';
 import { mealybugs } from './mealybugs';
+import { moleCrickets } from './mole-crickets';
 import { podBorer } from './pod-borer';
+import { psyllids } from './psyllids';
+import { rootAphids } from './root-aphids';
 import { rootKnotNematode } from './root-knot-nematode';
+import { sawflies } from './sawflies';
 import { scaleInsects } from './scale-insects';
 import { slugs } from './slugs';
+import { snails } from './snails';
 import { spiderMites } from './spider-mites';
 import { stemBorers } from './stem-borers';
 import { stinkBugs } from './stink-bugs';
@@ -40,11 +47,18 @@ export const pests: PestContent[] = [
   fruitFlies,
   grasshoppers,
   leafMiners,
+  leafRollers,
+  leafhoppers,
   mealybugs,
+  moleCrickets,
   podBorer,
+  psyllids,
+  rootAphids,
   rootKnotNematode,
+  sawflies,
   scaleInsects,
   slugs,
+  snails,
   spiderMites,
   stemBorers,
   stinkBugs,

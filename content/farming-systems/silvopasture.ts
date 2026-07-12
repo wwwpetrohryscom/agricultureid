@@ -143,6 +143,8 @@ export const silvopasture: FarmingSystemContent = {
     { type: 'farming-system', slug: 'integrated-crop-livestock' },
   ],
   connections: [
+    { type: 'livestock', slug: 'bison' },
+    { type: 'livestock', slug: 'yak' },
     { type: 'livestock', slug: 'cattle' },
     { type: 'livestock', slug: 'sheep' },
     { type: 'livestock', slug: 'goats' },

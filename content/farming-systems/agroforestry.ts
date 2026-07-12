@@ -175,6 +175,8 @@ export const agroforestry: FarmingSystemContent = {
   ],
   connections: [
     { type: 'farming-system', slug: 'permaculture' },
+    { type: 'crop', slug: 'lychee' },
+    { type: 'crop', slug: 'macadamia' },
     { type: 'crop', slug: 'apple' },
     { type: 'crop', slug: 'mango' },
     { type: 'crop', slug: 'banana' },

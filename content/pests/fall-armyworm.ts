@@ -148,6 +148,7 @@ export const fallArmyworm: PestContent = {
     { type: 'crop', slug: 'maize' },
     { type: 'crop', slug: 'sorghum' },
     { type: 'crop', slug: 'rice' },
+    { type: 'crop', slug: 'sweetcorn' },
   ],
   connections: [
     { type: 'climate', slug: 'temperature' },
