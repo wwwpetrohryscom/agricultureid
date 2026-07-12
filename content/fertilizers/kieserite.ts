@@ -171,13 +171,13 @@ export const kieserite: FertilizerContent = {
           sourceId: 'fao',
           evidenceNote:
             'FAO documents kieserite as a magnesium and sulfur fertilizer material and its typical composition.',
-          retrievedDate: '2026-07-13',
+          retrievedDate: '2026-07-12',
         },
         {
           sourceId: 'ahdb',
           evidenceNote:
             'AHDB nutrient management guidance describes kieserite magnesium and sulfur content.',
-          retrievedDate: '2026-07-13',
+          retrievedDate: '2026-07-12',
         },
       ],
     },

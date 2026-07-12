@@ -159,13 +159,13 @@ export const muriateOfPotash: FertilizerContent = {
           sourceId: 'fao',
           evidenceNote:
             'FAO documents MOP as the dominant global potassium fertilizer source and its typical potassium content.',
-          retrievedDate: '2026-07-13',
+          retrievedDate: '2026-07-12',
         },
         {
           sourceId: 'cornell-cals',
           evidenceNote:
             'Cornell CALS nutrient management guidance describes MOP potassium analysis and grade conventions.',
-          retrievedDate: '2026-07-13',
+          retrievedDate: '2026-07-12',
         },
       ],
     },

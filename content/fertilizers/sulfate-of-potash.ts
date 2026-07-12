@@ -156,13 +156,13 @@ export const sulfateOfPotash: FertilizerContent = {
           sourceId: 'fao',
           evidenceNote:
             'FAO documents SOP as a chloride-free potassium and sulfur fertilizer source and its typical composition.',
-          retrievedDate: '2026-07-13',
+          retrievedDate: '2026-07-12',
         },
         {
           sourceId: 'cornell-cals',
           evidenceNote:
             'Cornell CALS nutrient management guidance describes SOP potassium and sulfur analysis.',
-          retrievedDate: '2026-07-13',
+          retrievedDate: '2026-07-12',
         },
       ],
     },

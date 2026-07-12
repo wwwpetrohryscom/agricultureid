@@ -185,13 +185,13 @@ export const chelatedMicronutrients: FertilizerContent = {
           sourceId: 'cornell-cals',
           evidenceNote:
             'Cornell CALS guidance describes chelated micronutrient product formulations and typical element concentrations.',
-          retrievedDate: '2026-07-13',
+          retrievedDate: '2026-07-12',
         },
         {
           sourceId: 'fao',
           evidenceNote:
             'FAO documents chelated micronutrient fertilizers and their role in correcting deficiencies on high-pH soils.',
-          retrievedDate: '2026-07-13',
+          retrievedDate: '2026-07-12',
         },
       ],
     },

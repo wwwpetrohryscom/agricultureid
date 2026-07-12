@@ -168,7 +168,7 @@ export const soilPh: SoilTopicContent = {
           sourceId: 'usda-nrcs',
           evidenceNote:
             'USDA NRCS guidance on soil pH measurement explains the logarithmic hydrogen-ion activity scale underlying pH values.',
-          retrievedDate: '2026-07-13',
+          retrievedDate: '2026-07-12',
         },
       ],
     },

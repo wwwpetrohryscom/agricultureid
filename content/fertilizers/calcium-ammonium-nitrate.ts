@@ -183,13 +183,13 @@ export const calciumAmmoniumNitrate: FertilizerContent = {
           sourceId: 'fao',
           evidenceNote:
             'FAO documents calcium ammonium nitrate as a nitrogen fertilizer and its dual ammonium/nitrate nitrogen composition.',
-          retrievedDate: '2026-07-13',
+          retrievedDate: '2026-07-12',
         },
         {
           sourceId: 'ahdb',
           evidenceNote:
             'AHDB nutrient management guidance describes CAN nitrogen content and grade conventions for cereals and root crops.',
-          retrievedDate: '2026-07-13',
+          retrievedDate: '2026-07-12',
         },
       ],
     },

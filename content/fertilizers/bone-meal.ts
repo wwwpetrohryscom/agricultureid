@@ -181,13 +181,13 @@ export const boneMeal: FertilizerContent = {
           sourceId: 'cornell-cals',
           evidenceNote:
             'Cornell CALS guidance on organic fertilizer phosphorus management describes bone meal composition.',
-          retrievedDate: '2026-07-13',
+          retrievedDate: '2026-07-12',
         },
         {
           sourceId: 'usda-nrcs',
           evidenceNote:
             'USDA NRCS guidance describes slow-release phosphorus behaviour of bone meal in soil.',
-          retrievedDate: '2026-07-13',
+          retrievedDate: '2026-07-12',
         },
       ],
     },

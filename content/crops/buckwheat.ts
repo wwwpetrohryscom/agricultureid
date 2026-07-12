@@ -259,13 +259,13 @@ export const buckwheat: CropContent = {
           sourceId: 'fao',
           evidenceNote:
             'FAO documents buckwheat as a short-duration crop suited to short growing seasons.',
-          retrievedDate: '2026-07-13',
+          retrievedDate: '2026-07-12',
         },
         {
           sourceId: 'cabi',
           evidenceNote:
             'CABI compendium describes buckwheat crop duration and time to maturity.',
-          retrievedDate: '2026-07-13',
+          retrievedDate: '2026-07-12',
         },
       ],
     },

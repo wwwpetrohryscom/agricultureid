@@ -202,13 +202,13 @@ export const thrips: PestContent = {
           sourceId: 'cabi',
           evidenceNote:
             'CABI compendium documents thrips adult body size across pest species in the order Thysanoptera.',
-          retrievedDate: '2026-07-13',
+          retrievedDate: '2026-07-12',
         },
         {
           sourceId: 'uc-ipm',
           evidenceNote:
             'UC IPM pest identification guidance describes typical adult thrips size for identification purposes.',
-          retrievedDate: '2026-07-13',
+          retrievedDate: '2026-07-12',
         },
       ],
     },

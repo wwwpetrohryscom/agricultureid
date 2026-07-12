@@ -73,6 +73,13 @@ export function ArticleFigure({ item }: { item: AnyContent }) {
             {image.modifications}
           </span>
         )}
+        {(item.contentType === 'plant-disease' ||
+          item.contentType === 'pest') && (
+          <span className="mt-1 block italic text-ink-500">
+            Illustrative only — visual symptoms or appearance alone may not be
+            sufficient for reliable identification.
+          </span>
+        )}
       </figcaption>
     </figure>
   );

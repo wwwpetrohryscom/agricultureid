@@ -162,13 +162,13 @@ export const tripleSuperphosphate: FertilizerContent = {
           sourceId: 'fao',
           evidenceNote:
             'FAO documents TSP as a concentrated phosphorus fertilizer and its typical phosphorus content.',
-          retrievedDate: '2026-07-13',
+          retrievedDate: '2026-07-12',
         },
         {
           sourceId: 'cornell-cals',
           evidenceNote:
             'Cornell CALS nutrient management guidance describes TSP phosphorus analysis and grade conventions.',
-          retrievedDate: '2026-07-13',
+          retrievedDate: '2026-07-12',
         },
       ],
     },

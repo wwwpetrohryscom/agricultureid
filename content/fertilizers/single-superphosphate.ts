@@ -178,13 +178,13 @@ export const singleSuperphosphate: FertilizerContent = {
           sourceId: 'fao',
           evidenceNote:
             'FAO documents SSP as a combined phosphorus, calcium, and sulfur fertilizer source and its typical composition.',
-          retrievedDate: '2026-07-13',
+          retrievedDate: '2026-07-12',
         },
         {
           sourceId: 'ahdb',
           evidenceNote:
             'AHDB nutrient management guidance describes SSP phosphorus, calcium, and sulfur content.',
-          retrievedDate: '2026-07-13',
+          retrievedDate: '2026-07-12',
         },
       ],
     },

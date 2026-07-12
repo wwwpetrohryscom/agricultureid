@@ -149,7 +149,7 @@ export const nitrogen: NutrientContent = {
           sourceId: 'fao',
           evidenceNote:
             'FAO reference material on nitrogen in agriculture states the composition of air, which is about 78% nitrogen gas by volume.',
-          retrievedDate: '2026-07-13',
+          retrievedDate: '2026-07-12',
         },
       ],
     },

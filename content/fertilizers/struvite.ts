@@ -181,13 +181,13 @@ export const struvite: FertilizerContent = {
           sourceId: 'fao',
           evidenceNote:
             'FAO documents nutrient-recovery fertilizers, including struvite, and typical recovered nutrient content.',
-          retrievedDate: '2026-07-13',
+          retrievedDate: '2026-07-12',
         },
         {
           sourceId: 'cornell-cals',
           evidenceNote:
             'Cornell CALS guidance describes struvite composition and slow-release phosphorus behaviour.',
-          retrievedDate: '2026-07-13',
+          retrievedDate: '2026-07-12',
         },
       ],
     },

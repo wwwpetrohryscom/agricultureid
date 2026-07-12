@@ -15,6 +15,7 @@ import {
   incorrectReciprocalEdges,
 } from '@/lib/content/relations';
 import { evidenceTier, unclassifiedSources } from '@/lib/sources/evidence';
+import { safetyReport } from '@/lib/validation/audit';
 import {
   articleSchema,
   breadcrumbSchema,
@@ -580,6 +581,11 @@ export function validateAll(): ValidationResult {
       `Reciprocal edges reuse the non-symmetric relation "${a.relation}"`,
       `${a.from.type}:${a.from.slug}`,
     );
+  }
+
+  /* ---- Safety (Phase 2.1) --------------------------------------------- */
+  for (const hit of safetyReport()) {
+    error(`safety-${hit.code}`, hit.detail, hit.where);
   }
 
   /* ---- Reachability / orphans ----------------------------------------- */

@@ -162,6 +162,27 @@ export const gypsum: FertilizerContent = {
     'Effectiveness for sodic-soil reclamation depends on adequate drainage and leaching water, which are not present everywhere.',
     'Gypsum sourced as an industrial by-product can vary in purity; local guidance should be consulted on suitable sources.',
   ],
+  claims: [
+    {
+      field: 'nutrient-analysis',
+      statement:
+        'Agricultural gypsum (calcium sulfate dihydrate) typically supplies around 23% calcium and 18% sulfur.',
+      quantitative: true,
+      citations: [
+        {
+          sourceId: 'usda-nrcs',
+          evidenceNote:
+            'Gypsum as a soil amendment: calcium and sulfur content.',
+          retrievedDate: '2026-07-12',
+        },
+        {
+          sourceId: 'fao',
+          evidenceNote: 'Calcium and sulfur sources in agriculture.',
+          retrievedDate: '2026-07-12',
+        },
+      ],
+    },
+  ],
   sourceReferences: [
     {
       sourceId: 'fao',

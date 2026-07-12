@@ -210,13 +210,13 @@ export const coloradoPotatoBeetle: PestContent = {
           sourceId: 'cabi',
           evidenceNote:
             'CABI compendium documents Colorado potato beetle adult body size and colouration.',
-          retrievedDate: '2026-07-13',
+          retrievedDate: '2026-07-12',
         },
         {
           sourceId: 'eppo-gd',
           evidenceNote:
             'EPPO Global Database species profile documents adult morphology and identification features of Leptinotarsa decemlineata.',
-          retrievedDate: '2026-07-13',
+          retrievedDate: '2026-07-12',
         },
       ],
     },

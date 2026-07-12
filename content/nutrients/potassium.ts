@@ -138,7 +138,6 @@ export const potassium: NutrientContent = {
     { type: 'crop', slug: 'banana' },
     { type: 'soil-topic', slug: 'cation-exchange-capacity' },
     { type: 'soil-topic', slug: 'soil-ph' },
-    { type: 'livestock', slug: 'cattle' },
   ],
   glossaryTerms: ['macronutrient'],
   geographicScope:

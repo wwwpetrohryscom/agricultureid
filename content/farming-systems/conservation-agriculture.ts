@@ -227,13 +227,13 @@ export const conservationAgriculture: FarmingSystemContent = {
           sourceId: 'fao',
           evidenceNote:
             'FAO documents conservation agriculture adoption and the multi-year timeframe over which soil benefits typically develop.',
-          retrievedDate: '2026-07-13',
+          retrievedDate: '2026-07-12',
         },
         {
           sourceId: 'usda-nrcs',
           evidenceNote:
             'USDA NRCS guidance on no-till and residue management describes the multi-year transition period for soil structure and organic matter change.',
-          retrievedDate: '2026-07-13',
+          retrievedDate: '2026-07-12',
         },
       ],
     },

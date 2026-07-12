@@ -175,13 +175,13 @@ export const calciumNitrate: FertilizerContent = {
           sourceId: 'fao',
           evidenceNote:
             'FAO documents calcium nitrate as a nitrogen and calcium fertilizer source and its typical composition.',
-          retrievedDate: '2026-07-13',
+          retrievedDate: '2026-07-12',
         },
         {
           sourceId: 'cornell-cals',
           evidenceNote:
             'Cornell CALS guidance on calcium nutrition describes calcium nitrate nitrogen and calcium content.',
-          retrievedDate: '2026-07-13',
+          retrievedDate: '2026-07-12',
         },
       ],
     },

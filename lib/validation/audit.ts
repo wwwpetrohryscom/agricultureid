@@ -214,6 +214,87 @@ export function graphReport() {
   };
 }
 
+/* ---- safety audit -------------------------------------------------------- */
+
+const SAFETY_TYPES = new Set([
+  'fertilizer',
+  'pest',
+  'plant-disease',
+  'livestock',
+]);
+
+// Prescriptive patterns that must NOT appear (specific doses, spray intervals,
+// veterinary dosages, "apply at a rate of N unit/area").
+const BANNED_PRESCRIPTIVE = [
+  {
+    label: 'application dose per area/volume',
+    re: /\b\d+(?:\.\d+)?\s?(?:ml|l|g|kg|oz|lb)\s?(?:per|\/)\s?(?:l|litre|liter|ha|hectare|acre|plant|tree)\b/i,
+  },
+  {
+    label: 'spray interval',
+    re: /\bspray[^.]{0,40}\bevery\s?\d+\s?(?:days|weeks)\b/i,
+  },
+  {
+    label: 'veterinary dosage',
+    re: /\b\d+(?:\.\d+)?\s?(?:mg|ml|g)\s?(?:per|\/)\s?kg\b/i,
+  },
+  { label: 'rate-of instruction', re: /\bat a rate of\s?\d/i },
+];
+
+// Human-health-efficacy claims that must not appear on crop pages. Kept
+// specific to medical/therapeutic language so agronomic "reduces the risk of
+// bolting/lodging" phrasing is not falsely flagged.
+const HEALTH_CLAIM =
+  /\b(anti-inflammatory|medicinal (?:benefit|propert|use)|health benefits?|therapeutic (?:use|benefit|propert|effect)|(?:cures?|treats?|heals?) (?:cancer|diabetes|inflammation|illness|disease|ailments?|the body)|prevents? (?:cancer|diabetes|illness))\b/i;
+
+export interface SafetyHit {
+  where: string;
+  code: string;
+  detail: string;
+}
+
+function hasSafetyCallout(item: AnyContent): boolean {
+  const check = (blocks: ContentBlock[]) =>
+    blocks.some(
+      (b) =>
+        b.type === 'callout' &&
+        (b.tone === 'important' || b.tone === 'caution'),
+    );
+  return check(item.introduction) || item.sections.some((s) => check(s.body));
+}
+
+export function safetyReport(): SafetyHit[] {
+  const hits: SafetyHit[] = [];
+  for (const item of ALL_CONTENT) {
+    const where = `${item.contentType}:${item.slug}`;
+    if (SAFETY_TYPES.has(item.contentType) && !hasSafetyCallout(item)) {
+      hits.push({
+        where,
+        code: 'missing-safety-callout',
+        detail: 'no important/caution callout',
+      });
+    }
+    for (const s of itemStrings(item)) {
+      for (const { label, re } of BANNED_PRESCRIPTIVE) {
+        if (re.test(s))
+          hits.push({
+            where,
+            code: 'prescriptive-instruction',
+            detail: `${label}: "${s.slice(0, 80)}"`,
+          });
+      }
+      if (item.contentType === 'crop' && HEALTH_CLAIM.test(s)) {
+        hits.push({
+          where,
+          code: 'health-claim',
+          detail: `"${s.slice(0, 80)}"`,
+        });
+      }
+    }
+  }
+  return hits;
+}
+
 /* ---- provenance completeness -------------------------------------------- */
 
 export function provenanceReport() {

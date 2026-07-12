@@ -166,13 +166,13 @@ export const ammoniumSulfate: FertilizerContent = {
           sourceId: 'fao',
           evidenceNote:
             'FAO documents ammonium sulfate as a combined nitrogen and sulfur fertilizer source and its typical composition.',
-          retrievedDate: '2026-07-13',
+          retrievedDate: '2026-07-12',
         },
         {
           sourceId: 'ahdb',
           evidenceNote:
             'AHDB nutrient management guidance describes ammonium sulfate nitrogen and sulfur content and its acidifying effect.',
-          retrievedDate: '2026-07-13',
+          retrievedDate: '2026-07-12',
         },
       ],
     },

@@ -167,13 +167,13 @@ export const ammoniumNitrate: FertilizerContent = {
           sourceId: 'fao',
           evidenceNote:
             'FAO documents ammonium nitrate as a nitrogen fertilizer and its ammonium/nitrate nitrogen composition.',
-          retrievedDate: '2026-07-13',
+          retrievedDate: '2026-07-12',
         },
         {
           sourceId: 'cornell-cals',
           evidenceNote:
             'Cornell CALS nutrient management guidance describes ammonium nitrate nitrogen content and grade conventions.',
-          retrievedDate: '2026-07-13',
+          retrievedDate: '2026-07-12',
         },
       ],
     },

@@ -189,13 +189,13 @@ export const compost: FertilizerContent = {
           sourceId: 'usda-nrcs',
           evidenceNote:
             'USDA NRCS guidance describes compost effects on soil properties and its typical nutrient concentration range.',
-          retrievedDate: '2026-07-13',
+          retrievedDate: '2026-07-12',
         },
         {
           sourceId: 'cornell-cals',
           evidenceNote:
             'Cornell CALS compost production guidance describes typical low and variable nutrient content of compost.',
-          retrievedDate: '2026-07-13',
+          retrievedDate: '2026-07-12',
         },
       ],
     },

@@ -165,13 +165,13 @@ export const urea: FertilizerContent = {
           sourceId: 'fao',
           evidenceNote:
             'FAO documents urea as a major global nitrogen fertilizer source and its nitrogen content.',
-          retrievedDate: '2026-07-13',
+          retrievedDate: '2026-07-12',
         },
         {
           sourceId: 'cornell-cals',
           evidenceNote:
             'Cornell CALS nutrient management guidance describes urea nitrogen content and fertilizer grade conventions.',
-          retrievedDate: '2026-07-13',
+          retrievedDate: '2026-07-12',
         },
       ],
     },

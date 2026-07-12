@@ -166,13 +166,13 @@ export const diammoniumPhosphate: FertilizerContent = {
           sourceId: 'fao',
           evidenceNote:
             'FAO documents DAP as a major globally traded phosphorus fertilizer and its typical composition.',
-          retrievedDate: '2026-07-13',
+          retrievedDate: '2026-07-12',
         },
         {
           sourceId: 'usda-nrcs',
           evidenceNote:
             'USDA NRCS guidance describes DAP composition and phosphorus behaviour in soil.',
-          retrievedDate: '2026-07-13',
+          retrievedDate: '2026-07-12',
         },
       ],
     },

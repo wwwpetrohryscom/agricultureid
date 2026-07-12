@@ -167,13 +167,13 @@ export const chalkySoil: SoilContent = {
           sourceId: 'usda-nrcs',
           evidenceNote:
             'USDA NRCS soil property guidance describes calcareous soil pH ranges and drainage characteristics.',
-          retrievedDate: '2026-07-13',
+          retrievedDate: '2026-07-12',
         },
         {
           sourceId: 'isric',
           evidenceNote:
             'ISRIC global soil property data documents typical pH ranges for calcareous, chalk- and limestone-derived soils.',
-          retrievedDate: '2026-07-13',
+          retrievedDate: '2026-07-12',
         },
       ],
     },

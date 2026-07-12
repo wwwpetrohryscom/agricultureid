@@ -211,7 +211,7 @@ export const maize: CropContent = {
       ],
     },
   ],
-  commonDiseases: [{ type: 'plant-disease', slug: 'fusarium-wilt' }],
+  commonDiseases: [{ type: 'plant-disease', slug: 'common-smut' }],
   commonPests: [{ type: 'pest', slug: 'aphids' }],
   suitableSoils: [{ type: 'soil', slug: 'loam-soil' }],
   relatedTopics: [{ type: 'crop', slug: 'soybean' }],

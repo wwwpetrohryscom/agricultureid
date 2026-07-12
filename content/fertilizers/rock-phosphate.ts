@@ -182,13 +182,13 @@ export const rockPhosphate: FertilizerContent = {
           sourceId: 'fao',
           evidenceNote:
             'FAO documents rock phosphate as a phosphorus fertilizer source and raw material, noting variability in phosphorus content by deposit.',
-          retrievedDate: '2026-07-13',
+          retrievedDate: '2026-07-12',
         },
         {
           sourceId: 'usda-nrcs',
           evidenceNote:
             'USDA NRCS guidance describes phosphorus behaviour and rock phosphate reactivity interactions with soil pH.',
-          retrievedDate: '2026-07-13',
+          retrievedDate: '2026-07-12',
         },
       ],
     },

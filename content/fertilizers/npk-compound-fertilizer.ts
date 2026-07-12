@@ -185,13 +185,13 @@ export const npkCompoundFertilizer: FertilizerContent = {
           sourceId: 'fao',
           evidenceNote:
             'FAO documents compound NPK fertilizer types, grade notation, and global use.',
-          retrievedDate: '2026-07-13',
+          retrievedDate: '2026-07-12',
         },
         {
           sourceId: 'ahdb',
           evidenceNote:
             'AHDB nutrient management guidance describes how NPK compound grades are selected against soil-test needs.',
-          retrievedDate: '2026-07-13',
+          retrievedDate: '2026-07-12',
         },
       ],
     },

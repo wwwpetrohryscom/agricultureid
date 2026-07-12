@@ -173,13 +173,13 @@ export const potassiumNitrate: FertilizerContent = {
           sourceId: 'fao',
           evidenceNote:
             'FAO documents potassium nitrate as a chloride-free potassium and nitrate fertilizer source and its typical composition.',
-          retrievedDate: '2026-07-13',
+          retrievedDate: '2026-07-12',
         },
         {
           sourceId: 'cornell-cals',
           evidenceNote:
             'Cornell CALS nutrient management guidance describes potassium nitrate nitrogen and potassium analysis.',
-          retrievedDate: '2026-07-13',
+          retrievedDate: '2026-07-12',
         },
       ],
     },

@@ -167,13 +167,13 @@ export const monoammoniumPhosphate: FertilizerContent = {
           sourceId: 'fao',
           evidenceNote:
             'FAO documents MAP as a phosphorus fertilizer source and its typical nitrogen and phosphorus content.',
-          retrievedDate: '2026-07-13',
+          retrievedDate: '2026-07-12',
         },
         {
           sourceId: 'usda-nrcs',
           evidenceNote:
             'USDA NRCS guidance describes MAP composition and phosphorus behaviour in soil.',
-          retrievedDate: '2026-07-13',
+          retrievedDate: '2026-07-12',
         },
       ],
     },

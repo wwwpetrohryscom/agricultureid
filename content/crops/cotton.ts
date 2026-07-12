@@ -218,10 +218,7 @@ export const cotton: CropContent = {
       ],
     },
   ],
-  commonDiseases: [
-    { type: 'plant-disease', slug: 'fusarium-wilt' },
-    { type: 'plant-disease', slug: 'bacterial-leaf-spot' },
-  ],
+  commonDiseases: [{ type: 'plant-disease', slug: 'fusarium-wilt' }],
   commonPests: [
     { type: 'pest', slug: 'aphids' },
     { type: 'pest', slug: 'whiteflies' },
