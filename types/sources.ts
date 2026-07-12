@@ -25,6 +25,28 @@ export type SourceType =
  */
 export type SourceReliability = 'authoritative' | 'high' | 'moderate';
 
+/**
+ * Evidence hierarchy tier (see docs/evidence-hierarchy.md).
+ *  1 — national authorities, intergovernmental agencies, official registries,
+ *      peer-reviewed literature, recognized research institutes.
+ *  2 — university extension publications, technical manuals, professional
+ *      reference databases.
+ *  3 — reputable secondary references, general context only.
+ *
+ * Tier 3 sources must not be the sole support for safety-critical, regulatory,
+ * quantitative, or treatment claims.
+ */
+export type EvidenceTier = 1 | 2 | 3;
+
+/**
+ * How specific the registry URL is. Honest classification: most registry
+ * entries point at an organization or program landing page (a durable,
+ * canonical entry point) rather than a single record/document. Field-level
+ * provenance (see `FieldCitation`) is used to attach specific locators to
+ * individual claims.
+ */
+export type UrlSpecificity = 'organization' | 'program' | 'record' | 'document';
+
 export interface Source {
   /** Stable kebab-case identifier, referenced from content. */
   id: string;
