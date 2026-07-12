@@ -215,6 +215,15 @@ export const soybean: CropContent = {
   commonPests: [{ type: 'pest', slug: 'aphids' }],
   suitableSoils: [{ type: 'soil', slug: 'loam-soil' }],
   relatedTopics: [{ type: 'crop', slug: 'maize' }],
+  connections: [
+    { type: 'nutrient', slug: 'phosphorus' },
+    { type: 'nutrient', slug: 'molybdenum' },
+    { type: 'nutrient', slug: 'nickel' },
+    { type: 'fertilizer', slug: 'diammonium-phosphate' },
+    { type: 'fertilizer', slug: 'green-manure' },
+    { type: 'soil-topic', slug: 'soil-biology' },
+    { type: 'farming-system', slug: 'conservation-agriculture' },
+  ],
   glossaryTerms: [
     'annual-crop',
     'crop-rotation',

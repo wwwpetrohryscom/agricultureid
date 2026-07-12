@@ -5,21 +5,44 @@ import {
   DISEASES,
   PESTS,
   LIVESTOCK,
+  NUTRIENTS,
+  FERTILIZERS,
+  SOIL_TOPICS,
+  MACHINERY,
+  CLIMATE,
+  FARMING_SYSTEMS,
+  IRRIGATION_METHODS,
 } from '@/content';
 import { GLOSSARY } from '@/data/glossary';
+import { IMAGE_MAP } from '@/data/images';
 import { CONTENT_TYPE_ROUTE, type ContentType } from '@/lib/site';
 import type {
   AnyContent,
   ContentRef,
   CropContent,
   GlossaryTerm,
+  ImageMeta,
   LivestockContent,
   PestContent,
   PlantDiseaseContent,
   SoilContent,
 } from '@/types/content';
 
-export { ALL_CONTENT, CROPS, SOILS, DISEASES, PESTS, LIVESTOCK };
+export {
+  ALL_CONTENT,
+  CROPS,
+  SOILS,
+  DISEASES,
+  PESTS,
+  LIVESTOCK,
+  NUTRIENTS,
+  FERTILIZERS,
+  SOIL_TOPICS,
+  MACHINERY,
+  CLIMATE,
+  FARMING_SYSTEMS,
+  IRRIGATION_METHODS,
+};
 
 /** Only published content is publicly routable / indexable. */
 export const PUBLISHED_CONTENT: AnyContent[] = ALL_CONTENT.filter(
@@ -54,6 +77,11 @@ export function getContentByType(type: ContentType): AnyContent[] {
   return PUBLISHED_CONTENT.filter((c) => c.contentType === type);
 }
 
+/** Published items of a content type, sorted by title. Used by hub pages. */
+export function contentTypeSorted(type: ContentType): AnyContent[] {
+  return getContentByType(type).sort((a, b) => a.title.localeCompare(b.title));
+}
+
 /** Canonical site-relative path for a content item, e.g. "/crops/wheat". */
 export function contentPath(type: ContentType, slug: string): string {
   return `/${CONTENT_TYPE_ROUTE[type]}/${slug}`;
@@ -61,6 +89,15 @@ export function contentPath(type: ContentType, slug: string): string {
 
 export function contentUrlPath(item: AnyContent): string {
   return contentPath(item.contentType, item.slug);
+}
+
+/**
+ * The lead image for an item: an inline `image` field takes precedence,
+ * otherwise the verified image registry (keyed by `type:slug`). Returns
+ * undefined when neither exists (the renderer falls back to an original figure).
+ */
+export function resolveImage(item: AnyContent): ImageMeta | undefined {
+  return item.image ?? IMAGE_MAP[refKey(item.contentType, item.slug)];
 }
 
 /* Typed collection accessors ------------------------------------------------ */

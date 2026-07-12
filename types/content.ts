@@ -70,14 +70,24 @@ export interface ContentRef {
 
 /** Metadata for an image, capturing licensing/provenance when one is used. */
 export interface ImageMeta {
+  /** Local file path under /public (self-hosted; never a hotlink). */
   src: string;
   alt: string;
   width?: number;
   height?: number;
+  /** Creator / author of the work. */
   creator?: string;
+  /** Direct file/source URL. */
   sourceUrl?: string;
+  /** The original description page (e.g. the Wikimedia Commons File: page). */
+  originalPage?: string;
+  /** Human-readable license, e.g. "CC BY-SA 4.0", "Public domain", "CC0". */
   license?: string;
+  /** Canonical URL of the license deed. */
+  licenseUrl?: string;
+  /** Full attribution line to display. */
   attribution?: string;
+  /** What the image depicts. */
   subject?: string;
 }
 
@@ -122,6 +132,13 @@ export interface BaseContent {
   sections: ContentSection[];
   /** Generic related pages beyond the typed relationship fields. */
   relatedTopics?: ContentRef[];
+  /**
+   * Cross-type knowledge-graph links available to every content type. This is
+   * the primary mechanism for dense interconnection across the graph (e.g. a
+   * crop linking to nutrients, fertilizers, climate factors, and machinery).
+   * Every reference must resolve to a published page.
+   */
+  connections?: ContentRef[];
   sourceReferences: SourceReference[];
   /** Glossary term slugs relevant to this page. */
   glossaryTerms?: string[];
@@ -190,13 +207,87 @@ export interface LivestockContent extends BaseContent {
   productionSystems?: string[];
 }
 
+/**
+ * Plant nutrient (macro-, secondary, and micronutrient). Relationships to
+ * crops (deficiency/requirement), fertilizers (that supply it), and soils use
+ * the generic `connections` and `relatedTopics` fields.
+ */
+export interface NutrientContent extends BaseContent {
+  contentType: 'nutrient';
+  nutrientClass?:
+    | 'primary-macronutrient'
+    | 'secondary-macronutrient'
+    | 'micronutrient'
+    | 'beneficial';
+  /** Chemical symbol, e.g. "N", "P", "K", "Zn". */
+  symbol?: string;
+}
+
+/** Fertilizer product or class (mineral, compound, organic, micronutrient). */
+export interface FertilizerContent extends BaseContent {
+  contentType: 'fertilizer';
+  fertilizerClass?:
+    | 'mineral-nitrogen'
+    | 'mineral-phosphorus'
+    | 'mineral-potassium'
+    | 'compound-npk'
+    | 'secondary-micronutrient'
+    | 'organic';
+  /** Typical grade / analysis, e.g. "46-0-0" for urea. */
+  typicalAnalysis?: string;
+}
+
+/** Soil-science topic (a property or process rather than a soil type). */
+export interface SoilTopicContent extends BaseContent {
+  contentType: 'soil-topic';
+  topicClass?: 'physical' | 'chemical' | 'biological' | 'management';
+}
+
+/** Agricultural machinery or equipment category. */
+export interface MachineryContent extends BaseContent {
+  contentType: 'machinery';
+  machineryClass?:
+    | 'power'
+    | 'tillage'
+    | 'seeding'
+    | 'crop-protection'
+    | 'harvest'
+    | 'irrigation'
+    | 'precision';
+}
+
+/** Climate factor relevant to agriculture (drought, frost, GDD, etc.). */
+export interface ClimateContent extends BaseContent {
+  contentType: 'climate';
+  climateClass?: 'temperature' | 'water' | 'stress' | 'metric';
+}
+
+/** Agricultural production system or approach. */
+export interface FarmingSystemContent extends BaseContent {
+  contentType: 'farming-system';
+  systemClass?: 'production-approach' | 'protected' | 'soilless' | 'integrated';
+}
+
+/** Irrigation method or water-management approach. */
+export interface IrrigationMethodContent extends BaseContent {
+  contentType: 'irrigation-method';
+  methodClass?: 'surface' | 'pressurized' | 'localized' | 'management';
+}
+
 /** Discriminated union across every structured content type. */
 export type AnyContent =
   | CropContent
   | SoilContent
   | PlantDiseaseContent
   | PestContent
-  | LivestockContent;
+  | LivestockContent
+  | NutrientContent
+  | FertilizerContent
+  | SoilTopicContent
+  | MachineryContent
+  | ClimateContent
+  | FarmingSystemContent
+  | IrrigationMethodContent;
 
 /* -------------------------------------------------------------------------- */
 /*  Glossary                                                                  */

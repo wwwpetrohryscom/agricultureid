@@ -5,6 +5,7 @@ import {
   PUBLISHED_CONTENT,
   contentUrlPath,
   refKey,
+  resolveImage,
   resolveRef,
 } from '@/lib/content/registry';
 import { computeReachable, outgoingRefs } from '@/lib/content/graph';
@@ -430,6 +431,45 @@ export function validateAll(): ValidationResult {
         'schema-error',
         `Glossary schema failed: ${(e as Error).message}`,
         term.slug,
+      );
+    }
+  }
+
+  /* ---- Images ---------------------------------------------------------- */
+  // Any image attached to a published page must be self-hosted and carry a
+  // license + attribution (provenance requirement).
+  for (const item of PUBLISHED_CONTENT) {
+    const img = resolveImage(item);
+    if (!img) continue;
+    const where = `${item.contentType}:${item.slug}`;
+    if (!img.src.startsWith('/')) {
+      error(
+        'image-not-hosted',
+        `Image src "${img.src}" is not self-hosted`,
+        where,
+      );
+    }
+    if (!img.alt?.trim()) {
+      error('image-no-alt', 'Image is missing alt text', where);
+    }
+    if (!img.license?.trim()) {
+      error('image-no-license', 'Image is missing a license', where);
+    }
+    if (!img.attribution?.trim()) {
+      error('image-no-attribution', 'Image is missing attribution', where);
+    }
+    if (img.licenseUrl && !isValidUrl(img.licenseUrl)) {
+      error(
+        'image-bad-license-url',
+        `Malformed license URL "${img.licenseUrl}"`,
+        where,
+      );
+    }
+    if (/(-nc|-nd|noncommercial|no-?deriv)/i.test(img.license ?? '')) {
+      error(
+        'image-incompatible-license',
+        `Image license "${img.license}" is not redistribution-compatible`,
+        where,
       );
     }
   }

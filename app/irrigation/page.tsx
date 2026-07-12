@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { EntryGrid } from '@/components/content/EntryGrid';
 import { PageIntro } from '@/components/content/PageIntro';
 import { SourceList } from '@/components/content/SourceList';
 import { Container } from '@/components/ui/Container';
@@ -86,6 +87,13 @@ export default function IrrigationPage() {
           decisions.
         </p>
       </Prose>
+
+      <EntryGrid
+        type="irrigation-method"
+        path={PATH}
+        heading="Irrigation methods A–Z"
+        intro="In-depth entries on individual irrigation methods and water-management approaches."
+      />
 
       <SourceList
         references={[

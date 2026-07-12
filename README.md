@@ -7,8 +7,8 @@ the agricultural systems that connect them.
 - **Domain:** [agricultureid.com](https://agricultureid.com)
 - **Stack:** Next.js (App Router) · React · TypeScript (strict) · Tailwind CSS
 - **Rendering:** static generation, server components by default, minimal client JS
-- **Phase:** Phase 1 — foundation, design system, editorial infrastructure, and an
-  initial public content set
+- **Phase:** Phase 2 — an expanded, deeply interconnected agricultural knowledge
+  graph built on the Phase 1 foundation
 
 AgricultureID is designed to feel like a professional agricultural encyclopedia
 and structured data reference — not a generic blog. Every public entry follows a
@@ -58,7 +58,9 @@ site. Environment variables are all optional (see `.env.example`).
 ```
 app/            App Router routes (hubs, [slug] pages, legal pages, sitemap, robots)
 components/     Presentation: layout, navigation, content, cards, seo, ui, analytics
-content/        Typed content DATA (crops, soils, diseases, pests, livestock)
+content/        Typed content DATA (crops, soils, diseases, pests, livestock,
+                nutrients, fertilizers, soil-topics, machinery, climate,
+                farming-systems, irrigation-methods)
 data/           Source registry and glossary data
 lib/            Logic: content registry/graph, seo, schema, sources, validation, site config
 public/         Static assets and brand files
@@ -111,25 +113,41 @@ generation for all pages plus a small set of security headers (see
 origin so canonical URLs and the sitemap resolve correctly. Analytics are wired
 but inert until explicitly configured and authorized (see `.env.example`).
 
-## Current scope (Phase 1)
+## Current scope
 
-- 26 sourced reference entries: 8 crops, 5 soils, 4 plant diseases, 4 pests,
-  5 livestock species
-- A source registry of authoritative organizations and publications
-- Hubs and overview pages for crops, soils, diseases, pests, livestock, farm
-  systems, irrigation, plant nutrition, agricultural data, glossary, and sources
+**153 sourced, interconnected reference entries** across 12 content types
+(≈188 static pages), forming a densely linked agricultural knowledge graph
+(~1,470 typed relationships, no orphaned pages):
+
+| Type            | Entries | Type               | Entries |
+| --------------- | ------- | ------------------ | ------- |
+| Crops           | 33      | Fertilizers        | 18      |
+| Plant nutrients | 14      | Soil health topics | 12      |
+| Plant diseases  | 14      | Machinery          | 10      |
+| Pests           | 14      | Farming systems    | 9       |
+| Livestock       | 9       | Climate factors    | 8       |
+| Soils           | 5       | Irrigation methods | 7       |
+
+- A source registry of 39 authoritative organizations and publications
+- Every page carries a lead image: a **verified Wikimedia Commons photograph**
+  (CC0 / Public domain / CC BY / CC BY-SA only, self-hosted with attribution)
+  for concrete entities, or an **original SVG diagram** for abstract topics
 - Full trust and legal set: about, editorial policy, methodology, corrections,
   contact, privacy, terms, disclaimer
 - SEO foundation (canonical URLs, metadata, sitemap, robots, Open Graph,
-  breadcrumbs, careful schema.org), a typed knowledge graph, and content
-  validation gates
+  breadcrumbs, careful schema.org), a typed cross-type knowledge graph, and
+  content + image validation gates
+
+The knowledge graph connects, for example, a crop to the nutrients it needs, the
+fertilizers that supply them, its diseases and pests, suitable soils, irrigation
+methods, climate factors, and machinery — with reciprocity computed
+automatically. See [docs/content-model.md](docs/content-model.md).
 
 ## Future phases
 
-See [docs/scaling-plan.md](docs/scaling-plan.md) for the roadmap toward hundreds
-of crop pages, crop varieties, diseases, pests, soil classifications, breed
-profiles, tools and calculators, geographic pages, official datasets, and
-multilingual expansion.
+See [docs/scaling-plan.md](docs/scaling-plan.md) for the roadmap toward crop
+varieties, breed profiles, more diseases/pests, soil classifications, tools and
+calculators, geographic pages, official datasets, and multilingual expansion.
 
 ## License
 

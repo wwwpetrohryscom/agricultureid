@@ -23,10 +23,14 @@ const STATIC_ROUTES: Omit<RouteEntry, 'lastModified'>[] = [
   { path: '/plant-diseases', changeFrequency: 'weekly', priority: 0.9 },
   { path: '/pests', changeFrequency: 'weekly', priority: 0.9 },
   { path: '/livestock', changeFrequency: 'weekly', priority: 0.9 },
+  { path: '/plant-nutrition', changeFrequency: 'weekly', priority: 0.9 },
+  { path: '/fertilizers', changeFrequency: 'weekly', priority: 0.9 },
+  { path: '/soil-health', changeFrequency: 'weekly', priority: 0.9 },
+  { path: '/machinery', changeFrequency: 'weekly', priority: 0.9 },
+  { path: '/climate', changeFrequency: 'weekly', priority: 0.9 },
+  { path: '/farm-systems', changeFrequency: 'weekly', priority: 0.9 },
+  { path: '/irrigation', changeFrequency: 'weekly', priority: 0.9 },
   // Overview sections
-  { path: '/farm-systems', changeFrequency: 'monthly', priority: 0.6 },
-  { path: '/irrigation', changeFrequency: 'monthly', priority: 0.6 },
-  { path: '/plant-nutrition', changeFrequency: 'monthly', priority: 0.6 },
   { path: '/agricultural-data', changeFrequency: 'monthly', priority: 0.6 },
   // Reference
   { path: '/glossary', changeFrequency: 'monthly', priority: 0.6 },

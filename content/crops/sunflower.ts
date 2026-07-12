@@ -220,6 +220,14 @@ export const sunflower: CropContent = {
     { type: 'soil', slug: 'sandy-soil' },
   ],
   relatedTopics: [{ type: 'crop', slug: 'wheat' }],
+  connections: [
+    { type: 'nutrient', slug: 'phosphorus' },
+    { type: 'nutrient', slug: 'boron' },
+    { type: 'livestock', slug: 'honey-bees' },
+    { type: 'irrigation-method', slug: 'sprinkler-irrigation' },
+    { type: 'climate', slug: 'drought' },
+    { type: 'machinery', slug: 'combine-harvester' },
+  ],
   glossaryTerms: ['annual-crop', 'crop-rotation', 'micronutrient', 'yield'],
   geographicScope:
     'Global overview. Cultivar type (oil or confectionery), row spacing, and input levels are region-specific and vary by climate and market.',

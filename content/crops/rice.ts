@@ -237,7 +237,16 @@ export const rice: CropContent = {
       ],
     },
   ],
-  commonDiseases: [],
+  commonDiseases: [{ type: 'plant-disease', slug: 'rice-blast' }],
+  connections: [
+    { type: 'nutrient', slug: 'nitrogen' },
+    { type: 'nutrient', slug: 'zinc' },
+    { type: 'fertilizer', slug: 'urea' },
+    { type: 'irrigation-method', slug: 'surface-irrigation' },
+    { type: 'soil-topic', slug: 'soil-drainage' },
+    { type: 'climate', slug: 'temperature' },
+    { type: 'pest', slug: 'fall-armyworm' },
+  ],
   commonPests: [{ type: 'pest', slug: 'aphids' }],
   suitableSoils: [
     { type: 'soil', slug: 'loam-soil' },

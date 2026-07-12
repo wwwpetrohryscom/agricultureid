@@ -1,4 +1,5 @@
 import { Breadcrumbs } from '@/components/navigation/Breadcrumbs';
+import { ArticleFigure } from '@/components/content/ArticleFigure';
 import { ContentBlocks } from '@/components/content/ContentBlocks';
 import { KeyFacts } from '@/components/content/KeyFacts';
 import { RelatedContent } from '@/components/content/RelatedContent';
@@ -70,7 +71,8 @@ export function ContentArticle({ item }: { item: AnyContent }) {
         </aside>
 
         <div className="min-w-0 lg:order-1">
-          <div className="prose-content max-w-prose">
+          <ArticleFigure item={item} />
+          <div className="prose-content mt-8 max-w-prose">
             <ContentBlocks blocks={item.introduction} />
           </div>
 

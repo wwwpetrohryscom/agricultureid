@@ -14,7 +14,10 @@ import type { AnyContent, ContentRef } from '@/types/content';
  * validation and graph traversal stay in sync.
  */
 export function outgoingRefs(item: AnyContent): ContentRef[] {
-  const refs: ContentRef[] = [...(item.relatedTopics ?? [])];
+  const refs: ContentRef[] = [
+    ...(item.relatedTopics ?? []),
+    ...(item.connections ?? []),
+  ];
   switch (item.contentType) {
     case 'crop':
       refs.push(
@@ -32,7 +35,10 @@ export function outgoingRefs(item: AnyContent): ContentRef[] {
     case 'pest':
       refs.push(...item.hostCrops);
       break;
-    case 'livestock':
+    default:
+      // Newer content types (nutrient, fertilizer, soil-topic, machinery,
+      // climate, farming-system, irrigation-method) and livestock express all
+      // their relationships through `relatedTopics` and `connections`.
       break;
   }
   return refs;

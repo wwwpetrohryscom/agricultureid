@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { EntryGrid } from '@/components/content/EntryGrid';
 import { PageIntro } from '@/components/content/PageIntro';
 import { SourceList } from '@/components/content/SourceList';
 import { Container } from '@/components/ui/Container';
@@ -89,6 +90,13 @@ export default function PlantNutritionPage() {
           <Link href="/soils">soil</Link> entries for context.
         </p>
       </Prose>
+
+      <EntryGrid
+        type="nutrient"
+        path={PATH}
+        heading="Essential nutrients A–Z"
+        intro="In-depth entries for each essential plant nutrient — roles, deficiency and toxicity symptoms, interactions, and the fertilizers that supply them."
+      />
 
       <SourceList
         references={[

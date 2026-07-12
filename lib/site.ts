@@ -33,6 +33,13 @@ export const CONTENT_TYPES = [
   'plant-disease',
   'pest',
   'livestock',
+  'nutrient',
+  'fertilizer',
+  'soil-topic',
+  'machinery',
+  'climate',
+  'farming-system',
+  'irrigation-method',
 ] as const;
 
 export type ContentType = (typeof CONTENT_TYPES)[number];
@@ -47,6 +54,13 @@ export const CONTENT_TYPE_ROUTE: Record<ContentType, string> = {
   'plant-disease': 'plant-diseases',
   pest: 'pests',
   livestock: 'livestock',
+  nutrient: 'plant-nutrition',
+  fertilizer: 'fertilizers',
+  'soil-topic': 'soil-health',
+  machinery: 'machinery',
+  climate: 'climate',
+  'farming-system': 'farm-systems',
+  'irrigation-method': 'irrigation',
 };
 
 export const CONTENT_TYPE_LABEL: Record<ContentType, string> = {
@@ -55,6 +69,13 @@ export const CONTENT_TYPE_LABEL: Record<ContentType, string> = {
   'plant-disease': 'Plant Disease',
   pest: 'Pest',
   livestock: 'Livestock',
+  nutrient: 'Plant Nutrient',
+  fertilizer: 'Fertilizer',
+  'soil-topic': 'Soil Health',
+  machinery: 'Machinery',
+  climate: 'Climate Factor',
+  'farming-system': 'Farming System',
+  'irrigation-method': 'Irrigation Method',
 };
 
 export const CONTENT_TYPE_LABEL_PLURAL: Record<ContentType, string> = {
@@ -63,6 +84,13 @@ export const CONTENT_TYPE_LABEL_PLURAL: Record<ContentType, string> = {
   'plant-disease': 'Plant Diseases',
   pest: 'Pests',
   livestock: 'Livestock',
+  nutrient: 'Plant Nutrients',
+  fertilizer: 'Fertilizers',
+  'soil-topic': 'Soil Health',
+  machinery: 'Machinery',
+  climate: 'Climate',
+  'farming-system': 'Farming Systems',
+  'irrigation-method': 'Irrigation',
 };
 
 /**
@@ -125,29 +153,57 @@ export const SECTIONS: NavSection[] = [
     label: 'Farming Systems',
     href: '/farm-systems',
     description:
-      'Agricultural production systems, from conventional and organic to regenerative and protected cultivation.',
+      'Agricultural production systems, from conventional and organic to regenerative, protected, and soilless cultivation.',
     active: true,
+    contentType: 'farming-system',
   },
   {
     label: 'Machinery',
     href: '/machinery',
     description:
-      'Categories of agricultural machinery and equipment and their roles in the production cycle.',
-    active: false,
+      'Agricultural machinery and equipment — from tractors and tillage to seeding, spraying, harvest, and precision technology.',
+    active: true,
+    contentType: 'machinery',
   },
   {
     label: 'Irrigation',
     href: '/irrigation',
     description:
-      'Irrigation methods, water management principles, and efficiency considerations.',
+      'Irrigation methods and water-management approaches, and their efficiency considerations.',
     active: true,
+    contentType: 'irrigation-method',
   },
   {
     label: 'Plant Nutrition',
     href: '/plant-nutrition',
     description:
-      'Essential plant nutrients, fertilizer categories, and nutrient-management principles.',
+      'Essential plant nutrients — macro-, secondary, and micronutrients — their roles, deficiencies, and interactions.',
     active: true,
+    contentType: 'nutrient',
+  },
+  {
+    label: 'Fertilizers',
+    href: '/fertilizers',
+    description:
+      'Mineral, compound, organic, and micronutrient fertilizers — composition, the nutrients they supply, and use principles.',
+    active: true,
+    contentType: 'fertilizer',
+  },
+  {
+    label: 'Soil Health',
+    href: '/soil-health',
+    description:
+      'Soil properties and processes — structure, pH, salinity, organic matter, cation exchange, biology, and testing.',
+    active: true,
+    contentType: 'soil-topic',
+  },
+  {
+    label: 'Climate',
+    href: '/climate',
+    description:
+      'Climate factors that shape agriculture — temperature, rainfall, drought, frost, humidity, and growing-degree days.',
+    active: true,
+    contentType: 'climate',
   },
   {
     label: 'Agricultural Data',

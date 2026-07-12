@@ -58,14 +58,46 @@ The homepage hero uses a local derivative of a verified Wikimedia Commons image:
 - Alt text: Golden-hour agricultural fields with harvested rows and distant
   hills in Pomar de Valdivia, Spain
 
+## Content article images (Phase 2)
+
+From Phase 2, content pages carry a lead image. We use a **hybrid** approach:
+
+- **Concrete entities** (crops, livestock, machinery, many pests and diseases,
+  and some systems/irrigation/climate) use a **verified Wikimedia Commons
+  photograph**, self-hosted under `public/images/`.
+- **Abstract topics** (most nutrients, soil properties, climate metrics) use an
+  **original on-topic SVG diagram** (`components/content/TopicFigure.tsx`) — our
+  own vector art, always relevant, zero licensing risk.
+
+### The Commons pipeline
+
+`scripts/fetch-images.mjs` searches Wikimedia Commons, and for each candidate it
+reads the `imageinfo` `extmetadata` and **only accepts** redistribution-compatible
+licenses — **CC0, Public domain, CC BY, and CC BY-SA** — explicitly rejecting
+NonCommercial (`-NC`), NoDerivatives (`-ND`), and unknown licenses. It downloads
+and resizes the file and records full provenance: creator, source URL, original
+Commons page, license, license URL, and an attribution line.
+
+Results are written to `data/images.ts` (`IMAGE_MAP`, keyed by `type:slug`) and
+rendered with a visible attribution caption and license link by
+`components/content/ArticleFigure.tsx`. The build gate
+(`lib/validation/validate.ts`) fails if any page's image is not self-hosted or is
+missing alt text, a license, or attribution, or if a license is not
+redistribution-compatible.
+
+> Note on official media: some official sites (including FAO) place additional
+> restrictions on photographs, especially for modification and commercial reuse.
+> We do not assume official = freely reusable; only images whose license is
+> verified compatible are used.
+
 ## Cited source materials
 
 Text entries cite external authorities (FAO, USDA, EPPO, universities, etc.). We
 link to those sources; we do not copy their images or media into the site. Those
 materials remain the property of their respective owners under their own terms.
 
-## Phase 2 and beyond
+## Adding new imagery
 
-If photography or diagrams are introduced later, each asset must be added to the
-manifest with full provenance and a verifiable license before use, consistent
-with the policy above.
+Every new photograph must go through the Commons pipeline (or be added to
+`IMAGE_MAP` with the same verified fields) before use, consistent with the policy
+above. If no compatible photo exists for a topic, it uses an original diagram.
