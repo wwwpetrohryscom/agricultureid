@@ -241,6 +241,7 @@ export const rice: CropContent = {
   connections: [
     { type: 'nutrient', slug: 'nitrogen' },
     { type: 'nutrient', slug: 'zinc' },
+    { type: 'nutrient', slug: 'silicon' },
     { type: 'fertilizer', slug: 'urea' },
     { type: 'irrigation-method', slug: 'surface-irrigation' },
     { type: 'soil-topic', slug: 'soil-drainage' },

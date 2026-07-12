@@ -218,6 +218,7 @@ export const soybean: CropContent = {
   connections: [
     { type: 'nutrient', slug: 'phosphorus' },
     { type: 'nutrient', slug: 'molybdenum' },
+    { type: 'nutrient', slug: 'cobalt' },
     { type: 'nutrient', slug: 'nickel' },
     { type: 'fertilizer', slug: 'diammonium-phosphate' },
     { type: 'fertilizer', slug: 'green-manure' },

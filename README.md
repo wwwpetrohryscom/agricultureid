@@ -115,18 +115,18 @@ but inert until explicitly configured and authorized (see `.env.example`).
 
 ## Current scope
 
-**153 sourced, interconnected reference entries** across 12 content types
-(≈188 static pages), forming a densely linked agricultural knowledge graph
-(~1,470 typed relationships, no orphaned pages):
+**281 sourced, interconnected reference entries** across 12 content types
+(316 static pages), forming a densely linked agricultural knowledge graph
+(~2,988 typed relationships, no orphaned or weakly-linked pages):
 
 | Type            | Entries | Type               | Entries |
 | --------------- | ------- | ------------------ | ------- |
-| Crops           | 33      | Fertilizers        | 18      |
-| Plant nutrients | 14      | Soil health topics | 12      |
-| Plant diseases  | 14      | Machinery          | 10      |
-| Pests           | 14      | Farming systems    | 9       |
-| Livestock       | 9       | Climate factors    | 8       |
-| Soils           | 5       | Irrigation methods | 7       |
+| Crops           | 77      | Fertilizers        | 28      |
+| Plant diseases  | 26      | Soil health topics | 19      |
+| Pests           | 26      | Machinery          | 18      |
+| Plant nutrients | 17      | Farming systems    | 15      |
+| Livestock       | 17      | Climate factors    | 14      |
+| Soils           | 13      | Irrigation methods | 11      |
 
 - A source registry of 39 authoritative organizations and publications
 - Every page carries a lead image: a **verified Wikimedia Commons photograph**

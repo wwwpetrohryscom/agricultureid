@@ -196,6 +196,10 @@ export const organicFarming: FarmingSystemContent = {
     { type: 'farming-system', slug: 'integrated-crop-livestock' },
   ],
   connections: [
+    { type: 'crop', slug: 'aloe-vera' },
+    { type: 'crop', slug: 'okra' },
+    { type: 'crop', slug: 'cinnamon' },
+    { type: 'crop', slug: 'tobacco' },
     { type: 'crop', slug: 'wheat' },
     { type: 'crop', slug: 'maize' },
     { type: 'crop', slug: 'soybean' },

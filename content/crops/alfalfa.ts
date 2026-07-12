@@ -224,6 +224,7 @@ export const alfalfa: CropContent = {
   ],
   suitableSoils: [{ type: 'soil', slug: 'loam-soil' }],
   connections: [
+    { type: 'machinery', slug: 'forage-harvester' },
     { type: 'nutrient', slug: 'phosphorus' },
     { type: 'nutrient', slug: 'potassium' },
     { type: 'nutrient', slug: 'nitrogen' },

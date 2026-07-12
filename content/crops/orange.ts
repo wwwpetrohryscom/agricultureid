@@ -211,7 +211,10 @@ export const orange: CropContent = {
       ],
     },
   ],
-  commonDiseases: [{ type: 'plant-disease', slug: 'anthracnose' }],
+  commonDiseases: [
+    { type: 'plant-disease', slug: 'anthracnose' },
+    { type: 'plant-disease', slug: 'citrus-canker' },
+  ],
   commonPests: [
     { type: 'pest', slug: 'aphids' },
     { type: 'pest', slug: 'spider-mites' },

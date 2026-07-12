@@ -216,6 +216,7 @@ export const oilseedRape: CropContent = {
   commonDiseases: [
     { type: 'plant-disease', slug: 'downy-mildew' },
     { type: 'plant-disease', slug: 'powdery-mildew' },
+    { type: 'plant-disease', slug: 'sclerotinia' },
   ],
   commonPests: [
     { type: 'pest', slug: 'aphids' },
