@@ -16,6 +16,7 @@ import {
 } from '@/lib/content/relations';
 import { evidenceTier, unclassifiedSources } from '@/lib/sources/evidence';
 import { safetyReport } from '@/lib/validation/audit';
+import { UNRESOLVED_ISSUES } from '@/data/unresolved-issues';
 import {
   articleSchema,
   breadcrumbSchema,
@@ -586,6 +587,34 @@ export function validateAll(): ValidationResult {
   /* ---- Safety (Phase 2.1) --------------------------------------------- */
   for (const hit of safetyReport()) {
     error(`safety-${hit.code}`, hit.detail, hit.where);
+  }
+
+  /* ---- Unresolved-issues registry (Phase 2.1) ------------------------- */
+  const issueIds = new Set<string>();
+  for (const issue of UNRESOLVED_ISSUES) {
+    if (!issue.id || !issue.entity || !issue.topic || !issue.currentWording) {
+      error(
+        'issue-incomplete',
+        'Unresolved issue missing required fields',
+        issue.id,
+      );
+    }
+    if (issueIds.has(issue.id)) {
+      error(
+        'issue-duplicate-id',
+        `Duplicate unresolved-issue id "${issue.id}"`,
+        issue.id,
+      );
+    }
+    issueIds.add(issue.id);
+    // An unsafe public claim may not remain open — it must be mitigated first.
+    if (!issue.publicClaimSafe && issue.status === 'open') {
+      error(
+        'issue-unsafe-open',
+        `Unresolved issue "${issue.id}" has an unsafe public claim but is still open`,
+        issue.entity,
+      );
+    }
   }
 
   /* ---- Reachability / orphans ----------------------------------------- */

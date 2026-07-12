@@ -15,6 +15,8 @@ import { getSource } from '@/lib/sources/registry';
 import { evidenceTier, unclassifiedSources } from '@/lib/sources/evidence';
 import { safetyReport, duplication } from '@/lib/validation/audit';
 import { SOURCES } from '@/data/sources';
+import { UNRESOLVED_ISSUES } from '@/data/unresolved-issues';
+import { getContent } from '@/lib/content/registry';
 
 describe('phase 2.1 — evidence hierarchy', () => {
   it('classifies every registry source into a tier', () => {
@@ -123,6 +125,39 @@ describe('phase 2.1 — image identity + licensing', () => {
         `${item.slug} modifications`,
       ).toBeTruthy();
     }
+  });
+});
+
+describe('phase 2.1 — unresolved-issues registry', () => {
+  it('every issue is well-formed with a defined severity/status', () => {
+    for (const i of UNRESOLVED_ISSUES) {
+      expect(
+        i.id && i.entity && i.topic && i.currentWording && i.requiredWork,
+      ).toBeTruthy();
+      expect(['critical', 'major', 'minor']).toContain(i.severity);
+      expect(['open', 'mitigated', 'resolved']).toContain(i.status);
+    }
+  });
+
+  it('no unsafe public claim is left open', () => {
+    const unsafeOpen = UNRESOLVED_ISSUES.filter(
+      (i) => !i.publicClaimSafe && i.status === 'open',
+    );
+    expect(unsafeOpen).toEqual([]);
+  });
+
+  it('reflects the applied public mitigations in the content', () => {
+    // cassava↔bacterial-wilt relationship removed both ways
+    const cassava = getContent('crop', 'cassava');
+    expect(
+      cassava?.contentType === 'crop' &&
+        cassava.commonDiseases.some((d) => d.slug === 'bacterial-wilt'),
+    ).toBe(false);
+    const bw = getContent('plant-disease', 'bacterial-wilt');
+    expect(
+      bw?.contentType === 'plant-disease' &&
+        bw.hostCrops.some((h) => h.slug === 'cassava'),
+    ).toBe(false);
   });
 });
 

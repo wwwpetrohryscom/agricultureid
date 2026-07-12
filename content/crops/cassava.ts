@@ -215,10 +215,7 @@ export const cassava: CropContent = {
       ],
     },
   ],
-  commonDiseases: [
-    { type: 'plant-disease', slug: 'bacterial-wilt' },
-    { type: 'plant-disease', slug: 'anthracnose' },
-  ],
+  commonDiseases: [{ type: 'plant-disease', slug: 'anthracnose' }],
   commonPests: [
     { type: 'pest', slug: 'mealybugs' },
     { type: 'pest', slug: 'whiteflies' },
