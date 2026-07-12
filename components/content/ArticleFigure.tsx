@@ -68,6 +68,11 @@ export function ArticleFigure({ item }: { item: AnyContent }) {
             </ExternalLink>
           </>
         )}
+        {image.modifications && (
+          <span className="mt-0.5 block text-ink-400">
+            {image.modifications}
+          </span>
+        )}
       </figcaption>
     </figure>
   );

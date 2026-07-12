@@ -156,6 +156,28 @@ export const ammoniumNitrate: FertilizerContent = {
     'Storage, transport, and sale of ammonium nitrate are restricted or licensed in many jurisdictions; local regulation is not detailed here.',
     'Leaching and denitrification loss magnitudes vary with site conditions and are not quantified in this overview.',
   ],
+  claims: [
+    {
+      field: 'nutrient-analysis',
+      statement:
+        "Ammonium nitrate's typical guaranteed analysis is around 34-0-0, with total nitrogen of about 34%, split roughly evenly between ammonium and nitrate forms.",
+      quantitative: true,
+      citations: [
+        {
+          sourceId: 'fao',
+          evidenceNote:
+            'FAO documents ammonium nitrate as a nitrogen fertilizer and its ammonium/nitrate nitrogen composition.',
+          retrievedDate: '2026-07-13',
+        },
+        {
+          sourceId: 'cornell-cals',
+          evidenceNote:
+            'Cornell CALS nutrient management guidance describes ammonium nitrate nitrogen content and grade conventions.',
+          retrievedDate: '2026-07-13',
+        },
+      ],
+    },
+  ],
   sourceReferences: [
     {
       sourceId: 'fao',

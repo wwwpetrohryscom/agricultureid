@@ -464,10 +464,29 @@ export function validateAll(): ValidationResult {
     if (!img.attribution?.trim()) {
       error('image-no-attribution', 'Image is missing attribution', where);
     }
-    if (img.licenseUrl && !isValidUrl(img.licenseUrl)) {
+    if (!img.creator?.trim()) {
+      error('image-no-creator', 'Image is missing a creator', where);
+    }
+    if (!img.originalPage?.trim()) {
+      error(
+        'image-no-source-page',
+        'Image is missing its source (Commons) page',
+        where,
+      );
+    }
+    if (!img.licenseUrl?.trim()) {
+      error('image-no-license-url', 'Image is missing a license URL', where);
+    } else if (!isValidUrl(img.licenseUrl)) {
       error(
         'image-bad-license-url',
         `Malformed license URL "${img.licenseUrl}"`,
+        where,
+      );
+    }
+    if (!img.modifications?.trim()) {
+      error(
+        'image-no-modification-disclosure',
+        'Image is missing a modification disclosure',
         where,
       );
     }

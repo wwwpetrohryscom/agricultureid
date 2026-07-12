@@ -148,6 +148,28 @@ export const muriateOfPotash: FertilizerContent = {
     'Chloride sensitivity varies widely among crops and should be confirmed against crop-specific agronomic guidance before choosing between MOP and chloride-free potassium sources.',
     'Soil salinity and leaching risk depend on local soil, irrigation water quality, and climate, which are not detailed here.',
   ],
+  claims: [
+    {
+      field: 'nutrient-analysis',
+      statement:
+        'Muriate of potash (MOP) typical products analyse around 60% potassium, expressed as K₂O, the highest-analysis potassium fertilizer in common commercial use.',
+      quantitative: true,
+      citations: [
+        {
+          sourceId: 'fao',
+          evidenceNote:
+            'FAO documents MOP as the dominant global potassium fertilizer source and its typical potassium content.',
+          retrievedDate: '2026-07-13',
+        },
+        {
+          sourceId: 'cornell-cals',
+          evidenceNote:
+            'Cornell CALS nutrient management guidance describes MOP potassium analysis and grade conventions.',
+          retrievedDate: '2026-07-13',
+        },
+      ],
+    },
+  ],
   sourceReferences: [
     {
       sourceId: 'fao',

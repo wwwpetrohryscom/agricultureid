@@ -170,6 +170,28 @@ export const boneMeal: FertilizerContent = {
     'Phosphorus release rate depends on soil pH and microbial activity and is not quantified here.',
     'Sourcing regulations for animal-derived bone meal vary by country and are not detailed here.',
   ],
+  claims: [
+    {
+      field: 'nutrient-analysis',
+      statement:
+        'Bone meal typically analyses around 3% nitrogen and 15% phosphorus (as P₂O₅), together with a substantial, variable calcium content from the bone mineral matrix.',
+      quantitative: true,
+      citations: [
+        {
+          sourceId: 'cornell-cals',
+          evidenceNote:
+            'Cornell CALS guidance on organic fertilizer phosphorus management describes bone meal composition.',
+          retrievedDate: '2026-07-13',
+        },
+        {
+          sourceId: 'usda-nrcs',
+          evidenceNote:
+            'USDA NRCS guidance describes slow-release phosphorus behaviour of bone meal in soil.',
+          retrievedDate: '2026-07-13',
+        },
+      ],
+    },
+  ],
   sourceReferences: [
     { sourceId: 'fao', citedFor: 'Organic phosphorus fertilizer sources' },
     {

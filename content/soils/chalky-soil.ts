@@ -156,6 +156,28 @@ export const chalkySoil: SoilContent = {
     'Chalky soils vary widely in depth, stoniness, and exact carbonate content; local soil survey or testing should guide management rather than general descriptions alone.',
     'Micronutrient deficiency risk and severity depend on soil pH, crop species, and local conditions and cannot be generalised.',
   ],
+  claims: [
+    {
+      field: 'soil-ph',
+      statement:
+        'Chalky soil typically has an alkaline reaction, commonly in the pH 7.5–8.5 range.',
+      quantitative: true,
+      citations: [
+        {
+          sourceId: 'usda-nrcs',
+          evidenceNote:
+            'USDA NRCS soil property guidance describes calcareous soil pH ranges and drainage characteristics.',
+          retrievedDate: '2026-07-13',
+        },
+        {
+          sourceId: 'isric',
+          evidenceNote:
+            'ISRIC global soil property data documents typical pH ranges for calcareous, chalk- and limestone-derived soils.',
+          retrievedDate: '2026-07-13',
+        },
+      ],
+    },
+  ],
   sourceReferences: [
     {
       sourceId: 'usda-nrcs',

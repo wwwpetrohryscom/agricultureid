@@ -157,6 +157,22 @@ export const soilPh: SoilTopicContent = {
     'Liming or acidifying rates depend on soil buffering capacity, which a raw pH reading alone does not capture.',
     'pH varies within fields and with depth, so single spot samples may not represent the whole area.',
   ],
+  claims: [
+    {
+      field: 'soil-ph',
+      statement:
+        'As an illustrative example of the logarithmic pH scale, a soil at pH 5 is far more acidic than one at pH 6, representing roughly a tenfold difference in hydrogen-ion activity rather than a marginal one.',
+      quantitative: true,
+      citations: [
+        {
+          sourceId: 'usda-nrcs',
+          evidenceNote:
+            'USDA NRCS guidance on soil pH measurement explains the logarithmic hydrogen-ion activity scale underlying pH values.',
+          retrievedDate: '2026-07-13',
+        },
+      ],
+    },
+  ],
   sourceReferences: [
     { sourceId: 'usda-nrcs', citedFor: 'Soil pH and its measurement' },
     { sourceId: 'fao-soils', citedFor: 'Soil chemical properties and pH' },

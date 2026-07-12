@@ -248,6 +248,28 @@ export const buckwheat: CropContent = {
     'Uneven seed maturation makes harvest timing a compromise best judged locally rather than by a fixed calendar rule.',
     'Production statistics change annually and should be taken from primary datasets such as FAOSTAT.',
   ],
+  claims: [
+    {
+      field: 'growth-duration',
+      statement:
+        'Buckwheat is a short-season annual that often matures in approximately 10–12 weeks, depending on variety and growing conditions.',
+      quantitative: true,
+      citations: [
+        {
+          sourceId: 'fao',
+          evidenceNote:
+            'FAO documents buckwheat as a short-duration crop suited to short growing seasons.',
+          retrievedDate: '2026-07-13',
+        },
+        {
+          sourceId: 'cabi',
+          evidenceNote:
+            'CABI compendium describes buckwheat crop duration and time to maturity.',
+          retrievedDate: '2026-07-13',
+        },
+      ],
+    },
+  ],
   sourceReferences: [
     { sourceId: 'fao', citedFor: 'Buckwheat as a food and cover crop' },
     { sourceId: 'faostat', citedFor: 'Production, area, and trade statistics' },

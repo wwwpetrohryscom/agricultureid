@@ -162,6 +162,28 @@ export const potassiumNitrate: FertilizerContent = {
     'Cost relative to other potassium sources varies by market and region and is not quantified here.',
     'Leaching risk from the nitrate fraction depends on local soil, irrigation, and rainfall conditions.',
   ],
+  claims: [
+    {
+      field: 'nutrient-analysis',
+      statement:
+        'Potassium nitrate typically analyses about 13% nitrogen, entirely as nitrate, and roughly 44–46% potassium (K₂O), commonly expressed as a 13-0-45 grade.',
+      quantitative: true,
+      citations: [
+        {
+          sourceId: 'fao',
+          evidenceNote:
+            'FAO documents potassium nitrate as a chloride-free potassium and nitrate fertilizer source and its typical composition.',
+          retrievedDate: '2026-07-13',
+        },
+        {
+          sourceId: 'cornell-cals',
+          evidenceNote:
+            'Cornell CALS nutrient management guidance describes potassium nitrate nitrogen and potassium analysis.',
+          retrievedDate: '2026-07-13',
+        },
+      ],
+    },
+  ],
   sourceReferences: [
     {
       sourceId: 'fao',

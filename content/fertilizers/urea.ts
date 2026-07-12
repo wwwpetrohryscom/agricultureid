@@ -154,6 +154,28 @@ export const urea: FertilizerContent = {
     'The scale of volatilisation loss depends heavily on local weather, soil, and management and is not quantified here.',
     'Some countries restrict or mandate additives such as urease inhibitors for urea; check local regulation.',
   ],
+  claims: [
+    {
+      field: 'nutrient-analysis',
+      statement:
+        "Urea's guaranteed analysis is typically expressed as 46-0-0, meaning it contains about 46% nitrogen by weight, the highest nitrogen concentration among solid fertilizers in common use.",
+      quantitative: true,
+      citations: [
+        {
+          sourceId: 'fao',
+          evidenceNote:
+            'FAO documents urea as a major global nitrogen fertilizer source and its nitrogen content.',
+          retrievedDate: '2026-07-13',
+        },
+        {
+          sourceId: 'cornell-cals',
+          evidenceNote:
+            'Cornell CALS nutrient management guidance describes urea nitrogen content and fertilizer grade conventions.',
+          retrievedDate: '2026-07-13',
+        },
+      ],
+    },
+  ],
   sourceReferences: [
     { sourceId: 'fao', citedFor: 'Global use of urea as a nitrogen source' },
     {

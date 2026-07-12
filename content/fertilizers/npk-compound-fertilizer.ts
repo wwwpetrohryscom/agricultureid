@@ -174,6 +174,28 @@ export const npkCompoundFertilizer: FertilizerContent = {
     'Grades and formulations vary enormously by manufacturer and market and should be confirmed from the specific product label.',
     'Nutrient behaviour within a compound product depends on its constituent raw materials, which are not detailed here.',
   ],
+  claims: [
+    {
+      field: 'nutrient-analysis',
+      statement:
+        'A commonly cited illustrative NPK compound fertilizer grade is 15-15-15 (equal percentages of N, P₂O₅, and K₂O by weight); actual grades vary widely by product and region and are not a recommendation.',
+      quantitative: true,
+      citations: [
+        {
+          sourceId: 'fao',
+          evidenceNote:
+            'FAO documents compound NPK fertilizer types, grade notation, and global use.',
+          retrievedDate: '2026-07-13',
+        },
+        {
+          sourceId: 'ahdb',
+          evidenceNote:
+            'AHDB nutrient management guidance describes how NPK compound grades are selected against soil-test needs.',
+          retrievedDate: '2026-07-13',
+        },
+      ],
+    },
+  ],
   sourceReferences: [
     { sourceId: 'fao', citedFor: 'Compound fertilizer types and global use' },
     {

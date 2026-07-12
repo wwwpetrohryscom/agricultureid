@@ -191,6 +191,28 @@ export const thrips: PestContent = {
     'Virus-vector relationships are specific to particular thrips species and viruses and are not exhaustively covered here.',
     'Thresholds and control-product recommendations are jurisdiction-specific and are not provided here.',
   ],
+  claims: [
+    {
+      field: 'morphology',
+      statement:
+        'Adult thrips are minute, slender insects, typically no more than one to two millimetres long.',
+      quantitative: true,
+      citations: [
+        {
+          sourceId: 'cabi',
+          evidenceNote:
+            'CABI compendium documents thrips adult body size across pest species in the order Thysanoptera.',
+          retrievedDate: '2026-07-13',
+        },
+        {
+          sourceId: 'uc-ipm',
+          evidenceNote:
+            'UC IPM pest identification guidance describes typical adult thrips size for identification purposes.',
+          retrievedDate: '2026-07-13',
+        },
+      ],
+    },
+  ],
   sourceReferences: [
     {
       sourceId: 'uc-ipm',

@@ -177,6 +177,8 @@ export interface ImageMeta {
   attribution?: string;
   /** What the image depicts. */
   subject?: string;
+  /** Modification disclosure (e.g. resized/recompressed), rendered publicly. */
+  modifications?: string;
 }
 
 /** Per-page SEO metadata. Titles and descriptions must be globally unique. */

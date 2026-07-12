@@ -59,23 +59,35 @@ async function api(params) {
   return res.json();
 }
 
-async function findImage(query) {
+async function findImage(query, keywords = []) {
   // Search File namespace (6) for candidate images.
   const search = await api({
     action: 'query',
     generator: 'search',
     gsrsearch: `${query} filetype:bitmap`,
     gsrnamespace: '6',
-    gsrlimit: '12',
+    gsrlimit: '20',
     prop: 'imageinfo',
     iiprop: 'url|size|mime|extmetadata',
     iiurlwidth: '1280',
   });
   const pages = Object.values(search?.query?.pages ?? {});
-  // Prefer larger, landscape-ish JPEGs.
-  pages.sort(
-    (a, b) => (b.imageinfo?.[0]?.width ?? 0) - (a.imageinfo?.[0]?.width ?? 0),
-  );
+  // Prefer candidates whose title/description contains an expected keyword
+  // (relevance over raw size), then by size.
+  const kw = keywords.map((k) => k.toLowerCase()).filter(Boolean);
+  const relevance = (p) => {
+    if (!kw.length) return 0;
+    const hay =
+      `${p.title ?? ''} ${p.imageinfo?.[0]?.extmetadata?.ImageDescription?.value ?? ''}`
+        .replace(/<[^>]+>/g, ' ')
+        .toLowerCase();
+    return kw.some((k) => hay.includes(k)) ? 1 : 0;
+  };
+  pages.sort((a, b) => {
+    const r = relevance(b) - relevance(a);
+    if (r !== 0) return r;
+    return (b.imageinfo?.[0]?.width ?? 0) - (a.imageinfo?.[0]?.width ?? 0);
+  });
   for (const page of pages) {
     const info = page.imageinfo?.[0];
     if (!info) continue;
@@ -141,7 +153,7 @@ async function main() {
       if (existsSync(dest) && statSync(dest).size > 5000 && results[key]) {
         continue;
       }
-      const found = await findImage(query);
+      const found = await findImage(query, entry.keywords ?? []);
       if (!found) {
         console.log(`  ✗ ${key}: no compatible image for "${query}"`);
         fail++;

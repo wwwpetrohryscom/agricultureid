@@ -167,6 +167,28 @@ export const singleSuperphosphate: FertilizerContent = {
     'Phosphorus, calcium, and sulfur content vary somewhat by source rock and manufacturing process and should be confirmed from the product label.',
     'Phosphorus availability depends strongly on soil pH and phosphorus-fixing capacity, which are not detailed for specific soils here.',
   ],
+  claims: [
+    {
+      field: 'nutrient-analysis',
+      statement:
+        "Single superphosphate (SSP)'s guaranteed analysis is typically around 16% P₂O₅, along with roughly 18–21% calcium and 11–12% sulfur, depending on the source rock and process.",
+      quantitative: true,
+      citations: [
+        {
+          sourceId: 'fao',
+          evidenceNote:
+            'FAO documents SSP as a combined phosphorus, calcium, and sulfur fertilizer source and its typical composition.',
+          retrievedDate: '2026-07-13',
+        },
+        {
+          sourceId: 'ahdb',
+          evidenceNote:
+            'AHDB nutrient management guidance describes SSP phosphorus, calcium, and sulfur content.',
+          retrievedDate: '2026-07-13',
+        },
+      ],
+    },
+  ],
   sourceReferences: [
     { sourceId: 'fao', citedFor: 'Phosphorus and sulfur fertilizer sources' },
     {

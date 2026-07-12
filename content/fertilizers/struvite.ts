@@ -170,6 +170,28 @@ export const struvite: FertilizerContent = {
     'Guaranteed analysis varies by source stream and recovery process and is not exhaustively specified here.',
     'Availability of recovered struvite products depends on local wastewater or manure-processing infrastructure, which is limited in many regions.',
   ],
+  claims: [
+    {
+      field: 'nutrient-analysis',
+      statement:
+        'Recovered struvite fertilizer typically analyses around 5% nitrogen and 28% phosphorus (as P₂O₅), together with a variable magnesium content depending on the source stream and process.',
+      quantitative: true,
+      citations: [
+        {
+          sourceId: 'fao',
+          evidenceNote:
+            'FAO documents nutrient-recovery fertilizers, including struvite, and typical recovered nutrient content.',
+          retrievedDate: '2026-07-13',
+        },
+        {
+          sourceId: 'cornell-cals',
+          evidenceNote:
+            'Cornell CALS guidance describes struvite composition and slow-release phosphorus behaviour.',
+          retrievedDate: '2026-07-13',
+        },
+      ],
+    },
+  ],
   sourceReferences: [
     {
       sourceId: 'fao',

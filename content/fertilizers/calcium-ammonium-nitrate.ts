@@ -172,6 +172,28 @@ export const calciumAmmoniumNitrate: FertilizerContent = {
     'The calcium contribution from carbonate filler is slow-acting relative to soluble calcium sources and is not a substitute for a dedicated liming or calcium program where one is needed.',
     'Loss pathways and their magnitude depend on site conditions and are not quantified here.',
   ],
+  claims: [
+    {
+      field: 'nutrient-analysis',
+      statement:
+        'Calcium ammonium nitrate (CAN) typically analyses around 27% total nitrogen, roughly split between ammonium and nitrate forms, plus a calcium carbonate filler.',
+      quantitative: true,
+      citations: [
+        {
+          sourceId: 'fao',
+          evidenceNote:
+            'FAO documents calcium ammonium nitrate as a nitrogen fertilizer and its dual ammonium/nitrate nitrogen composition.',
+          retrievedDate: '2026-07-13',
+        },
+        {
+          sourceId: 'ahdb',
+          evidenceNote:
+            'AHDB nutrient management guidance describes CAN nitrogen content and grade conventions for cereals and root crops.',
+          retrievedDate: '2026-07-13',
+        },
+      ],
+    },
+  ],
   sourceReferences: [
     {
       sourceId: 'fao',
