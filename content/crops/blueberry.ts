@@ -179,7 +179,7 @@ export const blueberry: CropContent = {
       body: [
         {
           type: 'paragraph',
-          text: 'Gray mold (Botrytis) can affect blossoms and ripening fruit, particularly under cool, humid conditions, and anthracnose (ripe rot) affects fruit quality in warm, humid climates. Fruit flies, including species that attack ripening rather than only overripe fruit, are a significant insect pest concern in many regions, along with aphids.',
+          text: 'Gray mold (Botrytis) can affect blossoms and ripening fruit, particularly under cool, humid conditions, and anthracnose (ripe rot) affects fruit quality in warm, humid climates. Fruit flies, including species that attack ripening rather than only overripe fruit, are a significant insect pest concern in many regions, along with aphids. The taxonomy of these fly pests is mixed: blueberry maggot is a true fruit fly (family Tephritidae), whereas the most damaging modern fly pest in many regions, spotted-wing drosophila, belongs to a different fly family (Drosophilidae) and is not profiled separately here.',
         },
         {
           type: 'paragraph',

@@ -19,6 +19,9 @@
     "test:watch": "vitest",
     "content:validate": "tsx scripts/validate-content.ts",
     "content:report": "tsx scripts/content-report.ts",
+    "audit": "tsx scripts/audit.ts",
+    "audit:images": "node scripts/audit-images.mjs",
+    "source:health": "node scripts/source-health.mjs",
     "validate": "npm run format:check && npm run typecheck && npm run lint && npm run content:validate && npm run test"
   },
   "dependencies": {

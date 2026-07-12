@@ -155,6 +155,28 @@ export const diammoniumPhosphate: FertilizerContent = {
     'Phosphorus availability depends strongly on soil pH, texture, and phosphorus-fixing capacity, which are not detailed for specific soils here.',
     'Seed-safety considerations for in-furrow or seed-placed DAP vary by crop and rate and should follow local agronomic guidance.',
   ],
+  claims: [
+    {
+      field: 'nutrient-analysis',
+      statement:
+        'Diammonium phosphate (DAP) typically analyses around 18% nitrogen and 46% phosphorus (as P₂O₅), one of the highest-analysis solid fertilizers in global trade.',
+      quantitative: true,
+      citations: [
+        {
+          sourceId: 'fao',
+          evidenceNote:
+            'FAO documents DAP as a major globally traded phosphorus fertilizer and its typical composition.',
+          retrievedDate: '2026-07-12',
+        },
+        {
+          sourceId: 'usda-nrcs',
+          evidenceNote:
+            'USDA NRCS guidance describes DAP composition and phosphorus behaviour in soil.',
+          retrievedDate: '2026-07-12',
+        },
+      ],
+    },
+  ],
   sourceReferences: [
     {
       sourceId: 'fao',

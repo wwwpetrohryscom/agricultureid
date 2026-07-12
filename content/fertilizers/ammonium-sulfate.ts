@@ -155,6 +155,28 @@ export const ammoniumSulfate: FertilizerContent = {
     'The rate of soil acidification from repeated use depends on soil buffering capacity and is not quantified here.',
     'Sulfur responsiveness varies by crop, soil, and region and should be confirmed with soil or tissue testing.',
   ],
+  claims: [
+    {
+      field: 'nutrient-analysis',
+      statement:
+        'Ammonium sulfate typically analyses around 21% nitrogen and 24% sulfur, with nitrogen entirely in ammonium form and sulfur as sulfate.',
+      quantitative: true,
+      citations: [
+        {
+          sourceId: 'fao',
+          evidenceNote:
+            'FAO documents ammonium sulfate as a combined nitrogen and sulfur fertilizer source and its typical composition.',
+          retrievedDate: '2026-07-12',
+        },
+        {
+          sourceId: 'ahdb',
+          evidenceNote:
+            'AHDB nutrient management guidance describes ammonium sulfate nitrogen and sulfur content and its acidifying effect.',
+          retrievedDate: '2026-07-12',
+        },
+      ],
+    },
+  ],
   sourceReferences: [
     { sourceId: 'fao', citedFor: 'Sulfur and nitrogen fertilizer sources' },
     { sourceId: 'ifa', citedFor: 'Ammonium sulfate product characteristics' },

@@ -145,6 +145,28 @@ export const sulfateOfPotash: FertilizerContent = {
     'Chloride sensitivity varies widely among crops and should be confirmed against crop-specific agronomic guidance.',
     'Cost differences between SOP and muriate of potash vary by market and region and are not quantified here.',
   ],
+  claims: [
+    {
+      field: 'nutrient-analysis',
+      statement:
+        'Sulfate of potash (SOP) typical products analyse around 50% potassium (K₂O) and 18% sulfur, with minimal chloride.',
+      quantitative: true,
+      citations: [
+        {
+          sourceId: 'fao',
+          evidenceNote:
+            'FAO documents SOP as a chloride-free potassium and sulfur fertilizer source and its typical composition.',
+          retrievedDate: '2026-07-12',
+        },
+        {
+          sourceId: 'cornell-cals',
+          evidenceNote:
+            'Cornell CALS nutrient management guidance describes SOP potassium and sulfur analysis.',
+          retrievedDate: '2026-07-12',
+        },
+      ],
+    },
+  ],
   sourceReferences: [
     { sourceId: 'fao', citedFor: 'Potassium and sulfur fertilizer sources' },
     { sourceId: 'ifa', citedFor: 'Sulfate of potash product characteristics' },

@@ -156,6 +156,28 @@ export const monoammoniumPhosphate: FertilizerContent = {
     'Phosphorus availability from MAP depends strongly on soil pH, texture, and phosphorus-fixing capacity, which are not detailed for specific soils here.',
     'Starter-placement benefits are context-dependent and should be evaluated against local trial data and soil test results.',
   ],
+  claims: [
+    {
+      field: 'nutrient-analysis',
+      statement:
+        'Monoammonium phosphate (MAP) typically analyses about 11% nitrogen and 52% phosphorus (expressed as P₂O₅).',
+      quantitative: true,
+      citations: [
+        {
+          sourceId: 'fao',
+          evidenceNote:
+            'FAO documents MAP as a phosphorus fertilizer source and its typical nitrogen and phosphorus content.',
+          retrievedDate: '2026-07-12',
+        },
+        {
+          sourceId: 'usda-nrcs',
+          evidenceNote:
+            'USDA NRCS guidance describes MAP composition and phosphorus behaviour in soil.',
+          retrievedDate: '2026-07-12',
+        },
+      ],
+    },
+  ],
   sourceReferences: [
     {
       sourceId: 'fao',

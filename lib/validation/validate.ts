@@ -10,6 +10,14 @@ import {
 } from '@/lib/content/registry';
 import { computeReachable, outgoingRefs } from '@/lib/content/graph';
 import {
+  RELATION_TYPES,
+  allSemanticEdges,
+  incorrectReciprocalEdges,
+} from '@/lib/content/relations';
+import { evidenceTier, unclassifiedSources } from '@/lib/sources/evidence';
+import { safetyReport } from '@/lib/validation/audit';
+import { UNRESOLVED_ISSUES } from '@/data/unresolved-issues';
+import {
   articleSchema,
   breadcrumbSchema,
   definedTermSchema,
@@ -458,10 +466,29 @@ export function validateAll(): ValidationResult {
     if (!img.attribution?.trim()) {
       error('image-no-attribution', 'Image is missing attribution', where);
     }
-    if (img.licenseUrl && !isValidUrl(img.licenseUrl)) {
+    if (!img.creator?.trim()) {
+      error('image-no-creator', 'Image is missing a creator', where);
+    }
+    if (!img.originalPage?.trim()) {
+      error(
+        'image-no-source-page',
+        'Image is missing its source (Commons) page',
+        where,
+      );
+    }
+    if (!img.licenseUrl?.trim()) {
+      error('image-no-license-url', 'Image is missing a license URL', where);
+    } else if (!isValidUrl(img.licenseUrl)) {
       error(
         'image-bad-license-url',
         `Malformed license URL "${img.licenseUrl}"`,
+        where,
+      );
+    }
+    if (!img.modifications?.trim()) {
+      error(
+        'image-no-modification-disclosure',
+        'Image is missing a modification disclosure',
         where,
       );
     }
@@ -470,6 +497,122 @@ export function validateAll(): ValidationResult {
         'image-incompatible-license',
         `Image license "${img.license}" is not redistribution-compatible`,
         where,
+      );
+    }
+  }
+
+  /* ---- Field-level provenance (Phase 2.1) ------------------------------ */
+  for (const item of ALL_CONTENT) {
+    const where = `${item.contentType}:${item.slug}`;
+    for (const claim of item.claims ?? []) {
+      if (!claim.field?.trim() || !claim.statement?.trim()) {
+        error(
+          'claim-incomplete',
+          'Provenanced claim missing field/statement',
+          where,
+        );
+      }
+      if (!claim.citations?.length) {
+        error(
+          'claim-no-citation',
+          `Claim "${claim.field}" has no citations`,
+          where,
+        );
+        continue;
+      }
+      for (const cite of claim.citations) {
+        if (!sourceIds.has(cite.sourceId)) {
+          error(
+            'claim-unknown-source',
+            `Claim "${claim.field}" cites unknown source "${cite.sourceId}"`,
+            where,
+          );
+        }
+        if (cite.retrievedDate && !isValidIsoDate(cite.retrievedDate)) {
+          error(
+            'claim-bad-date',
+            `Claim "${claim.field}" bad retrievedDate`,
+            where,
+          );
+        }
+      }
+      // Quantitative and safety-critical claims require Tier 1–2 evidence.
+      if (claim.quantitative || claim.safetyCritical) {
+        const hasStrong = claim.citations.some(
+          (c) => sourceIds.has(c.sourceId) && evidenceTier(c.sourceId) <= 2,
+        );
+        if (!hasStrong) {
+          error(
+            'claim-weak-evidence',
+            `${claim.quantitative ? 'Quantitative' : 'Safety-critical'} claim "${claim.field}" lacks a Tier 1–2 source`,
+            where,
+          );
+        }
+      }
+    }
+  }
+
+  /* ---- Semantic relations (Phase 2.1) --------------------------------- */
+  for (const id of unclassifiedSources()) {
+    error(
+      'source-untiered',
+      `Source "${id}" has no evidence-tier classification`,
+      id,
+    );
+  }
+  const edgeSeen = new Set<string>();
+  for (const edge of allSemanticEdges()) {
+    const w = `${edge.from.type}:${edge.from.slug}`;
+    if (!RELATION_TYPES.has(edge.relation)) {
+      error('bad-relation', `Unknown relation type "${edge.relation}"`, w);
+    }
+    const key = `${refKey(edge.from.type, edge.from.slug)}->${refKey(edge.to.type, edge.to.slug)}:${edge.relation}`;
+    if (edgeSeen.has(key)) {
+      error(
+        'duplicate-edge',
+        `Duplicate semantic edge ${edge.relation} → ${refKey(edge.to.type, edge.to.slug)}`,
+        w,
+      );
+    }
+    edgeSeen.add(key);
+  }
+  for (const { a } of incorrectReciprocalEdges()) {
+    error(
+      'incorrect-reciprocity',
+      `Reciprocal edges reuse the non-symmetric relation "${a.relation}"`,
+      `${a.from.type}:${a.from.slug}`,
+    );
+  }
+
+  /* ---- Safety (Phase 2.1) --------------------------------------------- */
+  for (const hit of safetyReport()) {
+    error(`safety-${hit.code}`, hit.detail, hit.where);
+  }
+
+  /* ---- Unresolved-issues registry (Phase 2.1) ------------------------- */
+  const issueIds = new Set<string>();
+  for (const issue of UNRESOLVED_ISSUES) {
+    if (!issue.id || !issue.entity || !issue.topic || !issue.currentWording) {
+      error(
+        'issue-incomplete',
+        'Unresolved issue missing required fields',
+        issue.id,
+      );
+    }
+    if (issueIds.has(issue.id)) {
+      error(
+        'issue-duplicate-id',
+        `Duplicate unresolved-issue id "${issue.id}"`,
+        issue.id,
+      );
+    }
+    issueIds.add(issue.id);
+    // An unsafe public claim may not remain open — it must be mitigated first.
+    if (!issue.publicClaimSafe && issue.status === 'open') {
+      error(
+        'issue-unsafe-open',
+        `Unresolved issue "${issue.id}" has an unsafe public claim but is still open`,
+        issue.entity,
       );
     }
   }

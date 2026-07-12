@@ -139,6 +139,21 @@ export const nitrogen: NutrientContent = {
     'This entry describes nitrogen’s role and behaviour; it is not a nitrogen recommendation for any specific crop or region.',
     'Deficiency diagnosis should be confirmed with soil or plant testing, as symptoms overlap with other disorders.',
   ],
+  claims: [
+    {
+      field: 'atmospheric-composition',
+      statement: 'The atmosphere is about 78% nitrogen gas by volume.',
+      quantitative: true,
+      citations: [
+        {
+          sourceId: 'fao',
+          evidenceNote:
+            'FAO reference material on nitrogen in agriculture states the composition of air, which is about 78% nitrogen gas by volume.',
+          retrievedDate: '2026-07-12',
+        },
+      ],
+    },
+  ],
   sourceReferences: [
     { sourceId: 'fao', citedFor: 'Role of nitrogen in plant nutrition' },
     { sourceId: 'usda-nrcs', citedFor: 'Nitrogen in soils and losses' },

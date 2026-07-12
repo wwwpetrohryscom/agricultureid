@@ -148,7 +148,6 @@ export const bacterialWilt: PlantDiseaseContent = {
   hostCrops: [
     { type: 'crop', slug: 'tomato' },
     { type: 'crop', slug: 'potato' },
-    { type: 'crop', slug: 'cassava' },
     { type: 'crop', slug: 'ginger' },
   ],
   relatedTopics: [

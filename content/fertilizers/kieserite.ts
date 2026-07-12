@@ -160,6 +160,28 @@ export const kieserite: FertilizerContent = {
     'Magnesium deficiency has multiple causes, including cation imbalance from potassium fertilization, and should be confirmed with testing rather than assumed.',
     'Exact analysis varies by mineral deposit and manufacturer and is not exhaustively specified here.',
   ],
+  claims: [
+    {
+      field: 'nutrient-analysis',
+      statement:
+        'Kieserite typically supplies around 16% magnesium and 22% sulfur, though exact figures vary somewhat between deposits and manufacturers.',
+      quantitative: true,
+      citations: [
+        {
+          sourceId: 'fao',
+          evidenceNote:
+            'FAO documents kieserite as a magnesium and sulfur fertilizer material and its typical composition.',
+          retrievedDate: '2026-07-12',
+        },
+        {
+          sourceId: 'ahdb',
+          evidenceNote:
+            'AHDB nutrient management guidance describes kieserite magnesium and sulfur content.',
+          retrievedDate: '2026-07-12',
+        },
+      ],
+    },
+  ],
   sourceReferences: [
     {
       sourceId: 'fao',

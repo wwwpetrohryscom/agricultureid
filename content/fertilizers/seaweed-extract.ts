@@ -178,6 +178,26 @@ export const seaweedExtract: FertilizerContent = {
     'It is not a primary nutrient source and should not substitute for a soil-test-based fertility program.',
     'The strength of evidence for specific biostimulant effects varies by compound, crop, and growing condition and is not quantified here.',
   ],
+  claims: [
+    {
+      field: 'nutrient-analysis',
+      statement:
+        'Seaweed extract has a low nutrient content, generally well under 1% N, P, or K by weight; it is valued as a biostimulant rather than as a primary nutrient source.',
+      quantitative: true,
+      citations: [
+        {
+          sourceId: 'cornell-cals',
+          evidenceNote: 'Biostimulants and low-analysis organic products.',
+          retrievedDate: '2026-07-12',
+        },
+        {
+          sourceId: 'usda-nrcs',
+          evidenceNote: 'Organic amendments and nutrient content.',
+          retrievedDate: '2026-07-12',
+        },
+      ],
+    },
+  ],
   sourceReferences: [
     {
       sourceId: 'fao',

@@ -84,7 +84,7 @@ export const honeyBees: LivestockContent = {
             {
               term: 'Workers',
               description:
-                'Sterile female bees that forage, nurse brood, build comb, and defend the hive, with tasks changing as they age.',
+                'Functionally sterile (non-reproductive) female bees that forage, nurse brood, build comb, and defend the hive, with tasks changing as they age.',
             },
             {
               term: 'Drones',

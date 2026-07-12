@@ -216,6 +216,28 @@ export const conservationAgriculture: FarmingSystemContent = {
     'The transition period and its effects on yield, weeds, and soil vary by starting soil condition, climate, and crop, so outcomes are not generalized here.',
     'This entry does not provide erosion-reduction or yield figures, since these are highly site- and management-dependent.',
   ],
+  claims: [
+    {
+      field: 'rotation-period',
+      statement:
+        'Under conservation agriculture, soil structure, organic matter, and water infiltration typically show gradual improvement over a medium-term period of about 3–7 years after adoption, though outcomes vary by starting soil condition, climate, and management.',
+      quantitative: true,
+      citations: [
+        {
+          sourceId: 'fao',
+          evidenceNote:
+            'FAO documents conservation agriculture adoption and the multi-year timeframe over which soil benefits typically develop.',
+          retrievedDate: '2026-07-12',
+        },
+        {
+          sourceId: 'usda-nrcs',
+          evidenceNote:
+            'USDA NRCS guidance on no-till and residue management describes the multi-year transition period for soil structure and organic matter change.',
+          retrievedDate: '2026-07-12',
+        },
+      ],
+    },
+  ],
   sourceReferences: [
     {
       sourceId: 'fao',

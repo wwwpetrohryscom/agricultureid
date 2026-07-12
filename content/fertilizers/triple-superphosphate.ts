@@ -151,6 +151,28 @@ export const tripleSuperphosphate: FertilizerContent = {
     'Phosphorus availability depends strongly on soil pH, texture, and phosphorus-fixing capacity, which are not detailed for specific soils here.',
     'Calcium supplied by TSP is a secondary contribution and should not be treated as a substitute for a dedicated calcium or liming program where one is needed.',
   ],
+  claims: [
+    {
+      field: 'nutrient-analysis',
+      statement:
+        'Triple superphosphate (TSP) typical products analyse around 46% phosphorus, expressed as P₂O₅, with no nitrogen or potassium.',
+      quantitative: true,
+      citations: [
+        {
+          sourceId: 'fao',
+          evidenceNote:
+            'FAO documents TSP as a concentrated phosphorus fertilizer and its typical phosphorus content.',
+          retrievedDate: '2026-07-12',
+        },
+        {
+          sourceId: 'cornell-cals',
+          evidenceNote:
+            'Cornell CALS nutrient management guidance describes TSP phosphorus analysis and grade conventions.',
+          retrievedDate: '2026-07-12',
+        },
+      ],
+    },
+  ],
   sourceReferences: [
     {
       sourceId: 'fao',

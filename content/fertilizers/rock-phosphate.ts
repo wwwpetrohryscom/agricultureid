@@ -171,6 +171,28 @@ export const rockPhosphate: FertilizerContent = {
     'Direct application is generally ineffective on neutral to alkaline soils and is not a universal substitute for acidulated phosphate fertilizers.',
     'Organic certification standards for direct-applied rock phosphate vary by country and certifying body and should be confirmed locally.',
   ],
+  claims: [
+    {
+      field: 'nutrient-analysis',
+      statement:
+        "Rock phosphate's phosphorus content is variable by source, typically ranging from about 0-3-0 to 0-32-0 (P₂O₅) depending on deposit reactivity.",
+      quantitative: true,
+      citations: [
+        {
+          sourceId: 'fao',
+          evidenceNote:
+            'FAO documents rock phosphate as a phosphorus fertilizer source and raw material, noting variability in phosphorus content by deposit.',
+          retrievedDate: '2026-07-12',
+        },
+        {
+          sourceId: 'usda-nrcs',
+          evidenceNote:
+            'USDA NRCS guidance describes phosphorus behaviour and rock phosphate reactivity interactions with soil pH.',
+          retrievedDate: '2026-07-12',
+        },
+      ],
+    },
+  ],
   sourceReferences: [
     {
       sourceId: 'fao',

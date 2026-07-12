@@ -199,6 +199,28 @@ export const coloradoPotatoBeetle: PestContent = {
     'Insecticide resistance patterns vary by population and region and are not detailed here.',
     'Thresholds and control-product recommendations are jurisdiction-specific and are not provided here.',
   ],
+  claims: [
+    {
+      field: 'morphology',
+      statement:
+        'Adult Colorado potato beetles are rounded, roughly one centimetre long, yellow-orange with ten black longitudinal stripes running down the wing covers.',
+      quantitative: true,
+      citations: [
+        {
+          sourceId: 'cabi',
+          evidenceNote:
+            'CABI compendium documents Colorado potato beetle adult body size and colouration.',
+          retrievedDate: '2026-07-12',
+        },
+        {
+          sourceId: 'eppo-gd',
+          evidenceNote:
+            'EPPO Global Database species profile documents adult morphology and identification features of Leptinotarsa decemlineata.',
+          retrievedDate: '2026-07-12',
+        },
+      ],
+    },
+  ],
   sourceReferences: [
     { sourceId: 'uc-ipm', citedFor: 'Identification and IPM principles' },
     {

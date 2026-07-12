@@ -174,6 +174,28 @@ export const chelatedMicronutrients: FertilizerContent = {
     'This is not an application rate recommendation for any element, crop, or region.',
     'Micronutrient deficiency diagnosis should be confirmed with soil or tissue testing before treatment, since symptoms can overlap with other disorders.',
   ],
+  claims: [
+    {
+      field: 'nutrient-analysis',
+      statement:
+        'Chelated micronutrient products vary by element and chelating agent; for example, Fe-EDDHA products are formulated at around 6% iron and Zn-EDTA products at around 14% zinc.',
+      quantitative: true,
+      citations: [
+        {
+          sourceId: 'cornell-cals',
+          evidenceNote:
+            'Cornell CALS guidance describes chelated micronutrient product formulations and typical element concentrations.',
+          retrievedDate: '2026-07-12',
+        },
+        {
+          sourceId: 'fao',
+          evidenceNote:
+            'FAO documents chelated micronutrient fertilizers and their role in correcting deficiencies on high-pH soils.',
+          retrievedDate: '2026-07-12',
+        },
+      ],
+    },
+  ],
   sourceReferences: [
     {
       sourceId: 'fao',

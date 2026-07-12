@@ -178,6 +178,28 @@ export const compost: FertilizerContent = {
     'This is not an application rate recommendation for any crop or region.',
     'Compost quality and potential contaminants depend on feedstock and process; sourcing and testing practices are not detailed here.',
   ],
+  claims: [
+    {
+      field: 'nutrient-analysis',
+      statement:
+        'Compost nutrient content is low and variable, typically well under 2% each of nitrogen, phosphorus (P₂O₅), and potassium (K₂O) on an as-applied basis, depending on feedstock and process.',
+      quantitative: true,
+      citations: [
+        {
+          sourceId: 'usda-nrcs',
+          evidenceNote:
+            'USDA NRCS guidance describes compost effects on soil properties and its typical nutrient concentration range.',
+          retrievedDate: '2026-07-12',
+        },
+        {
+          sourceId: 'cornell-cals',
+          evidenceNote:
+            'Cornell CALS compost production guidance describes typical low and variable nutrient content of compost.',
+          retrievedDate: '2026-07-12',
+        },
+      ],
+    },
+  ],
   sourceReferences: [
     {
       sourceId: 'fao',

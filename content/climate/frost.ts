@@ -132,6 +132,27 @@ export const frost: ClimateContent = {
     'This is a general overview of frost as a climate factor, not a regional frost forecast or crop-specific protection plan.',
     'No universal "safe" temperature thresholds are given beyond the physical freezing point, since crop and growth-stage sensitivity vary.',
   ],
+  claims: [
+    {
+      field: 'freezing-point',
+      statement: 'Water freezes at 0°C (32°F).',
+      quantitative: true,
+      citations: [
+        {
+          sourceId: 'wmo',
+          evidenceNote:
+            'WMO meteorological standards define frost formation relative to the 0°C (32°F) freezing point of water.',
+          retrievedDate: '2026-07-12',
+        },
+        {
+          sourceId: 'noaa',
+          evidenceNote:
+            'NOAA frost and freeze monitoring data uses 0°C (32°F) as the physical freezing-point threshold for frost.',
+          retrievedDate: '2026-07-12',
+        },
+      ],
+    },
+  ],
   sourceReferences: [
     {
       sourceId: 'wmo',

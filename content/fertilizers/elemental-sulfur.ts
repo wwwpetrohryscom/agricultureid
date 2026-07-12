@@ -165,6 +165,26 @@ export const elementalSulfur: FertilizerContent = {
     'Oxidation rate depends on soil temperature, moisture, and microbial activity and is not quantified here.',
     'Over-application for pH reduction can overshoot the intended target because of the delay before full oxidation.',
   ],
+  claims: [
+    {
+      field: 'nutrient-analysis',
+      statement:
+        'Elemental sulfur is a high-analysis sulfur source, containing around 90% sulfur.',
+      quantitative: true,
+      citations: [
+        {
+          sourceId: 'fao',
+          evidenceNote: 'Sulfur sources and fertilizer analysis.',
+          retrievedDate: '2026-07-12',
+        },
+        {
+          sourceId: 'ahdb',
+          evidenceNote: 'Sulfur fertilizer products and use.',
+          retrievedDate: '2026-07-12',
+        },
+      ],
+    },
+  ],
   sourceReferences: [
     {
       sourceId: 'fao',

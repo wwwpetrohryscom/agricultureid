@@ -1,4 +1,5 @@
 import type { ContentType } from '@/lib/site';
+import type { EvidenceTier } from '@/types/sources';
 
 export type { ContentType };
 
@@ -68,6 +69,93 @@ export interface ContentRef {
   slug: string;
 }
 
+/* -------------------------------------------------------------------------- */
+/*  Field-level provenance (Phase 2.1)                                         */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * A citation that supports a specific factual field or claim, with an optional
+ * locator into the source. Locators are never fabricated: omit rather than
+ * invent. See docs/field-level-provenance.md.
+ */
+export interface FieldCitation {
+  /** Registry source id (must resolve). */
+  sourceId: string;
+  /** Where in the source, e.g. "PLANTS profile: TRAE", "Table 2", "p. 14". */
+  locator?: string;
+  /** What, specifically, the source supports. */
+  evidenceNote?: string;
+  /** Geographic scope of the cited evidence, if narrower than global. */
+  jurisdiction?: string;
+  /** ISO date the source was retrieved for this claim. */
+  retrievedDate?: string;
+  /** Evidence tier of the citation (defaults to the source's registry tier). */
+  evidenceTier?: EvidenceTier;
+}
+
+/**
+ * A specific, provenance-backed claim on a page. `field` names the claim type
+ * (e.g. "scientific-classification", "soil-ph", "nutrient-analysis"); when the
+ * claim is quantitative, `quantitative: true` requires a Tier 1–2 citation.
+ */
+export interface ProvenancedClaim {
+  field: string;
+  /** The exact claim text this provenance supports. */
+  statement: string;
+  /** True for numeric/quantitative claims (stricter evidence rules apply). */
+  quantitative?: boolean;
+  /** True for safety-critical/regulatory claims (Tier 1–2 required). */
+  safetyCritical?: boolean;
+  citations: FieldCitation[];
+}
+
+/* -------------------------------------------------------------------------- */
+/*  Semantic relations (Phase 2.1)                                            */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * Controlled vocabulary of semantic relation types for knowledge-graph edges.
+ * Typed relationship fields (commonDiseases, hostCrops, …) map to precise,
+ * content-verified relations; generic `connections`/`relatedTopics` edges map
+ * to conservative relations via a documented deterministic mapping
+ * (see lib/content/graph.ts and docs/semantic-relations.md). Ambiguous pairs
+ * use `relatedConcept` rather than asserting causation.
+ */
+export type RelationType =
+  | 'affects'
+  | 'susceptibleTo'
+  | 'suitableForSoil'
+  | 'suitableFor'
+  | 'requiresNutrient'
+  | 'associatedWithDeficiency'
+  | 'suppliesNutrient'
+  | 'suppliedByFertilizer'
+  | 'appliedToCrop'
+  | 'managedWith'
+  | 'cultivatedWith'
+  | 'usedToCultivate'
+  | 'usedToHarvest'
+  | 'usedToApply'
+  | 'irrigatedBy'
+  | 'irrigates'
+  | 'sensitiveToClimate'
+  | 'riskIncreasesUnder'
+  | 'affectsNutrientAvailability'
+  | 'partOfFarmingSystem'
+  | 'includesCrop'
+  | 'commonlyRaisedIn'
+  | 'includesLivestock'
+  | 'feedsOn'
+  | 'relatedConcept';
+
+export interface SemanticEdge {
+  from: ContentRef;
+  to: ContentRef;
+  relation: RelationType;
+  /** Which field the edge was derived from (provenance of the edge itself). */
+  field: string;
+}
+
 /** Metadata for an image, capturing licensing/provenance when one is used. */
 export interface ImageMeta {
   /** Local file path under /public (self-hosted; never a hotlink). */
@@ -89,6 +177,8 @@ export interface ImageMeta {
   attribution?: string;
   /** What the image depicts. */
   subject?: string;
+  /** Modification disclosure (e.g. resized/recompressed), rendered publicly. */
+  modifications?: string;
 }
 
 /** Per-page SEO metadata. Titles and descriptions must be globally unique. */
@@ -140,6 +230,12 @@ export interface BaseContent {
    */
   connections?: ContentRef[];
   sourceReferences: SourceReference[];
+  /**
+   * Field-level provenance for specific factual claims (Phase 2.1). Optional
+   * corpus-wide; required by the validator for quantitative and safety-critical
+   * claims that the audit has identified. See docs/field-level-provenance.md.
+   */
+  claims?: ProvenancedClaim[];
   /** Glossary term slugs relevant to this page. */
   glossaryTerms?: string[];
   /** ISO date the content was last editorially reviewed, when applicable. */

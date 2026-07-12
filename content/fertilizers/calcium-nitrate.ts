@@ -164,6 +164,28 @@ export const calciumNitrate: FertilizerContent = {
     'Tank-mix compatibility with other fertilizers depends on the specific products involved and is not exhaustively covered here.',
     'Calcium-related physiological disorders in crops have multiple contributing causes beyond nutrient supply, which this entry does not address.',
   ],
+  claims: [
+    {
+      field: 'nutrient-analysis',
+      statement:
+        'Calcium nitrate typically analyses around 15.5% nitrogen, entirely as nitrate, together with about 19% calcium.',
+      quantitative: true,
+      citations: [
+        {
+          sourceId: 'fao',
+          evidenceNote:
+            'FAO documents calcium nitrate as a nitrogen and calcium fertilizer source and its typical composition.',
+          retrievedDate: '2026-07-12',
+        },
+        {
+          sourceId: 'cornell-cals',
+          evidenceNote:
+            'Cornell CALS guidance on calcium nutrition describes calcium nitrate nitrogen and calcium content.',
+          retrievedDate: '2026-07-12',
+        },
+      ],
+    },
+  ],
   sourceReferences: [
     {
       sourceId: 'fao',
