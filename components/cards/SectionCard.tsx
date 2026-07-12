@@ -19,7 +19,7 @@ export function SectionCard({
     <li className="group">
       <Link
         href={href}
-        className="flex h-full flex-col rounded-card border border-parchment-200 bg-white p-5 transition-all hover:-translate-y-0.5 hover:border-forest-200 hover:shadow-card-hover"
+        className="flex h-full flex-col rounded-card border border-ink-100 bg-white p-5 transition-colors hover:border-forest-200 hover:bg-[#FAFAF7]"
       >
         <div className="flex items-center justify-between">
           <h3 className="font-serif text-lg font-bold text-ink-900 group-hover:text-forest-700">

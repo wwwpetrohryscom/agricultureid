@@ -25,7 +25,7 @@ export function HubIndex({
   note,
 }: HubIndexProps) {
   return (
-    <Container className="py-8 lg:py-10">
+    <Container className="py-10 lg:py-12">
       <JsonLd
         data={[
           webPageSchema({ name: title, description, path }),
@@ -47,7 +47,7 @@ export function HubIndex({
       >
         <p className="mt-4 text-sm text-ink-500">
           {items.length} {items.length === 1 ? 'entry' : 'entries'} · every
-          entry is sourced and reviewed
+          entry is sourced and dated
         </p>
       </PageIntro>
 

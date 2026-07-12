@@ -19,7 +19,7 @@ export function PageIntro({
   children,
 }: PageIntroProps) {
   return (
-    <header className="border-b border-parchment-200 pb-8">
+    <header className="border-b border-ink-100 pb-8">
       {crumbs && <Breadcrumbs items={crumbs} />}
       {eyebrow && (
         <p
@@ -28,7 +28,7 @@ export function PageIntro({
           {eyebrow}
         </p>
       )}
-      <h1 className="mt-2 font-serif text-4xl font-bold tracking-tight text-ink-900 sm:text-5xl">
+      <h1 className="mt-2 max-w-4xl font-serif text-4xl font-bold tracking-tight text-forest-950 sm:text-5xl">
         {title}
       </h1>
       {lead && (

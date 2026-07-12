@@ -31,7 +31,7 @@ export function RelatedContent({ item }: { item: AnyContent }) {
                 <li key={related.id}>
                   <Link
                     href={contentUrlPath(related)}
-                    className="inline-flex items-center rounded-full border border-parchment-200 bg-white px-3 py-1.5 text-sm font-medium text-ink-700 transition-colors hover:border-forest-200 hover:bg-forest-50 hover:text-forest-700"
+                    className="inline-flex items-center rounded-md border border-ink-100 bg-white px-3 py-1.5 text-sm font-medium text-ink-700 transition-colors hover:border-forest-200 hover:bg-[#FAFAF7] hover:text-forest-700"
                   >
                     {related.title}
                   </Link>

@@ -20,6 +20,14 @@ export const metadata: Metadata = {
   publisher: SITE.name,
   robots: { index: true, follow: true },
   alternates: { canonical: '/' },
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/icon.svg', type: 'image/svg+xml' },
+      { url: '/icon.png', sizes: '48x48', type: 'image/png' },
+    ],
+    apple: [{ url: '/apple-icon.png', sizes: '180x180', type: 'image/png' }],
+  },
   openGraph: {
     type: 'website',
     siteName: SITE.name,
@@ -27,11 +35,20 @@ export const metadata: Metadata = {
     description: SITE.description,
     url: SITE.url,
     locale: 'en_US',
+    images: [
+      {
+        url: '/opengraph-image.png',
+        width: 1200,
+        height: 630,
+        alt: `${SITE.name} — Global Agriculture Knowledge`,
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: `${SITE.name} — ${SITE.tagline}`,
     description: SITE.description,
+    images: ['/twitter-image.png'],
   },
   category: 'Agriculture',
   formatDetection: { telephone: false },

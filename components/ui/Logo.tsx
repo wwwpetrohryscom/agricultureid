@@ -7,7 +7,7 @@ interface LogoProps {
   showWordmark?: boolean;
 }
 
-/** The AgricultureID brand mark: an original geometric sprout-in-tile glyph. */
+/** The AgricultureID brand mark: a flat circular plant-and-field glyph. */
 export function BrandMark({ className = 'h-9 w-9' }: { className?: string }) {
   return (
     <svg
@@ -16,22 +16,70 @@ export function BrandMark({ className = 'h-9 w-9' }: { className?: string }) {
       role="img"
       aria-label="AgricultureID logo"
     >
-      <rect x="0" y="0" width="64" height="64" rx="14" fill="#234a34" />
+      <circle
+        cx="32"
+        cy="32"
+        r="28"
+        fill="#fdfcf8"
+        stroke="#c7a44a"
+        strokeWidth="4"
+      />
       <path
-        d="M9 50 H55"
-        stroke="#3c7351"
-        strokeWidth="2.5"
+        d="M15.5 45.5c8.2-7 19.8-10.1 33-8.1"
+        fill="none"
+        stroke="#234a34"
+        strokeWidth="4"
         strokeLinecap="round"
       />
       <path
-        d="M32 51 V25"
-        stroke="#f7f3e8"
+        d="M19 50.5c7.5-5 17.1-7.2 28.6-5.9"
+        fill="none"
+        stroke="#c7a44a"
         strokeWidth="3"
         strokeLinecap="round"
       />
-      <path d="M32 41 C24 41 18 35 18 26 C27 26 32 33 32 41 Z" fill="#aca552" />
-      <path d="M32 35 C40 35 46 29 46 20 C37 20 32 27 32 35 Z" fill="#8db69a" />
-      <circle cx="32" cy="53" r="2.4" fill="#e2d7ba" />
+      <path
+        d="M25.4 54.2c5.8-3 12.4-4.2 20-3.3"
+        fill="none"
+        stroke="#234a34"
+        strokeWidth="2.6"
+        strokeLinecap="round"
+      />
+      <path
+        d="M31.9 41.2V20.4"
+        fill="none"
+        stroke="#234a34"
+        strokeWidth="3.8"
+        strokeLinecap="round"
+      />
+      <path
+        d="M32 31.7c-8.1-.4-13.9-6.2-14.2-14.4 8.8.2 14.4 5.7 14.2 14.4z"
+        fill="#7d9440"
+        stroke="#234a34"
+        strokeWidth="2"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M32 27.4c7.8-.6 13.2-6.1 13.5-13.7-8.4.2-13.8 5.4-13.5 13.7z"
+        fill="#a8ad50"
+        stroke="#234a34"
+        strokeWidth="2"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M24.1 20.7c3.7 2.1 6.1 5.2 7.2 9.2"
+        fill="none"
+        stroke="#f3e7b8"
+        strokeWidth="1.4"
+        strokeLinecap="round"
+      />
+      <path
+        d="M39.6 17.6c-3.4 2-5.7 4.8-6.8 8.5"
+        fill="none"
+        stroke="#f3e7b8"
+        strokeWidth="1.4"
+        strokeLinecap="round"
+      />
     </svg>
   );
 }
@@ -46,7 +94,7 @@ export function Logo({
     <span className={`inline-flex items-center gap-2.5 ${className}`}>
       <BrandMark className="h-9 w-9 shrink-0" />
       {showWordmark && (
-        <span className="font-serif text-xl font-bold tracking-tight text-ink-900">
+        <span className="font-serif text-xl font-bold tracking-tight text-forest-950">
           Agriculture<span className="text-olive-700">ID</span>
         </span>
       )}

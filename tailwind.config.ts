@@ -122,7 +122,7 @@ const config: Config = {
         content: '78rem',
       },
       borderRadius: {
-        card: '0.625rem',
+        card: '0.5rem',
       },
       boxShadow: {
         card: '0 1px 2px rgba(35, 35, 31, 0.04), 0 4px 16px rgba(35, 35, 31, 0.05)',

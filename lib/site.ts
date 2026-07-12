@@ -122,7 +122,7 @@ export const SECTIONS: NavSection[] = [
     contentType: 'livestock',
   },
   {
-    label: 'Farm Systems',
+    label: 'Farming Systems',
     href: '/farm-systems',
     description:
       'Agricultural production systems, from conventional and organic to regenerative and protected cultivation.',

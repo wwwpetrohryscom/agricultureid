@@ -24,15 +24,15 @@ export function ContentArticle({ item }: { item: AnyContent }) {
   if (item.structuredData?.article) schema.push(articleSchema(item, path));
 
   return (
-    <Container as="article" className="py-8 lg:py-10">
+    <Container as="article" className="py-10 lg:py-12">
       <JsonLd data={schema} />
       <Breadcrumbs items={crumbs} />
 
-      <header className="mt-6 border-b border-parchment-200 pb-8">
+      <header className="mt-6 border-b border-ink-100 pb-8">
         <p className="text-sm font-semibold uppercase tracking-wide text-olive-700">
           {CONTENT_TYPE_LABEL[item.contentType]} · {item.category}
         </p>
-        <h1 className="mt-2 font-serif text-4xl font-bold tracking-tight text-ink-900 sm:text-5xl">
+        <h1 className="mt-2 max-w-4xl font-serif text-4xl font-bold tracking-tight text-forest-950 sm:text-5xl">
           {item.title}
         </h1>
         {item.scientificName && (
@@ -49,7 +49,7 @@ export function ContentArticle({ item }: { item: AnyContent }) {
           {item.summary}
         </p>
         <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-ink-500">
-          <Badge tone="forest">Reviewed reference</Badge>
+          <Badge tone="forest">Dated reference</Badge>
           {item.reviewedAt && <span>Last reviewed: {item.reviewedAt}</span>}
           <span>Updated: {item.updatedAt}</span>
         </div>
@@ -95,7 +95,7 @@ export function ContentArticle({ item }: { item: AnyContent }) {
 
           <section
             id="scope-and-limitations"
-            className="mt-12 scroll-mt-24 rounded-card border border-clay-200 bg-clay-50 p-5"
+            className="mt-12 scroll-mt-24 rounded-card border border-clay-200 bg-[#FAFAF7] p-5"
             aria-labelledby="scope-heading"
           >
             <h2
