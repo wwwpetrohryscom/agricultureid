@@ -21,6 +21,8 @@ const DIRS = [
   ['climate', 'climateFactors', 'ClimateContent'],
   ['farming-systems', 'farmingSystems', 'FarmingSystemContent'],
   ['irrigation-methods', 'irrigationMethods', 'IrrigationMethodContent'],
+  ['cultivars', 'cultivars', 'CultivarContent'],
+  ['breeds', 'breeds', 'BreedContent'],
 ];
 
 const camel = (base) =>

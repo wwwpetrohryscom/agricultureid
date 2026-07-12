@@ -146,6 +146,22 @@ export type RelationType =
   | 'commonlyRaisedIn'
   | 'includesLivestock'
   | 'feedsOn'
+  // Phase 3A — cultivars & breeds
+  | 'cultivarOf'
+  | 'hasCultivar'
+  | 'breedOf'
+  | 'hasBreed'
+  | 'developedFrom'
+  | 'adaptedToClimate'
+  | 'adaptedToSoil'
+  | 'resistantTo'
+  | 'usedFor'
+  | 'registeredIn'
+  | 'protectedIn'
+  | 'distributedIn'
+  | 'relatedCultivar'
+  | 'relatedBreed'
+  | 'maintainedByRegistry'
   | 'relatedConcept';
 
 export interface SemanticEdge {
@@ -179,6 +195,17 @@ export interface ImageMeta {
   subject?: string;
   /** Modification disclosure (e.g. resized/recompressed), rendered publicly. */
   modifications?: string;
+  /**
+   * How precisely the image depicts the entity (Phase 3A). Prevents presenting
+   * a parent-species photo as cultivar/breed-level identification.
+   */
+  identityConfidence?:
+    | 'exactEntity'
+    | 'representativeParentSpecies'
+    | 'habitatOrUseContext'
+    | 'unavailable';
+  /** Caption shown with the figure (optional). */
+  caption?: string;
 }
 
 /** Per-page SEO metadata. Titles and descriptions must be globally unique. */
@@ -370,6 +397,138 @@ export interface IrrigationMethodContent extends BaseContent {
   methodClass?: 'surface' | 'pressurized' | 'localized' | 'management';
 }
 
+/* -------------------------------------------------------------------------- */
+/*  Registry & status semantics (Phase 3A)                                     */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * Legal/registry status of a cultivar or breed. These are modeled SEPARATELY
+ * from commercial availability and from recommendation: a variety can be
+ * `registered` without being currently sold, `protected` without being patented,
+ * and `listed` without being recommended. See docs/registry-status-semantics.md.
+ */
+export type RegistrationStatus =
+  | 'listed'
+  | 'registered'
+  | 'protected'
+  | 'expired'
+  | 'withdrawn'
+  | 'historical'
+  | 'conservation'
+  | 'unknown';
+
+/**
+ * FAO DAD-IS–aligned breed conservation/risk status. Only used when an
+ * authoritative source attests it; otherwise `unknown`.
+ */
+export type ConservationStatus =
+  | 'not-at-risk'
+  | 'vulnerable'
+  | 'endangered'
+  | 'endangered-maintained'
+  | 'critical'
+  | 'critical-maintained'
+  | 'extinct'
+  | 'unknown';
+
+/**
+ * A reference to a cultivar/breed record in an authoritative registry. Record
+ * identifiers and URLs are NEVER invented — omit when not reliably known.
+ */
+export interface RegistryReference {
+  /** Registry organization, e.g. "USDA GRIN", "UPOV PLUTO", "FAO DAD-IS". */
+  registry: string;
+  /** Optional link to a source in the source registry (must resolve if set). */
+  sourceId?: string;
+  /** Record identifier within the registry, when reliably known. */
+  recordId?: string;
+  /** Direct URL to the registry record/search, when stable and known. */
+  url?: string;
+  /** Jurisdiction the registry applies to (e.g. "EU", "United States"). */
+  jurisdiction?: string;
+  /** Status this specific registry reference attests (may differ per registry). */
+  status?: RegistrationStatus;
+  /** ISO date/version the reference reflects. */
+  asOf?: string;
+  /** What the registry entry attests, plus caveats. */
+  note?: string;
+}
+
+/**
+ * A crop variety / cultivar / landrace / documented hybrid, tied to a parent
+ * crop species, geography, registries, and authoritative sources. Not a generic
+ * article — a structured record. Reuses the full Phase 2.1 provenance, evidence,
+ * image-licensing, and semantic-relation infrastructure via BaseContent.
+ */
+export interface CultivarContent extends BaseContent {
+  contentType: 'cultivar';
+  /** Accepted cultivar name / denomination (may differ from display title). */
+  acceptedName?: string;
+  /** Parent crop species (must resolve to a published crop). */
+  parentCrop: ContentRef;
+  /** Botanical taxon, e.g. "Triticum aestivum". */
+  botanicalTaxon?: string;
+  /** e.g. "Cultivar", "Landrace", "F1 hybrid", "Inbred line", "Clonal selection". */
+  cultivarType?: string;
+  /** Breeding method, e.g. "Selection", "Cross-breeding", "Open-pollinated". */
+  breedingType?: string;
+  originCountry?: string;
+  originRegion?: string;
+  /** Year of release/registration when reliably documented (never invented). */
+  yearReleased?: string;
+  /** Breeder or institution when reliably documented. */
+  breederOrInstitution?: string;
+  /** Legal/registry status (modeled separately from availability). */
+  registrationStatus: RegistrationStatus;
+  /** Jurisdiction the status applies to (required for listed/registered/protected). */
+  registrationJurisdiction?: string;
+  /** ISO date/version the status reflects. */
+  registrationAsOf?: string;
+  registryReferences?: RegistryReference[];
+  /** Plant-variety-protection detail, when relevant (separate from patents). */
+  protectedStatus?: string;
+  maturityClass?: string;
+  growthHabit?: string;
+  intendedUse?: string[];
+  climateAdaptation?: string;
+  soilAdaptation?: string;
+  /** Disease-resistance claims — each requires field-level provenance. */
+  diseaseResistanceClaims?: string[];
+  /** Pest-resistance claims — each requires field-level provenance. */
+  pestResistanceClaims?: string[];
+  /** Yield characteristics — only when sourced and contextualized (needs provenance). */
+  yieldCharacteristics?: string;
+  qualityTraits?: string[];
+  geographicAvailability?: string;
+}
+
+/**
+ * A livestock breed, tied to a parent species, registries, and authoritative
+ * sources (preferring FAO DAD-IS and official herd books).
+ */
+export interface BreedContent extends BaseContent {
+  contentType: 'breed';
+  /** Parent livestock species (must resolve to a published livestock page). */
+  parentLivestock: ContentRef;
+  /** Species label, e.g. "Cattle (Bos taurus)". */
+  species?: string;
+  /** e.g. "Dairy", "Beef", "Dual-purpose", "Wool", "Meat", "Egg-laying". */
+  breedType?: string;
+  originCountry?: string;
+  originRegion?: string;
+  /** Development/recognition status (separate from conservation status). */
+  breedStatus?: RegistrationStatus;
+  /** FAO DAD-IS–aligned conservation/risk status, when authoritative. */
+  conservationStatus?: ConservationStatus;
+  registryReferences?: RegistryReference[];
+  primaryUses?: string[];
+  physicalCharacteristics?: string;
+  productionCharacteristics?: string;
+  climateAdaptation?: string;
+  managementContext?: string;
+  geographicDistribution?: string;
+}
+
 /** Discriminated union across every structured content type. */
 export type AnyContent =
   | CropContent
@@ -383,7 +542,9 @@ export type AnyContent =
   | MachineryContent
   | ClimateContent
   | FarmingSystemContent
-  | IrrigationMethodContent;
+  | IrrigationMethodContent
+  | CultivarContent
+  | BreedContent;
 
 /* -------------------------------------------------------------------------- */
 /*  Glossary                                                                  */

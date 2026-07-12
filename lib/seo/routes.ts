@@ -23,6 +23,8 @@ const STATIC_ROUTES: Omit<RouteEntry, 'lastModified'>[] = [
   { path: '/plant-diseases', changeFrequency: 'weekly', priority: 0.9 },
   { path: '/pests', changeFrequency: 'weekly', priority: 0.9 },
   { path: '/livestock', changeFrequency: 'weekly', priority: 0.9 },
+  { path: '/cultivars', changeFrequency: 'weekly', priority: 0.9 },
+  { path: '/breeds', changeFrequency: 'weekly', priority: 0.9 },
   { path: '/plant-nutrition', changeFrequency: 'weekly', priority: 0.9 },
   { path: '/fertilizers', changeFrequency: 'weekly', priority: 0.9 },
   { path: '/soil-health', changeFrequency: 'weekly', priority: 0.9 },

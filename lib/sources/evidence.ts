@@ -42,8 +42,17 @@ export const EVIDENCE_TIER: Record<string, EvidenceTier> = {
   cip: 1,
   cgiar: 1,
   isric: 1,
+  // Cultivar & breed registries (Phase 3A)
+  upov: 1, // intergovernmental official variety-protection registry
+  cpvo: 1, // EU official plant-variety-rights registry
+  'usda-grin': 1, // USDA ARS germplasm registry
+  'ec-plant-variety': 1, // official EU variety catalogue
+  iita: 1, // CGIAR research institute
+  icar: 1, // national agricultural research institute
+  embrapa: 1, // national agricultural research institute
   // Tier 2 — extension services and professional reference databases
   cabi: 2,
+  'livestock-conservancy': 2, // reputable conservation NGO registry (context)
   'uc-ipm': 2,
   'umn-extension': 2,
   'psu-extension': 2,
@@ -75,6 +84,11 @@ export const URL_SPECIFICITY: Record<string, UrlSpecificity> = {
   cabi: 'record',
   'ncbi-taxonomy': 'record',
   'us-epa': 'program',
+  upov: 'program', // PLUTO database entry point
+  cpvo: 'program',
+  'usda-grin': 'program', // GRIN-Global search entry point
+  'ec-plant-variety': 'program',
+  'livestock-conservancy': 'organization',
 };
 
 /** Tier for a source id (defaults to 3 = weakest if unclassified). */

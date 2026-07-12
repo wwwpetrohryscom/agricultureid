@@ -96,6 +96,20 @@ const INTENTIONAL_MARKERS = [
   'trade patterns change over time',
   'trade patterns shift over time',
   'trade patterns vary by region and change',
+  // Phase 3A — standardized cultivar/breed scope, provenance, and status
+  // disclaimers. These are intentional, verbatim honesty statements that SHOULD
+  // read identically on every record (varying a scope/uncertainty disclaimer is
+  // worse than repeating it). Substantive descriptive prose is NOT whitelisted.
+  'not husbandry, breeding, or veterinary guidance',
+  'not strain-specific performance data or husbandry guidance',
+  'not veterinary or detailed husbandry guidance',
+  'Adaptation and trait notes are region- and season-specific',
+  'Conservation and registry status is date- and source-specific',
+  'Conservation risk status is not asserted here',
+  'Cooking and agronomic behaviour is region- and season-specific',
+  'Registry record identifiers and deep links are omitted',
+  'Milk yield and composition are highly management-dependent',
+  'Registry listing or variety protection is jurisdiction- and date-specific',
 ];
 
 export interface DupHit {

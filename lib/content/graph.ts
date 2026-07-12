@@ -24,6 +24,9 @@ export function outgoingRefs(item: AnyContent): ContentRef[] {
         ...item.commonDiseases,
         ...item.commonPests,
         ...item.suitableSoils,
+        // Parent → child: the crop page enumerates its notable cultivars
+        // (ParentSubEntities panel), so those are genuine navigation edges.
+        ...childRefs('cultivar', item.slug),
       );
       break;
     case 'soil':
@@ -35,6 +38,16 @@ export function outgoingRefs(item: AnyContent): ContentRef[] {
     case 'pest':
       refs.push(...item.hostCrops);
       break;
+    case 'livestock':
+      // Parent → child: the livestock page enumerates its notable breeds.
+      refs.push(...childRefs('breed', item.slug));
+      break;
+    case 'cultivar':
+      refs.push(item.parentCrop);
+      break;
+    case 'breed':
+      refs.push(item.parentLivestock);
+      break;
     default:
       // Newer content types (nutrient, fertilizer, soil-topic, machinery,
       // climate, farming-system, irrigation-method) and livestock express all
@@ -42,6 +55,29 @@ export function outgoingRefs(item: AnyContent): ContentRef[] {
       break;
   }
   return refs;
+}
+
+/**
+ * Child sub-entity refs (cultivars of a crop / breeds of a livestock species),
+ * computed from parent links. Modeled as parent→child navigation edges because
+ * the parent page renders them (see ParentSubEntities).
+ */
+function childRefs(
+  childType: 'cultivar' | 'breed',
+  parentSlug: string,
+): ContentRef[] {
+  const out: ContentRef[] = [];
+  for (const c of ALL_CONTENT) {
+    if (c.editorialStatus !== 'published') continue;
+    if (c.contentType === 'cultivar' && childType === 'cultivar') {
+      if (c.parentCrop.slug === parentSlug)
+        out.push({ type: 'cultivar', slug: c.slug });
+    } else if (c.contentType === 'breed' && childType === 'breed') {
+      if (c.parentLivestock.slug === parentSlug)
+        out.push({ type: 'breed', slug: c.slug });
+    }
+  }
+  return out;
 }
 
 /** Reverse index: refKey(target) → items that reference it. */
@@ -95,6 +131,9 @@ export function relatedGroupsFor(item: AnyContent): RelatedGroup[] {
 
   const groups: RelatedGroup[] = [];
   for (const type of CONTENT_TYPES) {
+    // Cultivars and breeds are surfaced through the dedicated ParentSubEntities
+    // panel, not the generic related-content groups (avoids double-listing).
+    if (type === 'cultivar' || type === 'breed') continue;
     const items = collected
       .filter((c) => c.contentType === type)
       .sort((a, b) => a.title.localeCompare(b.title));
