@@ -15,7 +15,7 @@ export function ContentCard({ item, showType = false }: ContentCardProps) {
     <li className="group">
       <Link
         href={contentUrlPath(item)}
-        className="flex h-full flex-col rounded-card border border-parchment-200 bg-white p-5 shadow-card transition-all hover:-translate-y-0.5 hover:border-forest-200 hover:shadow-card-hover"
+        className="flex h-full flex-col rounded-card border border-ink-100 bg-white p-5 transition-colors hover:border-forest-200 hover:bg-[#FAFAF7]"
       >
         <div className="flex items-center gap-2">
           <span className="text-xs font-semibold uppercase tracking-wide text-olive-700">
@@ -30,7 +30,7 @@ export function ContentCard({ item, showType = false }: ContentCardProps) {
             {item.scientificName}
           </p>
         )}
-        <p className="mt-2 line-clamp-3 text-sm leading-6 text-ink-600">
+        <p className="mt-3 line-clamp-3 text-sm leading-6 text-ink-600">
           {item.summary}
         </p>
       </Link>

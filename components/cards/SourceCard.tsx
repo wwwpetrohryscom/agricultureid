@@ -23,7 +23,7 @@ interface SourceCardProps {
 /** A single source rendered as a provenance card. Used in articles and /sources. */
 export function SourceCard({ source, index, citedFor }: SourceCardProps) {
   return (
-    <li className="rounded-card border border-parchment-200 bg-white p-4">
+    <li className="rounded-card border border-ink-100 bg-white p-4">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
           {typeof index === 'number' && (

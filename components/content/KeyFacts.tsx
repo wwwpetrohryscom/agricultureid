@@ -4,11 +4,11 @@ import type { KeyFact } from '@/types/content';
 export function KeyFacts({ facts }: { facts: KeyFact[] }) {
   if (facts.length === 0) return null;
   return (
-    <div className="rounded-card border border-parchment-200 bg-white">
-      <h2 className="border-b border-parchment-200 px-4 py-3 font-serif text-base font-bold text-ink-900">
+    <div className="rounded-card border border-ink-100 bg-white">
+      <h2 className="border-b border-ink-100 px-4 py-3 font-serif text-base font-bold text-ink-900">
         Key facts
       </h2>
-      <dl className="divide-y divide-parchment-100">
+      <dl className="divide-y divide-ink-100">
         {facts.map((fact, i) => (
           <div key={i} className="px-4 py-3">
             <dt className="text-xs font-semibold uppercase tracking-wide text-ink-500">

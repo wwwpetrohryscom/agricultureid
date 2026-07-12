@@ -20,7 +20,7 @@ export function TableOfContents({
   return (
     <nav
       aria-label="On this page"
-      className="rounded-card border border-parchment-200 bg-white p-4"
+      className="rounded-card border border-ink-100 bg-white p-4"
     >
       <h2 className="text-xs font-semibold uppercase tracking-wide text-ink-500">
         On this page

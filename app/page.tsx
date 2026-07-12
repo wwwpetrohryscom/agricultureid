@@ -1,21 +1,29 @@
+import Image from 'next/image';
 import Link from 'next/link';
-import { ContentCard } from '@/components/cards/ContentCard';
-import { SectionCard } from '@/components/cards/SectionCard';
 import { Container } from '@/components/ui/Container';
+import { BrandMark } from '@/components/ui/Logo';
 import {
+  contentUrlPath,
   cropsSorted,
   diseasesSorted,
   livestockSorted,
   pestsSorted,
-  soilsSorted,
   PUBLISHED_CONTENT,
+  soilsSorted,
 } from '@/lib/content/registry';
 import { SOURCES } from '@/lib/sources/registry';
-import { PRIMARY_NAV, SECTIONS } from '@/lib/site';
+import { CONTENT_TYPE_LABEL, SECTIONS } from '@/lib/site';
+import type { AnyContent } from '@/types/content';
 
-// Real, computed figures — never fabricated.
-const ENTRY_COUNT = PUBLISHED_CONTENT.length;
-const SOURCE_COUNT = SOURCES.length;
+const HERO_IMAGE = {
+  src: '/images/agriculture-fields-golden-hour.jpg',
+  alt: 'Golden-hour agricultural fields with harvested rows and distant hills in Pomar de Valdivia, Spain',
+  creator: 'Jesús Gómez Fernández',
+  sourceUrl:
+    'https://commons.wikimedia.org/wiki/File:Harvested_fields_at_sunset_in_Pomar_de_Valdivia,_Palencia.jpg',
+  license: 'CC BY 4.0',
+  licenseUrl: 'https://creativecommons.org/licenses/by/4.0/deed.en',
+} as const;
 
 const TYPE_COUNTS: Record<string, number> = {
   '/crops': cropsSorted().length,
@@ -25,307 +33,407 @@ const TYPE_COUNTS: Record<string, number> = {
   '/livestock': livestockSorted().length,
 };
 
-function sectionMeta(href: string): string | undefined {
-  const n = TYPE_COUNTS[href];
-  if (n === undefined) return 'Overview';
-  return `${n} ${n === 1 ? 'entry' : 'entries'}`;
+const EVIDENCE_POINTS = [
+  'Evidence-led content',
+  'Traceable sources',
+  'Global scope',
+  'Clearly dated updates',
+] as const;
+
+const TOPICS = [
+  {
+    href: '/crops',
+    label: 'Crops',
+    note: 'Crop profiles, agronomy, uses, and linked risks.',
+    className: 'lg:col-span-5',
+  },
+  {
+    href: '/soils',
+    label: 'Soils',
+    note: 'Texture, fertility, management, and crop suitability.',
+    className: 'lg:col-span-3',
+  },
+  {
+    href: '/plant-diseases',
+    label: 'Plant Diseases',
+    note: 'Identification, biology, hosts, and prevention principles.',
+    className: 'lg:col-span-4',
+  },
+  {
+    href: '/pests',
+    label: 'Pests',
+    note: 'Monitoring, host crops, and integrated management context.',
+    className: 'lg:col-span-3',
+  },
+  {
+    href: '/livestock',
+    label: 'Livestock',
+    note: 'Species, husbandry, nutrition, and welfare context.',
+    className: 'lg:col-span-4',
+  },
+  {
+    href: '/farm-systems',
+    label: 'Farming Systems',
+    note: 'How production systems connect crops, soils, water, and inputs.',
+    className: 'lg:col-span-5',
+  },
+] as const;
+
+const SYSTEM_NOTES = [
+  {
+    title: 'Global references',
+    text: 'Entries describe broadly applicable concepts while naming the geographic scope and limitations of each page.',
+  },
+  {
+    title: 'Local decisions',
+    text: 'Rates, dates, varieties, pest thresholds, and regulatory controls remain local decisions tied to field conditions.',
+  },
+  {
+    title: 'Connected context',
+    text: 'Crops, soils, pests, diseases, and livestock are linked through typed relationships validated by the content graph.',
+  },
+] as const;
+
+function sectionMeta(href: string): string {
+  const count = TYPE_COUNTS[href];
+  if (count === undefined) return 'Overview hub';
+  return `${count} published ${count === 1 ? 'entry' : 'entries'}`;
+}
+
+function formatDate(date: string): string {
+  return new Intl.DateTimeFormat('en', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+    timeZone: 'UTC',
+  }).format(new Date(`${date}T00:00:00Z`));
+}
+
+function sortByUpdatedDate(a: AnyContent, b: AnyContent): number {
+  const dateCompare = b.updatedAt.localeCompare(a.updatedAt);
+  if (dateCompare !== 0) return dateCompare;
+  return a.title.localeCompare(b.title);
 }
 
 export default function HomePage() {
-  const featuredCrops = cropsSorted().slice(0, 4);
-  const recentlyReviewed = [...PUBLISHED_CONTENT]
-    .sort((a, b) => ((a.reviewedAt ?? '') < (b.reviewedAt ?? '') ? 1 : -1))
-    .slice(0, 6);
+  const wheat = cropsSorted().find((item) => item.slug === 'wheat');
+  const latest = [...PUBLISHED_CONTENT].sort(sortByUpdatedDate).slice(0, 4);
+  const topics = TOPICS.flatMap((topic) => {
+    const section = SECTIONS.find((item) => item.href === topic.href);
+    return section ? [{ ...topic, section }] : [];
+  });
+  const sourceSample = SOURCES.slice(0, 6);
 
   return (
     <>
-      {/* Hero */}
-      <section className="border-b border-parchment-200 bg-gradient-to-b from-parchment-100 to-parchment-50">
-        <Container className="py-16 lg:py-24">
-          <div className="max-w-3xl">
-            <p className="inline-flex items-center rounded-full border border-forest-200 bg-forest-50 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-forest-700">
-              Global Agriculture Knowledge &amp; Intelligence
-            </p>
-            <h1 className="mt-5 font-serif text-5xl font-bold leading-[1.05] tracking-tight text-ink-900 sm:text-6xl">
-              A structured, evidence-based reference for agriculture
+      <section className="relative isolate min-h-[570px] overflow-hidden bg-forest-950 text-white">
+        <Image
+          src={HERO_IMAGE.src}
+          alt={HERO_IMAGE.alt}
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center"
+        />
+        <div className="absolute inset-0 bg-forest-950/35" aria-hidden="true" />
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              'linear-gradient(90deg, rgba(13,31,22,0.86) 0%, rgba(13,31,22,0.62) 42%, rgba(13,31,22,0.16) 100%)',
+          }}
+          aria-hidden="true"
+        />
+
+        <Container className="relative z-10 flex min-h-[570px] items-center py-16 lg:py-20">
+          <div className="max-w-2xl">
+            <div className="flex items-center gap-3">
+              <BrandMark className="h-12 w-12 shrink-0 sm:h-14 sm:w-14" />
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#e8d89e]">
+                AgricultureID
+              </p>
+            </div>
+            <h1 className="mt-6 font-serif text-5xl font-bold leading-[1.04] tracking-tight text-white sm:text-6xl lg:text-7xl">
+              Global Agriculture Knowledge
             </h1>
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-ink-700">
-              AgricultureID brings together crops, soils, plant diseases, pests,
-              livestock, and agricultural systems into one calm, well-sourced
-              knowledge platform — built for farmers, agronomists, researchers,
-              and students.
+            <p className="mt-6 max-w-xl text-lg leading-8 text-parchment-100">
+              Evidence-based agricultural knowledge, practical context, and
+              structured reference data for crops, soils, plant health,
+              livestock, and farming systems.
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <Link
                 href="#explore"
-                className="rounded-md bg-forest-700 px-5 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-forest-800"
+                className="rounded-md bg-forest-700 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-forest-800"
               >
                 Explore Agriculture
               </Link>
               <Link
                 href="/crops"
-                className="rounded-md border border-forest-300 bg-white px-5 py-3 text-sm font-semibold text-forest-700 transition-colors hover:bg-forest-50"
+                className="rounded-md border border-white/60 bg-white/10 px-5 py-3 text-sm font-semibold text-white backdrop-blur transition-colors hover:bg-white hover:text-forest-950"
               >
                 Browse Crops
               </Link>
             </div>
-            <dl className="mt-10 flex flex-wrap gap-x-10 gap-y-4">
-              <Stat
-                value={`${ENTRY_COUNT}`}
-                label="Sourced reference entries"
-              />
-              <Stat value={`${SOURCE_COUNT}`} label="Authoritative sources" />
-              <Stat value="5" label="Core knowledge domains" />
-            </dl>
+          </div>
+        </Container>
+
+        <p className="absolute bottom-3 right-4 z-10 max-w-[18rem] text-right text-[0.6875rem] leading-4 text-white/75">
+          Photo:{' '}
+          <a href={HERO_IMAGE.sourceUrl} className="underline hover:text-white">
+            {HERO_IMAGE.creator}
+          </a>
+          {' via '}
+          <a href={HERO_IMAGE.sourceUrl} className="underline hover:text-white">
+            Wikimedia Commons
+          </a>
+          ,{' '}
+          <a
+            href={HERO_IMAGE.licenseUrl}
+            className="underline hover:text-white"
+          >
+            {HERO_IMAGE.license}
+          </a>
+          . Cropped and resized from the original.
+        </p>
+      </section>
+
+      <section className="border-b border-ink-100 bg-white">
+        <Container className="py-5">
+          <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {EVIDENCE_POINTS.map((point) => (
+              <li key={point} className="flex items-center gap-3">
+                <span
+                  className="h-2.5 w-2.5 rounded-full bg-[#c7a44a]"
+                  aria-hidden="true"
+                />
+                <span className="text-sm font-semibold text-ink-800">
+                  {point}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </Container>
+      </section>
+
+      <Container id="explore" className="scroll-mt-20 py-16 lg:py-20">
+        <SectionHeading
+          eyebrow="Explore key topics"
+          title="Structured agriculture, not a flat blog"
+          description="The knowledge base is organized by domain, with each section connected through typed relationships and source-backed entries."
+        />
+        <div className="mt-9 grid grid-cols-1 gap-4 lg:grid-cols-12">
+          {topics.map((topic) => (
+            <Link
+              key={topic.href}
+              href={topic.href}
+              className={`${topic.className} group rounded-card border border-ink-100 bg-white p-6 transition-colors hover:border-forest-200 hover:bg-[#FAFAF7]`}
+            >
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-wide text-olive-700">
+                    {sectionMeta(topic.href)}
+                  </p>
+                  <h3 className="mt-2 font-serif text-2xl font-bold text-forest-950 group-hover:text-forest-800">
+                    {topic.label}
+                  </h3>
+                </div>
+                <span
+                  className="mt-1 text-lg text-[#c7a44a] transition-transform group-hover:translate-x-0.5"
+                  aria-hidden="true"
+                >
+                  &rarr;
+                </span>
+              </div>
+              <p className="mt-4 text-sm leading-6 text-ink-600">
+                {topic.section.description}
+              </p>
+              <p className="mt-5 border-t border-ink-100 pt-4 text-sm font-medium text-ink-800">
+                {topic.note}
+              </p>
+            </Link>
+          ))}
+        </div>
+      </Container>
+
+      {wheat && (
+        <section className="border-y border-ink-100 bg-[#FAFAF7]">
+          <Container className="py-16 lg:py-20">
+            <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
+              <div>
+                <p className="text-sm font-semibold uppercase tracking-wide text-olive-700">
+                  Featured crop
+                </p>
+                <h2 className="mt-2 font-serif text-4xl font-bold tracking-tight text-forest-950">
+                  {wheat.title}
+                </h2>
+                {wheat.scientificName && (
+                  <p className="mt-2 text-base italic text-ink-600">
+                    {wheat.scientificName}
+                  </p>
+                )}
+                <p className="mt-5 max-w-xl leading-7 text-ink-700">
+                  {wheat.summary}
+                </p>
+                <dl className="mt-7 space-y-3">
+                  {wheat.keyFacts.slice(0, 4).map((fact) => (
+                    <div key={fact.label}>
+                      <dt className="text-xs font-semibold uppercase tracking-wide text-ink-500">
+                        {fact.label}
+                      </dt>
+                      <dd className="mt-1 text-sm leading-6 text-ink-800">
+                        {fact.value}
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
+                <Link
+                  href={contentUrlPath(wheat)}
+                  className="mt-8 inline-flex rounded-md bg-forest-800 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-forest-950"
+                >
+                  Read the wheat guide
+                </Link>
+              </div>
+
+              <div className="rounded-card border border-ink-100 bg-white p-6 lg:p-8">
+                <h3 className="font-serif text-2xl font-bold text-forest-950">
+                  Why it matters in the registry
+                </h3>
+                <p className="mt-4 leading-7 text-ink-700">
+                  Wheat links crop biology, soil suitability, water context,
+                  plant disease, pest pressure, and source methodology in one
+                  validated page. The article avoids universal rates and dates
+                  where decisions are local.
+                </p>
+                <div className="mt-6 grid gap-4 sm:grid-cols-2">
+                  <FactPanel
+                    title="Geographic scope"
+                    text={wheat.geographicScope}
+                  />
+                  {wheat.climateContext && (
+                    <FactPanel
+                      title="Climate context"
+                      text={wheat.climateContext}
+                    />
+                  )}
+                </div>
+                <p className="mt-6 text-sm text-ink-500">
+                  Updated {formatDate(wheat.updatedAt)}
+                  {wheat.reviewedAt
+                    ? `; reviewed ${formatDate(wheat.reviewedAt)}`
+                    : ''}
+                </p>
+              </div>
+            </div>
+          </Container>
+        </section>
+      )}
+
+      <section className="bg-white">
+        <Container className="py-16 lg:py-20">
+          <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+            <SectionHeading
+              eyebrow="Global knowledge and local context"
+              title="A reference system built for regional judgment"
+              description="AgricultureID separates stable reference knowledge from field decisions that depend on climate, regulation, soil tests, varieties, and production goals."
+            />
+            <div className="grid gap-4 sm:grid-cols-3">
+              {SYSTEM_NOTES.map((item) => (
+                <div
+                  key={item.title}
+                  className="border-l border-[#c7a44a] pl-5"
+                >
+                  <h3 className="font-serif text-xl font-bold text-forest-950">
+                    {item.title}
+                  </h3>
+                  <p className="mt-3 text-sm leading-6 text-ink-600">
+                    {item.text}
+                  </p>
+                </div>
+              ))}
+            </div>
           </div>
         </Container>
       </section>
 
-      {/* Topic exploration grid */}
-      <Container id="explore" className="scroll-mt-20 py-16">
-        <SectionHeading
-          eyebrow="Explore"
-          title="Browse the knowledge base"
-          description="Each domain collects structured, sourced reference entries and overviews."
-        />
-        <ul className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {SECTIONS.filter((s) => s.active).map((s) => (
-            <SectionCard
-              key={s.href}
-              label={s.label}
-              href={s.href}
-              description={s.description}
-              meta={sectionMeta(s.href)}
-            />
-          ))}
-        </ul>
-      </Container>
-
-      {/* Featured crop knowledge */}
-      {featuredCrops.length > 0 && (
-        <section className="border-y border-parchment-200 bg-parchment-100/60">
-          <Container className="py-16">
-            <div className="flex items-end justify-between gap-4">
+      {latest.length > 0 && (
+        <section className="border-t border-ink-100 bg-white">
+          <Container className="py-16 lg:py-20">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
               <SectionHeading
-                eyebrow="Featured"
-                title="Crop knowledge"
-                description="In-depth, sourced entries on major crops."
+                eyebrow="Latest knowledge"
+                title="Recently updated entries"
+                description="Selected from published registry entries using their recorded update dates."
               />
               <Link
-                href="/crops"
-                className="hidden shrink-0 text-sm font-semibold text-forest-700 hover:underline sm:block"
+                href="/sources"
+                className="text-sm font-semibold text-forest-800 hover:underline"
               >
-                All crops →
+                View source registry
               </Link>
             </div>
-            <ul className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-              {featuredCrops.map((item) => (
-                <ContentCard key={item.id} item={item} />
+            <ul className="mt-9 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {latest.map((item) => (
+                <LatestItem key={item.id} item={item} />
               ))}
             </ul>
           </Container>
         </section>
       )}
 
-      {/* Agriculture systems */}
-      <Container className="py-16">
-        <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
-          <div>
-            <SectionHeading
-              eyebrow="Systems"
-              title="From soil to system"
-              description="Agriculture is more than individual crops and animals. AgricultureID connects them through the systems, soils, water, and nutrition that sustain them."
-            />
-            <ul className="mt-6 space-y-3">
-              {[
-                {
-                  href: '/farm-systems',
-                  label: 'Farm systems',
-                  note: 'Conventional, organic, regenerative, and protected cultivation.',
-                },
-                {
-                  href: '/irrigation',
-                  label: 'Irrigation',
-                  note: 'Water management principles and efficiency considerations.',
-                },
-                {
-                  href: '/plant-nutrition',
-                  label: 'Plant nutrition',
-                  note: 'Essential nutrients and nutrient-management principles.',
-                },
-              ].map((row) => (
-                <li key={row.href}>
-                  <Link
-                    href={row.href}
-                    className="group flex items-start gap-3 rounded-card border border-parchment-200 bg-white p-4 hover:border-forest-200"
-                  >
-                    <span className="mt-0.5 text-forest-500" aria-hidden="true">
-                      ▪
-                    </span>
-                    <span>
-                      <span className="font-semibold text-ink-900 group-hover:text-forest-700">
-                        {row.label}
-                      </span>
-                      <span className="block text-sm text-ink-600">
-                        {row.note}
-                      </span>
-                    </span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className="rounded-card border border-parchment-200 bg-white p-8">
-            <h3 className="font-serif text-xl font-bold text-ink-900">
-              Connected by a knowledge graph
-            </h3>
-            <p className="mt-3 leading-7 text-ink-700">
-              Crops link to the soils they suit and the pests and diseases that
-              affect them; diseases and pests link back to their host crops.
-              These relationships are typed and validated, so navigation stays
-              consistent as the platform grows.
-            </p>
-            <div className="mt-5 flex flex-wrap gap-2">
-              {PRIMARY_NAV.slice(0, 6).map((s) => (
-                <Link
-                  key={s.href}
-                  href={s.href}
-                  className="rounded-full border border-parchment-200 px-3 py-1 text-sm text-ink-700 hover:border-forest-200 hover:text-forest-700"
-                >
-                  {s.label}
-                </Link>
-              ))}
-            </div>
-          </div>
-        </div>
-      </Container>
-
-      {/* Evidence and methodology */}
-      <section className="bg-forest-800 text-parchment-100">
-        <Container className="py-16">
-          <div className="grid gap-10 lg:grid-cols-[1.2fr_1fr] lg:items-center">
+      <section className="bg-forest-950 text-parchment-100">
+        <Container className="py-16 lg:py-20">
+          <div className="grid gap-10 lg:grid-cols-[1fr_0.9fr] lg:items-start">
             <div>
-              <p className="text-sm font-semibold uppercase tracking-wide text-forest-200">
-                Evidence &amp; provenance
+              <p className="text-sm font-semibold uppercase tracking-wide text-[#c7a44a]">
+                Source methodology
               </p>
-              <h2 className="mt-3 font-serif text-3xl font-bold text-white">
-                Built on sources you can check
+              <h2 className="mt-3 font-serif text-4xl font-bold tracking-tight text-white">
+                Every claim needs provenance
               </h2>
-              <p className="mt-4 max-w-xl leading-8 text-parchment-200">
-                Every reference entry cites the authoritative organizations and
-                publications it draws on — from FAO and USDA to research
-                institutes, extension services, and official plant-protection
-                and animal-health bodies. We document how sources are selected,
-                and we are explicit about uncertainty and geographic scope.
+              <p className="mt-5 max-w-2xl leading-8 text-parchment-200">
+                AgricultureID cites sources through a structured registry. The
+                current registry contains {SOURCES.length} source records, and
+                published entries fail validation if citations do not resolve.
               </p>
-              <div className="mt-6 flex flex-wrap gap-3">
+              <p className="mt-4 max-w-2xl text-sm leading-6 text-parchment-300">
+                Mentioned organizations are cited for public reference material;
+                their presence is not an endorsement of AgricultureID.
+              </p>
+              <div className="mt-7 flex flex-wrap gap-3">
                 <Link
                   href="/methodology"
-                  className="rounded-md bg-parchment-50 px-4 py-2.5 text-sm font-semibold text-forest-800 hover:bg-white"
+                  className="rounded-md bg-white px-5 py-3 text-sm font-semibold text-forest-950 transition-colors hover:bg-parchment-100"
                 >
-                  Sources &amp; methodology
+                  Read methodology
                 </Link>
                 <Link
                   href="/sources"
-                  className="rounded-md border border-forest-500 px-4 py-2.5 text-sm font-semibold text-parchment-100 hover:bg-forest-700"
+                  className="rounded-md border border-white/25 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/10"
                 >
-                  Source registry
+                  Browse sources
                 </Link>
               </div>
             </div>
-            <ul className="space-y-3 text-sm">
-              {[
-                'Authoritative, primary sources preferred over secondary commentary',
-                'Explicit geographic scope and limitations on every entry',
-                'No universal doses, dates, or yields presented without context',
-                'A published corrections process for factual errors',
-              ].map((point) => (
+            <ul className="grid gap-3 sm:grid-cols-2">
+              {sourceSample.map((source) => (
                 <li
-                  key={point}
-                  className="flex items-start gap-3 rounded-card bg-forest-700/60 p-4"
+                  key={source.id}
+                  className="rounded-card border border-white/10 bg-white/[0.04] p-4"
                 >
-                  <span aria-hidden="true" className="mt-0.5 text-olive-300">
-                    ✓
-                  </span>
-                  <span className="text-parchment-100">{point}</span>
+                  <p className="text-sm font-semibold text-white">
+                    {source.organization}
+                  </p>
+                  <p className="mt-2 text-xs uppercase tracking-wide text-parchment-300">
+                    {source.jurisdiction}
+                  </p>
                 </li>
               ))}
             </ul>
           </div>
         </Container>
       </section>
-
-      {/* Data and tools preview */}
-      <Container className="py-16">
-        <div className="grid gap-5 sm:grid-cols-2">
-          <div className="rounded-card border border-parchment-200 bg-white p-7">
-            <h3 className="font-serif text-xl font-bold text-ink-900">
-              Agricultural data
-            </h3>
-            <p className="mt-3 leading-7 text-ink-700">
-              A guide to the authoritative statistical sources for agriculture —
-              production, area, trade, and more — and how AgricultureID
-              references them. We link to primary datasets rather than
-              republishing figures that change each season.
-            </p>
-            <Link
-              href="/agricultural-data"
-              className="mt-4 inline-block text-sm font-semibold text-forest-700 hover:underline"
-            >
-              Explore agricultural data →
-            </Link>
-          </div>
-          <div className="rounded-card border border-parchment-200 bg-white p-7">
-            <h3 className="font-serif text-xl font-bold text-ink-900">
-              Glossary
-            </h3>
-            <p className="mt-3 leading-7 text-ink-700">
-              Clear definitions of key agronomic terms — from soil texture and
-              evapotranspiration to integrated pest management — cross-linked to
-              the entries that use them.
-            </p>
-            <Link
-              href="/glossary"
-              className="mt-4 inline-block text-sm font-semibold text-forest-700 hover:underline"
-            >
-              Open the glossary →
-            </Link>
-          </div>
-        </div>
-      </Container>
-
-      {/* Recently reviewed */}
-      {recentlyReviewed.length > 0 && (
-        <section className="border-t border-parchment-200 bg-parchment-100/60">
-          <Container className="py-16">
-            <SectionHeading
-              eyebrow="Recently reviewed"
-              title="Latest reference entries"
-              description="Entries reviewed as part of the initial launch set."
-            />
-            <ul className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {recentlyReviewed.map((item) => (
-                <ContentCard key={item.id} item={item} showType />
-              ))}
-            </ul>
-          </Container>
-        </section>
-      )}
     </>
-  );
-}
-
-function Stat({ value, label }: { value: string; label: string }) {
-  return (
-    <div>
-      <dt className="sr-only">{label}</dt>
-      <dd>
-        <span className="font-serif text-3xl font-bold text-forest-700">
-          {value}
-        </span>
-        <span className="mt-1 block text-sm text-ink-600">{label}</span>
-      </dd>
-    </div>
   );
 }
 
@@ -343,12 +451,47 @@ function SectionHeading({
       <p className="text-sm font-semibold uppercase tracking-wide text-olive-700">
         {eyebrow}
       </p>
-      <h2 className="mt-2 font-serif text-3xl font-bold tracking-tight text-ink-900">
+      <h2 className="mt-2 font-serif text-3xl font-bold tracking-tight text-forest-950 sm:text-4xl">
         {title}
       </h2>
       {description && (
-        <p className="mt-3 leading-7 text-ink-600">{description}</p>
+        <p className="mt-4 leading-7 text-ink-600">{description}</p>
       )}
     </div>
+  );
+}
+
+function FactPanel({ title, text }: { title: string; text: string }) {
+  return (
+    <div className="rounded-card border border-ink-100 bg-[#FAFAF7] p-4">
+      <h4 className="text-xs font-semibold uppercase tracking-wide text-ink-500">
+        {title}
+      </h4>
+      <p className="mt-2 text-sm leading-6 text-ink-700">{text}</p>
+    </div>
+  );
+}
+
+function LatestItem({ item }: { item: AnyContent }) {
+  return (
+    <li>
+      <Link
+        href={contentUrlPath(item)}
+        className="group flex h-full flex-col rounded-card border border-ink-100 bg-white p-5 transition-colors hover:border-forest-200 hover:bg-[#FAFAF7]"
+      >
+        <p className="text-xs font-semibold uppercase tracking-wide text-olive-700">
+          {CONTENT_TYPE_LABEL[item.contentType]}
+        </p>
+        <h3 className="mt-2 font-serif text-xl font-bold text-forest-950 group-hover:text-forest-800">
+          {item.title}
+        </h3>
+        <p className="mt-3 line-clamp-4 flex-1 text-sm leading-6 text-ink-600">
+          {item.summary}
+        </p>
+        <p className="mt-5 text-xs font-medium text-ink-500">
+          Updated {formatDate(item.updatedAt)}
+        </p>
+      </Link>
+    </li>
   );
 }

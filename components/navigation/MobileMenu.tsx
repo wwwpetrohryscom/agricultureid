@@ -36,7 +36,7 @@ export function MobileMenu({ sections }: MobileMenuProps) {
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
         aria-controls="mobile-menu"
-        className="inline-flex items-center justify-center rounded-md p-2 text-ink-700 hover:bg-parchment-100"
+        className="inline-flex h-10 w-10 items-center justify-center rounded-md text-ink-700 hover:bg-[#FAFAF7]"
       >
         <span className="sr-only">{open ? 'Close menu' : 'Open menu'}</span>
         <svg
@@ -67,7 +67,7 @@ export function MobileMenu({ sections }: MobileMenuProps) {
       {open && (
         <div
           id="mobile-menu"
-          className="absolute inset-x-0 top-full z-40 border-t border-parchment-200 bg-parchment-50 shadow-card"
+          className="absolute inset-x-0 top-full z-40 border-t border-ink-100 bg-white shadow-card"
         >
           <ul className="max-h-[70vh] space-y-0.5 overflow-y-auto px-4 py-4">
             {sections.map((s) => (
@@ -75,7 +75,7 @@ export function MobileMenu({ sections }: MobileMenuProps) {
                 <Link
                   href={s.href}
                   onClick={() => setOpen(false)}
-                  className="block rounded-md px-3 py-2.5 text-base font-medium text-ink-800 hover:bg-parchment-100 hover:text-forest-700"
+                  className="block rounded-md px-3 py-2.5 text-base font-medium text-ink-800 hover:bg-[#FAFAF7] hover:text-forest-800"
                 >
                   {s.label}
                 </Link>

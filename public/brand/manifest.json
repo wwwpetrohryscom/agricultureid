@@ -1,18 +1,65 @@
 {
-  "note": "All AgricultureID brand and preview assets are original works created for this project. No third-party photographs or copyrighted logos are used.",
-  "license": "Original work © AgricultureID. Free to reuse within the project.",
+  "note": "AgricultureID brand assets are original vector work created for this project. Third-party photographic assets are used only with verified compatible licensing and attribution.",
   "assets": [
     {
-      "file": "app/icon.svg",
-      "type": "favicon / brand mark",
-      "subject": "AgricultureID sprout-in-tile logomark",
-      "creator": "AgricultureID (original geometric SVG)",
+      "file": "public/brand/agricultureid-mark.svg",
+      "type": "brand mark source",
+      "subject": "Circular AgricultureID plant-and-field logomark",
+      "creator": "AgricultureID (original flat SVG interpretation of the approved brand reference)",
       "license": "Original work",
-      "altText": "AgricultureID logo: a stylised sprout in a rounded tile"
+      "altText": "AgricultureID logo: a young plant above curved field rows inside a circular gold outline"
+    },
+    {
+      "file": "public/brand/agricultureid-logo.svg",
+      "type": "primary brand lockup",
+      "subject": "AgricultureID wordmark and plant-and-field mark",
+      "creator": "AgricultureID (original SVG composition)",
+      "license": "Original work",
+      "altText": "AgricultureID"
+    },
+    {
+      "file": "public/brand/agricultureid-logo-light.svg",
+      "type": "light brand lockup",
+      "subject": "AgricultureID wordmark and plant-and-field mark for dark backgrounds",
+      "creator": "AgricultureID (original SVG composition)",
+      "license": "Original work",
+      "altText": "AgricultureID"
+    },
+    {
+      "file": "public/brand/agricultureid-mark-monochrome.svg",
+      "type": "monochrome brand mark",
+      "subject": "Single-color AgricultureID plant-and-field mark",
+      "creator": "AgricultureID (original SVG composition)",
+      "license": "Original work",
+      "altText": "AgricultureID logo"
+    },
+    {
+      "file": "public/brand/mark.svg",
+      "type": "legacy brand mark alias",
+      "subject": "Circular AgricultureID plant-and-field logomark",
+      "creator": "AgricultureID (original SVG composition)",
+      "license": "Original work",
+      "altText": "AgricultureID logo"
+    },
+    {
+      "file": "app/icon.svg",
+      "type": "favicon / app icon SVG",
+      "subject": "Circular AgricultureID plant-and-field logomark",
+      "creator": "AgricultureID (original SVG composition)",
+      "license": "Original work",
+      "altText": "AgricultureID logo"
+    },
+    {
+      "file": "app/favicon.ico",
+      "type": "favicon ICO (16x16, 32x32, 48x48)",
+      "subject": "AgricultureID brand mark",
+      "creator": "AgricultureID (rendered from original SVG)",
+      "license": "Original work",
+      "altText": "AgricultureID logo"
     },
     {
       "file": "app/icon.png",
-      "type": "favicon (48x48)",
+      "type": "favicon PNG (48x48)",
       "subject": "AgricultureID brand mark",
       "creator": "AgricultureID (rendered from original SVG)",
       "license": "Original work",
@@ -20,7 +67,7 @@
     },
     {
       "file": "app/apple-icon.png",
-      "type": "apple touch icon (180x180)",
+      "type": "Apple touch icon (180x180)",
       "subject": "AgricultureID brand mark",
       "creator": "AgricultureID (rendered from original SVG)",
       "license": "Original work",
@@ -29,26 +76,40 @@
     {
       "file": "app/opengraph-image.png",
       "type": "Open Graph preview (1200x630)",
-      "subject": "AgricultureID typographic social card",
-      "creator": "AgricultureID (original HTML/CSS composition, no photography)",
-      "license": "Original work",
-      "altText": "AgricultureID — Global Agriculture Knowledge and Intelligence"
+      "subject": "AgricultureID social preview over verified agricultural landscape",
+      "creator": "AgricultureID (original composition using the licensed Wikimedia Commons source listed below)",
+      "license": "Original composition; background photograph licensed CC BY 4.0",
+      "altText": "AgricultureID — Global Agriculture Knowledge"
     },
     {
       "file": "app/twitter-image.png",
       "type": "Twitter/X preview (1200x630)",
-      "subject": "AgricultureID typographic social card",
-      "creator": "AgricultureID (original HTML/CSS composition, no photography)",
-      "license": "Original work",
-      "altText": "AgricultureID — Global Agriculture Knowledge and Intelligence"
+      "subject": "AgricultureID social preview over verified agricultural landscape",
+      "creator": "AgricultureID (original composition using the licensed Wikimedia Commons source listed below)",
+      "license": "Original composition; background photograph licensed CC BY 4.0",
+      "altText": "AgricultureID — Global Agriculture Knowledge"
     },
     {
-      "file": "public/brand/mark.svg",
-      "type": "brand mark source",
-      "subject": "AgricultureID logomark",
-      "creator": "AgricultureID (original geometric SVG)",
-      "license": "Original work",
-      "altText": "AgricultureID logo"
+      "file": "public/brand/og-image.png",
+      "type": "public social preview alias (1200x630)",
+      "subject": "AgricultureID social preview over verified agricultural landscape",
+      "creator": "AgricultureID (original composition using the licensed Wikimedia Commons source listed below)",
+      "license": "Original composition; background photograph licensed CC BY 4.0",
+      "altText": "AgricultureID — Global Agriculture Knowledge"
+    },
+    {
+      "file": "public/images/agriculture-fields-golden-hour.jpg",
+      "type": "homepage hero image",
+      "subject": "Harvested agricultural fields at sunset in Pomar de Valdivia, Palencia, Spain",
+      "creator": "Jesús Gómez Fernández",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Harvested_fields_at_sunset_in_Pomar_de_Valdivia,_Palencia.jpg",
+      "license": "Creative Commons Attribution 4.0 International (CC BY 4.0)",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/deed.en",
+      "attribution": "Harvested fields at sunset in Pomar de Valdivia, Palencia by Jesús Gómez Fernández, licensed CC BY 4.0 via Wikimedia Commons.",
+      "localFile": "public/images/agriculture-fields-golden-hour.jpg",
+      "pageUsage": "Homepage hero background and social preview background",
+      "changes": "Downloaded from Wikimedia Commons, cropped to 16:9, resized to 2400x1350, and compressed as JPEG for web performance.",
+      "altText": "Golden-hour agricultural fields with harvested rows and distant hills in Pomar de Valdivia, Spain"
     }
   ]
 }
