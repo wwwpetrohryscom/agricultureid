@@ -1,0 +1,54 @@
+{
+  "note": "All AgricultureID brand and preview assets are original works created for this project. No third-party photographs or copyrighted logos are used.",
+  "license": "Original work © AgricultureID. Free to reuse within the project.",
+  "assets": [
+    {
+      "file": "app/icon.svg",
+      "type": "favicon / brand mark",
+      "subject": "AgricultureID sprout-in-tile logomark",
+      "creator": "AgricultureID (original geometric SVG)",
+      "license": "Original work",
+      "altText": "AgricultureID logo: a stylised sprout in a rounded tile"
+    },
+    {
+      "file": "app/icon.png",
+      "type": "favicon (48x48)",
+      "subject": "AgricultureID brand mark",
+      "creator": "AgricultureID (rendered from original SVG)",
+      "license": "Original work",
+      "altText": "AgricultureID logo"
+    },
+    {
+      "file": "app/apple-icon.png",
+      "type": "apple touch icon (180x180)",
+      "subject": "AgricultureID brand mark",
+      "creator": "AgricultureID (rendered from original SVG)",
+      "license": "Original work",
+      "altText": "AgricultureID logo"
+    },
+    {
+      "file": "app/opengraph-image.png",
+      "type": "Open Graph preview (1200x630)",
+      "subject": "AgricultureID typographic social card",
+      "creator": "AgricultureID (original HTML/CSS composition, no photography)",
+      "license": "Original work",
+      "altText": "AgricultureID — Global Agriculture Knowledge and Intelligence"
+    },
+    {
+      "file": "app/twitter-image.png",
+      "type": "Twitter/X preview (1200x630)",
+      "subject": "AgricultureID typographic social card",
+      "creator": "AgricultureID (original HTML/CSS composition, no photography)",
+      "license": "Original work",
+      "altText": "AgricultureID — Global Agriculture Knowledge and Intelligence"
+    },
+    {
+      "file": "public/brand/mark.svg",
+      "type": "brand mark source",
+      "subject": "AgricultureID logomark",
+      "creator": "AgricultureID (original geometric SVG)",
+      "license": "Original work",
+      "altText": "AgricultureID logo"
+    }
+  ]
+}
