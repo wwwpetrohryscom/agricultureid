@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export interface SearchItem {
   title: string;
@@ -17,6 +18,14 @@ export function HeaderSearch({ items }: HeaderSearchProps) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
+  const router = useRouter();
+
+  const goToFullSearch = () => {
+    const q = query.trim();
+    setOpen(false);
+    setQuery('');
+    router.push(q ? `/search?q=${encodeURIComponent(q)}` : '/search');
+  };
 
   useEffect(() => {
     if (!open) return;
@@ -76,6 +85,9 @@ export function HeaderSearch({ items }: HeaderSearchProps) {
             id="site-search-input"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter') goToFullSearch();
+            }}
             placeholder="Search crops, soils, sources..."
             className="w-full rounded-md border border-ink-200 px-3 py-2 text-sm text-ink-900 outline-none placeholder:text-ink-400 focus:border-forest-500 focus:ring-2 focus:ring-forest-100"
           />
@@ -105,6 +117,15 @@ export function HeaderSearch({ items }: HeaderSearchProps) {
               </li>
             )}
           </ul>
+          <button
+            type="button"
+            onClick={goToFullSearch}
+            className="mt-2 block w-full rounded-md border-t border-ink-100 px-3 py-2 text-left text-sm font-medium text-olive-800 hover:bg-[#FAFAF7]"
+          >
+            {query.trim()
+              ? `Search everything for “${query.trim()}” →`
+              : 'Full-text search →'}
+          </button>
         </div>
       )}
     </div>

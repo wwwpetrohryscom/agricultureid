@@ -9,6 +9,8 @@
   },
   "scripts": {
     "dev": "next dev",
+    "search:index": "tsx scripts/build-search-index.ts",
+    "prebuild": "npm run search:index",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",

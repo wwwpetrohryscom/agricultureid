@@ -18,6 +18,7 @@ import { evidenceTier, unclassifiedSources } from '@/lib/sources/evidence';
 import { safetyReport } from '@/lib/validation/audit';
 import { geoIssues } from '@/lib/geo/validate-geo';
 import { toolIssues } from '@/lib/tools/validate-tools';
+import { searchIssues } from '@/lib/search/validate-search';
 import { UNRESOLVED_ISSUES } from '@/data/unresolved-issues';
 import {
   articleSchema,
@@ -833,6 +834,12 @@ export function validateAll(): ValidationResult {
   for (const ti of toolIssues()) {
     if (ti.level === 'error') error(ti.code, ti.message, ti.where);
     else warn(ti.code, ti.message, ti.where);
+  }
+
+  /* ---- Search & graph (Phase 3D) -------------------------------------- */
+  for (const si of searchIssues()) {
+    if (si.level === 'error') error(si.code, si.message, si.where);
+    else warn(si.code, si.message, si.where);
   }
 
   /* ---- Reachability / orphans ----------------------------------------- */

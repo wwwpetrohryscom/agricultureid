@@ -3,6 +3,8 @@ node_modules
 package-lock.json
 # Generated, checksummed dataset snapshots (Phase 3B) — machine-written JSON.
 data/snapshots
+# Generated search index (Phase 3D) — machine-written JSON.
+public/search-index.json
 public/*.svg
 public/*.png
 public/*.ico

@@ -244,6 +244,13 @@ export const SECTIONS: NavSection[] = [
     active: true,
   },
   {
+    label: 'Explore',
+    href: '/explore',
+    description:
+      'Browse the knowledge graph by entity type and relationship, or search the whole platform.',
+    active: true,
+  },
+  {
     label: 'Glossary',
     href: '/glossary',
     description: 'Definitions of key agricultural and agronomic terms.',
@@ -284,6 +291,7 @@ export const REFERENCE_NAV = SECTIONS.filter(
       '/irrigation',
       '/plant-nutrition',
       '/agricultural-data',
+      '/explore',
       '/glossary',
       '/sources',
     ].includes(s.href),

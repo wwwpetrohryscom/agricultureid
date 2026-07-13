@@ -4,6 +4,7 @@ import { ContentBlocks } from '@/components/content/ContentBlocks';
 import { KeyFacts } from '@/components/content/KeyFacts';
 import { ParentSubEntities } from '@/components/content/ParentSubEntities';
 import { RelatedContent } from '@/components/content/RelatedContent';
+import { RelationPanels } from '@/components/graph/RelationPanels';
 import { SubEntityPanel } from '@/components/content/SubEntityPanel';
 import { SourceList } from '@/components/content/SourceList';
 import { TableOfContents } from '@/components/content/TableOfContents';
@@ -98,6 +99,8 @@ export function ContentArticle({ item }: { item: AnyContent }) {
               </div>
             </section>
           ))}
+
+          <RelationPanels item={item} />
 
           <ParentSubEntities item={item} />
 
