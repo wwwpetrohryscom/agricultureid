@@ -14,6 +14,7 @@ import { getSnapshot, latestStatistic, timeSeries } from '@/lib/geo/snapshots';
 import { deriveArableShareOfAgri } from '@/lib/geo/derived';
 import { INDICATOR_BY_ID } from '@/data/geo/indicators';
 import { countryPath } from '@/lib/geo/paths';
+import { regionsForCountry } from '@/lib/geo/region-registry';
 import type { CountryAgricultureProfile } from '@/types/geo';
 
 function Section({
@@ -91,8 +92,16 @@ export function CountryProfileView({
         <p className="mt-4 max-w-3xl text-lg leading-8 text-ink-700">
           {profile.overview}
         </p>
-        <div className="mt-4 flex flex-wrap gap-2">
+        <div className="mt-4 flex flex-wrap items-center gap-3">
           <Badge tone="forest">Stable overview + dated statistics</Badge>
+          {regionsForCountry(profile.slug).length > 0 && (
+            <Link
+              href={`/countries/${profile.slug}/regions`}
+              className="text-sm font-medium text-olive-800 underline underline-offset-2 hover:text-olive-900"
+            >
+              {regionsForCountry(profile.slug).length} subnational regions →
+            </Link>
+          )}
           <span className="text-xs text-ink-500">
             Updated: {profile.updatedAt}
           </span>

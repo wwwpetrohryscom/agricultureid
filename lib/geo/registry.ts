@@ -1,5 +1,5 @@
 import { countryProfiles } from '@/data/geo/profiles';
-import { REGIONS } from '@/data/geo/regions';
+import { REGIONS } from '@/data/geo/wb-regions';
 import { INDICATORS, INDICATOR_BY_SLUG } from '@/data/geo/indicators';
 import { countryMeta } from '@/lib/geo/snapshots';
 import type {

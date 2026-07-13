@@ -1,0 +1,238 @@
+import type { AgroecologicalZone } from '@/types/region';
+
+/**
+ * Agroecological/climate zones using the recognized Köppen-Geiger classification.
+ * Climate characteristics are standard climatology (cited to WMO/NOAA climate
+ * references). We do NOT infer crop suitability recommendations directly from
+ * broad zone membership — the zones are context, not prescriptions.
+ */
+const SYS = 'Köppen-Geiger climate classification';
+const VER = 'Köppen-Geiger (Kottek et al. 2006; Beck et al. 2018)';
+const SRC = [
+  { sourceId: 'wmo', citedFor: 'Climate classification context' },
+  { sourceId: 'noaa', citedFor: 'Climate normals context' },
+];
+const LIM = [
+  'Zone boundaries are climatological averages; local microclimate, elevation, and soils vary within a zone.',
+  'Membership in a broad zone does not by itself indicate crop suitability or a recommendation.',
+];
+
+function z(
+  code: string,
+  name: string,
+  group: AgroecologicalZone['group'],
+  climate: string,
+  growing: string,
+  soilVeg: string,
+  agri: string,
+  scope: string,
+): AgroecologicalZone {
+  return {
+    zoneId: `koppen-${code.toLowerCase()}`,
+    slug: `koppen-${code.toLowerCase()}`,
+    classification: code,
+    name,
+    system: SYS,
+    systemVersion: VER,
+    group,
+    climateCharacteristics: climate,
+    growingPeriodContext: growing,
+    soilVegetationContext: soilVeg,
+    agriculturalRelevance: agri,
+    geographicScope: scope,
+    sourceReferences: SRC,
+    limitations: LIM,
+    updatedAt: '2026-07-13',
+    reviewedAt: '2026-07-13',
+  };
+}
+
+export const ZONES: AgroecologicalZone[] = [
+  z(
+    'Af',
+    'Tropical rainforest',
+    'tropical',
+    'Hot all year (every month ≥ 18 °C) with heavy rainfall in every month and no dry season.',
+    'Continuous warmth allows year-round growth; light and waterlogging, not temperature, often limit cropping.',
+    'Deeply weathered, often acidic and low-fertility soils under rainforest.',
+    'Perennial tropical crops (cocoa, oil palm, rubber, banana) and shifting cultivation dominate; grain storage is difficult in constant humidity.',
+    'Amazon and Congo basins, insular Southeast Asia.',
+  ),
+  z(
+    'Am',
+    'Tropical monsoon',
+    'tropical',
+    'Hot all year with a short dry season and a pronounced heavy-rain (monsoon) season.',
+    'A distinct wet season concentrates cropping; the short dry season aids harvest and some double-cropping.',
+    'Variable; alluvial soils are widely cultivated.',
+    'Monsoon rice, jute, and tropical tree crops; timing to the monsoon is decisive.',
+    'South and Southeast Asia coasts, parts of West Africa.',
+  ),
+  z(
+    'Aw',
+    'Tropical savanna (dry winter)',
+    'tropical',
+    'Hot all year with a marked dry season (low-sun period) and a wet season.',
+    'Rainfed cropping is confined to the wet season; irrigation extends the dry season.',
+    'Often ferruginous soils; seasonal grasslands.',
+    'Sorghum, millet, maize, cotton, sugarcane, and extensive grazing; a foundational tropical cropping zone.',
+    'Sahel, Brazilian cerrado, northern Australia, much of India.',
+  ),
+  z(
+    'BWh',
+    'Hot desert',
+    'arid',
+    'Very low precipitation and high evaporation; hot.',
+    'Rainfed cropping is generally not viable; agriculture depends on irrigation.',
+    'Aridisols; sparse vegetation, salinity risk under irrigation.',
+    'Irrigated dates, wheat, and horticulture where water is available; otherwise pastoral.',
+    'Sahara, Arabian Peninsula, interior Australia.',
+  ),
+  z(
+    'BWk',
+    'Cold desert',
+    'arid',
+    'Very low precipitation with cold winters.',
+    'Short, water-limited season; irrigation essential.',
+    'Aridisols; steppe/desert vegetation.',
+    'Irrigated agriculture in oases and river valleys; extensive grazing.',
+    'Central Asia, Great Basin (USA), Patagonia.',
+  ),
+  z(
+    'BSh',
+    'Hot semi-arid (steppe)',
+    'arid',
+    'Low but not negligible rainfall; hot.',
+    'A short rainfed window; drought risk is high; supplemental irrigation common.',
+    'Often fertile but drought-prone soils.',
+    'Drought-tolerant cereals (sorghum, millet), pulses, and extensive livestock.',
+    'Sahel margins, parts of India, northeast Brazil.',
+  ),
+  z(
+    'BSk',
+    'Cold semi-arid (steppe)',
+    'arid',
+    'Low rainfall with cold winters; the classic dryland grain belt climate.',
+    'A single rainfed small-grain season; fallowing and moisture conservation are key.',
+    'Deep, fertile chernozem/mollisol steppe soils.',
+    'Dryland wheat and other small grains, and rangeland livestock — major world grain regions.',
+    'US/Canadian northern plains, Ukrainian and Kazakh steppe, interior Australia.',
+  ),
+  z(
+    'Csa',
+    'Hot-summer Mediterranean',
+    'temperate',
+    'Mild wet winters and hot dry summers.',
+    'Winter rain supports cool-season crops; summer cropping needs irrigation.',
+    'Varied; often calcareous soils.',
+    'Olives, grapes, citrus, wheat, and irrigated horticulture — the classic Mediterranean cropping mix.',
+    'Mediterranean basin, California, central Chile.',
+  ),
+  z(
+    'Csb',
+    'Warm-summer Mediterranean',
+    'temperate',
+    'Mild wet winters and warm (not hot) dry summers.',
+    'Long mild growing season; summer irrigation for many crops.',
+    'Varied; productive valley soils.',
+    'Wine grapes, tree fruit, cool-season vegetables, and grains.',
+    'Pacific Northwest coast, parts of Chile, southwest Australia.',
+  ),
+  z(
+    'Cfa',
+    'Humid subtropical',
+    'temperate',
+    'Hot humid summers and mild winters with rainfall in all seasons.',
+    'Long warm, moist season supports high-value summer cropping and double-cropping.',
+    'Often fertile, well-watered soils.',
+    'Maize, soybean, rice, cotton, sugarcane, and citrus; among the most productive croplands.',
+    'Southeast USA, Pampas, eastern China, southern Brazil.',
+  ),
+  z(
+    'Cfb',
+    'Oceanic (marine west coast)',
+    'temperate',
+    'Mild summers and winters with reliable year-round rainfall.',
+    'Long, cool, reliably moist growing season; low drought risk.',
+    'Fertile, well-structured soils; productive grassland.',
+    'Intensive dairy and livestock, wheat, barley, potatoes, and horticulture.',
+    'Western Europe, New Zealand, Pacific Northwest.',
+  ),
+  z(
+    'Cwa',
+    'Dry-winter humid subtropical',
+    'temperate',
+    'Hot wet summers and dry mild winters (monsoon-influenced subtropics).',
+    'Summer monsoon drives cropping; winter cropping needs residual moisture or irrigation.',
+    'Varied; alluvial and red soils.',
+    'Rice and summer grains in the wet season; wheat and pulses in the cooler dry season under irrigation.',
+    'Northern India, southern China, highland East Africa.',
+  ),
+  z(
+    'Dfa',
+    'Hot-summer humid continental',
+    'continental',
+    'Hot summers, cold winters, precipitation in all seasons.',
+    'A warm but frost-bounded summer season; frost dates define the crop calendar.',
+    'Deep, fertile mollisols in the core belts.',
+    'Maize, soybean, and wheat — the US/Eurasian grain belts.',
+    'US Corn Belt, southern Ukraine/Russia, northeast China.',
+  ),
+  z(
+    'Dfb',
+    'Warm-summer humid continental',
+    'continental',
+    'Warm summers, cold winters, year-round precipitation.',
+    'A shorter cool-summer season; small grains and forages predominate over long-season crops.',
+    'Fertile prairie and forest-margin soils.',
+    'Wheat, barley, canola, potatoes, and dairy/livestock forage.',
+    'Canadian prairies, northern Europe, central Russia.',
+  ),
+  z(
+    'Dfc',
+    'Subarctic',
+    'continental',
+    'Short cool summers and long severe winters.',
+    'Very short frost-free season limits cropping to hardy forages and short-season grains.',
+    'Cold, often poorly drained soils; boreal forest.',
+    'Limited agriculture — hardy forages, some barley/oats; mostly forestry and grazing.',
+    'Boreal Canada, Scandinavia, Siberia.',
+  ),
+  z(
+    'Dwa',
+    'Dry-winter hot-summer continental',
+    'continental',
+    'Hot wet summers and cold dry winters (monsoon-influenced continental).',
+    'Summer monsoon supports intensive summer cropping; winters are too cold/dry for cropping.',
+    'Fertile alluvial and loess soils.',
+    'Maize, rice, soybean in summer; a major East Asian cropping zone.',
+    'Northern China, Korea, parts of Central Asia.',
+  ),
+  z(
+    'Dsb',
+    'Mediterranean-influenced continental',
+    'continental',
+    'Warm dry summers and cold snowy winters.',
+    'Snowmelt and spring moisture support a single main season; summer drought limits rainfed cropping.',
+    'Varied mountain and plateau soils.',
+    'Small grains, pulses, and grazing; irrigated horticulture in valleys.',
+    'Interior Anatolia, Iranian plateau, US interior west.',
+  ),
+  z(
+    'ET',
+    'Tundra',
+    'polar',
+    'No month above 10 °C; warmest month between 0 and 10 °C.',
+    'Essentially no cropping season; frost in every month is possible.',
+    'Permafrost-affected soils; low tundra vegetation.',
+    'Not a cropping zone; reindeer/extensive grazing only.',
+    'Arctic coasts, high mountains above the tree line.',
+  ),
+];
+
+export const ZONE_BY_SLUG: ReadonlyMap<string, AgroecologicalZone> = new Map(
+  ZONES.map((z) => [z.slug, z]),
+);
+export const ZONE_BY_CODE: ReadonlyMap<string, AgroecologicalZone> = new Map(
+  ZONES.map((z) => [z.classification, z]),
+);

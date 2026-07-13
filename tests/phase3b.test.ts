@@ -10,7 +10,7 @@ import {
 import { deriveArableShareOfAgri, GEO_FORMULAS } from '@/lib/geo/derived';
 import { INDICATORS, INDICATOR_BY_ID } from '@/data/geo/indicators';
 import { countryProfiles } from '@/data/geo/profiles';
-import { REGIONS } from '@/data/geo/regions';
+import { REGIONS } from '@/data/geo/wb-regions';
 import { geoIssues } from '@/lib/geo/validate-geo';
 import { getSource } from '@/lib/sources/registry';
 
