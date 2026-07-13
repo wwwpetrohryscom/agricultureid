@@ -10,6 +10,13 @@ import {
 } from '@/lib/geo/paths';
 import { TOOLS } from '@/lib/tools/tools';
 import { allComparisons, comparisonPath } from '@/lib/comparison/registry';
+import {
+  zonesSorted,
+  zonePath,
+  allRegions,
+  regionPath as subRegionPath,
+  countriesWithRegions,
+} from '@/lib/geo/region-registry';
 
 /** Stable last-modified date for static (non-content) routes. */
 export const SITE_LAST_UPDATED = '2026-07-12';
@@ -126,12 +133,44 @@ export function allRoutes(): RouteEntry[] {
     priority: 0.5,
   }));
 
+  // Phase 4C — agroecological zones + subnational regions.
+  const zoneRoutes: RouteEntry[] = [
+    {
+      path: '/agroecological-zones',
+      lastModified: SITE_LAST_UPDATED,
+      changeFrequency: 'yearly' as const,
+      priority: 0.5,
+    },
+    ...zonesSorted().map((z) => ({
+      path: zonePath(z),
+      lastModified: z.updatedAt,
+      changeFrequency: 'yearly' as const,
+      priority: 0.4,
+    })),
+  ];
+  const regionRoutes: RouteEntry[] = [
+    ...countriesWithRegions().map((c) => ({
+      path: `/countries/${c}/regions`,
+      lastModified: SITE_LAST_UPDATED,
+      changeFrequency: 'monthly' as const,
+      priority: 0.5,
+    })),
+    ...allRegions().map((r) => ({
+      path: subRegionPath(r),
+      lastModified: r.updatedAt,
+      changeFrequency: 'monthly' as const,
+      priority: 0.5,
+    })),
+  ];
+
   return [
     ...staticRoutes,
     ...contentRoutes,
     ...geoRoutes,
     ...toolRoutes,
     ...comparisonRoutes,
+    ...zoneRoutes,
+    ...regionRoutes,
   ];
 }
 

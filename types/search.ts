@@ -19,7 +19,9 @@ export type SearchEntityType =
   | 'indicator'
   | 'tool'
   | 'glossary'
-  | 'comparison';
+  | 'comparison'
+  | 'region'
+  | 'agroecological-zone';
 
 /**
  * A published, indexable search document. Holds only the text needed for search

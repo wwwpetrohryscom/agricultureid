@@ -10,6 +10,12 @@ import { COUNTRY_PROFILES } from '@/lib/geo/registry';
 import { INDICATORS } from '@/data/geo/indicators';
 import { TOOLS } from '@/lib/tools/tools';
 import { allComparisons, comparisonPath } from '@/lib/comparison/registry';
+import {
+  allRegions,
+  regionPath,
+  zonesSorted,
+  zonePath,
+} from '@/lib/geo/region-registry';
 import { countryPath, indicatorPath } from '@/lib/geo/paths';
 import type { RelationType } from '@/types/content';
 import type { SearchDoc, SearchEntityType } from '@/types/search';
@@ -143,6 +149,35 @@ export function buildSearchDocuments(): SearchDoc[] {
     });
   }
 
+  // Subnational regions (Phase 4C).
+  for (const r of allRegions()) {
+    docs.push({
+      id: `region:${r.regionId}`,
+      type: 'region',
+      route: regionPath(r),
+      title: r.name,
+      names: [r.name, r.officialCode, ...(r.alternativeNames ?? [])],
+      category: `${r.adminLevel}`,
+      parent: r.countryCode,
+      summary: r.agriculturalLandContext,
+      facets: { entityType: ['region'], country: [r.countryCode] },
+    });
+  }
+
+  // Agroecological zones (Phase 4C).
+  for (const z of zonesSorted()) {
+    docs.push({
+      id: `zone:${z.slug}`,
+      type: 'agroecological-zone',
+      route: zonePath(z),
+      title: `${z.classification} — ${z.name}`,
+      names: [z.name, z.classification],
+      category: `Agroecological zone · ${z.group}`,
+      summary: z.agriculturalRelevance,
+      facets: { entityType: ['agroecological-zone'] },
+    });
+  }
+
   // Tools.
   for (const t of TOOLS) {
     docs.push({
@@ -180,6 +215,8 @@ const ENTITY_TYPE_LABEL: Record<string, string> = {
   tool: 'Tool',
   glossary: 'Glossary',
   comparison: 'Comparison',
+  region: 'Region',
+  'agroecological-zone': 'Agroecological zone',
 };
 
 export function entityTypeLabel(type: string): string {
