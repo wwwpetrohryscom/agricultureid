@@ -74,8 +74,16 @@ const STATIC_ROUTES: Omit<RouteEntry, 'lastModified'>[] = [
   { path: '/disclaimer', changeFrequency: 'yearly', priority: 0.2 },
 ];
 
-/** All indexable routes with resolved last-modified dates. */
-export function allRoutes(): RouteEntry[] {
+/**
+ * Sitemap shard sections. The sitemap is split into a small index of
+ * section sitemaps so it scales and so crawlers can prioritise. Order is
+ * stable (used as the shard id).
+ */
+export const SITEMAP_SECTIONS = ['pages', 'content', 'geo', 'tools'] as const;
+export type SitemapSection = (typeof SITEMAP_SECTIONS)[number];
+
+/** Indexable routes grouped by sitemap section. */
+export function sectionedRoutes(): Record<SitemapSection, RouteEntry[]> {
   const staticRoutes: RouteEntry[] = STATIC_ROUTES.map((r) => ({
     ...r,
     lastModified: SITE_LAST_UPDATED,
@@ -164,15 +172,23 @@ export function allRoutes(): RouteEntry[] {
     })),
   ];
 
-  return [
-    ...staticRoutes,
-    ...contentRoutes,
-    ...geoRoutes,
-    ...toolRoutes,
-    ...comparisonRoutes,
-    ...zoneRoutes,
-    ...regionRoutes,
-  ];
+  return {
+    // Static, overview, reference, and legal pages.
+    pages: staticRoutes,
+    // Every structured content-type entry (crops, diseases, post-harvest, …).
+    content: contentRoutes,
+    // Geographic + agroecological pages (countries, indicators, datasets, WB
+    // macro-regions, agroecological zones, subnational regions).
+    geo: [...geoRoutes, ...zoneRoutes, ...regionRoutes],
+    // Interactive + editorial: calculator tools and fixed comparisons.
+    tools: [...toolRoutes, ...comparisonRoutes],
+  };
+}
+
+/** All indexable routes with resolved last-modified dates (flat). */
+export function allRoutes(): RouteEntry[] {
+  const sections = sectionedRoutes();
+  return SITEMAP_SECTIONS.flatMap((s) => sections[s]);
 }
 
 /** Set of every path present in the sitemap (for validation coverage checks). */

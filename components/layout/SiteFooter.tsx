@@ -1,27 +1,13 @@
 import Link from 'next/link';
 import { Container } from '@/components/ui/Container';
 import { BrandMark } from '@/components/ui/Logo';
-import { HEADER_NAV, SITE } from '@/lib/site';
-
-const ABOUT_LINKS = [
-  { label: 'About', href: '/about' },
-  { label: 'Editorial Policy', href: '/editorial-policy' },
-  { label: 'Methodology', href: '/methodology' },
-  { label: 'Corrections', href: '/corrections' },
-  { label: 'Contact', href: '/contact' },
-];
-
-const RESOURCE_LINKS = [
-  { label: 'Agricultural Data', href: '/agricultural-data' },
-  { label: 'Glossary', href: '/glossary' },
-  { label: 'Sources', href: '/sources' },
-];
-
-const LEGAL_LINKS = [
-  { label: 'Privacy', href: '/privacy' },
-  { label: 'Terms', href: '/terms' },
-  { label: 'Disclaimer', href: '/disclaimer' },
-];
+import {
+  HEADER_NAV,
+  SITE,
+  FOOTER_ABOUT_LINKS as ABOUT_LINKS,
+  FOOTER_RESOURCE_LINKS as RESOURCE_LINKS,
+  FOOTER_LEGAL_LINKS as LEGAL_LINKS,
+} from '@/lib/site';
 
 /** Global footer: category navigation, editorial/legal links, honest note. */
 export function SiteFooter() {
