@@ -1,4 +1,13 @@
 import { PUBLISHED_CONTENT, contentUrlPath } from '@/lib/content/registry';
+import { INDICATORS, profilesSorted, regionProfiles } from '@/lib/geo/registry';
+import { allSnapshots } from '@/lib/geo/snapshots';
+import {
+  countryPath,
+  datasetPath,
+  datasetSlug,
+  indicatorPath,
+  regionPath,
+} from '@/lib/geo/paths';
 
 /** Stable last-modified date for static (non-content) routes. */
 export const SITE_LAST_UPDATED = '2026-07-12';
@@ -33,7 +42,10 @@ const STATIC_ROUTES: Omit<RouteEntry, 'lastModified'>[] = [
   { path: '/farm-systems', changeFrequency: 'weekly', priority: 0.9 },
   { path: '/irrigation', changeFrequency: 'weekly', priority: 0.9 },
   // Overview sections
-  { path: '/agricultural-data', changeFrequency: 'monthly', priority: 0.6 },
+  { path: '/agricultural-data', changeFrequency: 'monthly', priority: 0.7 },
+  { path: '/countries', changeFrequency: 'monthly', priority: 0.7 },
+  { path: '/datasets', changeFrequency: 'monthly', priority: 0.5 },
+  { path: '/methodology/data', changeFrequency: 'yearly', priority: 0.4 },
   // Reference
   { path: '/glossary', changeFrequency: 'monthly', priority: 0.6 },
   { path: '/sources', changeFrequency: 'monthly', priority: 0.6 },
@@ -62,7 +74,36 @@ export function allRoutes(): RouteEntry[] {
     priority: 0.8,
   }));
 
-  return [...staticRoutes, ...contentRoutes];
+  // Phase 3B — geographic routes (country profiles, indicators, datasets,
+  // regions). Statistics change on the provider's cycle, so these are monthly.
+  const geoRoutes: RouteEntry[] = [
+    ...profilesSorted().map((p) => ({
+      path: countryPath(p.slug),
+      lastModified: p.updatedAt,
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+    })),
+    ...INDICATORS.map((i) => ({
+      path: indicatorPath(i.slug),
+      lastModified: SITE_LAST_UPDATED,
+      changeFrequency: 'monthly' as const,
+      priority: 0.5,
+    })),
+    ...allSnapshots().map((s) => ({
+      path: datasetPath(datasetSlug(s.indicatorId)),
+      lastModified: s.retrievedAt,
+      changeFrequency: 'monthly' as const,
+      priority: 0.4,
+    })),
+    ...regionProfiles().map((r) => ({
+      path: regionPath(r.slug),
+      lastModified: r.updatedAt,
+      changeFrequency: 'monthly' as const,
+      priority: 0.5,
+    })),
+  ];
+
+  return [...staticRoutes, ...contentRoutes, ...geoRoutes];
 }
 
 /** Set of every path present in the sitemap (for validation coverage checks). */

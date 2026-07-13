@@ -1,6 +1,8 @@
 .next
 node_modules
 package-lock.json
+# Generated, checksummed dataset snapshots (Phase 3B) — machine-written JSON.
+data/snapshots
 public/*.svg
 public/*.png
 public/*.ico

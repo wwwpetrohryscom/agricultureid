@@ -16,6 +16,7 @@ import {
 } from '@/lib/content/relations';
 import { evidenceTier, unclassifiedSources } from '@/lib/sources/evidence';
 import { safetyReport } from '@/lib/validation/audit';
+import { geoIssues } from '@/lib/geo/validate-geo';
 import { UNRESOLVED_ISSUES } from '@/data/unresolved-issues';
 import {
   articleSchema,
@@ -819,6 +820,12 @@ export function validateAll(): ValidationResult {
       error('subentity-thin', 'Missing sourceReferences', where);
     if ((item.sections?.length ?? 0) < 2)
       warn('subentity-thin', 'Fewer than 2 body sections', where);
+  }
+
+  /* ---- Geographic data (Phase 3B) ------------------------------------- */
+  for (const gi of geoIssues()) {
+    if (gi.level === 'error') error(gi.code, gi.message, gi.where);
+    else warn(gi.code, gi.message, gi.where);
   }
 
   /* ---- Reachability / orphans ----------------------------------------- */

@@ -591,4 +591,31 @@ export const SOURCES: Source[] = [
       'Brazilian state agricultural research corporation; tropical cultivar development and breed characterization.',
     reliability: 'high',
   },
+  /* --- Geographic statistics (Phase 3B) -------------------------------- */
+  {
+    id: 'worldbank',
+    organization: 'World Bank',
+    title: 'World Bank Open Data — World Development Indicators',
+    url: 'https://data.worldbank.org',
+    accessDate: ACCESS,
+    sourceType: 'intergovernmental',
+    jurisdiction: 'Global',
+    language: 'en',
+    notes:
+      'Open (CC BY 4.0) development indicators compiled from FAO and national statistical sources; values are periodically revised and some are modeled estimates.',
+    reliability: 'authoritative',
+  },
+  {
+    id: 'worldbank-wdi',
+    organization: 'World Bank',
+    title: 'World Development Indicators — agriculture & rural development',
+    url: 'https://databank.worldbank.org/source/world-development-indicators',
+    accessDate: ACCESS,
+    sourceType: 'reference-database',
+    jurisdiction: 'Global',
+    language: 'en',
+    notes:
+      'The specific WDI database queried for AgricultureID dataset snapshots (agricultural land, yields, production, value added, employment, fertilizer use).',
+    reliability: 'authoritative',
+  },
 ];

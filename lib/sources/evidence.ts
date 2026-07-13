@@ -50,6 +50,8 @@ export const EVIDENCE_TIER: Record<string, EvidenceTier> = {
   iita: 1, // CGIAR research institute
   icar: 1, // national agricultural research institute
   embrapa: 1, // national agricultural research institute
+  worldbank: 1, // intergovernmental official statistics
+  'worldbank-wdi': 1, // WDI database
   // Tier 2 — extension services and professional reference databases
   cabi: 2,
   'livestock-conservancy': 2, // reputable conservation NGO registry (context)
@@ -89,6 +91,8 @@ export const URL_SPECIFICITY: Record<string, UrlSpecificity> = {
   'usda-grin': 'program', // GRIN-Global search entry point
   'ec-plant-variety': 'program',
   'livestock-conservancy': 'organization',
+  worldbank: 'program',
+  'worldbank-wdi': 'record',
 };
 
 /** Tier for a source id (defaults to 3 = weakest if unclassified). */

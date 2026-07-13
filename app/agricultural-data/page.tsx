@@ -3,11 +3,12 @@ import Link from 'next/link';
 import { PageIntro } from '@/components/content/PageIntro';
 import { SourceList } from '@/components/content/SourceList';
 import { Container } from '@/components/ui/Container';
-import { Prose } from '@/components/ui/Prose';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { webPageSchema } from '@/lib/schema/jsonld';
 import { pageBreadcrumbs } from '@/lib/seo/breadcrumbs';
 import { buildMetadata } from '@/lib/seo/metadata';
+import { INDICATORS } from '@/lib/geo/registry';
+import { indicatorPath } from '@/lib/geo/paths';
 
 const TITLE = 'Agricultural Data';
 const PATH = '/agricultural-data';
@@ -15,9 +16,19 @@ const PATH = '/agricultural-data';
 export const metadata: Metadata = buildMetadata({
   title: TITLE,
   description:
-    'A guide to authoritative agricultural statistics and datasets — FAOSTAT, USDA, and others — and how AgricultureID references primary data rather than republishing it.',
+    'Country agricultural statistics from official datasets — land, production, yield, economy, inputs, and environment — each value dated, unit-labelled, sourced, and versioned.',
   path: PATH,
 });
+
+const CATEGORIES: { key: string; label: string }[] = [
+  { key: 'land', label: 'Land' },
+  { key: 'production', label: 'Production' },
+  { key: 'yield', label: 'Yield' },
+  { key: 'economy', label: 'Economy' },
+  { key: 'inputs', label: 'Inputs' },
+  { key: 'environment', label: 'Environment' },
+  { key: 'population', label: 'Population' },
+];
 
 export default function AgriculturalDataPage() {
   return (
@@ -26,67 +37,92 @@ export default function AgriculturalDataPage() {
         data={webPageSchema({
           name: TITLE,
           description:
-            'A guide to authoritative agricultural statistics and how AgricultureID references them.',
+            'Country agricultural statistics from official datasets, dated and versioned.',
           path: PATH,
         })}
       />
       <PageIntro
         eyebrow="Data"
         title="Agricultural data"
-        lead="Agricultural statistics — on production, area, yield, trade, and more — are compiled by national and international bodies. This page explains the main sources and how AgricultureID uses them."
+        lead="Country statistics compiled from official datasets (World Bank / FAO), presented as dated, versioned values — never as evergreen prose. Browse by indicator, by country, or by dataset snapshot."
         crumbs={pageBreadcrumbs(TITLE, PATH)}
       />
 
-      <Prose>
-        <h2>Where authoritative data comes from</h2>
-        <p>
-          Reliable agricultural statistics are produced by official statistical
-          agencies and intergovernmental organizations, each with defined
-          methods and update cycles.
-        </p>
-        <ul>
-          <li>
-            <strong>FAOSTAT</strong> — the FAO’s global database of production,
-            trade, and food-balance statistics by country and commodity.
-          </li>
-          <li>
-            <strong>USDA statistics</strong> — including the National
-            Agricultural Statistics Service (NASS), the Economic Research
-            Service (ERS), and the Foreign Agricultural Service (FAS).
-          </li>
-          <li>
-            <strong>Regional bodies</strong> — such as the European Commission’s
-            agricultural statistics for the EU.
-          </li>
-        </ul>
+      <div className="mt-6 flex flex-wrap gap-3 text-sm">
+        <Link
+          href="/countries"
+          className="rounded-full border border-ink-200 px-4 py-1.5 font-medium text-olive-800 hover:border-olive-300"
+        >
+          Browse countries →
+        </Link>
+        <Link
+          href="/datasets"
+          className="rounded-full border border-ink-200 px-4 py-1.5 font-medium text-olive-800 hover:border-olive-300"
+        >
+          Dataset snapshots →
+        </Link>
+        <Link
+          href="/methodology/data"
+          className="rounded-full border border-ink-200 px-4 py-1.5 font-medium text-olive-800 hover:border-olive-300"
+        >
+          Data methodology →
+        </Link>
+      </div>
 
-        <h2>How AgricultureID uses data</h2>
-        <p>
-          Agricultural figures change every season with weather, markets, and
-          policy. Rather than republishing specific numbers that quickly become
-          outdated — or presenting them without context — AgricultureID links to
-          the primary datasets so readers can consult current, authoritative
-          values directly. Where we describe scale (for example, that a crop is
-          “widely grown”), we do so qualitatively and cite the source.
-        </p>
-
-        <h2>Using statistics carefully</h2>
-        <p>
-          Definitions, coverage, and methods differ between datasets, so figures
-          are not always directly comparable across sources or years. Always
-          check the notes and methodology that accompany a dataset. Our{' '}
-          <Link href="/methodology">sources &amp; methodology</Link> page
-          explains how we treat derived and quantitative claims.
-        </p>
-      </Prose>
+      <section className="mt-10">
+        <h2 className="font-serif text-2xl font-bold text-ink-900">
+          Indicators
+        </h2>
+        <div className="mt-4 space-y-6">
+          {CATEGORIES.map((cat) => {
+            const inds = INDICATORS.filter((i) => i.category === cat.key);
+            if (inds.length === 0) return null;
+            return (
+              <div key={cat.key}>
+                <h3 className="text-sm font-semibold uppercase tracking-wide text-olive-700">
+                  {cat.label}
+                </h3>
+                <ul className="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2">
+                  {inds.map((ind) => (
+                    <li key={ind.id}>
+                      <Link
+                        href={indicatorPath(ind.slug)}
+                        className="flex items-baseline justify-between gap-3 rounded-card border border-ink-100 bg-white px-3 py-2 hover:border-olive-300"
+                      >
+                        <span className="text-sm font-medium text-forest-950">
+                          {ind.name}
+                          {ind.estimateFlag && (
+                            <span className="ml-1 text-xs text-clay-700">
+                              (est.)
+                            </span>
+                          )}
+                        </span>
+                        <span className="shrink-0 text-xs text-ink-500">
+                          {ind.unit}
+                        </span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            );
+          })}
+        </div>
+      </section>
 
       <SourceList
         references={[
-          { sourceId: 'faostat', citedFor: 'Global agricultural statistics' },
-          { sourceId: 'usda-nass', citedFor: 'U.S. agricultural statistics' },
           {
-            sourceId: 'usda-ers',
-            citedFor: 'Agricultural economic data and analysis',
+            sourceId: 'worldbank',
+            citedFor: 'World Development Indicators (CC BY 4.0)',
+          },
+          {
+            sourceId: 'faostat',
+            citedFor: 'Underlying agricultural statistics',
+          },
+          {
+            sourceId: 'usda-nass',
+            citedFor: 'U.S. agricultural statistics context',
           },
           { sourceId: 'ec-agri', citedFor: 'EU agricultural data context' },
         ]}
