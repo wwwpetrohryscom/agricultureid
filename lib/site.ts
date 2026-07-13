@@ -314,6 +314,37 @@ export const HEADER_NAV = SECTIONS.filter(
   (s) => s.active && HEADER_HREFS.has(s.href),
 );
 
+/**
+ * Footer link groups. Kept here (not in the footer component) so the footer and
+ * the SEO crawl-depth audit share one source of truth for what home links to.
+ */
+export const FOOTER_ABOUT_LINKS = [
+  { label: 'About', href: '/about' },
+  { label: 'Editorial Policy', href: '/editorial-policy' },
+  { label: 'Methodology', href: '/methodology' },
+  { label: 'Corrections', href: '/corrections' },
+  { label: 'Contact', href: '/contact' },
+];
+
+export const FOOTER_RESOURCE_LINKS = [
+  { label: 'Agricultural Data', href: '/agricultural-data' },
+  { label: 'Glossary', href: '/glossary' },
+  { label: 'Sources', href: '/sources' },
+];
+
+export const FOOTER_LEGAL_LINKS = [
+  { label: 'Privacy', href: '/privacy' },
+  { label: 'Terms', href: '/terms' },
+  { label: 'Disclaimer', href: '/disclaimer' },
+];
+
+/** Every href reachable from the global footer (present on every page). */
+export const FOOTER_HREFS: string[] = [
+  ...FOOTER_ABOUT_LINKS,
+  ...FOOTER_RESOURCE_LINKS,
+  ...FOOTER_LEGAL_LINKS,
+].map((l) => l.href);
+
 /** Reference / knowledge-base sections, grouped for the footer and menu. */
 export const REFERENCE_NAV = SECTIONS.filter(
   (s) =>

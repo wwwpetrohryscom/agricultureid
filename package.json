@@ -28,6 +28,7 @@
     "data:diff": "tsx scripts/data-diff.ts",
     "provenance:health": "tsx scripts/provenance-health.ts",
     "search:benchmark": "tsx scripts/search-benchmark.ts",
+    "seo:audit": "tsx scripts/seo-audit.ts",
     "validate": "npm run format:check && npm run typecheck && npm run lint && npm run content:validate && npm run test"
   },
   "dependencies": {
