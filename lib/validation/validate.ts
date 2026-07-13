@@ -17,6 +17,7 @@ import {
 import { evidenceTier, unclassifiedSources } from '@/lib/sources/evidence';
 import { safetyReport } from '@/lib/validation/audit';
 import { geoIssues } from '@/lib/geo/validate-geo';
+import { toolIssues } from '@/lib/tools/validate-tools';
 import { UNRESOLVED_ISSUES } from '@/data/unresolved-issues';
 import {
   articleSchema,
@@ -826,6 +827,12 @@ export function validateAll(): ValidationResult {
   for (const gi of geoIssues()) {
     if (gi.level === 'error') error(gi.code, gi.message, gi.where);
     else warn(gi.code, gi.message, gi.where);
+  }
+
+  /* ---- Tools & formulas (Phase 3C) ------------------------------------ */
+  for (const ti of toolIssues()) {
+    if (ti.level === 'error') error(ti.code, ti.message, ti.where);
+    else warn(ti.code, ti.message, ti.where);
   }
 
   /* ---- Reachability / orphans ----------------------------------------- */
