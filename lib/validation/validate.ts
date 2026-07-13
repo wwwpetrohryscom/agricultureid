@@ -20,6 +20,7 @@ import { geoIssues } from '@/lib/geo/validate-geo';
 import { toolIssues } from '@/lib/tools/validate-tools';
 import { searchIssues } from '@/lib/search/validate-search';
 import { dataOpsIssues } from '@/lib/data-ops/validate-dataops';
+import { comparisonIssues } from '@/lib/comparison/validate-comparison';
 import { UNRESOLVED_ISSUES } from '@/data/unresolved-issues';
 import {
   articleSchema,
@@ -847,6 +848,12 @@ export function validateAll(): ValidationResult {
   for (const di of dataOpsIssues()) {
     if (di.level === 'error') error(di.code, di.message, di.where);
     else warn(di.code, di.message, di.where);
+  }
+
+  /* ---- Comparisons (Phase 4B) ----------------------------------------- */
+  for (const ci of comparisonIssues()) {
+    if (ci.level === 'error') error(ci.code, ci.message, ci.where);
+    else warn(ci.code, ci.message, ci.where);
   }
 
   /* ---- Reachability / orphans ----------------------------------------- */
