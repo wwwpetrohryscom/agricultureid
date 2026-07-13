@@ -19,6 +19,7 @@ import { safetyReport } from '@/lib/validation/audit';
 import { geoIssues } from '@/lib/geo/validate-geo';
 import { toolIssues } from '@/lib/tools/validate-tools';
 import { searchIssues } from '@/lib/search/validate-search';
+import { dataOpsIssues } from '@/lib/data-ops/validate-dataops';
 import { UNRESOLVED_ISSUES } from '@/data/unresolved-issues';
 import {
   articleSchema,
@@ -840,6 +841,12 @@ export function validateAll(): ValidationResult {
   for (const si of searchIssues()) {
     if (si.level === 'error') error(si.code, si.message, si.where);
     else warn(si.code, si.message, si.where);
+  }
+
+  /* ---- Data operations (Phase 4A) ------------------------------------- */
+  for (const di of dataOpsIssues()) {
+    if (di.level === 'error') error(di.code, di.message, di.where);
+    else warn(di.code, di.message, di.where);
   }
 
   /* ---- Reachability / orphans ----------------------------------------- */
