@@ -9,6 +9,7 @@ import { getSource } from '@/lib/sources/registry';
 import { COUNTRY_PROFILES } from '@/lib/geo/registry';
 import { INDICATORS } from '@/data/geo/indicators';
 import { TOOLS } from '@/lib/tools/tools';
+import { allComparisons, comparisonPath } from '@/lib/comparison/registry';
 import { countryPath, indicatorPath } from '@/lib/geo/paths';
 import type { RelationType } from '@/types/content';
 import type { SearchDoc, SearchEntityType } from '@/types/search';
@@ -128,6 +129,20 @@ export function buildSearchDocuments(): SearchDoc[] {
     });
   }
 
+  // Comparisons (Phase 4B).
+  for (const c of allComparisons()) {
+    docs.push({
+      id: `comparison:${c.slug}`,
+      type: 'comparison',
+      route: comparisonPath(c),
+      title: c.title,
+      names: [c.title],
+      category: `Comparison · ${c.entityType}`,
+      summary: c.purpose,
+      facets: { entityType: ['comparison'], category: [c.entityType] },
+    });
+  }
+
   // Tools.
   for (const t of TOOLS) {
     docs.push({
@@ -164,6 +179,7 @@ const ENTITY_TYPE_LABEL: Record<string, string> = {
   indicator: 'Indicator',
   tool: 'Tool',
   glossary: 'Glossary',
+  comparison: 'Comparison',
 };
 
 export function entityTypeLabel(type: string): string {

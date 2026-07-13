@@ -9,6 +9,7 @@ import {
   regionPath,
 } from '@/lib/geo/paths';
 import { TOOLS } from '@/lib/tools/tools';
+import { allComparisons, comparisonPath } from '@/lib/comparison/registry';
 
 /** Stable last-modified date for static (non-content) routes. */
 export const SITE_LAST_UPDATED = '2026-07-12';
@@ -50,6 +51,7 @@ const STATIC_ROUTES: Omit<RouteEntry, 'lastModified'>[] = [
   { path: '/data-health', changeFrequency: 'monthly', priority: 0.3 },
   { path: '/tools', changeFrequency: 'monthly', priority: 0.7 },
   { path: '/explore', changeFrequency: 'weekly', priority: 0.6 },
+  { path: '/compare', changeFrequency: 'weekly', priority: 0.6 },
   // Reference
   { path: '/glossary', changeFrequency: 'monthly', priority: 0.6 },
   { path: '/sources', changeFrequency: 'monthly', priority: 0.6 },
@@ -115,7 +117,22 @@ export function allRoutes(): RouteEntry[] {
     priority: 0.6,
   }));
 
-  return [...staticRoutes, ...contentRoutes, ...geoRoutes, ...toolRoutes];
+  // Phase 4B — fixed editorial comparison pages (arbitrary custom combos are
+  // noindex and never listed here).
+  const comparisonRoutes: RouteEntry[] = allComparisons().map((c) => ({
+    path: comparisonPath(c),
+    lastModified: c.updatedAt,
+    changeFrequency: 'monthly' as const,
+    priority: 0.5,
+  }));
+
+  return [
+    ...staticRoutes,
+    ...contentRoutes,
+    ...geoRoutes,
+    ...toolRoutes,
+    ...comparisonRoutes,
+  ];
 }
 
 /** Set of every path present in the sitemap (for validation coverage checks). */

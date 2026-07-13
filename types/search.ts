@@ -18,7 +18,8 @@ export type SearchEntityType =
   | 'country'
   | 'indicator'
   | 'tool'
-  | 'glossary';
+  | 'glossary'
+  | 'comparison';
 
 /**
  * A published, indexable search document. Holds only the text needed for search

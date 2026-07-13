@@ -251,6 +251,13 @@ export const SECTIONS: NavSection[] = [
     active: true,
   },
   {
+    label: 'Compare',
+    href: '/compare',
+    description:
+      'Curated, evidence-based comparisons of compatible crops, cultivars, breeds, fertilizers, and countries.',
+    active: true,
+  },
+  {
     label: 'Glossary',
     href: '/glossary',
     description: 'Definitions of key agricultural and agronomic terms.',
@@ -299,6 +306,7 @@ export const REFERENCE_NAV = SECTIONS.filter(
       '/plant-nutrition',
       '/agricultural-data',
       '/explore',
+      '/compare',
       '/glossary',
       '/sources',
       '/data-health',
