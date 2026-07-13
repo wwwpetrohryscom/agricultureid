@@ -48,6 +48,7 @@ const STATIC_ROUTES: Omit<RouteEntry, 'lastModified'>[] = [
   { path: '/datasets', changeFrequency: 'monthly', priority: 0.5 },
   { path: '/methodology/data', changeFrequency: 'yearly', priority: 0.4 },
   { path: '/tools', changeFrequency: 'monthly', priority: 0.7 },
+  { path: '/explore', changeFrequency: 'weekly', priority: 0.6 },
   // Reference
   { path: '/glossary', changeFrequency: 'monthly', priority: 0.6 },
   { path: '/sources', changeFrequency: 'monthly', priority: 0.6 },
