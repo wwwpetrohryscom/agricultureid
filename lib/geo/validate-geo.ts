@@ -4,7 +4,7 @@ import {
   INDICATOR_BY_ID,
   INDICATOR_BY_SLUG,
 } from '@/data/geo/indicators';
-import { REGIONS } from '@/data/geo/regions';
+import { REGIONS } from '@/data/geo/wb-regions';
 import { countryProfiles } from '@/data/geo/profiles';
 import { GEO_FORMULAS } from '@/lib/geo/derived';
 import {
