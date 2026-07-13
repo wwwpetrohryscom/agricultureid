@@ -40,6 +40,7 @@ export const CONTENT_TYPES = [
   'climate',
   'farming-system',
   'irrigation-method',
+  'post-harvest',
   'cultivar',
   'breed',
 ] as const;
@@ -63,6 +64,7 @@ export const CONTENT_TYPE_ROUTE: Record<ContentType, string> = {
   climate: 'climate',
   'farming-system': 'farm-systems',
   'irrigation-method': 'irrigation',
+  'post-harvest': 'post-harvest',
   cultivar: 'cultivars',
   breed: 'breeds',
 };
@@ -80,6 +82,7 @@ export const CONTENT_TYPE_LABEL: Record<ContentType, string> = {
   climate: 'Climate Factor',
   'farming-system': 'Farming System',
   'irrigation-method': 'Irrigation Method',
+  'post-harvest': 'Post-Harvest',
   cultivar: 'Cultivar',
   breed: 'Breed',
 };
@@ -97,6 +100,7 @@ export const CONTENT_TYPE_LABEL_PLURAL: Record<ContentType, string> = {
   climate: 'Climate',
   'farming-system': 'Farming Systems',
   'irrigation-method': 'Irrigation',
+  'post-harvest': 'Post-Harvest',
   cultivar: 'Cultivars',
   breed: 'Breeds',
 };
@@ -196,6 +200,14 @@ export const SECTIONS: NavSection[] = [
       'Irrigation methods and water-management approaches, and their efficiency considerations.',
     active: true,
     contentType: 'irrigation-method',
+  },
+  {
+    label: 'Post-Harvest',
+    href: '/post-harvest',
+    description:
+      'Handling, drying, cooling, storage, processing, and loss-reduction operations between harvest and market.',
+    active: true,
+    contentType: 'post-harvest',
   },
   {
     label: 'Plant Nutrition',
@@ -310,6 +322,7 @@ export const REFERENCE_NAV = SECTIONS.filter(
       '/cultivars',
       '/breeds',
       '/irrigation',
+      '/post-harvest',
       '/plant-nutrition',
       '/agricultural-data',
       '/agroecological-zones',

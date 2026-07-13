@@ -397,6 +397,24 @@ export interface IrrigationMethodContent extends BaseContent {
   methodClass?: 'surface' | 'pressurized' | 'localized' | 'management';
 }
 
+/**
+ * Post-harvest operation, technology, or concept — the handling, drying,
+ * cooling, storage, processing, quality-management, and loss-reduction steps
+ * between harvest and market/consumption. Relationships to crops and machinery
+ * use the generic `connections` and `relatedTopics` fields.
+ */
+export interface PostHarvestContent extends BaseContent {
+  contentType: 'post-harvest';
+  postHarvestClass?:
+    | 'handling'
+    | 'drying'
+    | 'cooling'
+    | 'storage'
+    | 'processing'
+    | 'quality'
+    | 'loss-management';
+}
+
 /* -------------------------------------------------------------------------- */
 /*  Registry & status semantics (Phase 3A)                                     */
 /* -------------------------------------------------------------------------- */
@@ -543,6 +561,7 @@ export type AnyContent =
   | ClimateContent
   | FarmingSystemContent
   | IrrigationMethodContent
+  | PostHarvestContent
   | CultivarContent
   | BreedContent;
 

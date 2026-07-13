@@ -208,6 +208,7 @@ const ENTITY_TYPE_LABEL: Record<string, string> = {
   climate: 'Climate',
   'farming-system': 'Farming system',
   'irrigation-method': 'Irrigation',
+  'post-harvest': 'Post-harvest',
   cultivar: 'Cultivar',
   breed: 'Breed',
   country: 'Country',

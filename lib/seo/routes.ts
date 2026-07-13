@@ -50,6 +50,7 @@ const STATIC_ROUTES: Omit<RouteEntry, 'lastModified'>[] = [
   { path: '/climate', changeFrequency: 'weekly', priority: 0.9 },
   { path: '/farm-systems', changeFrequency: 'weekly', priority: 0.9 },
   { path: '/irrigation', changeFrequency: 'weekly', priority: 0.9 },
+  { path: '/post-harvest', changeFrequency: 'weekly', priority: 0.9 },
   // Overview sections
   { path: '/agricultural-data', changeFrequency: 'monthly', priority: 0.7 },
   { path: '/countries', changeFrequency: 'monthly', priority: 0.7 },

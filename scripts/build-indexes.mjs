@@ -21,6 +21,7 @@ const DIRS = [
   ['climate', 'climateFactors', 'ClimateContent'],
   ['farming-systems', 'farmingSystems', 'FarmingSystemContent'],
   ['irrigation-methods', 'irrigationMethods', 'IrrigationMethodContent'],
+  ['post-harvest', 'postHarvest', 'PostHarvestContent'],
   ['cultivars', 'cultivars', 'CultivarContent'],
   ['breeds', 'breeds', 'BreedContent'],
 ];
