@@ -43,11 +43,30 @@ async function check(url) {
       redirected: res.redirected,
     };
   } catch (e) {
+    const msg = String(e.message || e);
+    const tls =
+      /certificate|self-signed|SSL|TLS|ERR_TLS|unable to verify/i.test(msg);
     return {
       status: 0,
-      error: e.name === 'TimeoutError' ? 'timeout' : e.message,
+      error: e.name === 'TimeoutError' ? 'timeout' : tls ? 'tls-error' : msg,
     };
   }
+}
+
+/**
+ * Classify a result. Critically, a 403/429 or a timeout is NOT treated as a
+ * dead source — publishers routinely block automated requests. Only genuine
+ * 404/410 and 5xx are "dead".
+ */
+function classify(r) {
+  if (r.status === 0 && r.error === 'timeout') return 'timeout';
+  if (r.status === 0 && r.error === 'tls-error') return 'tls-error';
+  if (r.status === 0) return 'unreachable';
+  if (r.status === 403 || r.status === 429) return 'bot-blocked';
+  if (r.status === 404 || r.status === 410 || r.status >= 500) return 'dead';
+  if (r.redirected && r.status < 400) return 'redirect';
+  if (r.status >= 200 && r.status < 300) return 'ok';
+  return `http-${r.status}`;
 }
 
 async function main() {
@@ -58,29 +77,32 @@ async function main() {
     const host = new URL(s.url).host;
     domains[host] = (domains[host] ?? 0) + 1;
     const r = await check(s.url);
-    results.push({ id: s.id, url: s.url, ...r });
-    const flag =
-      r.status === 0
-        ? 'DEAD'
-        : r.status >= 400
-          ? `HTTP ${r.status}`
-          : r.redirected
-            ? '→redirect'
-            : 'ok';
+    const category = classify(r);
+    results.push({ id: s.id, url: s.url, category, ...r });
     console.log(
-      `  ${s.id.padEnd(18)} ${String(r.status).padStart(3)}  ${flag}`,
+      `  ${s.id.padEnd(18)} ${String(r.status).padStart(3)}  ${category}`,
     );
     await sleep(DELAY_MS);
   }
 
-  const dead = results.filter((r) => r.status === 0 || r.status >= 400);
-  const redirects = results.filter((r) => r.redirected && r.status < 400);
+  const byCategory = {};
+  for (const r of results)
+    byCategory[r.category] = (byCategory[r.category] ?? 0) + 1;
+  const dead = results.filter((r) => r.category === 'dead');
+  const botBlocked = results.filter((r) => r.category === 'bot-blocked');
+  const timeouts = results.filter((r) => r.category === 'timeout');
+  const redirects = results.filter((r) => r.category === 'redirect');
 
   console.log('\n── Summary ──');
   console.log(`Sources checked: ${results.length}`);
-  console.log(`Dead / error (status 0 or ≥400): ${dead.length}`);
-  for (const d of dead) console.log(`  ✗ ${d.id}: ${d.status} ${d.url}`);
-  console.log(`Redirecting: ${redirects.length}`);
+  for (const [c, n] of Object.entries(byCategory).sort((a, b) => b[1] - a[1]))
+    console.log(`  ${c.padEnd(14)} ${n}`);
+  console.log(
+    `\nActually dead (404/410/5xx): ${dead.length}  ·  bot-blocked (403/429, NOT dead): ${botBlocked.length}  ·  timeout (NOT dead): ${timeouts.length}`,
+  );
+  for (const d of dead) console.log(`  ✗ DEAD ${d.id}: ${d.status} ${d.url}`);
+  for (const b of botBlocked)
+    console.log(`  · bot-blocked ${b.id}: ${b.status} ${b.url}`);
   for (const r of redirects)
     console.log(`  → ${r.id}: ${r.url} → ${r.finalUrl}`);
   console.log(`\nDistinct domains: ${Object.keys(domains).length}`);

@@ -24,6 +24,10 @@
     "audit": "tsx scripts/audit.ts",
     "audit:images": "node scripts/audit-images.mjs",
     "source:health": "node scripts/source-health.mjs",
+    "data:validate": "tsx scripts/data-validate.ts",
+    "data:diff": "tsx scripts/data-diff.ts",
+    "provenance:health": "tsx scripts/provenance-health.ts",
+    "search:benchmark": "tsx scripts/search-benchmark.ts",
     "validate": "npm run format:check && npm run typecheck && npm run lint && npm run content:validate && npm run test"
   },
   "dependencies": {

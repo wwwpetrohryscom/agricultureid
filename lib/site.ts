@@ -263,6 +263,13 @@ export const SECTIONS: NavSection[] = [
       'The registry of authoritative organizations and publications AgricultureID references.',
     active: true,
   },
+  {
+    label: 'Data Health',
+    href: '/data-health',
+    description:
+      'Transparency dashboard for dataset snapshots, source evidence, provenance coverage, image licensing, and formula versions.',
+    active: true,
+  },
 ];
 
 /** All active sections (used in the footer and mobile menu). */
@@ -294,5 +301,6 @@ export const REFERENCE_NAV = SECTIONS.filter(
       '/explore',
       '/glossary',
       '/sources',
+      '/data-health',
     ].includes(s.href),
 );
