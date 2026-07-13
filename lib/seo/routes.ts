@@ -8,6 +8,7 @@ import {
   indicatorPath,
   regionPath,
 } from '@/lib/geo/paths';
+import { TOOLS } from '@/lib/tools/tools';
 
 /** Stable last-modified date for static (non-content) routes. */
 export const SITE_LAST_UPDATED = '2026-07-12';
@@ -46,6 +47,7 @@ const STATIC_ROUTES: Omit<RouteEntry, 'lastModified'>[] = [
   { path: '/countries', changeFrequency: 'monthly', priority: 0.7 },
   { path: '/datasets', changeFrequency: 'monthly', priority: 0.5 },
   { path: '/methodology/data', changeFrequency: 'yearly', priority: 0.4 },
+  { path: '/tools', changeFrequency: 'monthly', priority: 0.7 },
   // Reference
   { path: '/glossary', changeFrequency: 'monthly', priority: 0.6 },
   { path: '/sources', changeFrequency: 'monthly', priority: 0.6 },
@@ -103,7 +105,15 @@ export function allRoutes(): RouteEntry[] {
     })),
   ];
 
-  return [...staticRoutes, ...contentRoutes, ...geoRoutes];
+  // Phase 3C — calculator tools.
+  const toolRoutes: RouteEntry[] = TOOLS.map((t) => ({
+    path: `/tools/${t.slug}`,
+    lastModified: SITE_LAST_UPDATED,
+    changeFrequency: 'monthly' as const,
+    priority: 0.6,
+  }));
+
+  return [...staticRoutes, ...contentRoutes, ...geoRoutes, ...toolRoutes];
 }
 
 /** Set of every path present in the sitemap (for validation coverage checks). */

@@ -240,8 +240,8 @@ export const SECTIONS: NavSection[] = [
     label: 'Tools',
     href: '/tools',
     description:
-      'Practical agricultural calculators and reference tools (in development).',
-    active: false,
+      'Transparent agricultural calculators grounded in a versioned formula registry — with every formula, assumption, and source shown.',
+    active: true,
   },
   {
     label: 'Glossary',
