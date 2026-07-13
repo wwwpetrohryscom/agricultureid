@@ -82,6 +82,10 @@ export function quantitativeClaims(): QuantHit[] {
 const INTENTIONAL_MARKERS = [
   'AgricultureID does not publish universal fertilizer recommendations',
   'AgricultureID does not provide specific chemical treatment instructions',
+  // Fertilizer scope/safety disclaimer — a deliberate, appropriate statement
+  // that SHOULD read identically on every fertilizer entry (it is not an
+  // application-rate recommendation).
+  'it is not an application rate recommendation for any crop or region',
   'AgricultureID does not provide veterinary treatment instructions',
   'Crop water requirements are estimated from evapotranspiration',
   // Recurring honesty caveats (methodology), intentional and appropriate:
