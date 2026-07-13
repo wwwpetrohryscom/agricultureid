@@ -12,6 +12,7 @@ import type {
   NutrientContent,
   PestContent,
   PlantDiseaseContent,
+  PostHarvestContent,
   SoilContent,
   SoilTopicContent,
 } from '@/types/content';
@@ -27,6 +28,7 @@ import { machineryItems } from './machinery';
 import { climateFactors } from './climate';
 import { farmingSystems } from './farming-systems';
 import { irrigationMethods } from './irrigation-methods';
+import { postHarvest } from './post-harvest';
 import { cultivars } from './cultivars';
 import { breeds } from './breeds';
 
@@ -42,6 +44,7 @@ export const MACHINERY: MachineryContent[] = machineryItems;
 export const CLIMATE: ClimateContent[] = climateFactors;
 export const FARMING_SYSTEMS: FarmingSystemContent[] = farmingSystems;
 export const IRRIGATION_METHODS: IrrigationMethodContent[] = irrigationMethods;
+export const POST_HARVEST: PostHarvestContent[] = postHarvest;
 export const CULTIVARS: CultivarContent[] = cultivars;
 export const BREEDS: BreedContent[] = breeds;
 
@@ -59,6 +62,7 @@ export const ALL_CONTENT: AnyContent[] = [
   ...climateFactors,
   ...farmingSystems,
   ...irrigationMethods,
+  ...postHarvest,
   ...cultivars,
   ...breeds,
 ];

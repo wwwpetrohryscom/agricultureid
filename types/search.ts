@@ -13,6 +13,7 @@ export type SearchEntityType =
   | 'climate'
   | 'farming-system'
   | 'irrigation-method'
+  | 'post-harvest'
   | 'cultivar'
   | 'breed'
   | 'country'
