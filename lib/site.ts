@@ -40,6 +40,8 @@ export const CONTENT_TYPES = [
   'climate',
   'farming-system',
   'irrigation-method',
+  'cultivar',
+  'breed',
 ] as const;
 
 export type ContentType = (typeof CONTENT_TYPES)[number];
@@ -61,6 +63,8 @@ export const CONTENT_TYPE_ROUTE: Record<ContentType, string> = {
   climate: 'climate',
   'farming-system': 'farm-systems',
   'irrigation-method': 'irrigation',
+  cultivar: 'cultivars',
+  breed: 'breeds',
 };
 
 export const CONTENT_TYPE_LABEL: Record<ContentType, string> = {
@@ -76,6 +80,8 @@ export const CONTENT_TYPE_LABEL: Record<ContentType, string> = {
   climate: 'Climate Factor',
   'farming-system': 'Farming System',
   'irrigation-method': 'Irrigation Method',
+  cultivar: 'Cultivar',
+  breed: 'Breed',
 };
 
 export const CONTENT_TYPE_LABEL_PLURAL: Record<ContentType, string> = {
@@ -91,6 +97,8 @@ export const CONTENT_TYPE_LABEL_PLURAL: Record<ContentType, string> = {
   climate: 'Climate',
   'farming-system': 'Farming Systems',
   'irrigation-method': 'Irrigation',
+  cultivar: 'Cultivars',
+  breed: 'Breeds',
 };
 
 /**
@@ -148,6 +156,22 @@ export const SECTIONS: NavSection[] = [
       'Farm animal species — production context, husbandry considerations, nutrition, and welfare.',
     active: true,
     contentType: 'livestock',
+  },
+  {
+    label: 'Cultivars',
+    href: '/cultivars',
+    description:
+      'Crop varieties, cultivars, and landraces tied to their parent species, origin, registries, and authoritative sources.',
+    active: true,
+    contentType: 'cultivar',
+  },
+  {
+    label: 'Breeds',
+    href: '/breeds',
+    description:
+      'Livestock breeds tied to their parent species, origin, herd books, conservation status, and authoritative sources.',
+    active: true,
+    contentType: 'breed',
   },
   {
     label: 'Farming Systems',
@@ -255,6 +279,8 @@ export const REFERENCE_NAV = SECTIONS.filter(
   (s) =>
     s.active &&
     [
+      '/cultivars',
+      '/breeds',
       '/irrigation',
       '/plant-nutrition',
       '/agricultural-data',

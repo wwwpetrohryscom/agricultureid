@@ -2,7 +2,9 @@ import { Breadcrumbs } from '@/components/navigation/Breadcrumbs';
 import { ArticleFigure } from '@/components/content/ArticleFigure';
 import { ContentBlocks } from '@/components/content/ContentBlocks';
 import { KeyFacts } from '@/components/content/KeyFacts';
+import { ParentSubEntities } from '@/components/content/ParentSubEntities';
 import { RelatedContent } from '@/components/content/RelatedContent';
+import { SubEntityPanel } from '@/components/content/SubEntityPanel';
 import { SourceList } from '@/components/content/SourceList';
 import { TableOfContents } from '@/components/content/TableOfContents';
 import { Badge } from '@/components/ui/Badge';
@@ -72,6 +74,8 @@ export function ContentArticle({ item }: { item: AnyContent }) {
 
         <div className="min-w-0 lg:order-1">
           <ArticleFigure item={item} />
+          {(item.contentType === 'cultivar' ||
+            item.contentType === 'breed') && <SubEntityPanel item={item} />}
           <div className="prose-content mt-8 max-w-prose">
             <ContentBlocks blocks={item.introduction} />
           </div>
@@ -94,6 +98,8 @@ export function ContentArticle({ item }: { item: AnyContent }) {
               </div>
             </section>
           ))}
+
+          <ParentSubEntities item={item} />
 
           <section
             id="scope-and-limitations"

@@ -149,6 +149,7 @@ function Scene({ type }: { type: ContentType }) {
         </g>
       );
     case 'livestock':
+    case 'breed':
       return (
         <g fill="none" stroke={stroke} strokeWidth="4" strokeLinejoin="round">
           <path

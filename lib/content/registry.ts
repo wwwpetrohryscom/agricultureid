@@ -12,14 +12,18 @@ import {
   CLIMATE,
   FARMING_SYSTEMS,
   IRRIGATION_METHODS,
+  CULTIVARS,
+  BREEDS,
 } from '@/content';
 import { GLOSSARY } from '@/data/glossary';
 import { IMAGE_MAP } from '@/data/images';
 import { CONTENT_TYPE_ROUTE, type ContentType } from '@/lib/site';
 import type {
   AnyContent,
+  BreedContent,
   ContentRef,
   CropContent,
+  CultivarContent,
   GlossaryTerm,
   ImageMeta,
   LivestockContent,
@@ -42,6 +46,8 @@ export {
   CLIMATE,
   FARMING_SYSTEMS,
   IRRIGATION_METHODS,
+  CULTIVARS,
+  BREEDS,
 };
 
 /** Only published content is publicly routable / indexable. */
@@ -126,6 +132,24 @@ export const livestockSorted = (): LivestockContent[] =>
   [...LIVESTOCK]
     .filter((c) => c.editorialStatus === 'published')
     .sort((a, b) => a.title.localeCompare(b.title));
+
+export const cultivarsSorted = (): CultivarContent[] =>
+  [...CULTIVARS]
+    .filter((c) => c.editorialStatus === 'published')
+    .sort((a, b) => a.title.localeCompare(b.title));
+
+export const breedsSorted = (): BreedContent[] =>
+  [...BREEDS]
+    .filter((c) => c.editorialStatus === 'published')
+    .sort((a, b) => a.title.localeCompare(b.title));
+
+/** Published cultivars whose parent crop is `cropSlug` (parent-panel query). */
+export const cultivarsForCrop = (cropSlug: string): CultivarContent[] =>
+  cultivarsSorted().filter((c) => c.parentCrop.slug === cropSlug);
+
+/** Published breeds whose parent species is `livestockSlug` (parent panel). */
+export const breedsForLivestock = (livestockSlug: string): BreedContent[] =>
+  breedsSorted().filter((b) => b.parentLivestock.slug === livestockSlug);
 
 /* Glossary ------------------------------------------------------------------ */
 

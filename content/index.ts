@@ -1,7 +1,9 @@
 import type {
   AnyContent,
+  BreedContent,
   ClimateContent,
   CropContent,
+  CultivarContent,
   FarmingSystemContent,
   FertilizerContent,
   IrrigationMethodContent,
@@ -25,6 +27,8 @@ import { machineryItems } from './machinery';
 import { climateFactors } from './climate';
 import { farmingSystems } from './farming-systems';
 import { irrigationMethods } from './irrigation-methods';
+import { cultivars } from './cultivars';
+import { breeds } from './breeds';
 
 export const CROPS: CropContent[] = crops;
 export const SOILS: SoilContent[] = soils;
@@ -38,6 +42,8 @@ export const MACHINERY: MachineryContent[] = machineryItems;
 export const CLIMATE: ClimateContent[] = climateFactors;
 export const FARMING_SYSTEMS: FarmingSystemContent[] = farmingSystems;
 export const IRRIGATION_METHODS: IrrigationMethodContent[] = irrigationMethods;
+export const CULTIVARS: CultivarContent[] = cultivars;
+export const BREEDS: BreedContent[] = breeds;
 
 /** Flat list of every structured content item across all types. */
 export const ALL_CONTENT: AnyContent[] = [
@@ -53,4 +59,6 @@ export const ALL_CONTENT: AnyContent[] = [
   ...climateFactors,
   ...farmingSystems,
   ...irrigationMethods,
+  ...cultivars,
+  ...breeds,
 ];

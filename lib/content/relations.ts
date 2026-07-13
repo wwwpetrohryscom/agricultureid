@@ -33,6 +33,21 @@ export const RELATION_TYPES: ReadonlySet<RelationType> = new Set<RelationType>([
   'commonlyRaisedIn',
   'includesLivestock',
   'feedsOn',
+  'cultivarOf',
+  'hasCultivar',
+  'breedOf',
+  'hasBreed',
+  'developedFrom',
+  'adaptedToClimate',
+  'adaptedToSoil',
+  'resistantTo',
+  'usedFor',
+  'registeredIn',
+  'protectedIn',
+  'distributedIn',
+  'relatedCultivar',
+  'relatedBreed',
+  'maintainedByRegistry',
   'relatedConcept',
 ]);
 
@@ -54,6 +69,12 @@ export const INVERSE_RELATION: Partial<Record<RelationType, RelationType>> = {
   includesCrop: 'partOfFarmingSystem',
   commonlyRaisedIn: 'includesLivestock',
   includesLivestock: 'commonlyRaisedIn',
+  cultivarOf: 'hasCultivar',
+  hasCultivar: 'cultivarOf',
+  breedOf: 'hasBreed',
+  hasBreed: 'breedOf',
+  relatedCultivar: 'relatedCultivar',
+  relatedBreed: 'relatedBreed',
   relatedConcept: 'relatedConcept',
 };
 
@@ -64,6 +85,9 @@ const FIELD_RELATION: Record<string, RelationType> = {
   suitableSoils: 'suitableForSoil',
   suitedCrops: 'suitableFor',
   hostCrops: 'affects',
+  // Phase 3A — sub-entity parent links.
+  parentCrop: 'cultivarOf',
+  parentLivestock: 'breedOf',
 };
 
 /**
@@ -90,6 +114,7 @@ function genericRelation(
       climate: 'sensitiveToClimate',
       'irrigation-method': 'irrigatedBy',
       'farming-system': 'partOfFarmingSystem',
+      cultivar: 'hasCultivar',
     },
     nutrient: {
       fertilizer: 'suppliedByFertilizer',
@@ -129,6 +154,24 @@ function genericRelation(
       crop: 'feedsOn',
       'farming-system': 'commonlyRaisedIn',
       climate: 'sensitiveToClimate',
+      breed: 'hasBreed',
+    },
+    // Phase 3A — cultivar/breed outgoing generic edges. Disease/pest links are
+    // deliberately `relatedConcept` (a connection is not evidence of resistance
+    // or susceptibility — those are provenanced claims, never inferred).
+    cultivar: {
+      crop: 'cultivarOf',
+      soil: 'adaptedToSoil',
+      climate: 'adaptedToClimate',
+      'plant-disease': 'relatedConcept',
+      pest: 'relatedConcept',
+      cultivar: 'relatedCultivar',
+    },
+    breed: {
+      livestock: 'breedOf',
+      climate: 'adaptedToClimate',
+      'farming-system': 'partOfFarmingSystem',
+      breed: 'relatedBreed',
     },
   };
   return pair[from]?.[to] ?? 'relatedConcept';
@@ -169,6 +212,12 @@ function refsWithField(item: AnyContent): { ref: ContentRef; field: string }[] {
     case 'plant-disease':
     case 'pest':
       for (const ref of item.hostCrops) out.push({ ref, field: 'hostCrops' });
+      break;
+    case 'cultivar':
+      out.push({ ref: item.parentCrop, field: 'parentCrop' });
+      break;
+    case 'breed':
+      out.push({ ref: item.parentLivestock, field: 'parentLivestock' });
       break;
   }
   return out;

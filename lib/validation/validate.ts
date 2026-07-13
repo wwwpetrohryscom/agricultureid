@@ -617,6 +617,210 @@ export function validateAll(): ValidationResult {
     }
   }
 
+  /* ---- Cultivars & breeds (Phase 3A) ---------------------------------- */
+  const REGISTERED_STATUSES = new Set(['listed', 'registered', 'protected']);
+  const subNameByParent = new Map<string, Set<string>>();
+  for (const item of ALL_CONTENT) {
+    if (item.contentType !== 'cultivar' && item.contentType !== 'breed')
+      continue;
+    const where = `${item.contentType}:${item.slug}`;
+    const isCultivar = item.contentType === 'cultivar';
+    const parentRef = isCultivar ? item.parentCrop : item.parentLivestock;
+    const expectedParentType = isCultivar ? 'crop' : 'livestock';
+
+    // Parent species resolution + broken parent-child links.
+    if (!parentRef || parentRef.type !== expectedParentType) {
+      error(
+        'subentity-parent-type',
+        `${item.contentType} parent must be a ${expectedParentType}`,
+        where,
+      );
+    } else {
+      const parent = resolveRef(parentRef);
+      if (!parent) {
+        error(
+          'subentity-parent-missing',
+          `Parent ${parentRef.type}:${parentRef.slug} does not resolve`,
+          where,
+        );
+      } else if (parent.editorialStatus !== 'published') {
+        error(
+          'subentity-parent-unpublished',
+          `Parent ${parentRef.type}:${parentRef.slug} is not published`,
+          where,
+        );
+      } else {
+        // Scientific-name consistency (genus match), advisory.
+        if (isCultivar && item.botanicalTaxon && parent.scientificName) {
+          const g1 = item.botanicalTaxon.trim().split(/\s+/)[0]?.toLowerCase();
+          const g2 = parent.scientificName
+            .trim()
+            .split(/\s+/)[0]
+            ?.toLowerCase();
+          if (g1 && g2 && g1 !== g2) {
+            warn(
+              'subentity-taxon-mismatch',
+              `Cultivar taxon genus "${g1}" ≠ parent genus "${g2}"`,
+              where,
+            );
+          }
+        }
+        // Duplicate name within the same parent species.
+        const pKey = `${item.contentType}:${parentRef.slug}`;
+        const nm = (isCultivar ? (item.acceptedName ?? item.title) : item.title)
+          .trim()
+          .toLowerCase();
+        const set = subNameByParent.get(pKey) ?? new Set<string>();
+        if (set.has(nm)) {
+          error(
+            'subentity-duplicate-name',
+            `Duplicate ${item.contentType} name "${nm}" within ${pKey}`,
+            where,
+          );
+        }
+        set.add(nm);
+        subNameByParent.set(pKey, set);
+      }
+    }
+
+    // Registry references: resolution + validity.
+    for (const reg of item.registryReferences ?? []) {
+      if (!reg.registry?.trim())
+        error(
+          'registry-ref-incomplete',
+          'Registry reference missing registry name',
+          where,
+        );
+      if (reg.sourceId && !sourceIds.has(reg.sourceId))
+        error(
+          'registry-ref-unknown-source',
+          `Registry reference cites unknown source "${reg.sourceId}"`,
+          where,
+        );
+      if (reg.url && !isValidUrl(reg.url))
+        error(
+          'registry-ref-bad-url',
+          `Registry reference bad URL "${reg.url}"`,
+          where,
+        );
+      if (reg.asOf && !/^\d{4}(-\d{2}-\d{2})?$/.test(reg.asOf))
+        error(
+          'registry-ref-bad-date',
+          `Registry reference bad asOf "${reg.asOf}"`,
+          where,
+        );
+    }
+
+    if (isCultivar) {
+      // Jurisdiction-aware status.
+      if (
+        REGISTERED_STATUSES.has(item.registrationStatus) &&
+        !item.registrationJurisdiction?.trim()
+      ) {
+        error(
+          'subentity-status-jurisdiction',
+          `registrationStatus "${item.registrationStatus}" requires registrationJurisdiction`,
+          where,
+        );
+      }
+      // A registration status must be backed by a registry ref or claim.
+      if (REGISTERED_STATUSES.has(item.registrationStatus)) {
+        const hasReg = (item.registryReferences?.length ?? 0) > 0;
+        const hasClaim = (item.claims ?? []).some((c) =>
+          /regist|listed|protect|catalogue/i.test(c.field),
+        );
+        if (!hasReg && !hasClaim) {
+          error(
+            'subentity-status-unsourced',
+            `registrationStatus "${item.registrationStatus}" needs a registryReference or a provenanced registration claim`,
+            where,
+          );
+        }
+      }
+      // Impossible-ish combo: "expired" with no prior-protection evidence.
+      if (
+        item.registrationStatus === 'expired' &&
+        (item.registryReferences?.length ?? 0) === 0 &&
+        !item.protectedStatus
+      ) {
+        warn(
+          'subentity-status-combo',
+          'registrationStatus "expired" without any registry reference or protectedStatus detail',
+          where,
+        );
+      }
+      // Resistance claims must carry Tier 1–2 field-level provenance.
+      const resClaims = [
+        ...(item.diseaseResistanceClaims ?? []),
+        ...(item.pestResistanceClaims ?? []),
+      ];
+      if (resClaims.length > 0) {
+        const ok = (item.claims ?? []).some(
+          (c) =>
+            /resist/i.test(c.field) &&
+            c.citations.some(
+              (ci) =>
+                sourceIds.has(ci.sourceId) && evidenceTier(ci.sourceId) <= 2,
+            ),
+        );
+        if (!ok)
+          error(
+            'subentity-resistance-unsourced',
+            'Resistance claim(s) require a Tier 1–2 provenanced "resistance" claim',
+            where,
+          );
+      }
+      // Yield characteristics must carry Tier 1–2 field-level provenance.
+      if (item.yieldCharacteristics?.trim()) {
+        const ok = (item.claims ?? []).some(
+          (c) =>
+            /yield/i.test(c.field) &&
+            c.citations.some(
+              (ci) =>
+                sourceIds.has(ci.sourceId) && evidenceTier(ci.sourceId) <= 2,
+            ),
+        );
+        if (!ok)
+          error(
+            'subentity-yield-unsourced',
+            'yieldCharacteristics requires a Tier 1–2 provenanced "yield" claim',
+            where,
+          );
+      }
+    } else {
+      // Breed: an extinct breed should not be actively registered/listed.
+      if (
+        item.conservationStatus === 'extinct' &&
+        item.breedStatus &&
+        REGISTERED_STATUSES.has(item.breedStatus)
+      ) {
+        warn(
+          'subentity-status-combo',
+          `Breed marked extinct but breedStatus is "${item.breedStatus}"`,
+          where,
+        );
+      }
+    }
+
+    // Image identity confidence must be explicit for sub-entities.
+    const img = resolveImage(item);
+    if (img && !img.identityConfidence) {
+      error(
+        'subentity-image-confidence',
+        'Cultivar/breed image must set identityConfidence',
+        where,
+      );
+    }
+
+    // Anti-thin: sub-entity pages must carry real body + limitations + sources.
+    if (!item.limitations?.length)
+      error('subentity-thin', 'Missing limitations', where);
+    if (!item.sourceReferences?.length)
+      error('subentity-thin', 'Missing sourceReferences', where);
+    if ((item.sections?.length ?? 0) < 2)
+      warn('subentity-thin', 'Fewer than 2 body sections', where);
+  }
+
   /* ---- Reachability / orphans ----------------------------------------- */
   const reachable = computeReachable();
   for (const item of PUBLISHED_CONTENT) {
