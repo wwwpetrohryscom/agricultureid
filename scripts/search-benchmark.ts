@@ -1,48 +1,36 @@
 /**
- * Search benchmark report (ranking quality, not just binary). Deterministic.
+ * Search benchmark report (Phase 3D, expanded 4E). Measures top-1, top-3,
+ * false-positive, and unsafe-equivalence rates. Deterministic.
  * Run: npm run search:benchmark
  */
-import { benchmarkIndex, BENCHMARKS } from '../lib/search/benchmark';
-import { search } from '../lib/search/engine';
+import { runBenchmark, benchmarkSummary } from '../lib/search/benchmark';
 
 function main() {
-  const idx = benchmarkIndex();
-  let top1 = 0;
-  let top3 = 0;
-  let miss = 0;
+  const results = runBenchmark();
+  const s = benchmarkSummary();
   console.log('\nAgricultureID — search benchmark\n');
-  for (const b of BENCHMARKS) {
-    const r = search(idx, b.query, { limit: 5 });
-    const match = (d: { title: string; type: string }) =>
-      (b.titleIncludes?.some((s) =>
-        d.title.toLowerCase().includes(s.toLowerCase()),
-      ) ??
-        false) ||
-      (b.types?.includes(d.type) ?? false);
-    const rank = r.results.findIndex((x) => match(x.doc));
-    const cls =
-      rank === 0
+  for (const r of results) {
+    const cls = r.falsePositive
+      ? r.unsafeEquivalence
+        ? 'UNSAFE-EQUIV'
+        : 'FALSE-POS'
+      : r.top1
         ? 'TOP-1'
-        : rank >= 1 && rank <= 2
+        : r.top3
           ? 'TOP-3'
-          : rank >= 0
-            ? 'found>3'
-            : 'MISS';
-    if (rank === 0) {
-      top1++;
-      top3++;
-    } else if (rank >= 1 && rank <= 2) top3++;
-    else if (rank < 0) miss++;
-    const top = r.results[0];
+          : 'MISS';
     console.log(
-      `  ${b.query.padEnd(26)} → ${(top ? `${top.doc.title} [${top.doc.type}]` : '(none)').padEnd(34)} ${cls}`,
+      `  ${r.query.padEnd(30)} → ${`${r.topTitle} [${r.topType}]`.padEnd(40)} ${cls}`,
     );
   }
-  const n = BENCHMARKS.length;
   console.log(
-    `\n  TOP-1: ${top1}/${n} (${((top1 / n) * 100).toFixed(0)}%) · TOP-3: ${top3}/${n} · MISS: ${miss}\n`,
+    `\n  ${s.total} cases · TOP-1 ${(s.top1Rate * 100).toFixed(1)}% · TOP-3 ${(s.top3Rate * 100).toFixed(1)}% · false-positives ${s.falsePositives} · unsafe-equivalences ${s.unsafeEquivalences}\n`,
   );
-  if (miss > 0) process.exit(1);
+  if (s.failures.length > 0) {
+    console.log(`  ${s.failures.length} failing case(s):`);
+    for (const f of s.failures) console.log(`    - ${f.query} → ${f.topTitle}`);
+    process.exit(1);
+  }
 }
 
 main();
