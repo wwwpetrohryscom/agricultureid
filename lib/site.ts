@@ -237,6 +237,13 @@ export const SECTIONS: NavSection[] = [
     active: true,
   },
   {
+    label: 'Agroecological Zones',
+    href: '/agroecological-zones',
+    description:
+      'Köppen-Geiger climate/agroecological zones and their agricultural relevance.',
+    active: true,
+  },
+  {
     label: 'Tools',
     href: '/tools',
     description:
@@ -305,6 +312,7 @@ export const REFERENCE_NAV = SECTIONS.filter(
       '/irrigation',
       '/plant-nutrition',
       '/agricultural-data',
+      '/agroecological-zones',
       '/explore',
       '/compare',
       '/glossary',

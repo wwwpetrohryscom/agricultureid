@@ -21,6 +21,7 @@ import { toolIssues } from '@/lib/tools/validate-tools';
 import { searchIssues } from '@/lib/search/validate-search';
 import { dataOpsIssues } from '@/lib/data-ops/validate-dataops';
 import { comparisonIssues } from '@/lib/comparison/validate-comparison';
+import { regionIssues } from '@/lib/geo/validate-regions';
 import { UNRESOLVED_ISSUES } from '@/data/unresolved-issues';
 import {
   articleSchema,
@@ -854,6 +855,12 @@ export function validateAll(): ValidationResult {
   for (const ci of comparisonIssues()) {
     if (ci.level === 'error') error(ci.code, ci.message, ci.where);
     else warn(ci.code, ci.message, ci.where);
+  }
+
+  /* ---- Regions & agroecological zones (Phase 4C) ---------------------- */
+  for (const ri of regionIssues()) {
+    if (ri.level === 'error') error(ri.code, ri.message, ri.where);
+    else warn(ri.code, ri.message, ri.where);
   }
 
   /* ---- Reachability / orphans ----------------------------------------- */
