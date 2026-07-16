@@ -48,6 +48,17 @@ export const RELATION_TYPES: ReadonlySet<RelationType> = new Set<RelationType>([
   'relatedCultivar',
   'relatedBreed',
   'maintainedByRegistry',
+  'harvestedAs',
+  'harvestedFrom',
+  'processedInto',
+  'derivedFromCommodity',
+  'producesCoProduct',
+  'coProductOf',
+  'producesByProduct',
+  'byProductOf',
+  'gradedUnder',
+  'gradeAppliesTo',
+  'storedUsing',
   'relatedConcept',
 ]);
 
@@ -75,6 +86,17 @@ export const INVERSE_RELATION: Partial<Record<RelationType, RelationType>> = {
   hasBreed: 'breedOf',
   relatedCultivar: 'relatedCultivar',
   relatedBreed: 'relatedBreed',
+  // Phase 5A — transformation pathway inverses.
+  harvestedAs: 'harvestedFrom',
+  harvestedFrom: 'harvestedAs',
+  processedInto: 'derivedFromCommodity',
+  derivedFromCommodity: 'processedInto',
+  producesCoProduct: 'coProductOf',
+  coProductOf: 'producesCoProduct',
+  producesByProduct: 'byProductOf',
+  byProductOf: 'producesByProduct',
+  gradedUnder: 'gradeAppliesTo',
+  gradeAppliesTo: 'gradedUnder',
   relatedConcept: 'relatedConcept',
 };
 
@@ -88,6 +110,17 @@ const FIELD_RELATION: Record<string, RelationType> = {
   // Phase 3A — sub-entity parent links.
   parentCrop: 'cultivarOf',
   parentLivestock: 'breedOf',
+  // Phase 5A — commodity taxonomy. Distinct field names (sourceCrop, not
+  // parentCrop) so commodity edges never collide with cultivar/breed parentage.
+  sourceCrop: 'harvestedFrom',
+  sourceLivestock: 'harvestedFrom',
+  primaryProducts: 'processedInto',
+  coProducts: 'producesCoProduct',
+  byProducts: 'producesByProduct',
+  applicableGrades: 'gradedUnder',
+  storageSystems: 'storedUsing',
+  derivedFrom: 'derivedFromCommodity',
+  gradedCommodity: 'gradeAppliesTo',
 };
 
 /**
@@ -218,6 +251,28 @@ function refsWithField(item: AnyContent): { ref: ContentRef; field: string }[] {
       break;
     case 'breed':
       out.push({ ref: item.parentLivestock, field: 'parentLivestock' });
+      break;
+    case 'commodity':
+      if (item.sourceCrop)
+        out.push({ ref: item.sourceCrop, field: 'sourceCrop' });
+      if (item.sourceLivestock)
+        out.push({ ref: item.sourceLivestock, field: 'sourceLivestock' });
+      for (const ref of item.primaryProducts ?? [])
+        out.push({ ref, field: 'primaryProducts' });
+      for (const ref of item.coProducts ?? [])
+        out.push({ ref, field: 'coProducts' });
+      for (const ref of item.byProducts ?? [])
+        out.push({ ref, field: 'byProducts' });
+      for (const ref of item.applicableGrades ?? [])
+        out.push({ ref, field: 'applicableGrades' });
+      for (const ref of item.storageSystems ?? [])
+        out.push({ ref, field: 'storageSystems' });
+      break;
+    case 'commodity-product':
+      out.push({ ref: item.derivedFrom, field: 'derivedFrom' });
+      break;
+    case 'commodity-grade':
+      out.push({ ref: item.gradedCommodity, field: 'gradedCommodity' });
       break;
   }
   return out;
