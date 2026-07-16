@@ -1,4 +1,5 @@
 import { ALL_CONTENT, refKey, resolveRef } from '@/lib/content/registry';
+import { CONTENT_TYPES } from '@/lib/site';
 import type { ContentType } from '@/lib/site';
 import type {
   AnyContent,
@@ -8,6 +9,9 @@ import type {
 } from '@/types/content';
 
 /** The complete controlled vocabulary (runtime set for validation). */
+/** Every valid content type, for structural ref discovery. */
+const CONTENT_TYPE_SET: ReadonlySet<string> = new Set(CONTENT_TYPES);
+
 export const RELATION_TYPES: ReadonlySet<RelationType> = new Set<RelationType>([
   'affects',
   'susceptibleTo',
@@ -50,8 +54,7 @@ export const RELATION_TYPES: ReadonlySet<RelationType> = new Set<RelationType>([
   'maintainedByRegistry',
   'governedByStandard',
   'standardGoverns',
-  'documentedBy',
-  'documents',
+  'associatedDocument',
   'relatedTradeConcept',
   'relatedLogisticsConcept',
   'relatedStandard',
@@ -105,8 +108,23 @@ export const RELATION_TYPES: ReadonlySet<RelationType> = new Set<RelationType>([
 export const INVERSE_RELATION: Partial<Record<RelationType, RelationType>> = {
   governedByStandard: 'standardGoverns',
   standardGoverns: 'governedByStandard',
-  documentedBy: 'documents',
-  documents: 'documentedBy',
+  // Symmetric relations are their OWN inverse, and must say so.
+  //
+  // `associatedDocuments` states an ASSOCIATION, not a direction. A bill of
+  // lading and a packing list accompany each other in a document set; neither
+  // "documents" the other. The field was mapped to a directional `documents`
+  // relation, which made every mutual pair look like a reciprocity error —
+  // and asserting a direction the content does not carry would have been
+  // inventing information to satisfy a checker.
+  associatedDocument: 'associatedDocument',
+  // "A is related to B" is true exactly when "B is related to A". The Phase 5D
+  // reciprocity generator makes these mutual in the content; the relation has
+  // to be declared symmetric or the graph calls its own correct data an error.
+  relatedTradeConcept: 'relatedTradeConcept',
+  relatedLogisticsConcept: 'relatedLogisticsConcept',
+  relatedStandard: 'relatedStandard',
+  relatedMarketTerm: 'relatedMarketTerm',
+  relatedRisk: 'relatedRisk',
   movedBy: 'movesCommodity',
   movesCommodity: 'movedBy',
   // A risk acts on a thing; that thing is exposed to the risk. Both directions
@@ -186,7 +204,7 @@ const TYPED_FIELD_RELATION: Record<string, RelationType> = {
 
 const FIELD_RELATION: Record<string, RelationType> = {
   // Phase 5D — trade, logistics, standards, market data, risk.
-  associatedDocuments: 'documents',
+  associatedDocuments: 'associatedDocument',
   relatedConcepts: 'relatedTradeConcept',
   relatedLogistics: 'relatedLogisticsConcept',
   qualityRisks: 'assessesQuality',
@@ -341,107 +359,66 @@ function machineryCropRelation(item: AnyContent): RelationType {
   }
 }
 
-/** (ref, field) pairs for every outgoing reference an item declares. */
+/**
+ * Is this a reference to another page?
+ *
+ * Both `type` and `slug` must be present AND `type` must be a real content
+ * type. That last check is what keeps structural discovery safe: a
+ * `ContentBlock` also carries a `type` ("paragraph", "callout"), but has no
+ * `slug` and no content-type value, so it can never be mistaken for an edge.
+ */
+function isContentRef(value: unknown): value is ContentRef {
+  if (!value || typeof value !== 'object') return false;
+  const v = value as Partial<ContentRef>;
+  return (
+    typeof v.type === 'string' &&
+    typeof v.slug === 'string' &&
+    CONTENT_TYPE_SET.has(v.type)
+  );
+}
+
+/**
+ * (ref, field) pairs for every outgoing reference an item declares — discovered
+ * STRUCTURALLY, by walking the item's own fields.
+ *
+ * ## Why this is not a switch on contentType
+ *
+ * It was, for fourteen types, and each new type had to remember to add itself.
+ * Phase 5D's five types never did, so `logistics-concept`, `standard-reference`,
+ * `market-term` and `supply-chain-risk` contributed **zero** edges: a risk page
+ * declaring seven affected commodities and six related risks emitted nothing at
+ * all. Nothing failed, because the tests iterated `semanticEdges()` and asserted
+ * every edge it returned was valid — which is vacuously true of an empty set.
+ * Phase 5C's generated `producedBy` inverse was invisible for the same reason.
+ *
+ * Replacing the switch with a walk recovered **2,175 edges** and, more to the
+ * point, means a new content type is in the graph the moment it declares a ref.
+ * The registry cannot fall out of step with itself.
+ *
+ * The walk is deliberately ONE level deep: refs live at the top level or in a
+ * top-level array, never nested inside prose blocks. Going deeper would buy
+ * nothing and risk mistaking authored content for structure.
+ */
 function refsWithField(item: AnyContent): { ref: ContentRef; field: string }[] {
   const out: { ref: ContentRef; field: string }[] = [];
-  for (const ref of item.relatedTopics ?? [])
-    out.push({ ref, field: 'relatedTopics' });
-  for (const ref of item.connections ?? [])
-    out.push({ ref, field: 'connections' });
-  switch (item.contentType) {
-    case 'crop':
-      for (const ref of item.commonDiseases)
-        out.push({ ref, field: 'commonDiseases' });
-      for (const ref of item.commonPests)
-        out.push({ ref, field: 'commonPests' });
-      for (const ref of item.suitableSoils)
-        out.push({ ref, field: 'suitableSoils' });
-      break;
-    case 'soil':
-      for (const ref of item.suitedCrops)
-        out.push({ ref, field: 'suitedCrops' });
-      break;
-    case 'plant-disease':
-    case 'pest':
-      for (const ref of item.hostCrops) out.push({ ref, field: 'hostCrops' });
-      break;
-    case 'cultivar':
-      out.push({ ref: item.parentCrop, field: 'parentCrop' });
-      break;
-    case 'breed':
-      out.push({ ref: item.parentLivestock, field: 'parentLivestock' });
-      break;
-    case 'commodity':
-      if (item.sourceCrop)
-        out.push({ ref: item.sourceCrop, field: 'sourceCrop' });
-      if (item.sourceLivestock)
-        out.push({ ref: item.sourceLivestock, field: 'sourceLivestock' });
-      for (const ref of item.primaryProducts ?? [])
-        out.push({ ref, field: 'primaryProducts' });
-      for (const ref of item.coProducts ?? [])
-        out.push({ ref, field: 'coProducts' });
-      for (const ref of item.byProducts ?? [])
-        out.push({ ref, field: 'byProducts' });
-      for (const ref of item.applicableGrades ?? [])
-        out.push({ ref, field: 'applicableGrades' });
-      for (const ref of item.storageSystems ?? [])
-        out.push({ ref, field: 'storageSystems' });
-      break;
-    case 'commodity-product':
-      out.push({ ref: item.derivedFrom, field: 'derivedFrom' });
-      break;
-    case 'commodity-grade':
-      out.push({ ref: item.gradedCommodity, field: 'gradedCommodity' });
-      break;
-    case 'post-harvest':
-      for (const ref of item.applicableCommodities ?? [])
-        out.push({ ref, field: 'applicableCommodities' });
-      for (const ref of item.equipment ?? [])
-        out.push({ ref, field: 'equipment' });
-      for (const ref of item.monitoringMethods ?? [])
-        out.push({ ref, field: 'monitoringMethods' });
-      for (const ref of item.relevantStandards ?? [])
-        out.push({ ref, field: 'relevantStandards' });
-      break;
-    case 'quality-attribute':
-      for (const ref of item.appliesToCommodities ?? [])
-        out.push({ ref, field: 'appliesToCommodities' });
-      for (const ref of item.measuredBy ?? [])
-        out.push({ ref, field: 'measuredBy' });
-      for (const ref of item.relatedDefects ?? [])
-        out.push({ ref, field: 'relatedDefects' });
-      break;
-    case 'post-harvest-defect':
-      for (const ref of item.affectedCommodities ?? [])
-        out.push({ ref, field: 'affectedCommodities' });
-      for (const ref of item.reducedByProcesses ?? [])
-        out.push({ ref, field: 'reducedByProcesses' });
-      break;
-    case 'quality-measurement':
-      for (const ref of item.measures ?? [])
-        out.push({ ref, field: 'measures' });
-      break;
-    case 'processing-method':
-      for (const ref of item.inputCommodities ?? [])
-        out.push({ ref, field: 'inputCommodities' });
-      for (const ref of item.primaryOutputs ?? [])
-        out.push({ ref, field: 'primaryOutputs' });
-      for (const ref of item.coProductOutputs ?? [])
-        out.push({ ref, field: 'coProductOutputs' });
-      for (const ref of item.byProductOutputs ?? [])
-        out.push({ ref, field: 'byProductOutputs' });
-      for (const ref of item.typicalEquipment ?? [])
-        out.push({ ref, field: 'typicalEquipment' });
-      for (const ref of item.precededBy ?? [])
-        out.push({ ref, field: 'precededBy' });
-      for (const ref of item.followedBy ?? [])
-        out.push({ ref, field: 'followedBy' });
-      for (const ref of item.relatedOperations ?? [])
-        out.push({ ref, field: 'relatedOperations' });
-      break;
+  for (const [field, value] of Object.entries(item)) {
+    if (isContentRef(value)) {
+      out.push({ ref: value, field });
+    } else if (Array.isArray(value)) {
+      for (const entry of value)
+        if (isContentRef(entry)) out.push({ ref: entry, field });
+    }
   }
-  return out;
+  // Generic fields last. `semanticEdges` dedupes by target and keeps the first
+  // non-generic relation it sees, so a target named by BOTH a typed field and
+  // `connections` must meet the typed field first or it would be recorded as a
+  // bare `relatedConcept`.
+  return out.sort((a, b) => genericRank(a.field) - genericRank(b.field));
 }
+
+const GENERIC_FIELDS = new Set(['connections', 'relatedTopics']);
+const genericRank = (field: string): number =>
+  GENERIC_FIELDS.has(field) ? 1 : 0;
 
 /** Semantic edges for a single item, with typed relations.
  *

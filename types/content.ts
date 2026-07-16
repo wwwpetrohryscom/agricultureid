@@ -197,8 +197,7 @@ export type RelationType =
   // Phase 5D — trade, logistics, standards, market data, risk
   | 'governedByStandard'
   | 'standardGoverns'
-  | 'documentedBy'
-  | 'documents'
+  | 'associatedDocument'
   | 'relatedTradeConcept'
   | 'relatedLogisticsConcept'
   | 'relatedStandard'
