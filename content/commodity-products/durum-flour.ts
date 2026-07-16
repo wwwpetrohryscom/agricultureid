@@ -14,6 +14,7 @@ export const durumFlour: CommodityProductContent = {
   subcategory: 'Fine durum endosperm',
   productClass: 'co-product',
   derivedFrom: { type: 'commodity', slug: 'durum-wheat-grain' },
+  producedBy: [{ type: 'processing-method', slug: 'semolina-production' }],
   physicalForm: 'flour',
   summary:
     'Durum flour is the fine endosperm fraction that a durum mill produces alongside semolina. It is a marketed co-product with real uses in breads, couscous, and noodles, not a milling loss.',

@@ -10,6 +10,10 @@ export const rawSugar: CommodityProductContent = {
   subcategory: 'Partially purified cane sugar crystals',
   productClass: 'primary-product',
   derivedFrom: { type: 'commodity', slug: 'sugarcane' },
+  producedBy: [
+    { type: 'processing-method', slug: 'centrifugation' },
+    { type: 'processing-method', slug: 'evaporation-and-crystallisation' },
+  ],
   physicalForm: 'crystal',
   summary:
     'Raw sugar is the golden-brown crystal a cane mill produces: sucrose crystallised out of cane juice and spun free of most, but not all, of its mother liquor. It is the world’s traded sugar commodity, shipped in bulk to refineries that finish it into white sugar.',

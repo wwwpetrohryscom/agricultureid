@@ -209,6 +209,7 @@ const ENTITY_TYPE_LABEL: Record<string, string> = {
   'farming-system': 'Farming system',
   'irrigation-method': 'Irrigation',
   'post-harvest': 'Post-harvest',
+  'processing-method': 'Processing method',
   'quality-attribute': 'Quality attribute',
   'post-harvest-defect': 'Post-harvest defect',
   'quality-measurement': 'Quality measurement',

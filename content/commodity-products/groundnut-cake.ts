@@ -15,6 +15,7 @@ export const groundnutCake: CommodityProductContent = {
   subcategory: 'Protein meal',
   productClass: 'co-product',
   derivedFrom: { type: 'commodity', slug: 'groundnuts' },
+  producedBy: [{ type: 'processing-method', slug: 'mechanical-pressing' }],
   physicalForm: 'meal',
   summary:
     'Groundnut cake is the protein-rich solid fraction left after oil is taken from groundnut kernels. It is a valued feed protein across South Asia and Africa, and the commodity’s aflatoxin risk follows it into the cake, making provenance and storage central to its trade.',

@@ -10,6 +10,10 @@ export const wheatFlour: CommodityProductContent = {
   subcategory: 'Cereal flour',
   productClass: 'primary-product',
   derivedFrom: { type: 'commodity', slug: 'wheat-grain' },
+  producedBy: [
+    { type: 'processing-method', slug: 'roller-milling' },
+    { type: 'processing-method', slug: 'stone-milling' },
+  ],
   physicalForm: 'flour',
   summary:
     'Wheat flour is the primary product of milling wheat grain: the endosperm reduced to a fine powder after the bran and germ are separated. Extraction rate, protein, and particle size determine which flours suit which end uses.',

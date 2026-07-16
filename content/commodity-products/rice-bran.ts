@@ -10,6 +10,7 @@ export const riceBran: CommodityProductContent = {
   subcategory: 'Cereal bran',
   productClass: 'co-product',
   derivedFrom: { type: 'commodity', slug: 'brown-rice' },
+  producedBy: [{ type: 'processing-method', slug: 'rice-whitening-polishing' }],
   physicalForm: 'bran',
   summary:
     'Rice bran is the oil-rich outer layer and germ abraded from brown rice during whitening. It is a valuable co-product, but it degrades within hours of being made unless it is stabilised.',

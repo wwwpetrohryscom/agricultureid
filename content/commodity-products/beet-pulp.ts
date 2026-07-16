@@ -14,6 +14,9 @@ export const beetPulp: CommodityProductContent = {
   subcategory: 'Extracted beet cossettes for feed',
   productClass: 'co-product',
   derivedFrom: { type: 'commodity', slug: 'sugar-beet' },
+  producedBy: [
+    { type: 'processing-method', slug: 'beet-diffusion-extraction' },
+  ],
   physicalForm: 'other',
   summary:
     'Beet pulp is what remains of the sliced beet after diffusion has taken the sugar out: the cell-wall material, pressed and usually dried into pellets. It is a well-regarded ruminant feed valued for highly digestible fibre rather than starch.',

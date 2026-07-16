@@ -1,6 +1,11 @@
 import type { ContentType } from '@/lib/site';
 import type { EvidenceTier } from '@/types/sources';
 import type {
+  ProcessingClass,
+  ProcessingStage,
+  TransformationBasis,
+} from '@/types/processing';
+import type {
   AttributeClass,
   DefectClass,
   MeasurementClass,
@@ -203,6 +208,15 @@ export type RelationType =
   | 'monitoredWith'
   | 'monitors'
   | 'damagesCommodity'
+  // Phase 5C — processing & transformation
+  | 'inputToProcess'
+  | 'processInputOf'
+  | 'producesPrimaryProduct'
+  | 'primaryProductOf'
+  | 'producedByProcess'
+  | 'usesEquipment'
+  | 'precededByProcess'
+  | 'followedByProcess'
   | 'relatedConcept';
 
 export interface SemanticEdge {
@@ -587,6 +601,52 @@ export interface CommodityContent extends BaseContent {
 }
 
 /**
+ * A primary-processing method: a transformation that changes what a commodity
+ * IS, yielding one or more distinct products. Contrast `post-harvest`, whose
+ * operations condition a lot without changing its identity.
+ *
+ * Every method declares its inputs and outputs explicitly. A transformation is
+ * never inferred from a shared crop parent, and the validator walks the chain:
+ * an output's own `derivedFrom` commodity must be one of this method's inputs.
+ */
+export interface ProcessingMethodContent extends BaseContent {
+  contentType: 'processing-method';
+  processingClass: ProcessingClass;
+  processStage: ProcessingStage;
+  transformationBasis?: TransformationBasis;
+  /** Commodities entering the process (required, non-empty, must resolve). */
+  inputCommodities: ContentRef[];
+  /** Main intended outputs (→ commodity-product with productClass primary-product). */
+  primaryOutputs?: ContentRef[];
+  /** Simultaneous valuable outputs (→ commodity-product, co-product). */
+  coProductOutputs?: ContentRef[];
+  /** Residual outputs (→ commodity-product, by-product). Never called waste. */
+  byProductOutputs?: ContentRef[];
+  /** Why the process is run at all (required). */
+  processObjective: string;
+  /** How it works (required). */
+  operatingPrinciple: string;
+  physicalOrBiochemicalBasis?: string;
+  /** Equipment (→ machinery refs). */
+  typicalEquipment?: ContentRef[];
+  /** What it does to quality — qualitative. */
+  qualityEffects?: string[];
+  /** What can be measured — labels, never values. */
+  measurableParameters?: string[];
+  /** Where material or quality is lost. */
+  lossPoints?: string[];
+  environmentalContext?: string;
+  /** High-level safety framing (required — never operating procedure). */
+  safetyLimitations: string[];
+  jurisdictionalLimitations?: string[];
+  /** Methods that normally run before/after this one (→ processing-method). */
+  precededBy?: ContentRef[];
+  followedBy?: ContentRef[];
+  /** Related post-harvest operations that condition the lot around it. */
+  relatedOperations?: ContentRef[];
+}
+
+/**
  * A product obtained by transforming a commodity (primary product, co-product,
  * or by-product). `derivedFrom` is required and must resolve to a commodity.
  */
@@ -595,6 +655,11 @@ export interface CommodityProductContent extends BaseContent {
   productClass: ProductClass;
   /** The commodity this is made from (required, must resolve to a commodity). */
   derivedFrom: ContentRef;
+  /**
+   * Phase 5C — the processing methods that yield this product. Reciprocal with
+   * the method's own output list; the validator requires both directions.
+   */
+  producedBy?: ContentRef[];
   physicalForm?: PhysicalForm;
   /** The process that yields it, described at reference level. */
   processContext?: string;
@@ -785,6 +850,7 @@ export type AnyContent =
   | FarmingSystemContent
   | IrrigationMethodContent
   | PostHarvestContent
+  | ProcessingMethodContent
   | QualityAttributeContent
   | PostHarvestDefectContent
   | QualityMeasurementContent

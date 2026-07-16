@@ -15,6 +15,7 @@ export const dehydratedOnion: CommodityProductContent = {
   subcategory: 'Dehydrated vegetable',
   productClass: 'primary-product',
   derivedFrom: { type: 'commodity', slug: 'dry-bulb-onions' },
+  producedBy: [{ type: 'processing-method', slug: 'vegetable-dehydration' }],
   physicalForm: 'other',
   summary:
     'Dehydrated onion is the primary product of onion dehydration: bulbs peeled, sliced, and dried until the water that makes a fresh onion perishable is gone, then traded as flakes, granules, or powder for food manufacturing.',

@@ -10,6 +10,7 @@ export const appleJuiceConcentrate: CommodityProductContent = {
   subcategory: 'Fruit juice concentrate',
   productClass: 'primary-product',
   derivedFrom: { type: 'commodity', slug: 'fresh-apples' },
+  producedBy: [{ type: 'processing-method', slug: 'juice-concentration' }],
   physicalForm: 'liquid',
   summary:
     'Apple juice concentrate is pressed apple juice with most of its water removed. Concentration turns a bulky, perishable liquid into a dense, storable, shippable one — which is why the world juice trade moves concentrate rather than juice.',

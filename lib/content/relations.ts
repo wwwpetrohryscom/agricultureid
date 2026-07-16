@@ -70,6 +70,14 @@ export const RELATION_TYPES: ReadonlySet<RelationType> = new Set<RelationType>([
   'monitoredWith',
   'monitors',
   'damagesCommodity',
+  'inputToProcess',
+  'processInputOf',
+  'producesPrimaryProduct',
+  'primaryProductOf',
+  'producedByProcess',
+  'usesEquipment',
+  'precededByProcess',
+  'followedByProcess',
   'relatedConcept',
 ]);
 
@@ -119,6 +127,13 @@ export const INVERSE_RELATION: Partial<Record<RelationType, RelationType>> = {
   reduces: 'reducedByProcess',
   monitoredWith: 'monitors',
   monitors: 'monitoredWith',
+  // Phase 5C — processing inverses.
+  inputToProcess: 'processInputOf',
+  processInputOf: 'inputToProcess',
+  producesPrimaryProduct: 'primaryProductOf',
+  primaryProductOf: 'producesPrimaryProduct',
+  precededByProcess: 'followedByProcess',
+  followedByProcess: 'precededByProcess',
   relatedConcept: 'relatedConcept',
 };
 
@@ -152,6 +167,16 @@ const FIELD_RELATION: Record<string, RelationType> = {
   measures: 'measures',
   applicableCommodities: 'relatedConcept',
   monitoringMethods: 'monitoredWith',
+  // Phase 5C.
+  inputCommodities: 'processInputOf',
+  primaryOutputs: 'producesPrimaryProduct',
+  coProductOutputs: 'producesCoProduct',
+  byProductOutputs: 'producesByProduct',
+  typicalEquipment: 'usesEquipment',
+  precededBy: 'precededByProcess',
+  followedBy: 'followedByProcess',
+  producedBy: 'producedByProcess',
+  relatedOperations: 'relatedConcept',
   equipment: 'managedWith',
   relevantStandards: 'gradedUnder',
 };
@@ -334,6 +359,24 @@ function refsWithField(item: AnyContent): { ref: ContentRef; field: string }[] {
     case 'quality-measurement':
       for (const ref of item.measures ?? [])
         out.push({ ref, field: 'measures' });
+      break;
+    case 'processing-method':
+      for (const ref of item.inputCommodities ?? [])
+        out.push({ ref, field: 'inputCommodities' });
+      for (const ref of item.primaryOutputs ?? [])
+        out.push({ ref, field: 'primaryOutputs' });
+      for (const ref of item.coProductOutputs ?? [])
+        out.push({ ref, field: 'coProductOutputs' });
+      for (const ref of item.byProductOutputs ?? [])
+        out.push({ ref, field: 'byProductOutputs' });
+      for (const ref of item.typicalEquipment ?? [])
+        out.push({ ref, field: 'typicalEquipment' });
+      for (const ref of item.precededBy ?? [])
+        out.push({ ref, field: 'precededBy' });
+      for (const ref of item.followedBy ?? [])
+        out.push({ ref, field: 'followedBy' });
+      for (const ref of item.relatedOperations ?? [])
+        out.push({ ref, field: 'relatedOperations' });
       break;
   }
   return out;

@@ -98,6 +98,11 @@ const INTENTIONAL_MARKERS = [
   // consistently WHY a number is withheld is the point; rewording it per page
   // would imply the reason differs, which it does not.
   'No development times, temperature or moisture thresholds, or population figures are given here',
+  // Phase 5C — the operating-instruction disclaimer. tests/phase5c.test.ts
+  // REQUIRES every processing method to carry it, so its repetition is mandated
+  // rather than incidental: these pages describe what a process does, and must
+  // say on every one of them that they are not instructions for running it.
+  'operating instruction',
   'AgricultureID does not provide veterinary treatment instructions',
   'Crop water requirements are estimated from evapotranspiration',
   // Recurring honesty caveats (methodology), intentional and appropriate:

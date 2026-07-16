@@ -17,6 +17,7 @@ export const wheatGrain: CommodityContent = {
   harvestedPart:
     'Caryopsis (the dry, one-seeded fruit, traded as the grain or kernel)',
   sourceCrop: { type: 'crop', slug: 'wheat' },
+  byProducts: [{ type: 'commodity-product', slug: 'wheat-straw' }],
   summary:
     'Wheat grain is the harvested caryopsis of common wheat (Triticum aestivum), traded as a bulk cereal commodity and milled mainly into flour. It is classified commercially by class, moisture, protein, and soundness rather than by the agronomy of the growing crop.',
   introduction: [
@@ -169,7 +170,10 @@ export const wheatGrain: CommodityContent = {
     },
   ],
   primaryProducts: [{ type: 'commodity-product', slug: 'wheat-flour' }],
-  coProducts: [{ type: 'commodity-product', slug: 'wheat-bran' }],
+  coProducts: [
+    { type: 'commodity-product', slug: 'wheat-bran' },
+    { type: 'commodity-product', slug: 'wheat-germ' },
+  ],
   applicableGrades: [{ type: 'commodity-grade', slug: 'usda-wheat-grades' }],
   storageSystems: [
     { type: 'post-harvest', slug: 'grain-storage' },

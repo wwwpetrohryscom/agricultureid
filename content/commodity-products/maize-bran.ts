@@ -10,6 +10,7 @@ export const maizeBran: CommodityProductContent = {
   subcategory: 'Cereal bran',
   productClass: 'by-product',
   derivedFrom: { type: 'commodity', slug: 'maize-grain' },
+  producedBy: [{ type: 'processing-method', slug: 'maize-dry-milling' }],
   physicalForm: 'bran',
   summary:
     'Maize bran is the fibrous pericarp separated during maize dry milling. It is a low-value residual sold mainly into feed, and it is a by-product rather than a co-product because the mill removes it rather than sets out to make it.',

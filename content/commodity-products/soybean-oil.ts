@@ -10,6 +10,11 @@ export const soybeanOil: CommodityProductContent = {
   subcategory: 'Vegetable oil',
   productClass: 'co-product',
   derivedFrom: { type: 'commodity', slug: 'soybeans' },
+  producedBy: [
+    { type: 'processing-method', slug: 'degumming' },
+    { type: 'processing-method', slug: 'oil-clarification' },
+    { type: 'processing-method', slug: 'solvent-extraction' },
+  ],
   physicalForm: 'oil',
   summary:
     'Soybean oil is the oil fraction separated from soybeans during crushing, traded crude or refined. It is one of the most widely produced vegetable oils, used in food manufacture and as an industrial and biodiesel feedstock, and it is a co-product alongside soybean meal.',

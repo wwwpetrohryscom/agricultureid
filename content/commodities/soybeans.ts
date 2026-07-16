@@ -186,6 +186,7 @@ export const soybeans: CommodityContent = {
   coProducts: [
     { type: 'commodity-product', slug: 'soybean-meal' },
     { type: 'commodity-product', slug: 'soybean-oil' },
+    { type: 'commodity-product', slug: 'soybean-press-cake' },
   ],
   byProducts: [{ type: 'commodity-product', slug: 'soybean-hulls' }],
   storageSystems: [

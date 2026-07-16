@@ -14,6 +14,7 @@ export const citrusPeel: CommodityProductContent = {
   subcategory: 'Citrus juicing residue',
   productClass: 'by-product',
   derivedFrom: { type: 'commodity', slug: 'fresh-oranges' },
+  producedBy: [{ type: 'processing-method', slug: 'citrus-juice-extraction' }],
   physicalForm: 'other',
   summary:
     'Citrus peel is the peel, rag, and seed residue left after oranges are juiced — roughly half the fruit by weight. Too voluminous to discard and too wet to store, it is dried into pellets for ruminant feed and mined for pectin and peel oil.',

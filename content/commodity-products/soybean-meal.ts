@@ -10,6 +10,10 @@ export const soybeanMeal: CommodityProductContent = {
   subcategory: 'Protein meal',
   productClass: 'co-product',
   derivedFrom: { type: 'commodity', slug: 'soybeans' },
+  producedBy: [
+    { type: 'processing-method', slug: 'meal-desolventising-and-toasting' },
+    { type: 'processing-method', slug: 'solvent-extraction' },
+  ],
   physicalForm: 'meal',
   summary:
     'Soybean meal is the protein-rich solid fraction remaining after oil is separated from soybeans. It is the reference protein ingredient of the global feed industry and a co-product of crushing — produced simultaneously with soybean oil, not left over from it.',

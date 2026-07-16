@@ -10,6 +10,7 @@ export const oatHulls: CommodityProductContent = {
   subcategory: 'Cereal hull',
   productClass: 'by-product',
   derivedFrom: { type: 'commodity', slug: 'oat-grain' },
+  producedBy: [{ type: 'processing-method', slug: 'flaking' }],
   physicalForm: 'hull',
   summary:
     'Oat hulls are the papery outer covering separated from the groat during dehulling. They are a bulky, fibrous, low-value residual, generated in large volume because the hull is a substantial share of the delivered oat.',

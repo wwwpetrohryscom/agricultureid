@@ -10,6 +10,7 @@ export const maltedBarley: CommodityProductContent = {
   subcategory: 'Cereal malt',
   productClass: 'primary-product',
   derivedFrom: { type: 'commodity', slug: 'barley-grain' },
+  producedBy: [{ type: 'processing-method', slug: 'malting' }],
   physicalForm: 'whole-grain',
   summary:
     'Malted barley is barley that has been germinated under control and then kilned to arrest the process. Malting is the deliberate partial sprouting of a grain — the one cereal transformation that requires the commodity to be alive.',

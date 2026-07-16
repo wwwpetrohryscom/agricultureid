@@ -198,7 +198,10 @@ export const sugarcane: CommodityContent = {
       note: 'FAOSTAT item "Sugar cane".',
     },
   ],
-  primaryProducts: [{ type: 'commodity-product', slug: 'raw-sugar' }],
+  primaryProducts: [
+    { type: 'commodity-product', slug: 'raw-sugar' },
+    { type: 'commodity-product', slug: 'refined-sugar' },
+  ],
   coProducts: [{ type: 'commodity-product', slug: 'molasses' }],
   byProducts: [{ type: 'commodity-product', slug: 'bagasse' }],
   connections: [

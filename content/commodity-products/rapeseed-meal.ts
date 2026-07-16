@@ -14,6 +14,7 @@ export const rapeseedMeal: CommodityProductContent = {
   subcategory: 'Protein meal',
   productClass: 'co-product',
   derivedFrom: { type: 'commodity', slug: 'rapeseed' },
+  producedBy: [{ type: 'processing-method', slug: 'mechanical-pressing' }],
   physicalForm: 'meal',
   summary:
     'Rapeseed meal is the de-oiled solid fraction from crushing rapeseed, traded as a feed protein. Its modern feed role rests on double-low breeding: the reduction of glucosinolates transformed the meal from a constrained material into a mainstream ingredient.',

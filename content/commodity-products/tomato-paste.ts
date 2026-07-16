@@ -14,6 +14,7 @@ export const tomatoPaste: CommodityProductContent = {
   subcategory: 'Vegetable concentrate',
   productClass: 'primary-product',
   derivedFrom: { type: 'commodity', slug: 'fresh-tomatoes' },
+  producedBy: [{ type: 'processing-method', slug: 'tomato-paste-production' }],
   physicalForm: 'other',
   summary:
     'Tomato paste is the primary product of tomato processing: fruit crushed, screened, and evaporated until the soluble solids are concentrated. It is traded in bulk as a shelf-stable intermediate and remade into sauces, ketchup, and canned products further down the chain.',

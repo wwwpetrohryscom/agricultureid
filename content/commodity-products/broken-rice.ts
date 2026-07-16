@@ -10,6 +10,9 @@ export const brokenRice: CommodityProductContent = {
   subcategory: 'Graded rice fragments',
   productClass: 'co-product',
   derivedFrom: { type: 'commodity', slug: 'milled-rice' },
+  producedBy: [
+    { type: 'processing-method', slug: 'rice-grading-and-brokens-separation' },
+  ],
   physicalForm: 'other',
   summary:
     'Broken rice is the fragment fraction separated from whole grains during rice milling. It is the same edible endosperm as white rice, sold apart because rice is priced on grain integrity rather than on what it is made of.',

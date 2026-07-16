@@ -10,6 +10,7 @@ export const wheatBran: CommodityProductContent = {
   subcategory: 'Cereal bran',
   productClass: 'co-product',
   derivedFrom: { type: 'commodity', slug: 'wheat-grain' },
+  producedBy: [{ type: 'processing-method', slug: 'roller-milling' }],
   physicalForm: 'bran',
   summary:
     'Wheat bran is the outer layers of the wheat kernel, separated during milling. It is a genuine co-product rather than waste: it carries most of the kernel’s fibre and is traded for animal feed and for food use.',

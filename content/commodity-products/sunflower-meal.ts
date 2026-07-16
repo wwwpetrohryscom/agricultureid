@@ -14,6 +14,7 @@ export const sunflowerMeal: CommodityProductContent = {
   subcategory: 'Protein meal',
   productClass: 'co-product',
   derivedFrom: { type: 'commodity', slug: 'sunflower-seed' },
+  producedBy: [{ type: 'processing-method', slug: 'mechanical-pressing' }],
   physicalForm: 'meal',
   summary:
     'Sunflower meal is the de-oiled solid fraction from crushing sunflower seed, traded as a feed protein. Its specification is governed by how much hull was removed before extraction, so it reaches the market at several distinct protein and fibre grades.',

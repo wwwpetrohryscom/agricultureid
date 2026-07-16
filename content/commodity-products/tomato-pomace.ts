@@ -10,6 +10,7 @@ export const tomatoPomace: CommodityProductContent = {
   subcategory: 'Vegetable pomace',
   productClass: 'by-product',
   derivedFrom: { type: 'commodity', slug: 'fresh-tomatoes' },
+  producedBy: [{ type: 'processing-method', slug: 'tomato-paste-production' }],
   physicalForm: 'pomace',
   summary:
     'Tomato pomace is the skin, seed, and pulp residue screened out when tomatoes are processed for juice and paste. It is a genuine by-product — unavoidable, lower in value than the paste it accompanies, and used mainly as animal feed.',
