@@ -201,16 +201,14 @@ export const almonds: CommodityContent = {
   ],
   primaryProducts: [{ type: 'commodity-product', slug: 'almond-kernels' }],
   byProducts: [{ type: 'commodity-product', slug: 'almond-hulls' }],
-  storageSystems: [
-    { type: 'post-harvest', slug: 'sun-drying' },
-    { type: 'post-harvest', slug: 'cold-storage' },
-  ],
+  storageSystems: [{ type: 'post-harvest', slug: 'cold-storage' }],
   connections: [
     { type: 'post-harvest', slug: 'moisture-content-and-equilibrium' },
     { type: 'post-harvest', slug: 'storage-moulds-and-mycotoxins' },
     { type: 'post-harvest', slug: 'threshing-and-shelling' },
     { type: 'post-harvest', slug: 'sorting-and-grading' },
     { type: 'post-harvest', slug: 'hermetic-storage' },
+    { type: 'post-harvest', slug: 'sun-drying' },
   ],
   imageIdentity: 'unavailable',
   glossaryTerms: ['cultivar', 'perennial-crop'],

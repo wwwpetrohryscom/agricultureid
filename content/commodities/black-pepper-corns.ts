@@ -179,15 +179,13 @@ export const blackPepperCorns: CommodityContent = {
     },
   ],
   coProducts: [{ type: 'commodity-product', slug: 'white-pepper' }],
-  storageSystems: [
-    { type: 'post-harvest', slug: 'sun-drying' },
-    { type: 'post-harvest', slug: 'hermetic-storage' },
-  ],
+  storageSystems: [{ type: 'post-harvest', slug: 'hermetic-storage' }],
   connections: [
     { type: 'post-harvest', slug: 'storage-moulds-and-mycotoxins' },
     { type: 'post-harvest', slug: 'moisture-content-and-equilibrium' },
     { type: 'post-harvest', slug: 'sorting-and-grading' },
     { type: 'post-harvest', slug: 'packing-and-packaging' },
+    { type: 'post-harvest', slug: 'sun-drying' },
   ],
   imageIdentity: 'unavailable',
   sourceReferences: [

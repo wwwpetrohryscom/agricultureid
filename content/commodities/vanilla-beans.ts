@@ -177,15 +177,13 @@ export const vanillaBeans: CommodityContent = {
       note: 'Vanilla, neither crushed nor ground. Crushed or ground vanilla falls under 0905.20.',
     },
   ],
-  storageSystems: [
-    { type: 'post-harvest', slug: 'curing' },
-    { type: 'post-harvest', slug: 'sun-drying' },
-  ],
   connections: [
     { type: 'post-harvest', slug: 'storage-moulds-and-mycotoxins' },
     { type: 'post-harvest', slug: 'moisture-content-and-equilibrium' },
     { type: 'post-harvest', slug: 'sorting-and-grading' },
     { type: 'post-harvest', slug: 'packing-and-packaging' },
+    { type: 'post-harvest', slug: 'curing' },
+    { type: 'post-harvest', slug: 'sun-drying' },
   ],
   imageIdentity: 'unavailable',
   sourceReferences: [

@@ -205,15 +205,13 @@ export const dates: CommodityContent = {
       note: 'Dates, fresh or dried, at 6-digit subheading level. The subheading does not separate ripening stages.',
     },
   ],
-  storageSystems: [
-    { type: 'post-harvest', slug: 'cold-storage' },
-    { type: 'post-harvest', slug: 'sun-drying' },
-  ],
+  storageSystems: [{ type: 'post-harvest', slug: 'cold-storage' }],
   connections: [
     { type: 'post-harvest', slug: 'controlled-atmosphere-storage' },
     { type: 'post-harvest', slug: 'sorting-and-grading' },
     { type: 'post-harvest', slug: 'packing-and-packaging' },
     { type: 'post-harvest', slug: 'moisture-content-and-equilibrium' },
+    { type: 'post-harvest', slug: 'sun-drying' },
   ],
   imageIdentity: 'unavailable',
   glossaryTerms: ['cultivar', 'perennial-crop'],

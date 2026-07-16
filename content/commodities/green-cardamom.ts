@@ -163,16 +163,14 @@ export const greenCardamom: CommodityContent = {
       note: 'Cardamoms, neither crushed nor ground. Crushed or ground cardamom falls under 0908.32.',
     },
   ],
-  storageSystems: [
-    { type: 'post-harvest', slug: 'curing' },
-    { type: 'post-harvest', slug: 'hermetic-storage' },
-  ],
+  storageSystems: [{ type: 'post-harvest', slug: 'hermetic-storage' }],
   connections: [
     { type: 'post-harvest', slug: 'sorting-and-grading' },
     { type: 'post-harvest', slug: 'packing-and-packaging' },
     { type: 'post-harvest', slug: 'storage-moulds-and-mycotoxins' },
     { type: 'post-harvest', slug: 'moisture-content-and-equilibrium' },
     { type: 'commodity', slug: 'black-pepper-corns' },
+    { type: 'post-harvest', slug: 'curing' },
   ],
   imageIdentity: 'unavailable',
   sourceReferences: [
