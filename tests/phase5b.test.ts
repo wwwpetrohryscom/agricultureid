@@ -219,10 +219,12 @@ describe('Phase 5B — graph, routes, and discovery', () => {
     for (const item of cluster)
       expect(paths.has(contentUrlPath(item)), item.slug).toBe(true);
 
-    const shard = sectionedRoutes()['post-harvest'];
-    expect(shard.length).toBe(
-      cluster.filter((i) => i.editorialStatus === 'published').length,
-    );
+    // Phase 5C also routes processing methods into this shard, so assert that
+    // the 5B cluster is fully covered by it rather than that it holds nothing
+    // else.
+    const shard = new Set(sectionedRoutes()['post-harvest'].map((r) => r.path));
+    for (const item of cluster.filter((i) => i.editorialStatus === 'published'))
+      expect(shard.has(contentUrlPath(item)), item.slug).toBe(true);
   });
 
   it('indexes the cluster for search', () => {
