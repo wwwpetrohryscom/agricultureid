@@ -11,6 +11,9 @@ import { buildMetadata } from '@/lib/seo/metadata';
 import { allSnapshots, checksumValid } from '@/lib/geo/snapshots';
 import { INDICATOR_BY_ID } from '@/data/geo/indicators';
 import { datasetPath, datasetSlug, indicatorPath } from '@/lib/geo/paths';
+import { FAOSTAT_TRADE_DATASET_ID, getDataset } from '@/lib/data-ops/registry';
+import { tradeSnapshot } from '@/lib/trade/snapshot';
+import { TradeDatasetDetail } from '@/components/trade/TradeDatasetDetail';
 
 type Params = { params: Promise<{ dataset: string }> };
 
@@ -18,12 +21,35 @@ function snapshotBySlug(slug: string) {
   return allSnapshots().find((s) => datasetSlug(s.indicatorId) === slug);
 }
 
+/** The FAOSTAT trade dataset is registered only when its snapshot loaded. */
+function tradeDatasetPresent(): boolean {
+  return Boolean(getDataset(FAOSTAT_TRADE_DATASET_ID) && tradeSnapshot());
+}
+
 export function generateStaticParams() {
-  return allSnapshots().map((s) => ({ dataset: datasetSlug(s.indicatorId) }));
+  const params = allSnapshots().map((s) => ({
+    dataset: datasetSlug(s.indicatorId),
+  }));
+  if (tradeDatasetPresent()) params.push({ dataset: FAOSTAT_TRADE_DATASET_ID });
+  return params;
 }
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { dataset } = await params;
+  if (dataset === FAOSTAT_TRADE_DATASET_ID) {
+    const trade = tradeSnapshot();
+    const entry = getDataset(FAOSTAT_TRADE_DATASET_ID);
+    if (!trade || !entry) return {};
+    return buildMetadata({
+      title: `${entry.title} — dataset snapshot`,
+      description:
+        `Immutable snapshot of the FAOSTAT Detailed Trade Matrix, version ${trade.datasetVersion}: ${trade.commodityCount} commodities of reported trade for ${trade.referenceYear}, with coverage, licence, and limitations.`.slice(
+          0,
+          160,
+        ),
+      path: datasetPath(FAOSTAT_TRADE_DATASET_ID),
+    });
+  }
   const snap = snapshotBySlug(dataset);
   if (!snap) return {};
   return buildMetadata({
@@ -48,6 +74,16 @@ function Row({ k, v }: { k: string; v: React.ReactNode }) {
 
 export default async function DatasetPage({ params }: Params) {
   const { dataset } = await params;
+
+  // The FAOSTAT trade dataset is not an indicator series — it has no iso3/year/
+  // value rows and no indicator page, so it renders from its own registry entry.
+  if (dataset === FAOSTAT_TRADE_DATASET_ID) {
+    const trade = tradeSnapshot();
+    const entry = getDataset(FAOSTAT_TRADE_DATASET_ID);
+    if (!trade || !entry) notFound();
+    return <TradeDatasetDetail entry={entry} snap={trade} />;
+  }
+
   const snap = snapshotBySlug(dataset);
   if (!snap) notFound();
   const ind = INDICATOR_BY_ID.get(snap.indicatorId);
