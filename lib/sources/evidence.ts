@@ -63,6 +63,39 @@ export const EVIDENCE_TIER: Record<string, EvidenceTier> = {
   ahdb: 2,
   'ncbi-taxonomy': 2,
   gbif: 2,
+  // Phase 5D — trade, logistics, standards, and market bodies.
+  //
+  // Tier 1: intergovernmental agencies, treaty bodies, and official statistics.
+  wto: 1, // treaty body (SPS/TBT/Agreement on Agriculture)
+  wco: 1, // intergovernmental; owns the Harmonized System
+  codex: 1, // joint FAO/WHO intergovernmental standards programme
+  ippc: 1, // intergovernmental plant-health convention (ISPMs)
+  'unece-standards': 1, // UN regional commission
+  unctad: 1,
+  itc: 1, // joint WTO/UN agency
+  'un-comtrade': 1, // UN Statistics Division official trade statistics
+  'oecd-agriculture': 1,
+  imo: 1, // UN agency regulating maritime carriage
+  'usda-ams': 1, // national authority
+  igc: 1, // intergovernmental (Grains Trade Convention)
+  ico: 1, // intergovernmental coffee body
+  icco: 1, // intergovernmental cocoa body
+  amis: 1, // G20/FAO-hosted inter-agency platform
+  'faostat-trade': 1, // FAO official statistics (Detailed Trade Matrix)
+  //
+  // Tier 2: standards bodies and schemes that are NOT public authorities.
+  // Each is authoritative about its OWN scheme — which is the only thing this
+  // platform cites them for — but none is a government, treaty body, or
+  // official registry, so Tier 1 would overstate them. Being a scheme owner is
+  // not the same as being an authority.
+  icc: 2, // private business organisation; owns the Incoterms® rules
+  iso: 2, // federation of national standards bodies, non-governmental
+  iata: 2, // airline industry association
+  gs1: 2, // non-profit identification-standards body
+  globalgap: 2, // private B2B farm-assurance scheme
+  ifoam: 2, // NGO umbrella body for the organic movement
+  fairtrade: 2, // NGO scheme owner
+  iseal: 2, // NGO meta-standard body
   // Tier 3 — general secondary references
   rhs: 3,
   britannica: 3,
@@ -93,6 +126,21 @@ export const URL_SPECIFICITY: Record<string, UrlSpecificity> = {
   'livestock-conservancy': 'organization',
   worldbank: 'program',
   'worldbank-wdi': 'record',
+  // Phase 5D — most trade/standards bodies are cited at program level; the
+  // catalogues and databases are entry points, not single records.
+  wco: 'program',
+  icc: 'program',
+  codex: 'program',
+  ippc: 'program',
+  iso: 'program',
+  'unece-standards': 'program',
+  'un-comtrade': 'program',
+  'faostat-trade': 'record',
+  itc: 'program',
+  gs1: 'program',
+  globalgap: 'organization',
+  fairtrade: 'program',
+  amis: 'organization',
 };
 
 /** Tier for a source id (defaults to 3 = weakest if unclassified). */

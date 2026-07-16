@@ -48,6 +48,22 @@ export const RELATION_TYPES: ReadonlySet<RelationType> = new Set<RelationType>([
   'relatedCultivar',
   'relatedBreed',
   'maintainedByRegistry',
+  'governedByStandard',
+  'standardGoverns',
+  'documentedBy',
+  'documents',
+  'relatedTradeConcept',
+  'relatedLogisticsConcept',
+  'relatedStandard',
+  'relatedMarketTerm',
+  'relatedRisk',
+  'movedBy',
+  'movesCommodity',
+  'dependsOnOperation',
+  'riskAffects',
+  'exposedToRisk',
+  'appliesToCommodity',
+  'assessesQuality',
   'harvestedAs',
   'harvestedFrom',
   'processedInto',
@@ -87,6 +103,17 @@ export const RELATION_TYPES: ReadonlySet<RelationType> = new Set<RelationType>([
  * inverse and must NOT have reciprocity forced.
  */
 export const INVERSE_RELATION: Partial<Record<RelationType, RelationType>> = {
+  governedByStandard: 'standardGoverns',
+  standardGoverns: 'governedByStandard',
+  documentedBy: 'documents',
+  documents: 'documentedBy',
+  movedBy: 'movesCommodity',
+  movesCommodity: 'movedBy',
+  // A risk acts on a thing; that thing is exposed to the risk. Both directions
+  // must be declared — an inverse map has to be involutive, or walking the
+  // graph backwards silently dead-ends.
+  exposedToRisk: 'riskAffects',
+  riskAffects: 'exposedToRisk',
   affects: 'susceptibleTo',
   susceptibleTo: 'affects',
   suitableForSoil: 'suitableFor',
@@ -138,7 +165,41 @@ export const INVERSE_RELATION: Partial<Record<RelationType, RelationType>> = {
 };
 
 /** Precise relation for each strongly-typed relationship field. */
+/**
+ * Field names are NOT unique across content types, so a flat field→relation map
+ * cannot express every edge. `relevantStandards` means `gradedUnder` on a
+ * post-harvest operation but `governedByStandard` on a trade concept;
+ * `affectedCommodities` means `damagesCommodity` for a pest but `riskAffects`
+ * for a supply-chain risk.
+ *
+ * This map is consulted FIRST, keyed `contentType.field`. FIELD_RELATION stays
+ * the default for the (large majority of) field names that are unambiguous.
+ */
+const TYPED_FIELD_RELATION: Record<string, RelationType> = {
+  'trade-concept.relevantStandards': 'governedByStandard',
+  'logistics-concept.relevantStandards': 'governedByStandard',
+  'logistics-concept.applicableCommodities': 'appliesToCommodity',
+  'standard-reference.applicableCommodities': 'appliesToCommodity',
+  'market-term.applicableCommodities': 'appliesToCommodity',
+  'supply-chain-risk.affectedCommodities': 'riskAffects',
+};
+
 const FIELD_RELATION: Record<string, RelationType> = {
+  // Phase 5D — trade, logistics, standards, market data, risk.
+  associatedDocuments: 'documents',
+  relatedConcepts: 'relatedTradeConcept',
+  relatedLogistics: 'relatedLogisticsConcept',
+  qualityRisks: 'assessesQuality',
+  dependsOnOperations: 'dependsOnOperation',
+  relatedTradeConcepts: 'relatedTradeConcept',
+  exposedToRisks: 'exposedToRisk',
+  relatedGrades: 'gradeAppliesTo',
+  relatedStandards: 'relatedStandard',
+  relatedTerms: 'relatedMarketTerm',
+  affectedLogistics: 'riskAffects',
+  affectedTradeConcepts: 'riskAffects',
+  addressedByStandards: 'governedByStandard',
+  relatedRisks: 'relatedRisk',
   commonDiseases: 'susceptibleTo',
   commonPests: 'susceptibleTo',
   suitableSoils: 'suitableForSoil',
@@ -393,6 +454,7 @@ export function semanticEdges(item: AnyContent): SemanticEdge[] {
   const byTarget = new Map<string, SemanticEdge>();
   for (const { ref, field } of refsWithField(item)) {
     const relation =
+      TYPED_FIELD_RELATION[`${item.contentType}.${field}`] ??
       FIELD_RELATION[field] ??
       (field === 'relatedTopics'
         ? 'relatedConcept'

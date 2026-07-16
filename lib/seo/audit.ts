@@ -10,6 +10,8 @@ import { COUNTRY_PROFILES, regionProfiles } from '@/lib/geo/registry';
 import { regionPath as wbRegionPath } from '@/lib/geo/paths';
 import { INDICATORS } from '@/data/geo/indicators';
 import { allSnapshots } from '@/lib/geo/snapshots';
+import { tradeSnapshot } from '@/lib/trade/snapshot';
+import { FAOSTAT_TRADE_DATASET_ID } from '@/lib/data-ops/registry';
 import {
   countryPath,
   indicatorPath,
@@ -130,6 +132,8 @@ export function navGraph(): Map<string, Set<string>> {
   // Datasets + indicators hubs.
   for (const s of allSnapshots())
     add('/datasets', datasetPath(datasetSlug(s.indicatorId)));
+  // Phase 5D — the FAOSTAT trade dataset is listed on the datasets hub too.
+  if (tradeSnapshot()) add('/datasets', datasetPath(FAOSTAT_TRADE_DATASET_ID));
   for (const i of INDICATORS) add('/agricultural-data', indicatorPath(i.slug));
 
   // Compare hub → each fixed comparison.

@@ -194,7 +194,7 @@ export const shadeDrying: PostHarvestContent = {
     'Dried herbs and spices are subject to jurisdiction-specific microbiological and contaminant limits; meeting them is a matter of the whole chain, not of drying method alone.',
   ],
   relevantStandards: [
-    { type: 'commodity-grade', slug: 'codex-standards-overview' },
+    { type: 'standard-reference', slug: 'codex-alimentarius' },
   ],
   connections: [
     { type: 'crop', slug: 'chili-pepper' },

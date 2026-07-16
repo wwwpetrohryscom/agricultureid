@@ -7,6 +7,7 @@ import {
   HarvestedCommodities,
   CommodityPathways,
 } from '@/components/commodity/CommodityPanels';
+import { TradePanels } from '@/components/trade/TradePanels';
 import { RelatedContent } from '@/components/content/RelatedContent';
 import { RelationPanels } from '@/components/graph/RelationPanels';
 import { SubEntityPanel } from '@/components/content/SubEntityPanel';
@@ -111,6 +112,7 @@ export function ContentArticle({ item }: { item: AnyContent }) {
           {item.contentType === 'commodity' && (
             <CommodityPathways item={item} />
           )}
+          <TradePanels item={item} />
 
           <section
             id="scope-and-limitations"

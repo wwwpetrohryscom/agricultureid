@@ -127,10 +127,14 @@ export function postHarvestIssues(): PostHarvestIssue[] {
         );
     }
     for (const ref of p.relevantStandards ?? []) {
-      if (ref.type !== 'commodity-grade')
+      // A commodity-scoped grading standard is a `commodity-grade`; a standard
+      // scoped to a domain across commodities is a `standard-reference`
+      // (Phase 5D). Both are valid targets — the ref must still resolve, and no
+      // other type may be cited as a standard.
+      if (ref.type !== 'commodity-grade' && ref.type !== 'standard-reference')
         err(
           'ph-bad-standard-ref',
-          'relevantStandards must target a commodity-grade',
+          'relevantStandards must target a commodity-grade or a standard-reference',
           w,
         );
       else if (!resolveRef(ref))

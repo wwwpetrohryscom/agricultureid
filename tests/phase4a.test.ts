@@ -13,7 +13,14 @@ describe('phase 4A — dataset registry', () => {
   });
 
   it('registry entries resolve to a checksum-verified snapshot with matching unit', () => {
+    // Scoped to World Bank INDICATOR datasets. The registry is deliberately
+    // multi-provider (see types/data-ops.ts: "nothing here assumes the World
+    // Bank cadence"), and Phase 5D added the first non-World-Bank dataset —
+    // FAOSTAT trade, whose rows are reporter/partner/item/flow, not
+    // iso3/year/value. Asserting those columns on it would be asserting a shape
+    // the dataset does not have; the FAOSTAT entry has its own test below.
     for (const d of DATASETS) {
+      if (!d.datasetId.startsWith('worldbank-')) continue;
       if (d.datasetId === 'worldbank-country-metadata') continue;
       const indId = d.datasetId
         .replace(/^worldbank-/, '')
@@ -26,6 +33,21 @@ describe('phase 4A — dataset registry', () => {
       expect(checksumValid(snap!), d.datasetId).toBe(true);
       expect(d.expectedColumns).toEqual(['iso3', 'year', 'value']);
     }
+  });
+
+  it('registers the FAOSTAT trade dataset as a non-World-Bank provider', () => {
+    // The registry's multi-provider claim, actually exercised.
+    const fao = DATASETS.find((d) => d.datasetId === 'faostat-trade-matrix');
+    expect(fao, 'FAOSTAT trade dataset must be registered').toBeDefined();
+    expect(fao!.provider).not.toMatch(/World Bank/);
+    expect(fao!.license).toBe('CC BY 4.0');
+    // CC BY 4.0 obliges attribution — the registry must say so.
+    expect(fao!.accessRequirements).toContain('attribution-required');
+    expect(fao!.checksum, 'must carry the producer checksum').toMatch(
+      /^[a-f0-9]{64}$/,
+    );
+    expect(fao!.knownLimitations.length).toBeGreaterThanOrEqual(5);
+    expect(fao!.publicationStatus).toBe('published');
   });
 
   it('reports no data-ops validation errors', () => {

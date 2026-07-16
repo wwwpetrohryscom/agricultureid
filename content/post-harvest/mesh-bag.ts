@@ -160,7 +160,7 @@ export const meshBag: PostHarvestContent = {
     'Materials in food contact are subject to jurisdiction-specific food-contact regulation, which applies to the net polymer and any coating or print on it.',
   ],
   relevantStandards: [
-    { type: 'commodity-grade', slug: 'unece-fresh-produce-standards' },
+    { type: 'standard-reference', slug: 'unece-fresh-produce-standards' },
   ],
   connections: [
     { type: 'crop', slug: 'onion' },

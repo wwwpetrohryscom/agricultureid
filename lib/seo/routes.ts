@@ -1,6 +1,8 @@
 import { PUBLISHED_CONTENT, contentUrlPath } from '@/lib/content/registry';
 import { INDICATORS, profilesSorted, regionProfiles } from '@/lib/geo/registry';
 import { allSnapshots } from '@/lib/geo/snapshots';
+import { tradeSnapshot } from '@/lib/trade/snapshot';
+import { FAOSTAT_TRADE_DATASET_ID } from '@/lib/data-ops/registry';
 import {
   countryPath,
   datasetPath,
@@ -58,6 +60,11 @@ const STATIC_ROUTES: Omit<RouteEntry, 'lastModified'>[] = [
   { path: '/commodities', changeFrequency: 'weekly', priority: 0.9 },
   { path: '/commodity-products', changeFrequency: 'weekly', priority: 0.9 },
   { path: '/commodity-grades', changeFrequency: 'weekly', priority: 0.9 },
+  { path: '/trade', changeFrequency: 'weekly', priority: 0.9 },
+  { path: '/logistics', changeFrequency: 'weekly', priority: 0.9 },
+  { path: '/standards', changeFrequency: 'weekly', priority: 0.9 },
+  { path: '/market-terms', changeFrequency: 'weekly', priority: 0.9 },
+  { path: '/supply-chain-risks', changeFrequency: 'weekly', priority: 0.9 },
   // Overview sections
   { path: '/agricultural-data', changeFrequency: 'monthly', priority: 0.7 },
   { path: '/countries', changeFrequency: 'monthly', priority: 0.7 },
@@ -91,6 +98,7 @@ export const SITEMAP_SECTIONS = [
   'content',
   'post-harvest',
   'commodities',
+  'trade',
   'geo',
   'tools',
 ] as const;
@@ -116,6 +124,15 @@ export function sectionedRoutes(): Record<SitemapSection, RouteEntry[]> {
     'post-harvest-defect',
     'quality-measurement',
   ]);
+  // Phase 5D — the trade/logistics/standards/market/risk cluster gets its
+  // own shard. Hubs stay in `pages` (STATIC_ROUTES).
+  const TRADE_TYPES = new Set([
+    'trade-concept',
+    'logistics-concept',
+    'standard-reference',
+    'market-term',
+    'supply-chain-risk',
+  ]);
   const allContentRoutes = PUBLISHED_CONTENT.map((item) => ({
     path: contentUrlPath(item),
     lastModified: item.updatedAt,
@@ -123,17 +140,21 @@ export function sectionedRoutes(): Record<SitemapSection, RouteEntry[]> {
     priority: 0.8,
     isCommodity: COMMODITY_TYPES.has(item.contentType),
     isPostHarvest: POST_HARVEST_TYPES.has(item.contentType),
+    isTrade: TRADE_TYPES.has(item.contentType),
   }));
   const contentRoutes: RouteEntry[] = allContentRoutes
-    .filter((r) => !r.isCommodity && !r.isPostHarvest)
-    .map(({ isCommodity: _d1, isPostHarvest: _d2, ...r }) => r);
+    .filter((r) => !r.isCommodity && !r.isPostHarvest && !r.isTrade)
+    .map(({ isCommodity: _d1, isPostHarvest: _d2, isTrade: _d3, ...r }) => r);
+  const tradeRoutes: RouteEntry[] = allContentRoutes
+    .filter((r) => r.isTrade)
+    .map(({ isCommodity: _d1, isPostHarvest: _d2, isTrade: _d3, ...r }) => r);
   const postHarvestRoutes: RouteEntry[] = allContentRoutes
     .filter((r) => r.isPostHarvest)
-    .map(({ isCommodity: _d1, isPostHarvest: _d2, ...r }) => r);
+    .map(({ isCommodity: _d1, isPostHarvest: _d2, isTrade: _d3, ...r }) => r);
   // Phase 5A — the commodity cluster gets its own sitemap shard.
   const commodityRoutes: RouteEntry[] = allContentRoutes
     .filter((r) => r.isCommodity)
-    .map(({ isCommodity: _d1, isPostHarvest: _d2, ...r }) => r);
+    .map(({ isCommodity: _d1, isPostHarvest: _d2, isTrade: _d3, ...r }) => r);
 
   // Phase 3B — geographic routes (country profiles, indicators, datasets,
   // regions). Statistics change on the provider's cycle, so these are monthly.
@@ -156,6 +177,17 @@ export function sectionedRoutes(): Record<SitemapSection, RouteEntry[]> {
       changeFrequency: 'monthly' as const,
       priority: 0.4,
     })),
+    // Phase 5D — FAOSTAT trade dataset (not an indicator series).
+    ...(tradeSnapshot()
+      ? [
+          {
+            path: datasetPath(FAOSTAT_TRADE_DATASET_ID),
+            lastModified: tradeSnapshot()!.retrievedAt,
+            changeFrequency: 'monthly' as const,
+            priority: 0.4,
+          },
+        ]
+      : []),
     ...regionProfiles().map((r) => ({
       path: regionPath(r.slug),
       lastModified: r.updatedAt,
@@ -223,6 +255,9 @@ export function sectionedRoutes(): Record<SitemapSection, RouteEntry[]> {
     // The three hubs live in the `pages` shard (STATIC_ROUTES); this shard
     // carries only the entries, so no path appears in two shards.
     commodities: commodityRoutes,
+    // Trade, logistics, standards, market terms, and supply-chain risks
+    // (Phase 5D). Hubs live in the `pages` shard.
+    trade: tradeRoutes,
     // Geographic + agroecological pages (countries, indicators, datasets, WB
     // macro-regions, agroecological zones, subnational regions).
     geo: [...geoRoutes, ...zoneRoutes, ...regionRoutes],

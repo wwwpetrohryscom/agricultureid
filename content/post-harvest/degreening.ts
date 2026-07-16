@@ -182,8 +182,8 @@ export const degreening: PostHarvestContent = {
     'Degreening treats appearance only and is not a decay control, a cleaning step, or a food-safety measure.',
   ],
   relevantStandards: [
-    { type: 'commodity-grade', slug: 'unece-fresh-produce-standards' },
-    { type: 'commodity-grade', slug: 'codex-standards-overview' },
+    { type: 'standard-reference', slug: 'unece-fresh-produce-standards' },
+    { type: 'standard-reference', slug: 'codex-alimentarius' },
   ],
   connections: [
     { type: 'crop', slug: 'orange' },

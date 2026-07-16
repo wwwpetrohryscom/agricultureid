@@ -31,6 +31,11 @@ const DIRS = [
   ['commodity-grades', 'commodityGrades', 'CommodityGradeContent'],
   ['cultivars', 'cultivars', 'CultivarContent'],
   ['breeds', 'breeds', 'BreedContent'],
+  ['trade-concepts', 'tradeConcepts', 'TradeConceptContent'],
+  ['logistics-concepts', 'logisticsConcepts', 'LogisticsConceptContent'],
+  ['standard-references', 'standardReferences', 'StandardReferenceContent'],
+  ['market-terms', 'marketTerms', 'MarketTermContent'],
+  ['supply-chain-risks', 'supplyChainRisks', 'SupplyChainRiskContent'],
 ];
 
 const camel = (base) =>

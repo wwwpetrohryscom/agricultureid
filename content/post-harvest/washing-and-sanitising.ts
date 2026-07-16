@@ -176,8 +176,8 @@ export const washingAndSanitising: PostHarvestContent = {
     'Wash water that is not fit for purpose contaminates the crop uniformly; source-water suitability, testing, and protection are prerequisites, not refinements.',
   ],
   relevantStandards: [
-    { type: 'commodity-grade', slug: 'codex-standards-overview' },
-    { type: 'commodity-grade', slug: 'unece-fresh-produce-standards' },
+    { type: 'standard-reference', slug: 'codex-alimentarius' },
+    { type: 'standard-reference', slug: 'unece-fresh-produce-standards' },
   ],
   connections: [
     { type: 'crop', slug: 'potato' },
