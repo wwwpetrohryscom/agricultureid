@@ -35,6 +35,102 @@ const RELATION_HEADING: Partial<Record<RelationType, string>> = {
   relatedCultivar: 'Related cultivars',
   relatedBreed: 'Related breeds',
   relatedConcept: 'Related topics',
+
+  /* ---- Phase 5A/5B/5C relations (Phase 5F) -------------------------------
+   *
+   * These edges existed in the data and rendered NOWHERE. RelationPanels shows
+   * `ORDER.filter(r => byRelation.has(r))`, so a relation with no entry here is
+   * silently invisible — and no dedicated panel covered the post-harvest or
+   * processing relations either. Restoring the edges to the graph was only half
+   * the job; a reader still could not see them.
+   *
+   * The Phase 5D relations are deliberately ABSENT: TradePanels owns those
+   * fields and renders them with their own labels, so adding them here would
+   * print every link twice. See OWNED_BY_DEDICATED_PANEL. */
+  harvestedFrom: 'Harvested from',
+  harvestedAs: 'Harvested as',
+  storedUsing: 'Stored using',
+  gradedUnder: 'Graded under',
+  gradeAppliesTo: 'Grades apply to',
+  hasQualityAttribute: 'Quality attributes',
+  qualityAttributeOf: 'Quality attribute of',
+  measuredBy: 'Measured by',
+  measures: 'Measures',
+  susceptibleToDefect: 'Susceptible to defects',
+  defectOf: 'Defect of',
+  damagesCommodity: 'Damages',
+  reducedByProcess: 'Reduced by',
+  reduces: 'Reduces',
+  monitoredWith: 'Monitored with',
+  monitors: 'Monitors',
+  usesEquipment: 'Equipment',
+  processInputOf: 'Process inputs',
+  producesPrimaryProduct: 'Primary products',
+  primaryProductOf: 'Primary product of',
+  producesCoProduct: 'Co-products',
+  coProductOf: 'Co-product of',
+  producesByProduct: 'By-products',
+  byProductOf: 'By-product of',
+  processedInto: 'Processed into',
+  derivedFromCommodity: 'Derived from',
+  precededByProcess: 'Preceded by',
+  followedByProcess: 'Followed by',
+  relatedProcessingStep: 'Related operations',
+  // Generated, not authored: computed by inverting each method's declared
+  // outputs. The heading says so, because presenting a derived edge as an
+  // author's assertion would overstate what anybody wrote.
+  producedByProcess: 'Produced by (derived)',
+};
+
+/**
+ * Relations a dedicated panel already renders, by the content type declaring
+ * them. RelationPanels must not print them again.
+ *
+ * `TradePanels` renders every Phase 5D typed field with its own labels, and
+ * `CommodityPathways` owns the commodity transformation pathways. Without this,
+ * restoring the 5D edges to the graph would have duplicated every link on those
+ * pages — the graph being right is not the same as the page being right.
+ */
+const OWNED_BY_DEDICATED_PANEL: Partial<
+  Record<string, ReadonlySet<RelationType>>
+> = {
+  'trade-concept': new Set<RelationType>([
+    'relatedTradeConcept',
+    'governedByStandard',
+    'relatedLogisticsConcept',
+    'associatedDocument',
+  ]),
+  'logistics-concept': new Set<RelationType>([
+    'relatedLogisticsConcept',
+    'relatedTradeConcept',
+    'governedByStandard',
+    'appliesToCommodity',
+    'assessesQuality',
+    'dependsOnOperation',
+    'exposedToRisk',
+  ]),
+  'standard-reference': new Set<RelationType>([
+    'relatedStandard',
+    'relatedTradeConcept',
+    'appliesToCommodity',
+    'gradeAppliesTo',
+  ]),
+  'market-term': new Set<RelationType>([
+    'relatedMarketTerm',
+    'relatedTradeConcept',
+    'appliesToCommodity',
+  ]),
+  'supply-chain-risk': new Set<RelationType>([
+    'relatedRisk',
+    'riskAffects',
+    'governedByStandard',
+  ]),
+  // CommodityPathways renders the transformation pathways.
+  commodity: new Set<RelationType>([
+    'processedInto',
+    'producesCoProduct',
+    'producesByProduct',
+  ]),
 };
 
 const ORDER: RelationType[] = [
@@ -62,6 +158,39 @@ const ORDER: RelationType[] = [
   'affectsNutrientAvailability',
   'relatedCultivar',
   'relatedBreed',
+  // Phase 5A/5B/5C — precise relations before the generic catch-all, so a page
+  // leads with what it actually asserts rather than with "related topics".
+  'harvestedFrom',
+  'harvestedAs',
+  'processedInto',
+  'derivedFromCommodity',
+  'producesPrimaryProduct',
+  'primaryProductOf',
+  'producesCoProduct',
+  'coProductOf',
+  'producesByProduct',
+  'byProductOf',
+  'producedByProcess',
+  'processInputOf',
+  'precededByProcess',
+  'followedByProcess',
+  'relatedProcessingStep',
+  'usesEquipment',
+  'storedUsing',
+  'gradedUnder',
+  'gradeAppliesTo',
+  'hasQualityAttribute',
+  'qualityAttributeOf',
+  'measuredBy',
+  'measures',
+  'susceptibleToDefect',
+  'defectOf',
+  'damagesCommodity',
+  'reducedByProcess',
+  'reduces',
+  'monitoredWith',
+  'monitors',
+  // Generic last: it is the fallback, not the headline.
   'relatedConcept',
 ];
 
@@ -80,6 +209,9 @@ export function RelationPanels({ item }: { item: AnyContent }) {
     // The dedicated ParentSubEntities panel owns cultivar/breed listings.
     if (target.contentType === 'cultivar' || target.contentType === 'breed')
       continue;
+    // …and TradePanels/CommodityPathways own their own typed fields. Printing
+    // them here as well would duplicate every link on those pages.
+    if (OWNED_BY_DEDICATED_PANEL[item.contentType]?.has(e.relation)) continue;
     const list = byRelation.get(e.relation) ?? [];
     list.push({
       title: target.title,
