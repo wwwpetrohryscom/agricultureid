@@ -313,6 +313,82 @@ export const BENCHMARKS: Benchmark[] = [
     mustNotTop: ['root-knot', 'potato cyst'],
     kind: 'unsafe-equivalence',
   },
+  /* ---- Phase 5E — calculator distinctions that must NOT be conflated -------
+   * Each of these is a quantity people routinely treat as a synonym of another
+   * and which this platform must keep apart. They are the reason the Phase 5E
+   * synonym entries are `narrower` rather than `exact`. */
+  {
+    query: 'unit value',
+    titleIncludes: ['unit value'],
+    mustNotTop: ['price'],
+    kind: 'unsafe-equivalence',
+    note: 'a unit value is an arithmetic average of a reported aggregate — not a market price',
+  },
+  {
+    query: 'moisture shrink',
+    titleIncludes: ['shrink'],
+    mustNotTop: ['loss'],
+    kind: 'unsafe-equivalence',
+    note: 'shrink is water leaving; loss is material gone',
+  },
+  {
+    query: 'post-harvest loss',
+    titleIncludes: ['loss'],
+    mustNotTop: ['shrink'],
+    kind: 'unsafe-equivalence',
+    note: 'loss ≠ shrink',
+  },
+  {
+    query: 'bulk density',
+    titleIncludes: ['bulk density'],
+    mustNotTop: ['test weight'],
+    kind: 'unsafe-equivalence',
+    note: 'bulk density is a ratio; test weight is a graded measurement',
+  },
+  {
+    query: 'processing recovery',
+    titleIncludes: ['recovery'],
+    mustNotTop: ['yield'],
+    kind: 'unsafe-equivalence',
+    note: 'recovery is output ÷ input; yield is production per unit area',
+  },
+  {
+    query: 'yield converter',
+    titleIncludes: ['yield'],
+    mustNotTop: ['recovery'],
+    kind: 'unsafe-equivalence',
+    note: 'yield ≠ recovery',
+  },
+
+  /* ---- Phase 5E — calculator lookups -------------------------------------- */
+  {
+    query: 'dry matter calculator',
+    titleIncludes: ['dry-matter'],
+    kind: 'multiword',
+    note: 'the tool is titled "Dry-matter calculator" — hyphenated',
+  },
+  {
+    query: 'water removal',
+    titleIncludes: ['water removal'],
+    kind: 'multiword',
+  },
+  { query: 'wet basis', types: ['tool'], kind: 'multiword' },
+  {
+    query: 'storage capacity',
+    titleIncludes: ['storage volume'],
+    kind: 'multiword',
+    note: 'the tool is deliberately titled "volume", not "capacity" — a geometric volume is not a capacity. The query reaches it via a searchAlias rather than by renaming the tool to something it is not.',
+  },
+  {
+    query: 'packaging quantity',
+    titleIncludes: ['packaging'],
+    kind: 'multiword',
+  },
+  {
+    query: 'commodity blending',
+    titleIncludes: ['blending'],
+    kind: 'multiword',
+  },
 ];
 
 export function benchmarkIndex(): SearchIndex {

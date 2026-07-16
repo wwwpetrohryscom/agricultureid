@@ -127,4 +127,70 @@ export const SYNONYMS: SynonymEntry[] = [
     kind: 'broader',
     note: 'SWD (Drosophilidae) differs from the tephritid fruit flies profiled; see the entry’s note.',
   },
+  /* ---- Phase 5E — calculator vocabulary ---------------------------------
+   *
+   * Deliberately conservative. The pairs §21 names are NOT synonyms and are
+   * absent from this registry on purpose:
+   *
+   *   unit value ≠ price          — a unit value is an arithmetic average of a
+   *                                 reported aggregate; no transaction need have
+   *                                 occurred at it.
+   *   shrink ≠ loss               — shrink is water leaving; loss is material
+   *                                 gone. A lot that shrinks lost no substance.
+   *   bulk density ≠ test weight  — test weight is a graded measurement by a
+   *                                 specified apparatus; bulk density is a ratio.
+   *   recovery ≠ yield            — recovery is output ÷ input; yield is
+   *                                 production per unit area.
+   *   package count ≠ logistics   — a count is not a plan.
+   *
+   * Making any of those `exact` would let a search for one return the other as
+   * if they were the same quantity. tests/phase5e.test.ts and the search
+   * benchmark both assert they stay distinct.
+   */
+  {
+    canonical: 'moisture-content-converter',
+    variants: [
+      'moisture basis',
+      'wet basis',
+      'dry basis',
+      'wet-basis',
+      'dry-basis',
+    ],
+    kind: 'narrower',
+    note: 'Basis vocabulary points at the converter; the bases themselves are distinct quantities, not synonyms of each other.',
+  },
+  {
+    canonical: 'grain-moisture-shrink',
+    variants: ['moisture shrink', 'grain shrink', 'shrink'],
+    kind: 'narrower',
+    note: 'Shrink is water removal expressed as a mass fraction — NOT a synonym of loss.',
+  },
+  {
+    canonical: 'bulk-density-calculator',
+    variants: ['bulk density'],
+    kind: 'narrower',
+    note: 'Deliberately NOT linked to "test weight", which is a distinct graded measurement.',
+  },
+  {
+    canonical: 'commodity-blending-calculator',
+    variants: ['blending', 'blend'],
+    kind: 'narrower',
+  },
+  {
+    canonical: 'processing-recovery-calculator',
+    variants: ['processing recovery', 'recovery'],
+    kind: 'narrower',
+    note: 'Deliberately NOT linked to "yield", which means production per unit area.',
+  },
+  {
+    canonical: 'trade-unit-value-calculator',
+    variants: ['unit value'],
+    kind: 'narrower',
+    note: 'Deliberately NOT linked to "price". A unit value is not a price.',
+  },
+  {
+    canonical: 'packaging-quantity-estimator',
+    variants: ['packaging count', 'package count'],
+    kind: 'narrower',
+  },
 ];
