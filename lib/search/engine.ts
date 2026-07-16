@@ -12,6 +12,16 @@ import type {
  * — runs identically at build time and in the browser.
  */
 
+/**
+ * Aggregate-page prior (Phase 5A). A comparison page names several entities in
+ * its title, so it matches an entity query on every token and can outrank the
+ * entity itself. For a query that names a thing, the thing should lead and the
+ * comparison should sit just behind it; a query that asks for a comparison
+ * ("maize vs sorghum") still wins on its own terms. Deliberately gentle.
+ */
+const AGGREGATE_PRIOR: Record<string, number> = { comparison: 0.85 };
+const typePrior = (type: string): number => AGGREGATE_PRIOR[type] ?? 1;
+
 const FIELD_WEIGHT = {
   title: 10,
   names: 8,
@@ -84,23 +94,55 @@ export interface SearchIndex {
   synonymMap: Map<string, Set<string>>;
 }
 
+/**
+ * Token weights for a document, counted at most ONCE per field (Phase 5A).
+ *
+ * Repeating a token across several values of the same field is a naming
+ * artefact, not extra relevance: a commodity that lists "Rough rice", "Paddy
+ * rice", and "Unhusked rice" is not three times more about rice than the rice
+ * crop is. Summing every occurrence let such an entry outrank the canonical
+ * entity purely by having more synonyms. Each (token, field) pair therefore
+ * contributes its field weight once; a token appearing in several *different*
+ * fields still accumulates, which is genuine signal.
+ */
 function fieldTokens(doc: SearchDoc): { token: string; weight: number }[] {
   const out: { token: string; weight: number }[] = [];
+  const seen = new Set<string>();
+  let field = 0;
   const add = (text: string | undefined, weight: number) => {
     if (!text) return;
-    for (const t of tokenize(text)) out.push({ token: t, weight });
+    for (const t of tokenize(text)) {
+      const key = `${field}:${t}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      out.push({ token: t, weight });
+    }
   };
-  add(doc.title, FIELD_WEIGHT.title);
-  for (const name of doc.names ?? []) add(name, FIELD_WEIGHT.names);
-  add(doc.scientificName, FIELD_WEIGHT.scientificName);
-  add(doc.parent, FIELD_WEIGHT.parent);
-  add(doc.category, FIELD_WEIGHT.category);
-  add(doc.country, FIELD_WEIGHT.country);
-  add(doc.region, FIELD_WEIGHT.region);
-  for (const r of doc.relationLabels ?? []) add(r, FIELD_WEIGHT.relationLabels);
-  for (const s of doc.sources ?? []) add(s, FIELD_WEIGHT.sources);
-  for (const g of doc.glossaryTerms ?? []) add(g, FIELD_WEIGHT.glossaryTerms);
-  add(doc.summary, FIELD_WEIGHT.summary);
+  /** Group several values under one logical field (e.g. all alternative names). */
+  const field_ = (fn: () => void) => {
+    field++;
+    fn();
+  };
+  field_(() => add(doc.title, FIELD_WEIGHT.title));
+  field_(() => {
+    for (const name of doc.names ?? []) add(name, FIELD_WEIGHT.names);
+  });
+  field_(() => add(doc.scientificName, FIELD_WEIGHT.scientificName));
+  field_(() => add(doc.parent, FIELD_WEIGHT.parent));
+  field_(() => add(doc.category, FIELD_WEIGHT.category));
+  field_(() => add(doc.country, FIELD_WEIGHT.country));
+  field_(() => add(doc.region, FIELD_WEIGHT.region));
+  field_(() => {
+    for (const r of doc.relationLabels ?? [])
+      add(r, FIELD_WEIGHT.relationLabels);
+  });
+  field_(() => {
+    for (const s of doc.sources ?? []) add(s, FIELD_WEIGHT.sources);
+  });
+  field_(() => {
+    for (const g of doc.glossaryTerms ?? []) add(g, FIELD_WEIGHT.glossaryTerms);
+  });
+  field_(() => add(doc.summary, FIELD_WEIGHT.summary));
   return out;
 }
 
@@ -137,19 +179,61 @@ export function buildIndex(
   return { docs, byId, postings, tokens: [...postings.keys()], synonymMap };
 }
 
-/** Expand a query token to synonym surface forms (token-level). */
+/**
+ * Expand a query token to synonym surface forms (token-level).
+ *
+ * A token only expands via a synonym key it matches **in full**. Matching any
+ * single word inside a multi-word key creates unsafe equivalences: "guinea
+ * corn" is a variant of sorghum, so a substring rule made the query "corn"
+ * expand to sorghum, and "great millet" made "millet" expand to sorghum too.
+ * These are different commodities and must never be conflated (see the
+ * unsafe-equivalence guards in the search benchmark). Multi-word variants are
+ * matched as phrases at the query level, not by leaking their individual words.
+ */
 function expandToken(
   token: string,
   synonymMap: Map<string, Set<string>>,
 ): Set<string> {
   const out = new Set<string>([token]);
-  for (const [key, set] of synonymMap) {
-    const keyTokens = key.split(' ');
-    if (keyTokens.includes(token) || key === token) {
-      for (const target of set) for (const tt of target.split(' ')) out.add(tt);
-    }
+  const set = synonymMap.get(token);
+  if (set) {
+    for (const target of set) for (const tt of target.split(' ')) out.add(tt);
   }
   return out;
+}
+
+/**
+ * Every title form the query could canonically denote: the literal query, plus
+ * each single-token synonym expansion. Multi-token queries expand positionally
+ * only when a token has a one-word canonical form, which keeps this bounded and
+ * avoids inventing phrases the user did not mean.
+ */
+function queryTitleForms(
+  qTokens: string[],
+  synonymMap: Map<string, Set<string>>,
+): Set<string> {
+  const forms = new Set<string>([qTokens.join(' ')]);
+  const perPos = qTokens.map((t) => {
+    const set = new Set<string>([t]);
+    for (const surface of expandToken(t, synonymMap)) {
+      // Only single-word expansions — a canonical form spanning several words
+      // cannot be substituted positionally without changing meaning.
+      if (!surface.includes(' ')) set.add(surface);
+    }
+    return [...set];
+  });
+  // Bounded expansion: skip combinatorics on long queries.
+  const combos = perPos.reduce((n, s) => n * s.length, 1);
+  if (combos > 64) return forms;
+  const build = (i: number, acc: string[]) => {
+    if (i === perPos.length) {
+      forms.add(acc.join(' '));
+      return;
+    }
+    for (const v of perPos[i]!) build(i + 1, [...acc, v]);
+  };
+  build(0, []);
+  return forms;
 }
 
 export interface SearchOptions {
@@ -227,16 +311,26 @@ export function search(
 
   // Rank: score, boosted by fraction of query terms matched (AND-preference) and
   // an exact-title bonus.
+  //
+  // The title bonus is synonym-aware (Phase 5A): a query is an exact hit on the
+  // entity a synonym RESOLVES TO, not only on the literal string typed. "corn"
+  // resolves to "maize", so the page titled exactly "Maize" is the canonical
+  // answer and must outrank the many pages that merely mention maize/corn (its
+  // commodity, products, diseases, and grading standards). Without this, a bare
+  // shared plant name degenerates into a term-frequency contest between
+  // entities that all legitimately carry the name.
   const nQ = Math.max(qTokens.length, 1);
+  const expandedQueries = queryTitleForms(qTokens, index.synonymMap);
   const scored: SearchResult[] = [];
   for (const [docIdx, score] of scores) {
     const doc = index.docs[docIdx]!;
     const termCoverage = (matchedTerms.get(docIdx)?.size ?? 0) / nQ;
-    const titleExact =
-      tokenize(doc.title).join(' ') === qTokens.join(' ') ? 50 : 0;
+    const titleKey = tokenize(doc.title).join(' ');
+    const titleExact = expandedQueries.has(titleKey) ? 50 : 0;
     scored.push({
       doc,
-      score: score * (0.5 + 0.5 * termCoverage) + titleExact,
+      score:
+        score * (0.5 + 0.5 * termCoverage) * typePrior(doc.type) + titleExact,
       matchedVia: [...(matchedVia.get(docIdx) ?? [])],
     });
   }

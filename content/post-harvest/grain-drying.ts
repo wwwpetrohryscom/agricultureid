@@ -139,6 +139,28 @@ export const grainDrying: PostHarvestContent = {
       citedFor: 'Grain drying and handling context',
     },
   ],
+  claims: [
+    {
+      field: 'safe-storage-moisture',
+      statement:
+        'Cereals are commonly dried to roughly 13–14% moisture (wet basis) for medium-term storage, with lower targets for long-term storage or warm climates.',
+      quantitative: true,
+      citations: [
+        {
+          sourceId: 'fao',
+          evidenceNote:
+            'FAO guidance on grain drying and safe-storage moisture for cereals.',
+          jurisdiction: 'Global',
+        },
+        {
+          sourceId: 'ahdb',
+          evidenceNote:
+            'AHDB grain storage guidance on target moisture for safe storage.',
+          jurisdiction: 'United Kingdom',
+        },
+      ],
+    },
+  ],
   updatedAt: '2026-07-13',
   reviewedAt: '2026-07-13',
   geographicScope:

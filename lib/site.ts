@@ -41,6 +41,9 @@ export const CONTENT_TYPES = [
   'farming-system',
   'irrigation-method',
   'post-harvest',
+  'commodity',
+  'commodity-product',
+  'commodity-grade',
   'cultivar',
   'breed',
 ] as const;
@@ -65,6 +68,9 @@ export const CONTENT_TYPE_ROUTE: Record<ContentType, string> = {
   'farming-system': 'farm-systems',
   'irrigation-method': 'irrigation',
   'post-harvest': 'post-harvest',
+  commodity: 'commodities',
+  'commodity-product': 'commodity-products',
+  'commodity-grade': 'commodity-grades',
   cultivar: 'cultivars',
   breed: 'breeds',
 };
@@ -83,6 +89,9 @@ export const CONTENT_TYPE_LABEL: Record<ContentType, string> = {
   'farming-system': 'Farming System',
   'irrigation-method': 'Irrigation Method',
   'post-harvest': 'Post-Harvest',
+  commodity: 'Commodity',
+  'commodity-product': 'Commodity Product',
+  'commodity-grade': 'Grading Standard',
   cultivar: 'Cultivar',
   breed: 'Breed',
 };
@@ -101,6 +110,9 @@ export const CONTENT_TYPE_LABEL_PLURAL: Record<ContentType, string> = {
   'farming-system': 'Farming Systems',
   'irrigation-method': 'Irrigation',
   'post-harvest': 'Post-Harvest',
+  commodity: 'Commodities',
+  'commodity-product': 'Commodity Products',
+  'commodity-grade': 'Grading Standards',
   cultivar: 'Cultivars',
   breed: 'Breeds',
 };
@@ -208,6 +220,30 @@ export const SECTIONS: NavSection[] = [
       'Handling, drying, cooling, storage, processing, and loss-reduction operations between harvest and market.',
     active: true,
     contentType: 'post-harvest',
+  },
+  {
+    label: 'Commodities',
+    href: '/commodities',
+    description:
+      'Harvested, traded agricultural commodities — distinct from the living crop — with classification, uses, quality attributes, and product pathways.',
+    active: true,
+    contentType: 'commodity',
+  },
+  {
+    label: 'Commodity Products',
+    href: '/commodity-products',
+    description:
+      'Primary products, co-products, and by-products obtained by transforming agricultural commodities.',
+    active: true,
+    contentType: 'commodity-product',
+  },
+  {
+    label: 'Grading Standards',
+    href: '/commodity-grades',
+    description:
+      'Summaries of official commodity grading standards, with issuing body, jurisdiction, edition, and legal status.',
+    active: true,
+    contentType: 'commodity-grade',
   },
   {
     label: 'Plant Nutrition',
@@ -354,6 +390,9 @@ export const REFERENCE_NAV = SECTIONS.filter(
       '/breeds',
       '/irrigation',
       '/post-harvest',
+      '/commodities',
+      '/commodity-products',
+      '/commodity-grades',
       '/plant-nutrition',
       '/agricultural-data',
       '/agroecological-zones',

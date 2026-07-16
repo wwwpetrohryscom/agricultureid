@@ -1,5 +1,15 @@
 import type { ContentType } from '@/lib/site';
 import type { EvidenceTier } from '@/types/sources';
+import type {
+  CommodityClass,
+  CommodityCode,
+  CommodityImageIdentity,
+  CommodityUse,
+  GradeCriterion,
+  GradeLegalStatus,
+  PhysicalForm,
+  ProductClass,
+} from '@/types/commodity';
 
 export type { ContentType };
 
@@ -162,6 +172,18 @@ export type RelationType =
   | 'relatedCultivar'
   | 'relatedBreed'
   | 'maintainedByRegistry'
+  // Phase 5A — commodity taxonomy & transformation pathways
+  | 'harvestedAs'
+  | 'harvestedFrom'
+  | 'processedInto'
+  | 'derivedFromCommodity'
+  | 'producesCoProduct'
+  | 'coProductOf'
+  | 'producesByProduct'
+  | 'byProductOf'
+  | 'gradedUnder'
+  | 'gradeAppliesTo'
+  | 'storedUsing'
   | 'relatedConcept';
 
 export interface SemanticEdge {
@@ -416,6 +438,103 @@ export interface PostHarvestContent extends BaseContent {
 }
 
 /* -------------------------------------------------------------------------- */
+/*  Commodity taxonomy (Phase 5A)                                             */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * A harvested, traded commodity — NOT the living crop. Anchored to exactly one
+ * parent (`sourceCrop` XOR `sourceLivestock`), which must resolve to a
+ * published crop/livestock page. Transformation edges are explicit and typed;
+ * they are never inferred from a shared crop parent.
+ */
+export interface CommodityContent extends BaseContent {
+  contentType: 'commodity';
+  commodityClass: CommodityClass;
+  physicalForm?: PhysicalForm;
+  /** The plant/animal part traded, e.g. "Caryopsis (grain)", "Seed cotton". */
+  harvestedPart?: string;
+  /** Parent crop species. Exactly one of sourceCrop/sourceLivestock is required. */
+  sourceCrop?: ContentRef;
+  /** Parent livestock species. Exactly one of sourceCrop/sourceLivestock. */
+  sourceLivestock?: ContentRef;
+  /** Versioned, jurisdictional classification codes. */
+  commodityCodes?: CommodityCode[];
+  primaryUses: CommodityUse[];
+  secondaryUses?: CommodityUse[];
+  /** Quality attributes that matter commercially for this commodity. */
+  majorQualityAttributes?: string[];
+  commonDefects?: string[];
+  moistureContext?: string;
+  storageContext?: string;
+  transportContext?: string;
+  majorProducingRegions?: string[];
+  majorTradingRegions?: string[];
+  /* Transformation pathways — each target must resolve to a commodity-product
+     whose `derivedFrom` points back at this commodity with a matching class. */
+  primaryProducts?: ContentRef[];
+  coProducts?: ContentRef[];
+  byProducts?: ContentRef[];
+  /** Grading standards that apply (→ commodity-grade). */
+  applicableGrades?: ContentRef[];
+  /** Storage systems used for this commodity (→ post-harvest). */
+  storageSystems?: ContentRef[];
+  /** Identity confidence for the lead image (commodity-specific vocabulary). */
+  imageIdentity?: CommodityImageIdentity;
+}
+
+/**
+ * A product obtained by transforming a commodity (primary product, co-product,
+ * or by-product). `derivedFrom` is required and must resolve to a commodity.
+ */
+export interface CommodityProductContent extends BaseContent {
+  contentType: 'commodity-product';
+  productClass: ProductClass;
+  /** The commodity this is made from (required, must resolve to a commodity). */
+  derivedFrom: ContentRef;
+  physicalForm?: PhysicalForm;
+  /** The process that yields it, described at reference level. */
+  processContext?: string;
+  primaryUses: CommodityUse[];
+  secondaryUses?: CommodityUse[];
+  majorQualityAttributes?: string[];
+  commodityCodes?: CommodityCode[];
+  storageContext?: string;
+  imageIdentity?: CommodityImageIdentity;
+}
+
+/**
+ * A grading standard applied to a commodity, summarised — never a verbatim
+ * reproduction of a copyrighted standard. Always carries the issuing body,
+ * jurisdiction, edition/version, legal status, and reproduction limitations.
+ */
+export interface CommodityGradeContent extends BaseContent {
+  contentType: 'commodity-grade';
+  /** Issuing body, e.g. "USDA Agricultural Marketing Service". */
+  standardBody: string;
+  /** Public identifier of the standard, when one exists. */
+  standardIdentifier?: string;
+  /** Jurisdiction the standard applies in (required). */
+  jurisdiction: string;
+  /** Edition/version the summary reflects (required — standards are versioned). */
+  edition: string;
+  effectiveDate?: string;
+  /** Set when a later edition supersedes the one summarised here. */
+  supersededNote?: string;
+  legalStatus: GradeLegalStatus;
+  /** The commodity graded (required, must resolve to a commodity). */
+  gradedCommodity: ContentRef;
+  /** Named grades within the standard, e.g. ["U.S. No. 1", "U.S. No. 2"]. */
+  gradeNames?: string[];
+  /** Summarised criteria. Quantitative ones require Tier 1–2 provenance. */
+  gradeCriteria?: GradeCriterion[];
+  measurementBasis?: string;
+  defectsConsidered?: string[];
+  samplingContext?: string;
+  /** Why/how this summary is limited (required — never reproduce standards). */
+  reproductionLimitations: string[];
+}
+
+/* -------------------------------------------------------------------------- */
 /*  Registry & status semantics (Phase 3A)                                     */
 /* -------------------------------------------------------------------------- */
 
@@ -562,6 +681,9 @@ export type AnyContent =
   | FarmingSystemContent
   | IrrigationMethodContent
   | PostHarvestContent
+  | CommodityContent
+  | CommodityProductContent
+  | CommodityGradeContent
   | CultivarContent
   | BreedContent;
 

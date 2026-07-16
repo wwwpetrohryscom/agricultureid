@@ -22,6 +22,7 @@ import { searchIssues } from '@/lib/search/validate-search';
 import { dataOpsIssues } from '@/lib/data-ops/validate-dataops';
 import { comparisonIssues } from '@/lib/comparison/validate-comparison';
 import { regionIssues } from '@/lib/geo/validate-regions';
+import { commodityIssues } from '@/lib/commodity/validate-commodity';
 import { UNRESOLVED_ISSUES } from '@/data/unresolved-issues';
 import {
   articleSchema,
@@ -861,6 +862,12 @@ export function validateAll(): ValidationResult {
   for (const ri of regionIssues()) {
     if (ri.level === 'error') error(ri.code, ri.message, ri.where);
     else warn(ri.code, ri.message, ri.where);
+  }
+
+  /* ---- Commodity taxonomy (Phase 5A) ---------------------------------- */
+  for (const ci of commodityIssues()) {
+    if (ci.level === 'error') error(ci.code, ci.message, ci.where);
+    else warn(ci.code, ci.message, ci.where);
   }
 
   /* ---- Reachability / orphans ----------------------------------------- */
