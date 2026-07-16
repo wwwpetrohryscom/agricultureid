@@ -6,6 +6,21 @@ export const controlledAtmosphereStorage: PostHarvestContent = {
   contentType: 'post-harvest',
   title: 'Controlled Atmosphere Storage',
   postHarvestClass: 'storage',
+  processStage: 'storage',
+  operatingPrinciple:
+    'Oxygen is lowered and carbon dioxide raised, and both are actively regulated alongside temperature and humidity, so respiration and ripening slow further than refrigeration alone can achieve.',
+  riskFactors: [
+    'Commodity-specific gas tolerances: too little oxygen or too much carbon dioxide causes physiological injury',
+    'Failure of gas control or monitoring equipment',
+    'Injury that only becomes visible once the store is opened',
+    'Cultivar-dependent response — what suits one selection may injure another',
+  ],
+  monitoringMethods: [
+    { type: 'quality-measurement', slug: 'temperature-probe' },
+  ],
+  safetyLimitations: [
+    'Controlled-atmosphere rooms are deliberately oxygen-deficient and are confined spaces. Entry without trained personnel, atmosphere testing, and the facility’s own procedures is life-threatening. AgricultureID gives no entry, gas-management, or operating procedure.',
+  ],
   alternativeNames: ['CA storage', 'Controlled-atmosphere storage'],
   category: 'Post-harvest operation',
   subcategory: 'Storage',
