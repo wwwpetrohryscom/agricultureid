@@ -13,6 +13,7 @@ import type {
   PestContent,
   PlantDiseaseContent,
   PostHarvestContent,
+  ProcessingMethodContent,
   QualityAttributeContent,
   PostHarvestDefectContent,
   QualityMeasurementContent,
@@ -35,6 +36,7 @@ import { climateFactors } from './climate';
 import { farmingSystems } from './farming-systems';
 import { irrigationMethods } from './irrigation-methods';
 import { postHarvest } from './post-harvest';
+import { processingMethods } from './processing-methods';
 import { qualityAttributes } from './quality-attributes';
 import { postHarvestDefects } from './post-harvest-defects';
 import { qualityMeasurements } from './quality-measurements';
@@ -57,6 +59,7 @@ export const CLIMATE: ClimateContent[] = climateFactors;
 export const FARMING_SYSTEMS: FarmingSystemContent[] = farmingSystems;
 export const IRRIGATION_METHODS: IrrigationMethodContent[] = irrigationMethods;
 export const POST_HARVEST: PostHarvestContent[] = postHarvest;
+export const PROCESSING_METHODS: ProcessingMethodContent[] = processingMethods;
 export const QUALITY_ATTRIBUTES: QualityAttributeContent[] = qualityAttributes;
 export const POST_HARVEST_DEFECTS: PostHarvestDefectContent[] =
   postHarvestDefects;
@@ -83,6 +86,7 @@ export const ALL_CONTENT: AnyContent[] = [
   ...farmingSystems,
   ...irrigationMethods,
   ...postHarvest,
+  ...processingMethods,
   ...qualityAttributes,
   ...postHarvestDefects,
   ...qualityMeasurements,

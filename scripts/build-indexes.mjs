@@ -22,6 +22,7 @@ const DIRS = [
   ['farming-systems', 'farmingSystems', 'FarmingSystemContent'],
   ['irrigation-methods', 'irrigationMethods', 'IrrigationMethodContent'],
   ['post-harvest', 'postHarvest', 'PostHarvestContent'],
+  ['processing-methods', 'processingMethods', 'ProcessingMethodContent'],
   ['quality-attributes', 'qualityAttributes', 'QualityAttributeContent'],
   ['post-harvest-defects', 'postHarvestDefects', 'PostHarvestDefectContent'],
   ['quality-measurements', 'qualityMeasurements', 'QualityMeasurementContent'],

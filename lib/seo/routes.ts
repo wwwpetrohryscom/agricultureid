@@ -51,6 +51,7 @@ const STATIC_ROUTES: Omit<RouteEntry, 'lastModified'>[] = [
   { path: '/farm-systems', changeFrequency: 'weekly', priority: 0.9 },
   { path: '/irrigation', changeFrequency: 'weekly', priority: 0.9 },
   { path: '/post-harvest', changeFrequency: 'weekly', priority: 0.9 },
+  { path: '/processing', changeFrequency: 'weekly', priority: 0.9 },
   { path: '/quality-attributes', changeFrequency: 'weekly', priority: 0.9 },
   { path: '/post-harvest-defects', changeFrequency: 'weekly', priority: 0.9 },
   { path: '/quality-measurements', changeFrequency: 'weekly', priority: 0.9 },
@@ -110,6 +111,7 @@ export function sectionedRoutes(): Record<SitemapSection, RouteEntry[]> {
   // Phase 5B — the post-harvest quality cluster gets its own shard.
   const POST_HARVEST_TYPES = new Set([
     'post-harvest',
+    'processing-method',
     'quality-attribute',
     'post-harvest-defect',
     'quality-measurement',

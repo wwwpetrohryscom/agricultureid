@@ -14,6 +14,7 @@ export type SearchEntityType =
   | 'farming-system'
   | 'irrigation-method'
   | 'post-harvest'
+  | 'processing-method'
   | 'quality-attribute'
   | 'post-harvest-defect'
   | 'quality-measurement'
