@@ -104,6 +104,12 @@ const INTENTIONAL_MARKERS = [
   // say on every one of them that they are not instructions for running it.
   'operating instruction',
   'AgricultureID does not provide veterinary treatment instructions',
+  // Phase 5D — the no-scoring statement on supply-chain-risk entries. The risk
+  // model deliberately has no likelihood, severity, or score field, and
+  // tests/phase5d.test.ts requires every risk page to say so. Rewording it per
+  // page would imply the reason differs between risks; it does not — a score
+  // depends on the specific chain in every case, which is exactly the point.
+  'no likelihood, severity, or score is assigned',
   'Crop water requirements are estimated from evapotranspiration',
   // Recurring honesty caveats (methodology), intentional and appropriate:
   'statistics change annually and should be taken from primary datasets',

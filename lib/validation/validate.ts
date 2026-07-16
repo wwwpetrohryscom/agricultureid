@@ -25,6 +25,7 @@ import { regionIssues } from '@/lib/geo/validate-regions';
 import { commodityIssues } from '@/lib/commodity/validate-commodity';
 import { postHarvestIssues } from '@/lib/post-harvest/validate-post-harvest';
 import { processingIssues } from '@/lib/processing/validate-processing';
+import { tradeIssues } from '@/lib/trade/validate-trade';
 import { UNRESOLVED_ISSUES } from '@/data/unresolved-issues';
 import {
   articleSchema,
@@ -882,6 +883,12 @@ export function validateAll(): ValidationResult {
   for (const pi of processingIssues()) {
     if (pi.level === 'error') error(pi.code, pi.message, pi.where);
     else warn(pi.code, pi.message, pi.where);
+  }
+
+  /* ---- Trade, logistics, standards, market data (Phase 5D) ------------ */
+  for (const ti of tradeIssues()) {
+    if (ti.level === 'error') error(ti.code, ti.message, ti.where);
+    else warn(ti.code, ti.message, ti.where);
   }
 
   /* ---- Reachability / orphans ----------------------------------------- */
