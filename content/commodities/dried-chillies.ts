@@ -181,16 +181,14 @@ export const driedChillies: CommodityContent = {
     'North America',
     'Middle East and North Africa',
   ],
-  storageSystems: [
-    { type: 'post-harvest', slug: 'sun-drying' },
-    { type: 'post-harvest', slug: 'hermetic-storage' },
-  ],
+  storageSystems: [{ type: 'post-harvest', slug: 'hermetic-storage' }],
   connections: [
     { type: 'post-harvest', slug: 'storage-moulds-and-mycotoxins' },
     { type: 'post-harvest', slug: 'moisture-content-and-equilibrium' },
     { type: 'post-harvest', slug: 'sorting-and-grading' },
     { type: 'post-harvest', slug: 'packing-and-packaging' },
     { type: 'post-harvest', slug: 'postharvest-food-loss' },
+    { type: 'post-harvest', slug: 'sun-drying' },
   ],
   imageIdentity: 'unavailable',
   sourceReferences: [

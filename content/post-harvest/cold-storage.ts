@@ -6,6 +6,20 @@ export const coldStorage: PostHarvestContent = {
   contentType: 'post-harvest',
   title: 'Cold Storage',
   postHarvestClass: 'cooling',
+  processStage: 'storage',
+  operatingPrinciple:
+    'Refrigeration lowers produce temperature, which slows respiration, ripening, water loss, and the growth of decay organisms. Humidity and air circulation are managed alongside temperature so the store stays uniform and the produce does not dry out.',
+  riskFactors: [
+    'Chilling injury in sensitive commodities held below their tolerance',
+    'Freezing damage near the evaporator',
+    'Water loss and shrivel where humidity is too low',
+    'Uneven temperature from poor air circulation or overloading',
+    'Ethylene accumulation where producing and sensitive commodities share a store',
+    'Cold-chain breaks during loading and unloading',
+  ],
+  monitoringMethods: [
+    { type: 'quality-measurement', slug: 'temperature-probe' },
+  ],
   alternativeNames: ['Refrigerated storage', 'Cool storage'],
   category: 'Post-harvest operation',
   subcategory: 'Cooling & cold storage',

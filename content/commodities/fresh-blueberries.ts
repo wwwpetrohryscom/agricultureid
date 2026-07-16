@@ -180,16 +180,14 @@ export const freshBlueberries: CommodityContent = {
     'South America (counter-season exporting region)',
     'East Asia',
   ],
-  storageSystems: [
-    { type: 'post-harvest', slug: 'cold-storage' },
-    { type: 'post-harvest', slug: 'modified-atmosphere-packaging' },
-  ],
+  storageSystems: [{ type: 'post-harvest', slug: 'cold-storage' }],
   connections: [
     { type: 'post-harvest', slug: 'precooling' },
     { type: 'post-harvest', slug: 'cold-chain' },
     { type: 'post-harvest', slug: 'sorting-and-grading' },
     { type: 'post-harvest', slug: 'packing-and-packaging' },
     { type: 'post-harvest', slug: 'postharvest-food-loss' },
+    { type: 'post-harvest', slug: 'modified-atmosphere-packaging' },
   ],
   relatedTopics: [{ type: 'commodity', slug: 'fresh-strawberries' }],
   imageIdentity: 'unavailable',

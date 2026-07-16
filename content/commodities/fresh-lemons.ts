@@ -181,15 +181,13 @@ export const freshLemons: CommodityContent = {
     'North America',
     'The Middle East and East Asia',
   ],
-  storageSystems: [
-    { type: 'post-harvest', slug: 'cold-storage' },
-    { type: 'post-harvest', slug: 'curing' },
-  ],
+  storageSystems: [{ type: 'post-harvest', slug: 'cold-storage' }],
   connections: [
     { type: 'post-harvest', slug: 'ethylene-management' },
     { type: 'post-harvest', slug: 'cold-chain' },
     { type: 'post-harvest', slug: 'sorting-and-grading' },
     { type: 'post-harvest', slug: 'packing-and-packaging' },
+    { type: 'post-harvest', slug: 'curing' },
   ],
   relatedTopics: [{ type: 'commodity', slug: 'fresh-oranges' }],
   imageIdentity: 'unavailable',

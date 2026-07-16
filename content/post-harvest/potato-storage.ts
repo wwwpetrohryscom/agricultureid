@@ -6,6 +6,21 @@ export const potatoStorage: PostHarvestContent = {
   contentType: 'post-harvest',
   title: 'Potato Storage',
   postHarvestClass: 'storage',
+  processStage: 'storage',
+  operatingPrinciple:
+    'Potatoes are living tubers. Storage works by curing wounds first, then holding the crop cool and dark to suppress sprouting and disease — while keeping it warm enough to avoid cold-induced sweetening in crops destined for frying.',
+  riskFactors: [
+    'Sprouting as natural dormancy breaks',
+    'Cold-induced sweetening, which darkens fried product',
+    'Storage rots spreading from damaged or diseased tubers',
+    'Greening on exposure to light',
+    'Weight loss from evaporation and respiration',
+    'Condensation forming on the pile surface',
+  ],
+  monitoringMethods: [
+    { type: 'quality-measurement', slug: 'temperature-probe' },
+    { type: 'quality-measurement', slug: 'visual-defect-inspection' },
+  ],
   alternativeNames: ['Potato tuber storage', 'Ware potato storage'],
   category: 'Post-harvest operation',
   subcategory: 'Storage',

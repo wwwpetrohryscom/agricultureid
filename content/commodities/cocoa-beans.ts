@@ -186,16 +186,14 @@ export const cocoaBeans: CommodityContent = {
   ],
   primaryProducts: [{ type: 'commodity-product', slug: 'cocoa-nibs' }],
   byProducts: [{ type: 'commodity-product', slug: 'cocoa-shell' }],
-  storageSystems: [
-    { type: 'post-harvest', slug: 'sun-drying' },
-    { type: 'post-harvest', slug: 'grain-storage' },
-  ],
+  storageSystems: [{ type: 'post-harvest', slug: 'grain-storage' }],
   connections: [
     { type: 'crop', slug: 'cocoa' },
     { type: 'post-harvest', slug: 'moisture-content-and-equilibrium' },
     { type: 'post-harvest', slug: 'storage-moulds-and-mycotoxins' },
     { type: 'post-harvest', slug: 'sorting-and-grading' },
     { type: 'post-harvest', slug: 'hermetic-storage' },
+    { type: 'post-harvest', slug: 'sun-drying' },
   ],
   imageIdentity: 'unavailable',
   glossaryTerms: ['perennial-crop', 'cultivar'],

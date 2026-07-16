@@ -6,6 +6,19 @@ export const hermeticStorage: PostHarvestContent = {
   contentType: 'post-harvest',
   title: 'Hermetic Storage',
   postHarvestClass: 'storage',
+  processStage: 'storage',
+  operatingPrinciple:
+    'Sealing the bulk airtight lets the respiration of the grain and of any insects inside consume the available oxygen and raise carbon dioxide. The resulting atmosphere suppresses insect activity without chemicals — provided the seal holds.',
+  riskFactors: [
+    'Loss of seal integrity, which reverses the effect entirely',
+    'Grain sealed in too moist: hermetic storage does not dry a lot and can make mould risk worse',
+    'Puncture or handling damage to bags, cocoons, and liners',
+    'False confidence — the method controls insects, not moisture',
+  ],
+  monitoringMethods: [
+    { type: 'quality-measurement', slug: 'temperature-probe' },
+    { type: 'quality-measurement', slug: 'electronic-moisture-meter' },
+  ],
   alternativeNames: ['Airtight storage', 'Sealed storage', 'Hermetic bags'],
   category: 'Post-harvest operation',
   subcategory: 'Storage',

@@ -94,6 +94,10 @@ const INTENTIONAL_MARKERS = [
   'indicative groupings, not ranked statistics',
   'it is not a grading determination, contract specification, or customs classification',
   'Feed use and labelling are governed by jurisdiction-specific feed regulations',
+  // Phase 5B — the refusal disclaimer on stored-product pest entries. Stating
+  // consistently WHY a number is withheld is the point; rewording it per page
+  // would imply the reason differs, which it does not.
+  'No development times, temperature or moisture thresholds, or population figures are given here',
   'AgricultureID does not provide veterinary treatment instructions',
   'Crop water requirements are estimated from evapotranspiration',
   // Recurring honesty caveats (methodology), intentional and appropriate:

@@ -196,16 +196,14 @@ export const walnuts: CommodityContent = {
       note: 'Walnuts, fresh or dried, shelled.',
     },
   ],
-  storageSystems: [
-    { type: 'post-harvest', slug: 'cold-storage' },
-    { type: 'post-harvest', slug: 'modified-atmosphere-packaging' },
-  ],
+  storageSystems: [{ type: 'post-harvest', slug: 'cold-storage' }],
   connections: [
     { type: 'post-harvest', slug: 'grain-drying' },
     { type: 'post-harvest', slug: 'moisture-content-and-equilibrium' },
     { type: 'post-harvest', slug: 'threshing-and-shelling' },
     { type: 'post-harvest', slug: 'storage-moulds-and-mycotoxins' },
     { type: 'post-harvest', slug: 'sorting-and-grading' },
+    { type: 'post-harvest', slug: 'modified-atmosphere-packaging' },
   ],
   relatedTopics: [{ type: 'commodity', slug: 'almonds' }],
   imageIdentity: 'unavailable',

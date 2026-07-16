@@ -72,3 +72,33 @@ depend on the crop, cultivar, and local conditions.
 - Fully covered by [`tests/phase4d.test.ts`](../tests/phase4d.test.ts) — type
   wiring, required fields, source validity, reference resolution, and sitemap +
   search coverage.
+
+---
+
+## Phase 5B — the type, strengthened
+
+Phase 5B extended `post-harvest` from a concept type into the process/system
+model, rather than splitting storage and packaging into new page types. That
+choice was forced by two facts: separate types would have duplicated existing
+pages (`hermetic-storage`, `cold-storage`, `packing-and-packaging`, …), which the
+anti-spam rule forbids; and Phase 5A had already wired **130 commodity→storage
+edges** into these slugs, all of which would have broken.
+
+Fields added (all optional unless noted): `applicableCommodityClasses`,
+`applicableCommodities`, `processStage`, `operatingPrinciple`, `equipment`,
+`measurableInputs`, `measurableOutputs`, `qualityEffects`, `riskFactors`,
+`environmentalContext`, `monitoringMethods`, `safetyLimitations`,
+`relevantStandards`.
+
+**Class-conditional rule:** an entry classed `storage` or `cooling` **must**
+declare `operatingPrinciple` and `riskFactors`. A storage system without its
+principle or its failure modes is a shell.
+
+**`storageSystems` is now type-checked by class.** A commodity is _held in_ a
+store; it only _passes through_ a drying, curing, or grading operation. The edge
+therefore requires `postHarvestClass ∈ {storage, cooling}` — a rule that
+immediately corrected 17 Phase 5A edges.
+
+The type now holds 59 entries: processes, storage systems, and packaging systems,
+discriminated by `postHarvestClass`. Three sibling types cover what it does not:
+[`quality-attribute`, `post-harvest-defect`, `quality-measurement`](storage-and-quality-methodology.md).

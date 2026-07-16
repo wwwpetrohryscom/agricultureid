@@ -190,16 +190,14 @@ export const tableGrapes: CommodityContent = {
     },
   ],
   primaryProducts: [{ type: 'commodity-product', slug: 'raisins' }],
-  storageSystems: [
-    { type: 'post-harvest', slug: 'cold-storage' },
-    { type: 'post-harvest', slug: 'modified-atmosphere-packaging' },
-  ],
+  storageSystems: [{ type: 'post-harvest', slug: 'cold-storage' }],
   connections: [
     { type: 'post-harvest', slug: 'precooling' },
     { type: 'post-harvest', slug: 'cold-chain' },
     { type: 'post-harvest', slug: 'sorting-and-grading' },
     { type: 'post-harvest', slug: 'packing-and-packaging' },
     { type: 'post-harvest', slug: 'sun-drying' },
+    { type: 'post-harvest', slug: 'modified-atmosphere-packaging' },
   ],
   relatedTopics: [{ type: 'commodity', slug: 'wine-grapes' }],
   imageIdentity: 'unavailable',

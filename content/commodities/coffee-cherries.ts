@@ -196,12 +196,12 @@ export const coffeeCherries: CommodityContent = {
     'East Africa',
     'Southeast Asia',
   ],
-  storageSystems: [{ type: 'post-harvest', slug: 'sun-drying' }],
   connections: [
     { type: 'crop', slug: 'coffee' },
     { type: 'post-harvest', slug: 'sorting-and-grading' },
     { type: 'post-harvest', slug: 'postharvest-food-loss' },
     { type: 'post-harvest', slug: 'storage-moulds-and-mycotoxins' },
+    { type: 'post-harvest', slug: 'sun-drying' },
   ],
   relatedTopics: [{ type: 'commodity', slug: 'green-coffee' }],
   imageIdentity: 'unavailable',

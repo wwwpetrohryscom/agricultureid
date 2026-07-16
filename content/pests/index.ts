@@ -17,12 +17,17 @@ import { europeanCornBorer } from './european-corn-borer';
 import { fallArmyworm } from './fall-armyworm';
 import { fleaBeetles } from './flea-beetles';
 import { fruitFlies } from './fruit-flies';
+import { granaryWeevil } from './granary-weevil';
 import { grasshoppers } from './grasshoppers';
 import { hessianFly } from './hessian-fly';
+import { indianmealMoth } from './indianmeal-moth';
 import { japaneseBeetle } from './japanese-beetle';
+import { khapraBeetle } from './khapra-beetle';
 import { leafMiners } from './leaf-miners';
 import { leafRollers } from './leaf-rollers';
 import { leafhoppers } from './leafhoppers';
+import { lesserGrainBorer } from './lesser-grain-borer';
+import { maizeWeevil } from './maize-weevil';
 import { mealybugs } from './mealybugs';
 import { mediterraneanFruitFly } from './mediterranean-fruit-fly';
 import { moleCrickets } from './mole-crickets';
@@ -32,10 +37,13 @@ import { podBorer } from './pod-borer';
 import { potatoCystNematode } from './potato-cyst-nematode';
 import { potatoTuberMoth } from './potato-tuber-moth';
 import { psyllids } from './psyllids';
+import { redFlourBeetle } from './red-flour-beetle';
+import { riceWeevil } from './rice-weevil';
 import { rootAphids } from './root-aphids';
 import { rootKnotNematode } from './root-knot-nematode';
 import { russianWheatAphid } from './russian-wheat-aphid';
 import { sawflies } from './sawflies';
+import { sawtoothedGrainBeetle } from './sawtoothed-grain-beetle';
 import { scaleInsects } from './scale-insects';
 import { slugs } from './slugs';
 import { snails } from './snails';
@@ -76,12 +84,17 @@ export const pests: PestContent[] = [
   fallArmyworm,
   fleaBeetles,
   fruitFlies,
+  granaryWeevil,
   grasshoppers,
   hessianFly,
+  indianmealMoth,
   japaneseBeetle,
+  khapraBeetle,
   leafMiners,
   leafRollers,
   leafhoppers,
+  lesserGrainBorer,
+  maizeWeevil,
   mealybugs,
   mediterraneanFruitFly,
   moleCrickets,
@@ -91,10 +104,13 @@ export const pests: PestContent[] = [
   potatoCystNematode,
   potatoTuberMoth,
   psyllids,
+  redFlourBeetle,
+  riceWeevil,
   rootAphids,
   rootKnotNematode,
   russianWheatAphid,
   sawflies,
+  sawtoothedGrainBeetle,
   scaleInsects,
   slugs,
   snails,

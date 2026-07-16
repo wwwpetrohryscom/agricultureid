@@ -6,7 +6,17 @@ export const precooling: PostHarvestContent = {
   contentType: 'post-harvest',
   title: 'Precooling',
   postHarvestClass: 'cooling',
-  alternativeNames: ['Pre-cooling', 'Field-heat removal'],
+  processStage: 'field-handling',
+  operatingPrinciple:
+    'Field heat is removed as fast as is practical straight after harvest, because deterioration rates fall as temperature falls and the first hours after cutting are where most of the shelf life is either lost or saved.',
+  riskFactors: [
+    'Delay between harvest and cooling',
+    'Chilling injury where cooling overshoots a sensitive commodity’s tolerance',
+    'Uneven cooling within packed containers',
+    'Water-borne contamination in hydro-cooling systems',
+    'Re-warming before the onward cold chain picks the load up',
+  ],
+  alternativeNames: ['Pre-cooling', 'Rapid cooling'],
   category: 'Post-harvest operation',
   subcategory: 'Cooling & cold storage',
   summary:

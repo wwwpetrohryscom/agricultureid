@@ -6,6 +6,22 @@ export const grainStorage: PostHarvestContent = {
   contentType: 'post-harvest',
   title: 'Grain Storage',
   postHarvestClass: 'storage',
+  processStage: 'storage',
+  operatingPrinciple:
+    'Dry, cool grain is biologically quiet. Storage works by holding the bulk at a moisture and temperature at which the grain itself, the storage moulds, and the insects are all too inactive to cause measurable deterioration, and by moving air through it to keep that state uniform throughout.',
+  riskFactors: [
+    'Moisture migration driven by temperature differences between the bulk and the outside air, wetting the surface',
+    'Hot spots, where localised respiration generates heat and more moisture and spreads through the bulk',
+    'Storage insects carried over in a store that was not cleaned between seasons',
+    'Storage moulds wherever moisture is above the safe level for the intended holding period',
+    'Rodent and bird access',
+    'Water ingress through the structure',
+  ],
+  monitoringMethods: [
+    { type: 'quality-measurement', slug: 'temperature-probe' },
+    { type: 'quality-measurement', slug: 'electronic-moisture-meter' },
+    { type: 'quality-measurement', slug: 'grain-probe-sampling' },
+  ],
   alternativeNames: ['Cereal storage', 'Grain preservation'],
   category: 'Post-harvest operation',
   subcategory: 'Storage',

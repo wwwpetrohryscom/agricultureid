@@ -23,6 +23,7 @@ import { dataOpsIssues } from '@/lib/data-ops/validate-dataops';
 import { comparisonIssues } from '@/lib/comparison/validate-comparison';
 import { regionIssues } from '@/lib/geo/validate-regions';
 import { commodityIssues } from '@/lib/commodity/validate-commodity';
+import { postHarvestIssues } from '@/lib/post-harvest/validate-post-harvest';
 import { UNRESOLVED_ISSUES } from '@/data/unresolved-issues';
 import {
   articleSchema,
@@ -868,6 +869,12 @@ export function validateAll(): ValidationResult {
   for (const ci of commodityIssues()) {
     if (ci.level === 'error') error(ci.code, ci.message, ci.where);
     else warn(ci.code, ci.message, ci.where);
+  }
+
+  /* ---- Post-harvest quality (Phase 5B) -------------------------------- */
+  for (const pi of postHarvestIssues()) {
+    if (pi.level === 'error') error(pi.code, pi.message, pi.where);
+    else warn(pi.code, pi.message, pi.where);
   }
 
   /* ---- Reachability / orphans ----------------------------------------- */

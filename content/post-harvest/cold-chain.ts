@@ -6,6 +6,16 @@ export const coldChain: PostHarvestContent = {
   contentType: 'post-harvest',
   title: 'Cold Chain',
   postHarvestClass: 'cooling',
+  processStage: 'transport',
+  operatingPrinciple:
+    'Temperature control is maintained continuously from harvest to market. The benefit of cooling is cumulative and is surrendered at whichever link is warmest, so a cold chain is only as good as its weakest point.',
+  riskFactors: [
+    'Breaks at transfer points: loading docks, transshipment, and last-mile delivery',
+    'Mixed loads with incompatible temperature or ethylene requirements',
+    'Equipment failure where there is no monitoring or alarm',
+    'Power interruption',
+    'Slow temperature recovery after door openings',
+  ],
   alternativeNames: ['Cool chain', 'Refrigerated supply chain'],
   category: 'Post-harvest operation',
   subcategory: 'Cooling & cold storage',

@@ -194,16 +194,14 @@ export const garlicBulbs: CommodityContent = {
       note: 'Garlic, fresh or chilled. Dried garlic and garlic preparations are classified elsewhere.',
     },
   ],
-  storageSystems: [
-    { type: 'post-harvest', slug: 'curing' },
-    { type: 'post-harvest', slug: 'cold-storage' },
-  ],
+  storageSystems: [{ type: 'post-harvest', slug: 'cold-storage' }],
   connections: [
     { type: 'post-harvest', slug: 'onion-and-garlic-curing' },
     { type: 'post-harvest', slug: 'sorting-and-grading' },
     { type: 'post-harvest', slug: 'packing-and-packaging' },
     { type: 'post-harvest', slug: 'postharvest-food-loss' },
     { type: 'commodity', slug: 'dry-bulb-onions' },
+    { type: 'post-harvest', slug: 'curing' },
   ],
   imageIdentity: 'unavailable',
   sourceReferences: [

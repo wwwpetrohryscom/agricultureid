@@ -183,12 +183,12 @@ export const teaLeaf: CommodityContent = {
     'East Africa',
     'Southeast Asia',
   ],
-  storageSystems: [{ type: 'post-harvest', slug: 'sorting-and-grading' }],
   connections: [
     { type: 'crop', slug: 'tea' },
     { type: 'post-harvest', slug: 'postharvest-food-loss' },
     { type: 'post-harvest', slug: 'packing-and-packaging' },
     { type: 'post-harvest', slug: 'moisture-content-and-equilibrium' },
+    { type: 'post-harvest', slug: 'sorting-and-grading' },
   ],
   imageIdentity: 'unavailable',
   glossaryTerms: ['perennial-crop', 'cultivar'],

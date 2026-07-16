@@ -174,16 +174,14 @@ export const dryBulbOnions: CommodityContent = {
     },
   ],
   primaryProducts: [{ type: 'commodity-product', slug: 'dehydrated-onion' }],
-  storageSystems: [
-    { type: 'post-harvest', slug: 'curing' },
-    { type: 'post-harvest', slug: 'cold-storage' },
-  ],
+  storageSystems: [{ type: 'post-harvest', slug: 'cold-storage' }],
   connections: [
     { type: 'post-harvest', slug: 'onion-and-garlic-curing' },
     { type: 'post-harvest', slug: 'sorting-and-grading' },
     { type: 'post-harvest', slug: 'packing-and-packaging' },
     { type: 'post-harvest', slug: 'postharvest-food-loss' },
     { type: 'commodity', slug: 'garlic-bulbs' },
+    { type: 'post-harvest', slug: 'curing' },
   ],
   imageIdentity: 'unavailable',
   glossaryTerms: ['cultivar'],
