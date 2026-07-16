@@ -24,6 +24,7 @@ import { comparisonIssues } from '@/lib/comparison/validate-comparison';
 import { regionIssues } from '@/lib/geo/validate-regions';
 import { commodityIssues } from '@/lib/commodity/validate-commodity';
 import { postHarvestIssues } from '@/lib/post-harvest/validate-post-harvest';
+import { processingIssues } from '@/lib/processing/validate-processing';
 import { UNRESOLVED_ISSUES } from '@/data/unresolved-issues';
 import {
   articleSchema,
@@ -873,6 +874,12 @@ export function validateAll(): ValidationResult {
 
   /* ---- Post-harvest quality (Phase 5B) -------------------------------- */
   for (const pi of postHarvestIssues()) {
+    if (pi.level === 'error') error(pi.code, pi.message, pi.where);
+    else warn(pi.code, pi.message, pi.where);
+  }
+
+  /* ---- Processing & transformation (Phase 5C) ------------------------- */
+  for (const pi of processingIssues()) {
     if (pi.level === 'error') error(pi.code, pi.message, pi.where);
     else warn(pi.code, pi.message, pi.where);
   }
