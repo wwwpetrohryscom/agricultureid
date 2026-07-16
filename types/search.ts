@@ -1,6 +1,11 @@
 /** Phase 3D — search & knowledge-graph UX types. */
 
 export type SearchEntityType =
+  | 'trade-concept'
+  | 'logistics-concept'
+  | 'standard-reference'
+  | 'market-term'
+  | 'supply-chain-risk'
   | 'crop'
   | 'soil'
   | 'plant-disease'

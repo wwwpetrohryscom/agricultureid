@@ -50,6 +50,11 @@ export const CONTENT_TYPES = [
   'commodity-grade',
   'cultivar',
   'breed',
+  'trade-concept',
+  'logistics-concept',
+  'standard-reference',
+  'market-term',
+  'supply-chain-risk',
 ] as const;
 
 export type ContentType = (typeof CONTENT_TYPES)[number];
@@ -81,6 +86,11 @@ export const CONTENT_TYPE_ROUTE: Record<ContentType, string> = {
   'commodity-grade': 'commodity-grades',
   cultivar: 'cultivars',
   breed: 'breeds',
+  'trade-concept': 'trade',
+  'logistics-concept': 'logistics',
+  'standard-reference': 'standards',
+  'market-term': 'market-terms',
+  'supply-chain-risk': 'supply-chain-risks',
 };
 
 export const CONTENT_TYPE_LABEL: Record<ContentType, string> = {
@@ -106,6 +116,11 @@ export const CONTENT_TYPE_LABEL: Record<ContentType, string> = {
   'commodity-grade': 'Grading Standard',
   cultivar: 'Cultivar',
   breed: 'Breed',
+  'trade-concept': 'Trade Concept',
+  'logistics-concept': 'Logistics Concept',
+  'standard-reference': 'Standard',
+  'market-term': 'Market Term',
+  'supply-chain-risk': 'Supply-Chain Risk',
 };
 
 export const CONTENT_TYPE_LABEL_PLURAL: Record<ContentType, string> = {
@@ -131,6 +146,11 @@ export const CONTENT_TYPE_LABEL_PLURAL: Record<ContentType, string> = {
   'commodity-grade': 'Grading Standards',
   cultivar: 'Cultivars',
   breed: 'Breeds',
+  'trade-concept': 'Trade Concepts',
+  'logistics-concept': 'Logistics Concepts',
+  'standard-reference': 'Standards & Certification',
+  'market-term': 'Market Terms',
+  'supply-chain-risk': 'Supply-Chain Risks',
 };
 
 /**
@@ -380,6 +400,46 @@ export const SECTIONS: NavSection[] = [
       'Transparency dashboard for dataset snapshots, source evidence, provenance coverage, image licensing, and formula versions.',
     active: true,
   },
+  {
+    label: 'Trade Concepts',
+    href: '/trade',
+    description:
+      'How cross-border agricultural trade works: mechanics, measurement, customs procedure, delivery terms, and documentation — reference only, never advice.',
+    active: true,
+    contentType: 'trade-concept',
+  },
+  {
+    label: 'Logistics Concepts',
+    href: '/logistics',
+    description:
+      'How agricultural consignments physically move and stay intact: transport modes, handling, unitisation, chain integrity, and inspection.',
+    active: true,
+    contentType: 'logistics-concept',
+  },
+  {
+    label: 'Standards & Certification',
+    href: '/standards',
+    description:
+      'Standards, certification schemes, conformity assessment, and regulatory frameworks — what they cover and how conformity is assessed.',
+    active: true,
+    contentType: 'standard-reference',
+  },
+  {
+    label: 'Market Terms',
+    href: '/market-terms',
+    description:
+      'Market and price terminology defined so that price information obtained elsewhere can be read correctly. No live prices or forecasts.',
+    active: true,
+    contentType: 'market-term',
+  },
+  {
+    label: 'Supply-Chain Risks',
+    href: '/supply-chain-risks',
+    description:
+      'Supply-chain risk mechanisms: how disruptions arise, propagate, and are observed. Described, never scored.',
+    active: true,
+    contentType: 'supply-chain-risk',
+  },
 ];
 
 /** All active sections (used in the footer and mobile menu). */
@@ -444,6 +504,11 @@ export const REFERENCE_NAV = SECTIONS.filter(
       '/quality-measurements',
       '/commodities',
       '/commodity-products',
+      '/trade',
+      '/logistics',
+      '/standards',
+      '/market-terms',
+      '/supply-chain-risks',
       '/commodity-grades',
       '/plant-nutrition',
       '/agricultural-data',

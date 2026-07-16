@@ -22,6 +22,16 @@ import type {
   PhysicalForm,
   ProductClass,
 } from '@/types/commodity';
+import type {
+  CargoForm,
+  ChainStage,
+  LogisticsClass,
+  MarketTermClass,
+  StandardClass,
+  StandardDomain,
+  SupplyChainRiskClass,
+  TradeConceptClass,
+} from '@/types/trade';
 
 export type { ContentType };
 
@@ -184,6 +194,23 @@ export type RelationType =
   | 'relatedCultivar'
   | 'relatedBreed'
   | 'maintainedByRegistry'
+  // Phase 5D — trade, logistics, standards, market data, risk
+  | 'governedByStandard'
+  | 'standardGoverns'
+  | 'documentedBy'
+  | 'documents'
+  | 'relatedTradeConcept'
+  | 'relatedLogisticsConcept'
+  | 'relatedStandard'
+  | 'relatedMarketTerm'
+  | 'relatedRisk'
+  | 'movedBy'
+  | 'movesCommodity'
+  | 'dependsOnOperation'
+  | 'riskAffects'
+  | 'exposedToRisk'
+  | 'appliesToCommodity'
+  | 'assessesQuality'
   // Phase 5A — commodity taxonomy & transformation pathways
   | 'harvestedAs'
   | 'harvestedFrom'
@@ -490,7 +517,7 @@ export interface PostHarvestContent extends BaseContent {
   monitoringMethods?: ContentRef[];
   /** Safety framing — high level only, never operating procedure. */
   safetyLimitations?: string[];
-  /** Standards that bear on it (→ commodity-grade refs). */
+  /** Standards that bear on it (→ commodity-grade or standard-reference). */
   relevantStandards?: ContentRef[];
 }
 
@@ -835,6 +862,194 @@ export interface BreedContent extends BaseContent {
   geographicDistribution?: string;
 }
 
+/* ------------------------------------------------------------------ *
+ * Phase 5D — trade, logistics, standards, market data
+ * ------------------------------------------------------------------ */
+
+/**
+ * A concept describing how cross-border agricultural trade works: mechanics,
+ * measurement, customs procedure, delivery terms, documentation, market access.
+ *
+ * `tradeConceptClass: 'delivery-term'` covers Incoterms® rules, which are
+ * described by what they allocate and never reproduced (see
+ * `INCOTERMS_SCOPE_NOTE`).
+ */
+export interface TradeConceptContent extends BaseContent {
+  contentType: 'trade-concept';
+  tradeConceptClass: TradeConceptClass;
+  /** What the mechanism is for, in one sentence. Required. */
+  conceptPurpose: string;
+  /** Who operates or enforces it (e.g. "National customs authority"). */
+  administeredBy?: string;
+  /** Bodies whose instruments govern the concept (e.g. "WCO", "WTO"). */
+  governingBodies?: string[];
+  /**
+   * Why this is not advice, and what a reader must not do with it. Required —
+   * this is the boundary the whole type rests on.
+   */
+  advisoryLimitations: string[];
+  /** Parties whose obligations the concept allocates or affects. */
+  partiesInvolved?: string[];
+  /** Documents typically associated (→ trade-concept, documentation class). */
+  associatedDocuments?: ContentRef[];
+  /** Standards or frameworks that govern it (→ standard-reference). */
+  relevantStandards?: ContentRef[];
+  /** Logistics concepts this interacts with (→ logistics-concept). */
+  relatedLogistics?: ContentRef[];
+  /** Related trade concepts (→ trade-concept). */
+  relatedConcepts?: ContentRef[];
+  /** Versioned classification systems referenced (HS/CN editions etc.). */
+  classificationSystems?: CommodityCode[];
+}
+
+/**
+ * A concept describing how agricultural consignments physically move and are
+ * kept intact: transport modes, handling, unitisation, chain integrity,
+ * facilities, inspection.
+ *
+ * Transport modes are `logisticsClass: 'transport-mode'` rather than a separate
+ * type — see types/trade.ts.
+ */
+export interface LogisticsConceptContent extends BaseContent {
+  contentType: 'logistics-concept';
+  logisticsClass: LogisticsClass;
+  /** What problem the concept solves. Required. */
+  logisticsPurpose: string;
+  /** Cargo forms this applies to. */
+  cargoForms?: CargoForm[];
+  /** Commodity classes typically moved this way (never specific figures). */
+  applicableCommodityClasses?: CommodityClass[];
+  /** Commodities with a documented association (→ commodity). */
+  applicableCommodities?: ContentRef[];
+  /** Quality risks the mode/operation creates or mitigates (→ quality-attribute). */
+  qualityRisks?: ContentRef[];
+  /** Post-harvest operations it depends on, e.g. cooling (→ post-harvest). */
+  dependsOnOperations?: ContentRef[];
+  /** Standards governing it (→ standard-reference). */
+  relevantStandards?: ContentRef[];
+  /** Trade concepts it interacts with (→ trade-concept). */
+  relatedTradeConcepts?: ContentRef[];
+  /** Other logistics concepts (→ logistics-concept). */
+  relatedLogistics?: ContentRef[];
+  /** Risks this concept is exposed to (→ supply-chain-risk). */
+  exposedToRisks?: ContentRef[];
+  /**
+   * What this description cannot tell a reader — required. Route, vessel, and
+   * contract specifics are never generalisable.
+   */
+  operationalLimitations: string[];
+}
+
+/**
+ * A published standard, certification scheme, conformity-assessment concept, or
+ * regulatory framework.
+ *
+ * Distinct from `commodity-grade`: a grade standard is scoped to ONE commodity
+ * and lives there. A standard scoped to a domain (food safety, plant health,
+ * organic) across commodities lives here. The validator enforces the split.
+ */
+export interface StandardReferenceContent extends BaseContent {
+  contentType: 'standard-reference';
+  standardClass: StandardClass;
+  standardDomain: StandardDomain;
+  /** Issuing body or scheme owner. Required. */
+  standardBody: string;
+  /** Public identifier, e.g. "ISO 22000", "CAC/RCP 1-1969". */
+  standardIdentifier?: string;
+  /** Edition/version the summary reflects. Required — standards are versioned. */
+  edition: string;
+  effectiveDate?: string;
+  /** Set when a later edition supersedes the one summarised here. */
+  supersededNote?: string;
+  /** Jurisdiction or scope of application. Required. */
+  jurisdiction: string;
+  legalStatus: GradeLegalStatus;
+  /** What the standard covers, in scope terms. Required. */
+  scopeSummary: string;
+  /** How conformity is assessed (audit, inspection, self-declaration). */
+  conformityAssessment?: string;
+  /** Who assesses conformity (e.g. "Accredited third-party certification body"). */
+  assessedBy?: string;
+  /**
+   * Why this summary is limited and never a substitute for the standard.
+   * Required — AgricultureID never reproduces or confers a standard.
+   */
+  reproductionLimitations: string[];
+  /** Commodity classes in scope. */
+  applicableCommodityClasses?: CommodityClass[];
+  /** Commodities with a documented association (→ commodity). */
+  applicableCommodities?: ContentRef[];
+  /** Grades issued under or related to this standard (→ commodity-grade). */
+  relatedGrades?: ContentRef[];
+  /** Related standards/schemes (→ standard-reference). */
+  relatedStandards?: ContentRef[];
+  /** Trade concepts the standard bears on (→ trade-concept). */
+  relatedTradeConcepts?: ContentRef[];
+}
+
+/**
+ * A market or price term, defined so that price information obtained elsewhere
+ * can be read correctly.
+ *
+ * AgricultureID carries no live prices, forecasts, or trading signals — see
+ * `NO_LIVE_PRICE_NOTE`. The validator forbids a current-quotation shape here.
+ */
+export interface MarketTermContent extends BaseContent {
+  contentType: 'market-term';
+  marketTermClass: MarketTermClass;
+  /** The definition proper, in one or two sentences. Required. */
+  definition: string;
+  /** Where the term is used (e.g. "Physical grain trade", "Futures markets"). */
+  usageContext?: string;
+  /** What the term is commonly confused with — required, and the point of the type. */
+  notToBeConfusedWith: string[];
+  /**
+   * Why a reader must not trade on this page. Required.
+   */
+  advisoryLimitations: string[];
+  /** Commodities the term is typically applied to (→ commodity). */
+  applicableCommodities?: ContentRef[];
+  /** Related market terms (→ market-term). */
+  relatedTerms?: ContentRef[];
+  /** Trade concepts the term depends on (→ trade-concept). */
+  relatedTradeConcepts?: ContentRef[];
+}
+
+/**
+ * A supply-chain risk mechanism: how a disruption arises, propagates, and is
+ * observed.
+ *
+ * There is deliberately **no likelihood, severity, or score field**. See
+ * `RISK_NOT_SCORED_NOTE` — a generalised score would be an invented quantity.
+ */
+export interface SupplyChainRiskContent extends BaseContent {
+  contentType: 'supply-chain-risk';
+  riskClass: SupplyChainRiskClass;
+  /** Where in the chain it materialises. Required, non-empty. */
+  chainStages: ChainStage[];
+  /** How the disruption arises and propagates. Required. */
+  riskMechanism: string;
+  /** Observable signals that the risk is materialising. Required, non-empty. */
+  observableIndicators: string[];
+  /**
+   * Why no score is given and what assessment would actually require.
+   * Required — the editorial boundary of the type.
+   */
+  assessmentLimitations: string[];
+  /** Commodity classes typically exposed. */
+  affectedCommodityClasses?: CommodityClass[];
+  /** Commodities with a documented exposure (→ commodity). */
+  affectedCommodities?: ContentRef[];
+  /** Logistics concepts the risk acts on (→ logistics-concept). */
+  affectedLogistics?: ContentRef[];
+  /** Trade concepts the risk acts on (→ trade-concept). */
+  affectedTradeConcepts?: ContentRef[];
+  /** Standards/frameworks that address it (→ standard-reference). */
+  addressedByStandards?: ContentRef[];
+  /** Related risks (→ supply-chain-risk). */
+  relatedRisks?: ContentRef[];
+}
+
 /** Discriminated union across every structured content type. */
 export type AnyContent =
   | CropContent
@@ -858,7 +1073,12 @@ export type AnyContent =
   | CommodityProductContent
   | CommodityGradeContent
   | CultivarContent
-  | BreedContent;
+  | BreedContent
+  | TradeConceptContent
+  | LogisticsConceptContent
+  | StandardReferenceContent
+  | MarketTermContent
+  | SupplyChainRiskContent;
 
 /* -------------------------------------------------------------------------- */
 /*  Glossary                                                                  */
