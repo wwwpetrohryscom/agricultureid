@@ -2,16 +2,22 @@ import { readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { INDICATORS } from '@/data/geo/indicators';
 import { allSnapshots, getSnapshot, COUNTRY_META } from '@/lib/geo/snapshots';
+import { tradeSnapshot, tradeSnapshotFiles } from '@/lib/trade/snapshot';
 import type { DatasetRegistryEntry } from '@/types/data-ops';
 
 /**
  * Central dataset registry (Phase 4A). Built deterministically from the existing
  * indicator registry + immutable snapshots + hand-authored provider metadata.
  * No snapshot data is duplicated here — only described. Supports multiple
- * providers; today the only provider is the World Bank, but nothing assumes it.
+ * providers: the World Bank indicator snapshots, and (Phase 5D) the FAOSTAT
+ * Detailed Trade Matrix, which is NOT an indicator series and carries its own
+ * schema, units, and revision policy.
  */
 
 const SNAP_DIR = join(process.cwd(), 'data', 'snapshots');
+
+/** Registry id (and /datasets/[dataset] slug) of the FAOSTAT trade dataset. */
+export const FAOSTAT_TRADE_DATASET_ID = 'faostat-trade-matrix';
 
 /** Provider-level metadata not derivable from a snapshot file. */
 const WORLD_BANK = {
@@ -112,6 +118,55 @@ export function buildDatasetRegistry(): DatasetRegistryEntry[] {
     ],
     publicationStatus: 'published',
   });
+
+  // FAOSTAT Detailed Trade Matrix (Phase 5D). Not an indicator series: its rows
+  // are reporter totals per commodity, so it declares its own columns, units,
+  // and rules. All metadata below is read from the snapshot, never restated.
+  const trade = tradeSnapshot();
+  if (trade) {
+    const files = tradeSnapshotFiles();
+    out.push({
+      datasetId: FAOSTAT_TRADE_DATASET_ID,
+      provider: 'FAO',
+      title: 'FAOSTAT Detailed Trade Matrix — reporter totals',
+      description: `Bilateral trade rows from the FAOSTAT Detailed Trade Matrix summed over partners to reporter totals, for ${trade.commodityCount} commodities in reference year ${trade.referenceYear}. Reported trade only: what reporting countries declared, not what physically moved.`,
+      sourceUrl: trade.sourceUrl,
+      license: trade.license,
+      licenseUrl: trade.licenseUrl,
+      accessRequirements: ['open', 'attribution-required'],
+      jurisdiction: 'Global',
+      geographicCoverage: `${trade.commodityCount} commodities across FAOSTAT reporting countries; ${trade.observationCount.toLocaleString('en')} observations. ${trade.aggregateRule}`,
+      temporalCoverage:
+        trade.coveredYears.length === 2
+          ? [trade.coveredYears[0]!, trade.coveredYears[1]!]
+          : undefined,
+      updateFrequency: 'annual',
+      latestAvailableRelease: trade.datasetVersion,
+      retrievalDate: trade.retrievedAt,
+      snapshotIds: files.length
+        ? files.map((f) => f.replace(/\.json$/, ''))
+        : [trade.snapshotId],
+      schemaVersion: '1',
+      transformationVersion: trade.transformationVersion,
+      checksum: trade.checksum,
+      expectedColumns: [
+        'commoditySlug',
+        'faostatItemCode',
+        'referenceYear',
+        'reporter',
+        'm49',
+        'quantityT',
+        'valueKUsd',
+        'flags',
+      ],
+      expectedUnit: `quantity: ${trade.units.quantity}; value: ${trade.units.value}`,
+      missingValueRule: `${trade.transformation} A reporter absent from a reference year is not a reporter with zero trade; absences that change a ranking are recorded in each commodity's notableNonReporters.`,
+      revisionPolicy:
+        'Historical values are revised by FAO; this snapshot is one dated version and is never overwritten in place. A changed dataset version is stored as a NEW immutable snapshot.',
+      knownLimitations: [...trade.limitations],
+      publicationStatus: 'published',
+    });
+  }
 
   return out.sort((a, b) => a.datasetId.localeCompare(b.datasetId));
 }
