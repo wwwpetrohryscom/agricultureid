@@ -35,6 +35,11 @@ export default async function ToolPage({ params }: Params) {
   const path = `/tools/${t.slug}`;
 
   // A genuine interactive tool → WebApplication is appropriate (not HowTo).
+  //
+  // No `offers`. An Offer describes something for sale, and these calculators
+  // are not a product being offered — emitting a zero-price Offer to satisfy a
+  // rich-result checklist would describe the page as something it is not.
+  // `isAccessibleForFree` already carries the only fact an Offer would have.
   const appSchema = {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
@@ -44,7 +49,6 @@ export default async function ToolPage({ params }: Params) {
     applicationCategory: 'Agricultural calculator',
     operatingSystem: 'Any (web browser)',
     isAccessibleForFree: true,
-    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
   };
 
   return (
@@ -90,7 +94,7 @@ export default async function ToolPage({ params }: Params) {
         </section>
       )}
 
-      <ToolDisclaimer />
+      <ToolDisclaimer safetyDisclosure={t.safetyDisclosure} />
     </Container>
   );
 }

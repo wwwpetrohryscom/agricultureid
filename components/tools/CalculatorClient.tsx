@@ -1,21 +1,23 @@
 'use client';
 
-import { useMemo, useState, useCallback } from 'react';
+import { useMemo, useState, useCallback, useEffect } from 'react';
 import { TOOL_BY_SLUG } from '@/lib/tools/tools';
+import { parseToolParams, serializeToolParams } from '@/lib/tools/query-params';
 import type { ToolField } from '@/types/tools';
 
-function initialValues(slug: string): Record<string, string> {
+/**
+ * Defaults only — deliberately no `window` access.
+ *
+ * This used to read `window.location.search` here. Because it runs inside a
+ * `useState` initialiser, the server produced defaults and the client produced
+ * the URL's parameters, so any shared link hydrated into a mismatch. Query
+ * parameters are now applied in an effect after mount (see below), which keeps
+ * the first client render byte-identical to the server's.
+ */
+function defaultValues(slug: string): Record<string, string> {
   const tool = TOOL_BY_SLUG.get(slug);
   const values: Record<string, string> = {};
   for (const f of tool?.fields ?? []) values[f.key] = f.default ?? '';
-  // Hydrate from the query string for shareable links (client-only).
-  if (typeof window !== 'undefined') {
-    const params = new URLSearchParams(window.location.search);
-    for (const f of tool?.fields ?? []) {
-      const q = params.get(f.key);
-      if (q != null) values[f.key] = q;
-    }
-  }
   return values;
 }
 
@@ -35,9 +37,22 @@ function fieldError(f: ToolField, raw: string): string | null {
 export function CalculatorClient({ slug }: { slug: string }) {
   const tool = TOOL_BY_SLUG.get(slug);
   const [values, setValues] = useState<Record<string, string>>(() =>
-    initialValues(slug),
+    defaultValues(slug),
   );
   const [copied, setCopied] = useState(false);
+
+  // Apply shareable-link parameters AFTER mount, never during render: the
+  // server has no query string, so seeding state from it would make the first
+  // client render disagree with the server's HTML. `parseToolParams` ignores
+  // unknown keys and rejects values that are not valid for their field, so a
+  // crafted URL cannot put arbitrary content into the form.
+  useEffect(() => {
+    const parsed = parseToolParams(slug, window.location.search);
+    setValues((prev) => {
+      const changed = Object.keys(parsed).some((k) => parsed[k] !== prev[k]);
+      return changed ? parsed : prev;
+    });
+  }, [slug]);
 
   const visibleFields = useMemo(
     () => (tool?.fields ?? []).filter((f) => !f.showIf || f.showIf(values)),
@@ -85,18 +100,18 @@ export function CalculatorClient({ slug }: { slug: string }) {
 
   const share = useCallback(() => {
     if (typeof window === 'undefined') return;
-    const params = new URLSearchParams();
-    for (const f of visibleFields) {
-      const val = values[f.key];
-      if (val != null && val.trim() !== '') params.set(f.key, val);
-    }
-    const url = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
+    // Serialise only the fields currently in play, validated on the way out —
+    // a hidden conditional field would otherwise leak a stale value into the
+    // link, and the URL must round-trip through parseToolParams unchanged.
+    const visibleKeys = new Set(visibleFields.map((f) => f.key));
+    const qs = serializeToolParams(slug, values, visibleKeys);
+    const url = `${window.location.origin}${window.location.pathname}${qs ? `?${qs}` : ''}`;
     window.history.replaceState(null, '', url);
     navigator.clipboard?.writeText(url).then(
       () => setCopied(true),
       () => setCopied(false),
     );
-  }, [visibleFields, values]);
+  }, [slug, visibleFields, values]);
 
   if (!tool) return null;
 
@@ -125,10 +140,17 @@ export function CalculatorClient({ slug }: { slug: string }) {
                 {f.unit && <span className="text-ink-500"> ({f.unit})</span>}
               </label>
               {f.type === 'select' ? (
+                // `aria-describedby` and `required` were previously set only on
+                // number inputs, so a select's help text was rendered but never
+                // announced — which orphaned the moisture-basis guidance, the
+                // one piece of help a screen-reader user most needs, since a
+                // basis is never inferred and the field starts unset.
                 <select
                   id={id}
                   value={values[f.key] ?? ''}
                   onChange={(e) => set(f.key, e.target.value)}
+                  required={f.required}
+                  aria-describedby={describedBy}
                   className="mt-1 w-full rounded-card border border-ink-200 bg-white px-3 py-2 text-sm focus:border-olive-500 focus:outline-none focus:ring-1 focus:ring-olive-500"
                 >
                   {f.options?.map((o) => (
