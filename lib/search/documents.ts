@@ -185,7 +185,10 @@ export function buildSearchDocuments(): SearchDoc[] {
       type: 'tool',
       route: `/tools/${t.slug}`,
       title: t.title,
-      names: [t.title],
+      // Aliases ride at name weight so a phrase the title lacks ("wet basis")
+      // can still reach the tool. They are NOT synonyms — see
+      // ToolConfig.searchAliases.
+      names: [t.title, ...(t.searchAliases ?? [])],
       category: `Calculator · ${t.category}`,
       summary: t.purpose,
       facets: { entityType: ['tool'], category: [t.category] },

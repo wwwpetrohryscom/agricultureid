@@ -62,6 +62,19 @@ export function FormulaPanel({ formulaIds }: { formulaIds: string[] }) {
                 </ul>
               </div>
             )}
+            {f.safetyContext && (
+              // What the formula must not be read as authorising. Validated on
+              // the registry and, until Phase 5E, rendered nowhere — which made
+              // the strongest sentence about a result ("not an engineering
+              // capacity", "not a market price") invisible to the person
+              // reading that result.
+              <div className="mt-2 border-l-2 border-clay-400 pl-3">
+                <p className="text-sm font-semibold text-ink-700">Scope</p>
+                <p className="mt-1 text-sm leading-6 text-ink-700">
+                  {f.safetyContext}
+                </p>
+              </div>
+            )}
             {f.sourceIds.length > 0 && (
               <p className="mt-2 text-xs text-ink-500">
                 Sources:{' '}
