@@ -1,4 +1,5 @@
 import type { CalcFormula } from '@/types/tools';
+import { COMMODITY_FORMULAS } from '@/lib/tools/formulas-commodity';
 import {
   KG_HA_TO_LB_ACRE,
   P2O5_TO_P,
@@ -366,6 +367,7 @@ export const FORMULAS: CalcFormula[] = [
       return (n(i, 'tha') * 1000 * KG_HA_TO_LB_ACRE) / bl;
     },
   },
+  ...COMMODITY_FORMULAS,
 ];
 
 export const FORMULA_BY_ID: ReadonlyMap<string, CalcFormula> = new Map(

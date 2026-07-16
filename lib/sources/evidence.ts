@@ -96,6 +96,9 @@ export const EVIDENCE_TIER: Record<string, EvidenceTier> = {
   ifoam: 2, // NGO umbrella body for the organic movement
   fairtrade: 2, // NGO scheme owner
   iseal: 2, // NGO meta-standard body
+  // Phase 5E — metrology. Unit conversion factors are legal definitions, not
+  // measurements, so the defining authority is the right (and only) citation.
+  nist: 1,
   // Tier 3 — general secondary references
   rhs: 3,
   britannica: 3,

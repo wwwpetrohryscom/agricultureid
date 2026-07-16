@@ -13,6 +13,8 @@ import type { Source } from '@/types/sources';
 const ACCESS = '2026-07-12';
 /** Review date for the Phase 5D trade/standards cohort. */
 const ACCESS_5D = '2026-07-16';
+/** Review date for the Phase 5E metrology cohort. */
+const ACCESS_5E = '2026-07-16';
 
 export const SOURCES: Source[] = [
   {
@@ -932,6 +934,20 @@ export const SOURCES: Source[] = [
     language: 'en',
     notes:
       'Bilateral agricultural trade flows by reporter, partner, item, and year. The specific FAOSTAT domain snapshotted for AgricultureID trade figures.',
+    reliability: 'authoritative',
+  },
+  {
+    id: 'nist',
+    organization:
+      'National Institute of Standards and Technology (NIST), U.S. Department of Commerce',
+    title: 'NIST — weights and measures, and the SI',
+    url: 'https://www.nist.gov/pml/owm',
+    accessDate: ACCESS_5E,
+    sourceType: 'government',
+    jurisdiction: 'United States (definitions internationally adopted)',
+    language: 'en',
+    notes:
+      'Legal definitions of units and exact conversion factors (Handbook 44, Special Publication 811). Used for unit-conversion constants, which are exact by definition rather than measured.',
     reliability: 'authoritative',
   },
 ];
