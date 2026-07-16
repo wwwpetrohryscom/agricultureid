@@ -199,8 +199,8 @@ export const harvestMaturityAssessment: PostHarvestContent = {
     'Destructive maturity sampling reduces the saleable lot and is not a substitute for the food-safety checks required at intake.',
   ],
   relevantStandards: [
-    { type: 'commodity-grade', slug: 'unece-fresh-produce-standards' },
-    { type: 'commodity-grade', slug: 'codex-standards-overview' },
+    { type: 'standard-reference', slug: 'unece-fresh-produce-standards' },
+    { type: 'standard-reference', slug: 'codex-alimentarius' },
   ],
   connections: [
     { type: 'crop', slug: 'apple' },

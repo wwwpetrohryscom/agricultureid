@@ -167,8 +167,8 @@ export const waxing: PostHarvestContent = {
     'Coating does not reduce microbial hazards and is not a food-safety control; it seals the surface in the condition it finds it.',
   ],
   relevantStandards: [
-    { type: 'commodity-grade', slug: 'codex-standards-overview' },
-    { type: 'commodity-grade', slug: 'unece-fresh-produce-standards' },
+    { type: 'standard-reference', slug: 'codex-alimentarius' },
+    { type: 'standard-reference', slug: 'unece-fresh-produce-standards' },
   ],
   connections: [
     { type: 'crop', slug: 'orange' },

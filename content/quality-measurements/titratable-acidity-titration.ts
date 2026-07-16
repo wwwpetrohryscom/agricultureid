@@ -130,7 +130,7 @@ export const titratableAcidityTitration: QualityMeasurementContent = {
     },
   ],
   connections: [
-    { type: 'commodity-grade', slug: 'unece-fresh-produce-standards' },
+    { type: 'standard-reference', slug: 'unece-fresh-produce-standards' },
   ],
   relatedTopics: [{ type: 'post-harvest', slug: 'fruit-ripening' }],
   sourceReferences: [

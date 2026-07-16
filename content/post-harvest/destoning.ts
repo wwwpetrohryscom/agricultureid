@@ -190,7 +190,7 @@ export const destoning: PostHarvestContent = {
   ],
   relevantStandards: [
     { type: 'commodity-grade', slug: 'usda-wheat-grades' },
-    { type: 'commodity-grade', slug: 'codex-standards-overview' },
+    { type: 'standard-reference', slug: 'codex-alimentarius' },
   ],
   connections: [
     { type: 'crop', slug: 'lentil' },

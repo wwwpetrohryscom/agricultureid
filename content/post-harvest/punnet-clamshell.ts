@@ -182,7 +182,7 @@ export const punnetClamshell: PostHarvestContent = {
     'No pack size, vent specification, fill weight, or material is given here; these are set by buyer specification and by commodity-specific packaging guidance.',
   ],
   relevantStandards: [
-    { type: 'commodity-grade', slug: 'unece-fresh-produce-standards' },
+    { type: 'standard-reference', slug: 'unece-fresh-produce-standards' },
   ],
   connections: [
     { type: 'crop', slug: 'strawberry' },

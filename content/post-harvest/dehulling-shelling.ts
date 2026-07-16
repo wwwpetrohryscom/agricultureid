@@ -191,7 +191,7 @@ export const dehullingShelling: PostHarvestContent = {
     'Dehulling is where large volumes of hull are generated — rice husk in particular is produced at a scale that makes its use as fuel or substrate a significant secondary industry, and its accumulation a disposal problem where it is not used. Milling is also concentrated: dehulling is one of the operations that moves out of the village and into a mill as chains formalise, which shifts both the value and the residue away from the farm.',
   relevantStandards: [
     { type: 'commodity-grade', slug: 'usda-rice-grades' },
-    { type: 'commodity-grade', slug: 'codex-standards-overview' },
+    { type: 'standard-reference', slug: 'codex-alimentarius' },
   ],
   connections: [
     { type: 'crop', slug: 'rice' },

@@ -22,6 +22,11 @@ import type {
   CommodityGradeContent,
   SoilContent,
   SoilTopicContent,
+  TradeConceptContent,
+  LogisticsConceptContent,
+  StandardReferenceContent,
+  MarketTermContent,
+  SupplyChainRiskContent,
 } from '@/types/content';
 import { crops } from './crops';
 import { soils } from './soils';
@@ -45,6 +50,11 @@ import { commodityProducts } from './commodity-products';
 import { commodityGrades } from './commodity-grades';
 import { cultivars } from './cultivars';
 import { breeds } from './breeds';
+import { tradeConcepts } from './trade-concepts';
+import { logisticsConcepts } from './logistics-concepts';
+import { standardReferences } from './standard-references';
+import { marketTerms } from './market-terms';
+import { supplyChainRisks } from './supply-chain-risks';
 
 export const CROPS: CropContent[] = crops;
 export const SOILS: SoilContent[] = soils;
@@ -70,6 +80,12 @@ export const COMMODITY_PRODUCTS: CommodityProductContent[] = commodityProducts;
 export const COMMODITY_GRADES: CommodityGradeContent[] = commodityGrades;
 export const CULTIVARS: CultivarContent[] = cultivars;
 export const BREEDS: BreedContent[] = breeds;
+export const TRADE_CONCEPTS: TradeConceptContent[] = tradeConcepts;
+export const LOGISTICS_CONCEPTS: LogisticsConceptContent[] = logisticsConcepts;
+export const STANDARD_REFERENCES: StandardReferenceContent[] =
+  standardReferences;
+export const MARKET_TERMS: MarketTermContent[] = marketTerms;
+export const SUPPLY_CHAIN_RISKS: SupplyChainRiskContent[] = supplyChainRisks;
 
 /** Flat list of every structured content item across all types. */
 export const ALL_CONTENT: AnyContent[] = [
@@ -95,4 +111,9 @@ export const ALL_CONTENT: AnyContent[] = [
   ...commodityGrades,
   ...cultivars,
   ...breeds,
+  ...tradeConcepts,
+  ...logisticsConcepts,
+  ...standardReferences,
+  ...marketTerms,
+  ...supplyChainRisks,
 ];
