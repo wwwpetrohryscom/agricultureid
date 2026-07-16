@@ -28,13 +28,14 @@ recorded as such under known limitations below.
 
 ## The registry after 5E
 
-| Where                                                                        | What                   |
-| ---------------------------------------------------------------------------- | ---------------------- |
-| [`lib/tools/formulas.ts`](../lib/tools/formulas.ts) (Phase 3C)               | 12 formulas            |
-| [`lib/tools/formulas-commodity.ts`](../lib/tools/formulas-commodity.ts) (5E) | 30 formulas            |
-| `FORMULAS` (3C spread with `...COMMODITY_FORMULAS`)                          | **42 formulas**        |
-| Declared test cases                                                          | **104** (18 3C, 86 5E) |
-| [`lib/tools/tools.ts`](../lib/tools/tools.ts)                                | **18 tools** (11 new)  |
+| Where                                                                        | What                           |
+| ---------------------------------------------------------------------------- | ------------------------------ |
+| [`lib/tools/formulas.ts`](../lib/tools/formulas.ts) (Phase 3C)               | 12 formulas                    |
+| [`lib/tools/formulas-commodity.ts`](../lib/tools/formulas-commodity.ts) (5E) | 30 formulas                    |
+| [`lib/tools/formulas-yield.ts`](../lib/tools/formulas-yield.ts) (5E)         | 6 yield primitives             |
+| `FORMULAS` (3C spread with the 5E modules)                                   | **48 formulas** (1 deprecated) |
+| Declared test cases                                                          | **119**                        |
+| [`lib/tools/tools.ts`](../lib/tools/tools.ts)                                | **18 tools** (11 new)          |
 
 One registry, one id space, one validator. The split is by file only — a caller
 resolves `moisture-wb-to-db` exactly as it resolves `gdd-average`.
@@ -44,14 +45,14 @@ resolves `moisture-wb-to-db` exactly as it resolves `gdd-average`.
 Added in [`types/tools.ts`](../types/tools.ts), each because its absence was a
 way to be wrong silently.
 
-| Field                                | Why it exists                                                                                                                             |
-| ------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| `acceptedBases`                      | Moisture basis is never inferred. Required on any moisture formula — see [`moisture-basis.md`](./moisture-basis.md)                       |
-| `commodityApplicability`             | A conversion that is only defined for some commodities must name them; every slug must resolve                                            |
-| `safetyContext`                      | What a result must **not** be read as authorising. 26 of 42 formulas carry one, and the formula panel renders it under a "Scope" heading  |
-| `deprecated` / `replacedBy`          | A superseded formula must point somewhere live, or callers keep using stale maths with no route forward                                   |
-| `FormulaInput.min`/`max`/`rangeNote` | A bound the maths or physics imposes, **and the reason for it** — `max: 99.999` is useless without "wet-basis moisture cannot reach 100%" |
-| `ToolConfig.safetyDisclosure`        | Mandatory on every commodity/post-harvest/storage/processing/trade tool ([`calculator-safety.md`](./calculator-safety.md))                |
+| Field                                | Why it exists                                                                                                                                                 |
+| ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `acceptedBases`                      | Moisture basis is never inferred. Required on any moisture formula — see [`moisture-basis.md`](./moisture-basis.md)                                           |
+| `commodityApplicability`             | A conversion only defined for some commodities must name them; every slug must resolve. The bushel formulas use it for the 7 grains with a US standard weight |
+| `safetyContext`                      | What a result must **not** be read as authorising. 26 of 48 formulas carry one, and the formula panel renders it under a "Scope" heading                      |
+| `deprecated` / `replacedBy`          | A superseded formula must point somewhere live, or callers keep using stale maths with no route forward                                                       |
+| `FormulaInput.min`/`max`/`rangeNote` | A bound the maths or physics imposes, **and the reason for it** — `max: 99.999` is useless without "wet-basis moisture cannot reach 100%"                     |
+| `ToolConfig.safetyDisclosure`        | Mandatory on every commodity/post-harvest/storage/processing/trade tool ([`calculator-safety.md`](./calculator-safety.md))                                    |
 
 ## Versioning
 
@@ -153,6 +154,60 @@ checklist describes the page as something it is not. Removed;
 `isAccessibleForFree` already carries the only real fact it contained. See
 [`app/tools/[tool]/page.tsx`](../app/tools/[tool]/page.tsx).
 
+## The formula contract is enforced by execution
+
+Every static check the registry had passed on the yield converter: the declared
+id resolved, the formula carried sources, versions, limitations, and reference
+cases, and all of them went green. The formula was still decorative. **Reading
+declarations cannot detect that a declaration is a lie** — only running the tool
+and watching which formulas execute can.
+
+[`lib/tools/contract.ts`](../lib/tools/contract.ts) instruments the registry,
+drives every tool across an input matrix generated from its own fields, and
+compares declared against executed. It runs inside `content:validate` (so CI
+enforces it) and standalone via `npm run calc:contract`.
+
+| Gate                           | Fails when                                                                                                                   |
+| ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------- |
+| `contract-decorative-formula`  | A tool declares a formula no input combination executes — the panel would advertise maths the tool does not run              |
+| `contract-undeclared-formula`  | A tool executes a formula it does not declare — the panel would omit maths that ran                                          |
+| `contract-no-executed-formula` | A tool runs no registered formula at all — its calculation is outside the registry                                           |
+| `contract-unreachable-formula` | A registry formula no tool composes — dead maths. Deprecated formulas are exempt: being uncomposed is what deprecation means |
+| `contract-deprecated-formula`  | A tool advertises a retired formula                                                                                          |
+| `contract-untested-branch`     | A formula a tool can reach has no reference case                                                                             |
+
+### The input matrix mirrors the form, including `showIf`
+
+This is load-bearing rather than a nicety. The unit converter has nine selects
+and shows only the two or three relevant to the chosen dimension. A naive
+cartesian product is astronomically large **and** explores states the UI cannot
+present; a first attempt capped it and silently truncated to the first
+dimension's combinations, which made five genuinely-reachable formulas look like
+dead maths. Honouring `showIf` collapses the space to what a user can actually
+reach.
+
+### What it caught immediately
+
+Run against the corpus for the first time, the gate found **16 violations** — 11
+after the matrix was fixed, all genuine:
+
+- `water-removal-calculator`, `grain-moisture-shrink` and
+  `commodity-blending-calculator` executed `moisture-db-to-wb` (and
+  `moisture-wb-to-db`) **without declaring them**. The dry-basis handling added
+  those calls and the panel never showed them.
+- `volume-cone` was reachable from no tool.
+- `yield-converter` declared one formula and ran none of it.
+
+### Known limitation
+
+The gate proves the declared SET equals the executed SET. It does not prove that
+a formula's published `expression` is what its `compute` evaluates — that is a
+separate property, and one that has already been violated twice here
+(`drying-water-removed` computed `M₀ − M₁` instead of its published form;
+`yield-tha-to-buacre` published a constant the code did not use). Those are
+caught by per-formula tests asserting the implementation against its own
+expression, not by this gate.
+
 ## Known limitations
 
 Recorded plainly rather than hidden.
@@ -179,17 +234,19 @@ Recorded plainly rather than hidden.
 - **`volume-cone` is registered and tested but composed by no tool directly.**
   It carries the engulfment-hazard `safetyContext` and its own test cases run. The
   peak case it exists for **is** reachable from a page: the storage estimator's
-  `cylinder-cone` geometry composes `volume-cylinder-with-cone`, which sums the
-  cylinder and the cone in one formula rather than calling this one. So the maths
-  is reachable and the standalone formula is not — it is the only formula in the
-  registry no tool resolves, which is a redundancy rather than a gap.
-- **`yield-converter` advertises a formula it does not run.** This pre-existing
-  Phase 3C tool declares `formulaIds: ['yield-tha-to-buacre']`, so the formula
-  panel shows that formula — but its `compute` converts inline via a canonical
-  kg/ha pivot rather than calling it. The panel therefore describes maths the tool
-  did not execute. It was deliberately not refactored in 5E (out of scope for a
-  commodity phase), and it is recorded here rather than hidden: it is the one live
-  counter-example to the composition rule this document opens with.
+  `cylinder-cone` geometry composes `volume-cylinder-with-cone`. The standalone
+  formula was, for a time, the one registry entry no tool resolved — the
+  formula-contract gate flagged it as dead maths, and the estimator now offers a
+  free-standing **conical pile** geometry that composes it.
+- **~~`yield-converter` advertises a formula it does not run.~~ FIXED.** It is
+  worth keeping the history, because it is the reason the formula-contract gate
+  exists. The tool declared `formulaIds: ['yield-tha-to-buacre']` and executed
+  none of it: its maths lived in an inline pivot table, so the panel published a
+  t/ha → bu/acre expression while the tool converted lb/acre to kg/ha — and that
+  expression named the constant `0.8921785`, which the code never used and which
+  is wrong from the seventh significant figure (the true factor is
+  `0.8921791216197045`). Every static check passed. See
+  [the contract section](#the-formula-contract-is-enforced-by-execution).
 - **Unit-agnostic mass formulas trust the caller.** `dry-matter-mass` and the
   drying formulas declare their output as "same as input mass" and never see the
   unit — the tool carries it as a label. Mixed units in, nonsense out, silently.
