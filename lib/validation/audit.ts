@@ -86,6 +86,14 @@ const INTENTIONAL_MARKERS = [
   // that SHOULD read identically on every fertilizer entry (it is not an
   // application-rate recommendation).
   'it is not an application rate recommendation for any crop or region',
+  // Phase 5A — commodity scope/uncertainty disclaimers. Like the Phase 3A
+  // statements above, these are intentional honesty statements that should read
+  // identically on every commodity record: rewording a scope disclaimer per page
+  // makes it look like a substantive claim that varies, which is worse than
+  // repeating it verbatim.
+  'indicative groupings, not ranked statistics',
+  'it is not a grading determination, contract specification, or customs classification',
+  'Feed use and labelling are governed by jurisdiction-specific feed regulations',
   'AgricultureID does not provide veterinary treatment instructions',
   'Crop water requirements are estimated from evapotranspiration',
   // Recurring honesty caveats (methodology), intentional and appropriate:
