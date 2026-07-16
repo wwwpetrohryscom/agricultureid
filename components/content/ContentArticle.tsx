@@ -3,6 +3,10 @@ import { ArticleFigure } from '@/components/content/ArticleFigure';
 import { ContentBlocks } from '@/components/content/ContentBlocks';
 import { KeyFacts } from '@/components/content/KeyFacts';
 import { ParentSubEntities } from '@/components/content/ParentSubEntities';
+import {
+  HarvestedCommodities,
+  CommodityPathways,
+} from '@/components/commodity/CommodityPanels';
 import { RelatedContent } from '@/components/content/RelatedContent';
 import { RelationPanels } from '@/components/graph/RelationPanels';
 import { SubEntityPanel } from '@/components/content/SubEntityPanel';
@@ -103,6 +107,10 @@ export function ContentArticle({ item }: { item: AnyContent }) {
           <RelationPanels item={item} />
 
           <ParentSubEntities item={item} />
+          <HarvestedCommodities item={item} />
+          {item.contentType === 'commodity' && (
+            <CommodityPathways item={item} />
+          )}
 
           <section
             id="scope-and-limitations"
