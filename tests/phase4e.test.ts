@@ -38,8 +38,13 @@ describe('Phase 4E — sitemap sharding', () => {
     expect(sections.content.some((r) => r.path.startsWith('/crops/'))).toBe(
       true,
     );
+    // Phase 5B moved the post-harvest quality cluster into its own shard, so it
+    // is deliberately no longer part of the general `content` shard.
     expect(
       sections.content.some((r) => r.path.startsWith('/post-harvest/')),
+    ).toBe(false);
+    expect(
+      sections['post-harvest'].some((r) => r.path.startsWith('/post-harvest/')),
     ).toBe(true);
     expect(sections.geo.some((r) => r.path.startsWith('/countries/'))).toBe(
       true,
