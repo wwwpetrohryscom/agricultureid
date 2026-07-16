@@ -36,6 +36,7 @@ import { raisins } from './raisins';
 import { rapeseedMeal } from './rapeseed-meal';
 import { rapeseedOil } from './rapeseed-oil';
 import { rawSugar } from './raw-sugar';
+import { refinedSugar } from './refined-sugar';
 import { riceBran } from './rice-bran';
 import { riceHusk } from './rice-husk';
 import { rolledOats } from './rolled-oats';
@@ -47,12 +48,15 @@ import { skimMilk } from './skim-milk';
 import { soybeanHulls } from './soybean-hulls';
 import { soybeanMeal } from './soybean-meal';
 import { soybeanOil } from './soybean-oil';
+import { soybeanPressCake } from './soybean-press-cake';
 import { sunflowerMeal } from './sunflower-meal';
 import { sunflowerOil } from './sunflower-oil';
 import { tomatoPaste } from './tomato-paste';
 import { tomatoPomace } from './tomato-pomace';
 import { wheatBran } from './wheat-bran';
 import { wheatFlour } from './wheat-flour';
+import { wheatGerm } from './wheat-germ';
+import { wheatStraw } from './wheat-straw';
 import { whitePepper } from './white-pepper';
 
 export const commodityProducts: CommodityProductContent[] = [
@@ -93,6 +97,7 @@ export const commodityProducts: CommodityProductContent[] = [
   rapeseedMeal,
   rapeseedOil,
   rawSugar,
+  refinedSugar,
   riceBran,
   riceHusk,
   rolledOats,
@@ -104,11 +109,14 @@ export const commodityProducts: CommodityProductContent[] = [
   soybeanHulls,
   soybeanMeal,
   soybeanOil,
+  soybeanPressCake,
   sunflowerMeal,
   sunflowerOil,
   tomatoPaste,
   tomatoPomace,
   wheatBran,
   wheatFlour,
+  wheatGerm,
+  wheatStraw,
   whitePepper,
 ];

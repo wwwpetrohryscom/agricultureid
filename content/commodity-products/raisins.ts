@@ -10,6 +10,7 @@ export const raisins: CommodityProductContent = {
   subcategory: 'Dried vine fruit',
   productClass: 'primary-product',
   derivedFrom: { type: 'commodity', slug: 'table-grapes' },
+  producedBy: [{ type: 'processing-method', slug: 'fruit-drying' }],
   physicalForm: 'other',
   summary:
     "Raisins are grapes with their water removed — the oldest solution to the vine fruit's perishability. Drying converts a bunch that needs a cold chain and a fortnight into a shelf-stable commodity that travels anywhere and keeps for a year.",

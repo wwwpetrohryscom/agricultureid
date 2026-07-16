@@ -10,6 +10,7 @@ export const applePomace: CommodityProductContent = {
   subcategory: 'Fruit pressing residue',
   productClass: 'by-product',
   derivedFrom: { type: 'commodity', slug: 'fresh-apples' },
+  producedBy: [{ type: 'processing-method', slug: 'juice-pressing' }],
   physicalForm: 'pomace',
   summary:
     'Apple pomace is the wet solid residue left when apples are pressed for juice: skins, flesh, cores, and seeds. It is a genuine by-product with feed and pectin outlets, but it is wet, bulky, and spoils fast, so its value depends entirely on what happens in the first hours after pressing.',

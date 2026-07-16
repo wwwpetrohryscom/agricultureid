@@ -10,6 +10,7 @@ export const riceHusk: CommodityProductContent = {
   subcategory: 'Cereal hull',
   productClass: 'by-product',
   derivedFrom: { type: 'commodity', slug: 'rice-paddy' },
+  producedBy: [{ type: 'processing-method', slug: 'rice-dehulling' }],
   physicalForm: 'hull',
   summary:
     'Rice husk is the hard outer covering stripped from paddy during hulling. It is abrasive, high in silica, and almost indigestible, and it is generated in enormous volume wherever rice is milled.',

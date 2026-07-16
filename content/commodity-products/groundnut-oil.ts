@@ -10,6 +10,10 @@ export const groundnutOil: CommodityProductContent = {
   subcategory: 'Vegetable oil',
   productClass: 'co-product',
   derivedFrom: { type: 'commodity', slug: 'groundnuts' },
+  producedBy: [
+    { type: 'processing-method', slug: 'mechanical-pressing' },
+    { type: 'processing-method', slug: 'oil-clarification' },
+  ],
   physicalForm: 'oil',
   summary:
     'Groundnut oil is the oil expressed or extracted from groundnut kernels, produced alongside groundnut cake. It is valued for frying stability and, in some markets, for the flavour retained by less refined grades.',

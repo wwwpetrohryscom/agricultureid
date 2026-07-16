@@ -10,6 +10,7 @@ export const maizeGerm: CommodityProductContent = {
   subcategory: 'Cereal germ',
   productClass: 'co-product',
   derivedFrom: { type: 'commodity', slug: 'maize-grain' },
+  producedBy: [{ type: 'processing-method', slug: 'maize-dry-milling' }],
   physicalForm: 'other',
   summary:
     'Maize germ is the oil-bearing embryo separated during maize dry milling. It is a co-product with genuine value: it is the raw material for corn oil, and the meal left after extraction is a feed ingredient.',

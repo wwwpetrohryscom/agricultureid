@@ -14,6 +14,7 @@ export const almondKernels: CommodityProductContent = {
   subcategory: 'Shelled tree nut',
   productClass: 'primary-product',
   derivedFrom: { type: 'commodity', slug: 'almonds' },
+  producedBy: [{ type: 'processing-method', slug: 'nut-shelling' }],
   physicalForm: 'seed',
   summary:
     "Almond kernels are the shelled seed — the primary product of almond processing and the form most of the world buys. Grading turns on variety type, size, and integrity, and the kernel's oil content makes rancidity, not spoilage, its limiting factor.",

@@ -14,6 +14,7 @@ export const orangeJuice: CommodityProductContent = {
   subcategory: 'Citrus juice',
   productClass: 'primary-product',
   derivedFrom: { type: 'commodity', slug: 'fresh-oranges' },
+  producedBy: [{ type: 'processing-method', slug: 'citrus-juice-extraction' }],
   physicalForm: 'liquid',
   summary:
     'Orange juice is the primary product of the orange crop by volume, not a sideline of the fresh trade. It moves as frozen concentrate or as chilled not-from-concentrate juice, and the choice between those two forms shapes the entire processing industry.',

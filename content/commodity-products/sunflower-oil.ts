@@ -10,6 +10,11 @@ export const sunflowerOil: CommodityProductContent = {
   subcategory: 'Vegetable oil',
   productClass: 'co-product',
   derivedFrom: { type: 'commodity', slug: 'sunflower-seed' },
+  producedBy: [
+    { type: 'processing-method', slug: 'degumming' },
+    { type: 'processing-method', slug: 'mechanical-pressing' },
+    { type: 'processing-method', slug: 'oil-clarification' },
+  ],
   physicalForm: 'oil',
   summary:
     'Sunflower oil is the oil separated from sunflower seed during crushing, traded crude or refined and in linoleic, mid-oleic, and high-oleic types. It is a co-product produced alongside sunflower meal.',

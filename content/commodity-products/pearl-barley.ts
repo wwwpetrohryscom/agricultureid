@@ -10,6 +10,7 @@ export const pearlBarley: CommodityProductContent = {
   subcategory: 'Abraded whole grain',
   productClass: 'co-product',
   derivedFrom: { type: 'commodity', slug: 'barley-grain' },
+  producedBy: [{ type: 'processing-method', slug: 'pearling' }],
   physicalForm: 'whole-grain',
   summary:
     'Pearl barley is barley with its hull and outer layers abraded away, leaving a rounded whole grain for direct cooking. It comes from a mechanical route entirely separate from malting, and it is not a malt product.',

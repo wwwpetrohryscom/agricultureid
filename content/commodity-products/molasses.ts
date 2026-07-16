@@ -10,6 +10,10 @@ export const molasses: CommodityProductContent = {
   subcategory: 'Cane sugar mother liquor',
   productClass: 'co-product',
   derivedFrom: { type: 'commodity', slug: 'sugarcane' },
+  producedBy: [
+    { type: 'processing-method', slug: 'centrifugation' },
+    { type: 'processing-method', slug: 'evaporation-and-crystallisation' },
+  ],
   physicalForm: 'syrup',
   summary:
     'Molasses is the dark, viscous liquor left when a cane mill can crystallise no more sugar out of it economically. It still holds sugars, and its markets — feed, fermentation, and distilling — are built on exactly that.',

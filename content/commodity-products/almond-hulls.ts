@@ -10,6 +10,7 @@ export const almondHulls: CommodityProductContent = {
   subcategory: 'Tree nut hulling residue',
   productClass: 'by-product',
   derivedFrom: { type: 'commodity', slug: 'almonds' },
+  producedBy: [{ type: 'processing-method', slug: 'nut-shelling' }],
   physicalForm: 'hull',
   summary:
     'Almond hulls are the outer layer stripped from the almond fruit before shelling — the fleshy part of a drupe that dried on the tree. They are produced in volumes exceeding the kernels themselves and are fed to ruminants, the largest single outlet for the by-product.',

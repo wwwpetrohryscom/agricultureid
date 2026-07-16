@@ -15,6 +15,7 @@ export const rolledOats: CommodityProductContent = {
   subcategory: 'Flaked cereal',
   productClass: 'primary-product',
   derivedFrom: { type: 'commodity', slug: 'oat-grain' },
+  producedBy: [{ type: 'processing-method', slug: 'flaking' }],
   physicalForm: 'other',
   summary:
     'Rolled oats are oat groats that have been kilned, steamed, and flattened between rollers. Kilning is not optional: without it the groat oil would go rancid and no stable oat product would be possible.',

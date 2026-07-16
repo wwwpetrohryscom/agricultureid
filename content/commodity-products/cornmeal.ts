@@ -10,6 +10,10 @@ export const cornmeal: CommodityProductContent = {
   subcategory: 'Maize endosperm meal',
   productClass: 'primary-product',
   derivedFrom: { type: 'commodity', slug: 'maize-grain' },
+  producedBy: [
+    { type: 'processing-method', slug: 'hammer-milling' },
+    { type: 'processing-method', slug: 'maize-dry-milling' },
+  ],
   physicalForm: 'meal',
   summary:
     'Cornmeal is the principal food output of maize dry milling: ground endosperm, sold across a range of particle sizes. It is a staple food across much of Africa and the Americas and the basis of polenta, grits, and cornbread.',

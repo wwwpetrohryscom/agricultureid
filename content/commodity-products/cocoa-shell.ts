@@ -10,6 +10,9 @@ export const cocoaShell: CommodityProductContent = {
   subcategory: 'Cocoa winnowing residue',
   productClass: 'by-product',
   derivedFrom: { type: 'commodity', slug: 'cocoa-beans' },
+  producedBy: [
+    { type: 'processing-method', slug: 'cocoa-bean-cleaning-and-winnowing' },
+  ],
   physicalForm: 'hull',
   summary:
     'Cocoa shell is the thin, light husk winnowed away from the nib during cocoa processing. It is a low-value residual with fuel, mulch, and limited feed outlets — and one whose theobromine content restricts which animals can safely be given it.',

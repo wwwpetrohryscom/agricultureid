@@ -10,6 +10,7 @@ export const bagasse: CommodityProductContent = {
   subcategory: 'Fibrous residue of cane crushing',
   productClass: 'by-product',
   derivedFrom: { type: 'commodity', slug: 'sugarcane' },
+  producedBy: [{ type: 'processing-method', slug: 'juice-extraction-milling' }],
   physicalForm: 'other',
   summary:
     'Bagasse is the wet fibrous residue left after cane is crushed and its juice extracted. Most of it is burnt on the spot to raise the steam and power the mill runs on, which makes a cane factory unusual among food processors: it is fuelled by its own waste.',

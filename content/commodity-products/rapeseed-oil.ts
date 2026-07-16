@@ -10,6 +10,11 @@ export const rapeseedOil: CommodityProductContent = {
   subcategory: 'Vegetable oil',
   productClass: 'co-product',
   derivedFrom: { type: 'commodity', slug: 'rapeseed' },
+  producedBy: [
+    { type: 'processing-method', slug: 'degumming' },
+    { type: 'processing-method', slug: 'mechanical-pressing' },
+    { type: 'processing-method', slug: 'oil-clarification' },
+  ],
   physicalForm: 'oil',
   summary:
     'Rapeseed oil is the oil separated from rapeseed during crushing. Low erucic acid oil is a major food oil — sold as canola oil in several markets — while high erucic acid oil is a segregated industrial product, and the two are not interchangeable.',

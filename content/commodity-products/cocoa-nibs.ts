@@ -10,6 +10,9 @@ export const cocoaNibs: CommodityProductContent = {
   subcategory: 'Cocoa kernel',
   productClass: 'primary-product',
   derivedFrom: { type: 'commodity', slug: 'cocoa-beans' },
+  producedBy: [
+    { type: 'processing-method', slug: 'cocoa-bean-cleaning-and-winnowing' },
+  ],
   physicalForm: 'bean',
   summary:
     'Cocoa nibs are the cracked kernel of the cocoa bean with the shell winnowed away — the primary product of cocoa processing and the actual raw material of chocolate. Everything chocolate is made of comes from the nib; the shell is separated off as a by-product.',

@@ -10,6 +10,7 @@ export const soybeanHulls: CommodityProductContent = {
   subcategory: 'Fibre feed material',
   productClass: 'by-product',
   derivedFrom: { type: 'commodity', slug: 'soybeans' },
+  producedBy: [{ type: 'processing-method', slug: 'oilseed-dehulling' }],
   physicalForm: 'hull',
   summary:
     'Soybean hulls are the seed coats removed when soybeans are dehulled ahead of oil extraction. They are a genuine by-product: residual and low in value relative to meal and oil, but with a real market as a digestible fibre source for ruminant feed.',

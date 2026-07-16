@@ -10,6 +10,7 @@ export const semolina: CommodityProductContent = {
   subcategory: 'Coarse durum endosperm',
   productClass: 'primary-product',
   derivedFrom: { type: 'commodity', slug: 'durum-wheat-grain' },
+  producedBy: [{ type: 'processing-method', slug: 'semolina-production' }],
   physicalForm: 'meal',
   summary:
     'Semolina is the primary product of durum milling: coarse, angular particles of durum endosperm, sized and purified for pasta making. Its particle size is the point, not an incidental property.',

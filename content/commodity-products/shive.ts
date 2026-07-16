@@ -10,6 +10,7 @@ export const shive: CommodityProductContent = {
   subcategory: 'Woody stem core from scutching',
   productClass: 'by-product',
   derivedFrom: { type: 'commodity', slug: 'flax-fibre' },
+  producedBy: [{ type: 'processing-method', slug: 'decortication' }],
   physicalForm: 'other',
   summary:
     'Shive is the woody core of the flax stem, shattered and shaken out when retted straw is scutched. It leaves the mill in greater bulk than the fibre does, and it has found real markets in animal bedding, panel board, and biocomposites.',
