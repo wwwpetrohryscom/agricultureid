@@ -29,24 +29,148 @@ export const VOLUME_TO_L = {
 } as const;
 
 /**
- * Standard bushel test weights (lb per bushel) by commodity. These are legal/
- * customary standard weights, not the actual test weight of a given lot.
- * Source: USDA / long-standing US grain-trade standards.
+ * A commodity's standard bushel weight, with the provenance that makes it
+ * meaningful.
+ *
+ * ## The bushel is a VOLUME unit being used as a MASS convention
+ *
+ * A bushel is properly a unit of volume (the US bushel is 2150.42 in³, ≈35.24 L).
+ * The grain trade does not weigh volume, so it fixes, per commodity, a "standard
+ * weight" — the mass of grain that one bushel of that commodity is *taken* to
+ * contain. That convention is why maize and wheat bushels are different masses,
+ * and it is why there is no generic bushel-to-mass constant: the number is a
+ * property of the commodity and the jurisdiction, not of the unit.
+ *
+ * ## A standard weight is not a test weight
+ *
+ * The standard weight is a fixed conversion constant. A lot's *test weight* is a
+ * measured property of that lot and routinely differs from it. A lot below
+ * standard test weight still converts at the standard weight; what a buyer does
+ * about the shortfall is a contract matter, not arithmetic.
  */
-export const BUSHEL_LB = {
-  wheat: 60,
-  soybean: 60,
-  maize: 56, // shelled corn
-  sorghum: 56,
-  rye: 56,
-  barley: 48,
-  oats: 32,
-} as const;
+export interface BushelStandard {
+  /** Select key. */
+  key: string;
+  /** Human label. */
+  label: string;
+  /** The commodity this standard is defined for (must resolve to a commodity). */
+  commoditySlug: string;
+  /** Standard weight, pounds per bushel. */
+  lbPerBushel: number;
+  /** Where this standard has force. NEVER assume it travels. */
+  jurisdiction: string;
+  /** The instrument/authority that fixes it. */
+  standard: string;
+  /** Registry source id attesting it. */
+  sourceId: string;
+  note?: string;
+}
+
+/**
+ * US standard bushel weights.
+ *
+ * Deliberately United States only. These are the long-standing US legal and
+ * customary weights used by USDA's grain inspection and marketing programs;
+ * other jurisdictions trade the same grains by mass and do not use a bushel at
+ * all. A commodity absent from this table has no supported bushel conversion
+ * here, and the tools refuse rather than substituting a plausible number.
+ */
+export const BUSHEL_STANDARDS = [
+  {
+    key: 'wheat',
+    label: 'Wheat',
+    commoditySlug: 'wheat-grain',
+    lbPerBushel: 60,
+    jurisdiction: 'United States',
+    standard: 'US standard bushel weight (USDA grain inspection and marketing)',
+    sourceId: 'usda-ams',
+  },
+  {
+    key: 'soybean',
+    label: 'Soybeans',
+    commoditySlug: 'soybeans',
+    lbPerBushel: 60,
+    jurisdiction: 'United States',
+    standard: 'US standard bushel weight (USDA grain inspection and marketing)',
+    sourceId: 'usda-ams',
+  },
+  {
+    key: 'maize',
+    label: 'Maize (shelled corn)',
+    commoditySlug: 'maize-grain',
+    lbPerBushel: 56,
+    jurisdiction: 'United States',
+    standard: 'US standard bushel weight (USDA grain inspection and marketing)',
+    sourceId: 'usda-ams',
+    note: 'Shelled corn. Ear corn is traded on a different convention entirely.',
+  },
+  {
+    key: 'sorghum',
+    label: 'Sorghum',
+    commoditySlug: 'sorghum-grain',
+    lbPerBushel: 56,
+    jurisdiction: 'United States',
+    standard: 'US standard bushel weight (USDA grain inspection and marketing)',
+    sourceId: 'usda-ams',
+  },
+  {
+    key: 'rye',
+    label: 'Rye',
+    commoditySlug: 'rye-grain',
+    lbPerBushel: 56,
+    jurisdiction: 'United States',
+    standard: 'US standard bushel weight (USDA grain inspection and marketing)',
+    sourceId: 'usda-ams',
+  },
+  {
+    key: 'barley',
+    label: 'Barley',
+    commoditySlug: 'barley-grain',
+    lbPerBushel: 48,
+    jurisdiction: 'United States',
+    standard: 'US standard bushel weight (USDA grain inspection and marketing)',
+    sourceId: 'usda-ams',
+  },
+  {
+    key: 'oats',
+    label: 'Oats',
+    commoditySlug: 'oat-grain',
+    lbPerBushel: 32,
+    jurisdiction: 'United States',
+    standard: 'US standard bushel weight (USDA grain inspection and marketing)',
+    sourceId: 'usda-ams',
+  },
+] as const satisfies readonly BushelStandard[];
+
+/** The supported bushel keys, as a literal union rather than `string`. */
+export type BushelKey = (typeof BUSHEL_STANDARDS)[number]['key'];
+
+export const BUSHEL_BY_KEY: ReadonlyMap<string, BushelStandard> = new Map(
+  BUSHEL_STANDARDS.map((b) => [b.key, b]),
+);
+
+/**
+ * Standard bushel weights by key. DERIVED from `BUSHEL_STANDARDS` so the weight
+ * and its provenance cannot drift apart — the number is never available without
+ * a row that says which jurisdiction and authority fix it.
+ */
+export const BUSHEL_LB: Readonly<Record<BushelKey, number>> = Object.freeze(
+  Object.fromEntries(
+    BUSHEL_STANDARDS.map((b) => [b.key, b.lbPerBushel]),
+  ) as Record<BushelKey, number>,
+);
 
 /**
  * kg per hectare -> lb per acre, derived from the exact pound and acre
  * definitions: (1 kg ÷ 0.45359237 kg/lb) ÷ (10000 m² ÷ 4046.8564224 m²/acre)
- * = 2.2046226218 lb ÷ 2.4710538147 acre ≈ 0.8921785 lb/acre per kg/ha.
+ * = 2.2046226218 lb ÷ 2.4710538147 acre = 0.8921791216197045 lb/acre per kg/ha.
+ *
+ * The value is computed, never typed: an earlier comment here rounded it to
+ * 0.8921785, which is wrong from the seventh significant figure, and that
+ * mis-rounded figure was then copied into a formula's published expression —
+ * so the expression named a constant the code did not use. Deriving it from the
+ * two exact definitions is the only way the number and its derivation cannot
+ * disagree.
  */
 export const KG_HA_TO_LB_ACRE = 1 / 0.45359237 / (10_000 / 4046.8564224);
 
