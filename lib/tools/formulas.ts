@@ -1,5 +1,6 @@
 import type { CalcFormula } from '@/types/tools';
 import { COMMODITY_FORMULAS } from '@/lib/tools/formulas-commodity';
+import { YIELD_FORMULAS } from '@/lib/tools/formulas-yield';
 import {
   KG_HA_TO_LB_ACRE,
   P2O5_TO_P,
@@ -330,9 +331,24 @@ export const FORMULAS: CalcFormula[] = [
   {
     formulaId: 'yield-tha-to-buacre',
     name: 'Yield: tonnes/ha to bushels/acre (commodity-specific)',
-    formulaVersion: '1.0.0',
-    calcVersion: '1',
-    expression: 'bu/acre = (t/ha × 1000 × 0.8921785) ÷ bushel_weight_lb',
+    // RETIRED. Two defects, both structural rather than cosmetic:
+    //
+    // 1. Its published expression names the constant 0.8921785, which the code
+    //    never used — the implementation used KG_HA_TO_LB_ACRE, whose true
+    //    value is 0.8921791216197045. The expression a reader checked against
+    //    was not the arithmetic that ran.
+    // 2. It was a COMPOSITE masquerading as a primitive. The yield converter
+    //    declared it and executed an inline pivot table instead, so 15 of its
+    //    16 paths ran maths this formula does not describe.
+    //
+    // Replaced by primitives that each publish exactly what they compute; the
+    // t/ha → bu/acre path is now yield-tha-to-kgha ∘ yield-kgha-to-buacre.
+    deprecated: true,
+    replacedBy: 'yield-kgha-to-buacre',
+    formulaVersion: '1.0.1',
+    calcVersion: '2',
+    expression:
+      'bu/acre = (t/ha × 1000 × 0.8921791216197045) ÷ bushel_weight_lb',
     inputs: [
       { key: 'tha', label: 'Yield', unit: 't/ha' },
       { key: 'bushelLb', label: 'Bushel weight', unit: 'lb/bu' },
@@ -368,6 +384,7 @@ export const FORMULAS: CalcFormula[] = [
     },
   },
   ...COMMODITY_FORMULAS,
+  ...YIELD_FORMULAS,
 ];
 
 export const FORMULA_BY_ID: ReadonlyMap<string, CalcFormula> = new Map(

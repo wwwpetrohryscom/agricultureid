@@ -1,4 +1,9 @@
-import type { ToolConfig, ToolField, ToolResult } from '@/types/tools';
+import type {
+  ToolConfig,
+  ToolField,
+  ToolOutput,
+  ToolResult,
+} from '@/types/tools';
 import { getFormula } from '@/lib/tools/formulas';
 import {
   AREA_TO_M2,
@@ -12,6 +17,8 @@ import {
   cToF,
   fToC,
   toSigDigits,
+  BUSHEL_STANDARDS,
+  BUSHEL_BY_KEY,
 } from '@/lib/tools/constants';
 
 const num = (v: Record<string, string>, k: string): number => {
@@ -44,6 +51,18 @@ function run(id: string, inputs: Record<string, number | string>): number {
     );
   return out;
 }
+
+/** The units the yield converter offers, defined once. */
+const YIELD_UNITS = [
+  { key: 'tha', label: 't/ha' },
+  { key: 'kgha', label: 'kg/ha' },
+  { key: 'lbacre', label: 'lb/acre' },
+  { key: 'buacre', label: 'bu/acre' },
+] as const;
+const YIELD_UNIT_KEYS = new Set<string>(YIELD_UNITS.map((u) => u.key));
+const YIELD_UNIT_LABEL: Record<string, string> = Object.fromEntries(
+  YIELD_UNITS.map((u) => [u.key, u.label]),
+);
 
 /* -------------------------------------------------------------------------- */
 
@@ -471,8 +490,21 @@ const yieldConverter: ToolConfig = {
   title: 'Yield converter',
   category: 'conversion',
   purpose:
-    'Convert crop yields between t/ha, kg/ha, lb/acre, and commodity-specific bu/acre.',
-  formulaIds: ['yield-tha-to-buacre'],
+    'Converts a crop yield between t/ha, kg/ha, lb/acre, and commodity-specific bu/acre.',
+  // The COMPLETE set of formulas this tool can execute. Every path resolves one
+  // or two of these; the formula-contract validator drives every input
+  // combination and asserts that the declared set and the executed set are the
+  // same, so the panel cannot advertise maths the tool does not run.
+  formulaIds: [
+    'yield-tha-to-kgha',
+    'yield-kgha-to-tha',
+    'yield-kgha-to-lbacre',
+    'yield-lbacre-to-kgha',
+    'yield-kgha-to-buacre',
+    'yield-buacre-to-kgha',
+  ],
+  searchAliases: ['yield conversion', 'bushels per acre', 'tonnes per hectare'],
+  commodityApplicability: BUSHEL_STANDARDS.map((b) => b.commoditySlug),
   fields: [
     {
       key: 'value',
@@ -487,84 +519,128 @@ const yieldConverter: ToolConfig = {
       label: 'From',
       type: 'select',
       default: 'tha',
-      options: [
-        { value: 'tha', label: 't/ha' },
-        { value: 'kgha', label: 'kg/ha' },
-        { value: 'lbacre', label: 'lb/acre' },
-        { value: 'buacre', label: 'bu/acre' },
-      ],
+      options: YIELD_UNITS.map((u) => ({ value: u.key, label: u.label })),
     },
     {
       key: 'to',
       label: 'To',
       type: 'select',
       default: 'buacre',
-      options: [
-        { value: 'tha', label: 't/ha' },
-        { value: 'kgha', label: 'kg/ha' },
-        { value: 'lbacre', label: 'lb/acre' },
-        { value: 'buacre', label: 'bu/acre' },
-      ],
+      options: YIELD_UNITS.map((u) => ({ value: u.key, label: u.label })),
     },
     {
       key: 'commodity',
-      label: 'Commodity (for bushels)',
+      label: 'Commodity (sets the standard bushel weight)',
       type: 'select',
-      default: 'wheat',
-      options: Object.keys(BUSHEL_LB).map((k) => ({
-        value: k,
-        label: `${k} (${BUSHEL_LB[k as keyof typeof BUSHEL_LB]} lb/bu)`,
-      })),
+      // No default. A bushel has no meaning without a commodity, and defaulting
+      // would silently pick one — the tool previously fell back to 60 lb/bu.
+      default: '',
+      options: [
+        { value: '', label: 'Select a commodity…' },
+        ...BUSHEL_STANDARDS.map((b) => ({
+          value: b.key,
+          label: `${b.label} — ${b.lbPerBushel} lb/bu (${b.jurisdiction})`,
+        })),
+      ],
+      help: 'Bushels are a volume unit used as a per-commodity mass convention, so the standard weight differs by commodity and jurisdiction. There is no generic bushel.',
       showIf: (v) => v.from === 'buacre' || v.to === 'buacre',
     },
   ],
   limitations: [
-    'Bushel conversions require the correct commodity test weight — there is no single generic bushel. Standard weights are legal/customary, not the actual test weight of a lot.',
+    'Bushel conversions apply the commodity’s standard weight, which is a fixed conversion constant — not the measured test weight of a lot, which routinely differs.',
+    'The standard weights offered are United States conventions. Most jurisdictions trade these grains by mass and do not use a bushel; a commodity not listed has no supported bushel conversion here.',
+    'A yield conversion changes the unit, not the measurement: it inherits whatever moisture basis, area basis, and sampling the original figure carried.',
   ],
+  safetyDisclosure:
+    'A unit conversion, not a yield estimate, a grading determination, or a settlement figure. Converting at a standard bushel weight says nothing about whether a lot meets a grade.',
   compute: (v): ToolResult => {
     const value = num(v, 'value');
     if (!finite(value)) return err();
-    const bl = BUSHEL_LB[v.commodity as keyof typeof BUSHEL_LB] ?? 60;
-    // Convert input to a canonical kg/ha, then out.
-    const toKgHa: Record<string, (x: number) => number> = {
-      tha: (x) => x * 1000,
-      kgha: (x) => x,
-      lbacre: (x) => x / KG_HA_TO_LB_ACRE,
-      buacre: (x) => (x * bl) / KG_HA_TO_LB_ACRE, // bu/acre → lb/acre → kg/ha
-    };
-    const fromKgHa: Record<string, (x: number) => number> = {
-      tha: (x) => x / 1000,
-      kgha: (x) => x,
-      lbacre: (x) => x * KG_HA_TO_LB_ACRE,
-      buacre: (x) => (x * KG_HA_TO_LB_ACRE) / bl,
-    };
     const from = v.from ?? '';
     const to = v.to ?? '';
-    const toFn = toKgHa[from];
-    const fromFn = fromKgHa[to];
-    if (!toFn || !fromFn) return err('Choose valid units.');
-    const kgha = toFn(value);
-    const out = fromFn(kgha);
-    const unitLabel: Record<string, string> = {
-      tha: 't/ha',
-      kgha: 'kg/ha',
-      lbacre: 'lb/acre',
-      buacre: 'bu/acre',
-    };
-    const usedBushel = from === 'buacre' || to === 'buacre';
-    return {
-      outputs: [
+    if (!YIELD_UNIT_KEYS.has(from) || !YIELD_UNIT_KEYS.has(to))
+      return err('Choose valid units.');
+
+    const needsBushel = from === 'buacre' || to === 'buacre';
+    // No silent fallback. The tool used to resolve an absent or unknown
+    // commodity to `?? 60` — the wheat/soybean weight — and convert anyway, so
+    // a shareable URL with from=buacre and no commodity produced a confident
+    // maize figure computed at 60 lb/bu.
+    const standard = needsBushel
+      ? BUSHEL_BY_KEY.get(v.commodity ?? '')
+      : undefined;
+    if (needsBushel && !standard)
+      return err(
+        'Select the commodity. A bushel is a volume unit used as a per-commodity mass convention, so a bushel-per-acre figure has no meaning until the commodity fixes the standard weight — there is no generic bushel.',
+      );
+    const bushelLb = standard?.lbPerBushel;
+
+    // Same unit in and out is an identity, not a conversion. Short-circuit it:
+    // routing it through the pivot would run two formulas to return the input,
+    // and for lb/acre that round trip is not even exactly lossless.
+    if (from === to)
+      return {
+        outputs: [
+          {
+            label: `${YIELD_UNIT_LABEL[from] ?? from} → ${YIELD_UNIT_LABEL[to] ?? to}`,
+            value: fmt(value, 5),
+            unit: YIELD_UNIT_LABEL[to] ?? to,
+          },
+          {
+            label: 'Note',
+            value: 'Same unit in and out — no conversion applied.',
+          },
+        ],
+        formulaIds: [],
+      };
+
+    try {
+      // Compose a path through kg/ha, running only registered formulas.
+      const used: string[] = [];
+      const step = (id: string, x: number): number => {
+        used.push(id);
+        return run(
+          id,
+          bushelLb == null ? { value: x } : { value: x, bushelLb },
+        );
+      };
+      const TO_KGHA: Record<string, string | null> = {
+        tha: 'yield-tha-to-kgha',
+        kgha: null, // already the pivot
+        lbacre: 'yield-lbacre-to-kgha',
+        buacre: 'yield-buacre-to-kgha',
+      };
+      const FROM_KGHA: Record<string, string | null> = {
+        tha: 'yield-kgha-to-tha',
+        kgha: null,
+        lbacre: 'yield-kgha-to-lbacre',
+        buacre: 'yield-kgha-to-buacre',
+      };
+      const inId = TO_KGHA[from] ?? null;
+      const outId = FROM_KGHA[to] ?? null;
+      const kgha = inId ? step(inId, value) : value;
+      const out = outId ? step(outId, kgha) : kgha;
+
+      const fromLabel = YIELD_UNIT_LABEL[from] ?? from;
+      const toLabel = YIELD_UNIT_LABEL[to] ?? to;
+      const outputs: ToolOutput[] = [
         {
-          label: `${unitLabel[from] ?? from} → ${unitLabel[to] ?? to}`,
+          label: `${fromLabel} → ${toLabel}`,
           value: fmt(out, 5),
-          unit: unitLabel[to] ?? to,
+          unit: toLabel,
         },
-      ],
-      formulaIds: usedBushel ? ['yield-tha-to-buacre'] : [],
-      note: usedBushel
-        ? `Using ${v.commodity} standard weight ${bl} lb/bu.`
-        : undefined,
-    };
+      ];
+      return {
+        outputs,
+        // The formulas this path ACTUALLY executed, in order.
+        formulaIds: used,
+        note: standard
+          ? `Using the ${standard.label} standard bushel weight of ${standard.lbPerBushel} lb/bu (${standard.jurisdiction}; ${standard.standard}).`
+          : undefined,
+      };
+    } catch (e) {
+      return err((e as Error).message);
+    }
   },
 };
 
@@ -1212,11 +1288,14 @@ const waterRemoval: ToolConfig = {
   category: 'post-harvest',
   purpose:
     'Estimates the water that leaves a lot, and the mass left behind, when it is dried from one moisture content to another.',
+  // Includes the basis conversion: a dry-basis entry is restated on the wet
+  // basis before the mass balance runs, so the panel must show that step.
   formulaIds: [
     'dry-matter-mass',
     'water-mass-wb',
     'drying-final-mass',
     'drying-water-removed',
+    'moisture-db-to-wb',
   ],
   fields: [
     basisField(
@@ -1306,7 +1385,9 @@ const moistureShrink: ToolConfig = {
   category: 'post-harvest',
   purpose:
     'Calculates the mathematical moisture shrink between a starting moisture and a market moisture — the water fraction alone.',
-  formulaIds: ['moisture-shrink-pct'],
+  // Includes the basis conversion: a dry-basis entry is restated on the wet
+  // basis before shrink is computed.
+  formulaIds: ['moisture-shrink-pct', 'moisture-db-to-wb'],
   fields: [
     basisField(
       'Basis of the moisture figures',
@@ -1519,10 +1600,11 @@ const storageCapacity: ToolConfig = {
   title: 'Storage volume estimator',
   category: 'storage',
   purpose:
-    'Calculates the geometric volume of a rectangular or cylindrical store, with or without a conical peak, and the mass it would hold at a bulk density you supply.',
+    'Calculates the geometric volume of a rectangular or cylindrical store, a cylinder with a conical peak, or a free-standing conical pile, and the mass it would hold at a bulk density you supply.',
   formulaIds: [
     'volume-rect-prism',
     'volume-cylinder',
+    'volume-cone',
     'volume-cylinder-with-cone',
     'volume-with-packing-factor',
     'mass-from-volume-density',
@@ -1541,6 +1623,7 @@ const storageCapacity: ToolConfig = {
           value: 'cylinder-cone',
           label: 'Vertical cylinder with a conical peak',
         },
+        { value: 'cone', label: 'Conical pile (free-standing heap)' },
       ],
     },
     {
@@ -1631,7 +1714,14 @@ const storageCapacity: ToolConfig = {
     try {
       let volume: number;
       const formulaIds: string[] = [];
-      if (geometry === 'cylinder-cone') {
+      if (geometry === 'cone') {
+        // A free-standing heap. Its slope is set by the commodity's angle of
+        // repose, so the height is not a free choice — volume-cone says so, and
+        // carries the engulfment warning that matters most here.
+        const radius = num(v, 'radius');
+        if (!finite(radius, height)) return err();
+        volume = run('volume-cone', { radius, height });
+      } else if (geometry === 'cylinder-cone') {
         const radius = num(v, 'radius');
         const coneHeight = num(v, 'coneHeight');
         if (!finite(radius, coneHeight)) return err();
@@ -1710,7 +1800,15 @@ const blending: ToolConfig = {
   category: 'commodity',
   purpose:
     'Calculates the attribute value of a two-lot blend, or the quantity of a second lot that reaches a target value.',
-  formulaIds: ['blend-two-lot-weighted-average', 'blend-required-lot-b'],
+  // Includes both basis conversions: a dry-basis moisture blend is restated on
+  // the wet basis, blended there, and converted back — a dry-basis blend is
+  // dry-matter-weighted, and that round trip is exactly how it is honoured.
+  formulaIds: [
+    'blend-two-lot-weighted-average',
+    'blend-required-lot-b',
+    'moisture-db-to-wb',
+    'moisture-wb-to-db',
+  ],
   fields: [
     {
       key: 'mode',

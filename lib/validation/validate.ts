@@ -26,6 +26,7 @@ import { commodityIssues } from '@/lib/commodity/validate-commodity';
 import { postHarvestIssues } from '@/lib/post-harvest/validate-post-harvest';
 import { processingIssues } from '@/lib/processing/validate-processing';
 import { tradeIssues } from '@/lib/trade/validate-trade';
+import { contractIssues } from '@/lib/tools/contract';
 import { UNRESOLVED_ISSUES } from '@/data/unresolved-issues';
 import {
   articleSchema,
@@ -889,6 +890,15 @@ export function validateAll(): ValidationResult {
   for (const ti of tradeIssues()) {
     if (ti.level === 'error') error(ti.code, ti.message, ti.where);
     else warn(ti.code, ti.message, ti.where);
+  }
+
+  /* ---- Calculator formula contract (Phase 5E §4) ----------------------- */
+  // Executed, not inspected: every tool is driven across its input matrix with
+  // the registry instrumented, so a formula that is advertised-but-never-run —
+  // or run-but-never-shown — fails the build rather than the reader.
+  for (const ci of contractIssues()) {
+    if (ci.level === 'error') error(ci.code, ci.message, ci.where);
+    else warn(ci.code, ci.message, ci.where);
   }
 
   /* ---- Reachability / orphans ----------------------------------------- */

@@ -162,29 +162,105 @@ multi-word variants by their component words, and that restraint is what stops
 
 ## Known limitations
 
-- **`yield-converter` advertises a formula it never runs.** This pre-existing
-  Phase 3C tool declares `formulaIds: ['yield-tha-to-buacre']` but computes its
-  16 conversion paths inline through a canonical kg/ha pivot, so the formula
-  panel names a formula the tool does not call. Refactoring all 16 paths at the
-  end of this phase was judged worse than recording it; it is the clearest
-  remaining violation of the registry rule 5E enforces.
+- ~~**`yield-converter` advertises a formula it never runs.**~~ **FIXED** in a
+  post-merge correction — see "The yield-converter correction" below.
 - **The slug says "capacity", the tool says "volume".**
   `/tools/storage-capacity-estimator` (the route §19 specified) reaches a tool
   titled _Storage volume estimator_, because a geometric volume is not a
   capacity and the title refuses the word the slug uses. Two review lenses
   raised this and were refuted 2/3 each; a third confirmed it as minor. The
   brief fixed the slug, so the honest title wins and the alias carries the query.
-- **`volume-cone` is composed by no tool directly** — the peak case goes through
-  the `volume-cylinder-with-cone` composite. It is registered and tested; there
-  is no standalone conical-pile tool.
-- **`commodityApplicability` has no user.** The field and its validator gate
-  exist; every current formula and tool is commodity-independent, so the gate is
-  unexercised.
-- **No formula is deprecated.** `deprecated`/`replacedBy` is a retirement path
-  with nothing retired through it yet.
+- ~~**`volume-cone` is composed by no tool directly.**~~ **FIXED** — the
+  contract gate flagged it as dead maths and the storage estimator now offers a
+  free-standing conical-pile geometry.
+- ~~**`commodityApplicability` has no user.**~~ **FIXED** — the two bushel
+  formulas and the yield converter now scope to the 7 grains with a US standard
+  bushel weight, and the gate is exercised.
+- ~~**No formula is deprecated.**~~ **FIXED** — `yield-tha-to-buacre` is retired
+  through it (`replacedBy: yield-kgha-to-buacre`), and the contract gate exempts
+  deprecated formulas from reachability while forbidding any tool to advertise
+  one.
 - **The logistics-style "no numbers" discipline has no scanner for tools.** The
   price and risk scanners are automated; the tool corpus relies on the advisory
   gate plus review.
+
+## The yield-converter correction (post-merge)
+
+PR #22 merged with the yield converter recorded as a known gap. That was the
+wrong call: a green CI does not excuse a tool that advertises maths it does not
+run, and the violation sat squarely inside the contract this phase introduced.
+Corrected on a follow-up branch.
+
+### Before
+
+|                             |                                                                            |
+| --------------------------- | -------------------------------------------------------------------------- |
+| Executable conversion paths | **16** (4 units × 4, including 4 identities)                               |
+| Formulas declared           | **1** — `yield-tha-to-buacre`                                              |
+| Formulas executed           | **0**                                                                      |
+| Where the maths lived       | an inline `toKgHa`/`fromKgHa` pivot table of 8 lambdas                     |
+| What the panel showed       | a t/ha → bu/acre expression, on all 16 paths                               |
+| Bushel handling             | `BUSHEL_LB[v.commodity] ?? 60` — a **silent fallback to the wheat weight** |
+| Jurisdiction                | not stated                                                                 |
+
+The published expression also named the constant `0.8921785`. The code used
+`KG_HA_TO_LB_ACRE`, whose true value is `0.8921791216197045` — so the expression
+a reader checked against was wrong from the seventh significant figure. The
+mis-rounded figure originated in a comment in `constants.ts` and was copied from
+there into the formula.
+
+### After
+
+|                             |                                                                                      |
+| --------------------------- | ------------------------------------------------------------------------------------ |
+| Executable conversion paths | **16** — 12 conversions + 4 identities (identities short-circuit and run no formula) |
+| Formulas declared           | **6**                                                                                |
+| Formulas executed           | **6** — declared ≡ executed, proven by execution                                     |
+| Architecture                | a **conversion graph** composed from tested primitives, pivoting on kg/ha            |
+| Bushel handling             | **refuses** without a commodity; no fallback exists                                  |
+| Jurisdiction                | stated per standard weight, and rendered with the result                             |
+
+`kg/ha` is the pivot because it is the only unit with no commodity dependence and
+no imperial definition, so every conversion to and from it is exact or a single
+documented constant.
+
+### Why primitives, not one parameterised formula
+
+The paths are materially different calculations — some exact scalings, two
+requiring a commodity-specific standard weight and a jurisdiction. Collapsing
+them into one expression with a mode flag produces an expression no reader can
+check against the number in front of them, which is the failure being fixed.
+
+### Registered conversions
+
+| id                     | expression                       | commodity-specific |
+| ---------------------- | -------------------------------- | ------------------ |
+| `yield-tha-to-kgha`    | `kg/ha = t/ha × 1000`            | no                 |
+| `yield-kgha-to-tha`    | `t/ha = kg/ha ÷ 1000`            | no                 |
+| `yield-kgha-to-lbacre` | exact from lb + acre definitions | no                 |
+| `yield-lbacre-to-kgha` | exact from lb + acre definitions | no                 |
+| `yield-kgha-to-buacre` | `÷ standard_bushel_weight_lb`    | **yes**            |
+| `yield-buacre-to-kgha` | `× standard_bushel_weight_lb`    | **yes**            |
+
+`yield-tha-to-buacre` is **retired**, not deleted: `deprecated: true`,
+`replacedBy: 'yield-kgha-to-buacre'`, `formulaVersion` 1.0.0 → 1.0.1,
+`calcVersion` 1 → 2, with its published constant corrected for the record.
+
+### Bushel standards are now sourced (§3)
+
+`BUSHEL_STANDARDS` carries, per commodity: the commodity slug (all 7 resolve),
+the standard weight, the **jurisdiction** (United States), the instrument, and a
+registry source (`usda-ams`). `BUSHEL_LB` is **derived** from it, so a weight can
+never be available without the row that says which jurisdiction fixes it.
+
+Nothing was removed for lack of authoritative support: all 7 weights (wheat 60,
+soybeans 60, maize 56, sorghum 56, rye 56, barley 48, oats 32) are long-standing
+US conventions. A commodity absent from the table has **no** bushel conversion —
+the tool refuses rather than approximating.
+
+The docs now state plainly that a bushel is a **volume** unit (2150.42 in³) used
+as a per-commodity **mass convention**, and that a standard weight is a fixed
+conversion constant, not a lot's measured test weight.
 
 ## Gates on the final branch state
 
