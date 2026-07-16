@@ -1,5 +1,11 @@
 import { ALL_CONTENT, refKey, resolveRef } from '@/lib/content/registry';
 import { CONTENT_TYPES } from '@/lib/site';
+import {
+  REF_FIELDS,
+  isGenericField,
+  isRefField,
+  relationForField,
+} from '@/lib/content/ref-fields';
 import type { ContentType } from '@/lib/site';
 import type {
   AnyContent,
@@ -55,6 +61,7 @@ export const RELATION_TYPES: ReadonlySet<RelationType> = new Set<RelationType>([
   'governedByStandard',
   'standardGoverns',
   'associatedDocument',
+  'relatedProcessingStep',
   'relatedTradeConcept',
   'relatedLogisticsConcept',
   'relatedStandard',
@@ -117,6 +124,7 @@ export const INVERSE_RELATION: Partial<Record<RelationType, RelationType>> = {
   // and asserting a direction the content does not carry would have been
   // inventing information to satisfy a checker.
   associatedDocument: 'associatedDocument',
+  relatedProcessingStep: 'relatedProcessingStep',
   // "A is related to B" is true exactly when "B is related to A". The Phase 5D
   // reciprocity generator makes these mutual in the content; the relation has
   // to be declared symmetric or the graph calls its own correct data an error.
@@ -193,72 +201,6 @@ export const INVERSE_RELATION: Partial<Record<RelationType, RelationType>> = {
  * This map is consulted FIRST, keyed `contentType.field`. FIELD_RELATION stays
  * the default for the (large majority of) field names that are unambiguous.
  */
-const TYPED_FIELD_RELATION: Record<string, RelationType> = {
-  'trade-concept.relevantStandards': 'governedByStandard',
-  'logistics-concept.relevantStandards': 'governedByStandard',
-  'logistics-concept.applicableCommodities': 'appliesToCommodity',
-  'standard-reference.applicableCommodities': 'appliesToCommodity',
-  'market-term.applicableCommodities': 'appliesToCommodity',
-  'supply-chain-risk.affectedCommodities': 'riskAffects',
-};
-
-const FIELD_RELATION: Record<string, RelationType> = {
-  // Phase 5D — trade, logistics, standards, market data, risk.
-  associatedDocuments: 'associatedDocument',
-  relatedConcepts: 'relatedTradeConcept',
-  relatedLogistics: 'relatedLogisticsConcept',
-  qualityRisks: 'assessesQuality',
-  dependsOnOperations: 'dependsOnOperation',
-  relatedTradeConcepts: 'relatedTradeConcept',
-  exposedToRisks: 'exposedToRisk',
-  relatedGrades: 'gradeAppliesTo',
-  relatedStandards: 'relatedStandard',
-  relatedTerms: 'relatedMarketTerm',
-  affectedLogistics: 'riskAffects',
-  affectedTradeConcepts: 'riskAffects',
-  addressedByStandards: 'governedByStandard',
-  relatedRisks: 'relatedRisk',
-  commonDiseases: 'susceptibleTo',
-  commonPests: 'susceptibleTo',
-  suitableSoils: 'suitableForSoil',
-  suitedCrops: 'suitableFor',
-  hostCrops: 'affects',
-  // Phase 3A — sub-entity parent links.
-  parentCrop: 'cultivarOf',
-  parentLivestock: 'breedOf',
-  // Phase 5A — commodity taxonomy. Distinct field names (sourceCrop, not
-  // parentCrop) so commodity edges never collide with cultivar/breed parentage.
-  sourceCrop: 'harvestedFrom',
-  sourceLivestock: 'harvestedFrom',
-  primaryProducts: 'processedInto',
-  coProducts: 'producesCoProduct',
-  byProducts: 'producesByProduct',
-  applicableGrades: 'gradedUnder',
-  storageSystems: 'storedUsing',
-  derivedFrom: 'derivedFromCommodity',
-  gradedCommodity: 'gradeAppliesTo',
-  // Phase 5B — post-harvest quality graph.
-  appliesToCommodities: 'qualityAttributeOf',
-  measuredBy: 'measuredBy',
-  relatedDefects: 'relatedConcept',
-  affectedCommodities: 'damagesCommodity',
-  reducedByProcesses: 'reducedByProcess',
-  measures: 'measures',
-  applicableCommodities: 'relatedConcept',
-  monitoringMethods: 'monitoredWith',
-  // Phase 5C.
-  inputCommodities: 'processInputOf',
-  primaryOutputs: 'producesPrimaryProduct',
-  coProductOutputs: 'producesCoProduct',
-  byProductOutputs: 'producesByProduct',
-  typicalEquipment: 'usesEquipment',
-  precededBy: 'precededByProcess',
-  followedBy: 'followedByProcess',
-  producedBy: 'producedByProcess',
-  relatedOperations: 'relatedConcept',
-  equipment: 'managedWith',
-  relevantStandards: 'gradedUnder',
-};
 
 /**
  * Conservative relation for a generic (connections/relatedTopics) edge, derived
@@ -430,17 +372,31 @@ export function semanticEdges(item: AnyContent): SemanticEdge[] {
   const from: ContentRef = { type: item.contentType, slug: item.slug };
   const byTarget = new Map<string, SemanticEdge>();
   for (const { ref, field } of refsWithField(item)) {
-    const relation =
-      TYPED_FIELD_RELATION[`${item.contentType}.${field}`] ??
-      FIELD_RELATION[field] ??
-      (field === 'relatedTopics'
-        ? 'relatedConcept'
-        : genericRelation(item.contentType, ref.type, item));
+    // Discovery is structural; MAPPING is declared. An unregistered field is
+    // reported by the validator (`graph-unmapped-ref-field`) rather than being
+    // guessed into an edge here — a field whose meaning nobody has stated must
+    // not silently acquire one.
+    if (!isRefField(field)) continue;
+
+    const relation = isGenericField(field)
+      ? // A generic field claims only "these are related"; the relation is
+        // inferred conservatively from the endpoints, never asserted.
+        genericRelation(item.contentType, ref.type, item)
+      : (relationForField(field, item.contentType) ?? 'relatedConcept');
+
     const key = refKey(ref.type, ref.slug);
     const existing = byTarget.get(key);
     // Keep the most specific relation; prefer an existing non-generic one.
     if (existing && existing.relation !== 'relatedConcept') continue;
-    byTarget.set(key, { from, to: ref, relation, field });
+    const spec = REF_FIELDS[field];
+    byTarget.set(key, {
+      from,
+      to: ref,
+      relation,
+      field,
+      origin: spec?.origin ?? 'declared',
+      ...(spec?.generator ? { generator: spec.generator } : {}),
+    });
   }
   return [...byTarget.values()];
 }

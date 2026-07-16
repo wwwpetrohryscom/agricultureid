@@ -1,4 +1,5 @@
 import type { ContentType } from '@/lib/site';
+import type { EdgeOrigin } from '@/lib/content/ref-fields';
 import type { EvidenceTier } from '@/types/sources';
 import type {
   ProcessingClass,
@@ -198,6 +199,7 @@ export type RelationType =
   | 'governedByStandard'
   | 'standardGoverns'
   | 'associatedDocument'
+  | 'relatedProcessingStep'
   | 'relatedTradeConcept'
   | 'relatedLogisticsConcept'
   | 'relatedStandard'
@@ -251,6 +253,18 @@ export interface SemanticEdge {
   relation: RelationType;
   /** Which field the edge was derived from (provenance of the edge itself). */
   field: string;
+  /**
+   * Where the edge came from (Phase 5F).
+   *
+   * `declared` is an author's assertion on the page. `generated` was written by
+   * a generator inverting another field — `producedBy` is computed from each
+   * processing method's declared outputs, and presenting it as an authored fact
+   * would overstate what anybody actually wrote. `inverse` is computed at read
+   * time and never materialised into content.
+   */
+  origin: EdgeOrigin;
+  /** The generator that wrote the field, when `origin` is `generated`. */
+  generator?: string;
 }
 
 /** Metadata for an image, capturing licensing/provenance when one is used. */
