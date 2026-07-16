@@ -112,12 +112,34 @@ The test derives what the graph _should_ contain **without calling
 that reuses it. This is the same principle that the dry-basis blending bug taught
 in Phase 5E: a check that reuses the thing under test proves nothing.
 
+## The same bug had a second home
+
+`lib/content/graph.ts` carried its OWN `switch (item.contentType)` in
+`outgoingRefs()` — seven cases, and a `default` asserting that "newer content
+types express all their relationships through relatedTopics and connections".
+That was false from Phase 5A and catastrophic by 5D: it reported **zero** typed
+refs for `logistics-concept`, which really has 784.
+
+Its docstring claimed to be "the single place that knows which fields hold
+references, so validation and graph traversal stay in sync". It was not — the
+semantic graph had its own discovery — so two modules gave different answers
+about the same content, and **the SEO audit's link model was built on the stale
+one**. Both now share one discovery path.
+
 ## Known limitations
 
-- **37% of edges are the generic `relatedConcept`**, from `connections` and
-  `relatedTopics`. That is the documented conservative default — a generic field
-  cannot assert a precise relation — but it does mean over a third of the graph
-  carries no semantic detail beyond "these are related".
+- **34.1% of edges are the generic `relatedConcept`** (3,779 of 11,082). Two
+  numbers get conflated here and should not be: **54.1%** of edges come from a
+  generic FIELD (`connections`/`relatedTopics`), but 2,217 of those are upgraded
+  to a precise relation by the type-pair rules, leaving 34.1% that genuinely say
+  only "these are related". An earlier draft of this file said 37%; that figure
+  was wrong. See [`graph-audit-5f.md`](graph-audit-5f.md) for the classification.
+- **Making a relation more precise can make it invisible.** Phase 5F mapped
+  `post-harvest.applicableCommodities` from the generic `relatedConcept` to
+  `appliesToCommodity` — and 208 edges silently stopped rendering, because
+  `relatedConcept` was in `RelationPanels`' `ORDER` and the new relation was not.
+  Precision that costs the reader the link is not an improvement. Any future
+  relation change must add the heading in the same commit.
 - **213 published pages still have zero inbound edges** (down from 361). They are
   reachable from their hub, so they are not orphans by the SEO audit's standard,
   but nothing else in the corpus points at them.

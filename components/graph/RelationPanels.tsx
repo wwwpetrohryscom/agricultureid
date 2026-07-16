@@ -47,6 +47,13 @@ const RELATION_HEADING: Partial<Record<RelationType, string>> = {
    * The Phase 5D relations are deliberately ABSENT: TradePanels owns those
    * fields and renders them with their own labels, so adding them here would
    * print every link twice. See OWNED_BY_DEDICATED_PANEL. */
+  // Phase 5F made this relation MORE PRECISE and thereby INVISIBLE: as a
+  // generic `relatedConcept` it was in ORDER and rendered as "Related topics";
+  // as `appliesToCommodity` it was in neither table, so 208 post-harvest edges
+  // silently stopped rendering. Precision that costs the reader the link is not
+  // an improvement. (Logistics/market/standard pages exclude it below — their
+  // TradePanels already own it.)
+  appliesToCommodity: 'Applies to commodities',
   harvestedFrom: 'Harvested from',
   harvestedAs: 'Harvested as',
   storedUsing: 'Stored using',
@@ -160,6 +167,7 @@ const ORDER: RelationType[] = [
   'relatedBreed',
   // Phase 5A/5B/5C — precise relations before the generic catch-all, so a page
   // leads with what it actually asserts rather than with "related topics".
+  'appliesToCommodity',
   'harvestedFrom',
   'harvestedAs',
   'processedInto',
