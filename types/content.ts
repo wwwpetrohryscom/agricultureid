@@ -1,6 +1,13 @@
 import type { ContentType } from '@/lib/site';
 import type { EvidenceTier } from '@/types/sources';
 import type {
+  AttributeClass,
+  DefectClass,
+  MeasurementClass,
+  ProcessStage,
+  QualityDomain,
+} from '@/types/post-harvest';
+import type {
   CommodityClass,
   CommodityCode,
   CommodityImageIdentity,
@@ -184,6 +191,18 @@ export type RelationType =
   | 'gradedUnder'
   | 'gradeAppliesTo'
   | 'storedUsing'
+  // Phase 5B — post-harvest quality graph
+  | 'hasQualityAttribute'
+  | 'qualityAttributeOf'
+  | 'measuredBy'
+  | 'measures'
+  | 'susceptibleToDefect'
+  | 'defectOf'
+  | 'reducedByProcess'
+  | 'reduces'
+  | 'monitoredWith'
+  | 'monitors'
+  | 'damagesCommodity'
   | 'relatedConcept';
 
 export interface SemanticEdge {
@@ -435,6 +454,91 @@ export interface PostHarvestContent extends BaseContent {
     | 'processing'
     | 'quality'
     | 'loss-management';
+  /* ---- Phase 5B strengthening ---------------------------------------- */
+  /** Commodity classes this applies to (labels, from CommodityClass). */
+  applicableCommodityClasses?: CommodityClass[];
+  /** Specific commodities this is used for (→ commodity refs). */
+  applicableCommodities?: ContentRef[];
+  processStage?: ProcessStage;
+  /** How it works, physically. Required for storage/cooling systems. */
+  operatingPrinciple?: string;
+  /** Equipment involved (→ machinery refs). */
+  equipment?: ContentRef[];
+  /** What can be measured going in / coming out (labels, never values). */
+  measurableInputs?: string[];
+  measurableOutputs?: string[];
+  /** What it does to quality — qualitative. */
+  qualityEffects?: string[];
+  /** What can go wrong. Required for storage/cooling systems. */
+  riskFactors?: string[];
+  environmentalContext?: string;
+  /** How it is monitored (→ quality-measurement refs). */
+  monitoringMethods?: ContentRef[];
+  /** Safety framing — high level only, never operating procedure. */
+  safetyLimitations?: string[];
+  /** Standards that bear on it (→ commodity-grade refs). */
+  relevantStandards?: ContentRef[];
+}
+
+/**
+ * A measurable property of a harvested lot (moisture content, test weight,
+ * firmness, soluble solids…). An attribute is NOT a grade, NOT a safety
+ * verdict, and NOT "quality" in total — `qualityDomain` names the question it
+ * actually answers and `notAnIndicatorOf` states what it cannot tell you.
+ */
+export interface QualityAttributeContent extends BaseContent {
+  contentType: 'quality-attribute';
+  attributeClass: AttributeClass;
+  /** The single question this attribute primarily answers. */
+  qualityDomain: QualityDomain;
+  /** What this attribute must NOT be read as (required — anti-conflation). */
+  notAnIndicatorOf: string[];
+  /** Basis the value is expressed on, e.g. "wet basis". Label, not a value. */
+  measurementBasis?: string;
+  /** Unit LABELS only (e.g. "% (wet basis)", "kg/hL") — never values. */
+  typicalUnits?: string[];
+  appliesToCommodities?: ContentRef[];
+  /** Methods that measure it (→ quality-measurement refs). */
+  measuredBy?: ContentRef[];
+  /** Defects this attribute is associated with (→ post-harvest-defect refs). */
+  relatedDefects?: ContentRef[];
+}
+
+/**
+ * A way a harvested lot deteriorates or fails. Visual appearance is never
+ * definitive — `diagnosticLimitations` is required on every entry.
+ */
+export interface PostHarvestDefectContent extends BaseContent {
+  contentType: 'post-harvest-defect';
+  defectClass: DefectClass;
+  affectedCommodities?: ContentRef[];
+  /** Conditions under which it arises — qualitative. */
+  causedByConditions?: string[];
+  /** Processes that reduce it (→ post-harvest refs). */
+  reducedByProcesses?: ContentRef[];
+  /** Disorders it is commonly mistaken for. */
+  confusableWith?: string[];
+  /** Why appearance alone cannot confirm it (required). */
+  diagnosticLimitations: string[];
+}
+
+/**
+ * A method or instrument that measures a quality attribute. Every measurement
+ * states what it measures and where it is unreliable.
+ */
+export interface QualityMeasurementContent extends BaseContent {
+  contentType: 'quality-measurement';
+  measurementClass: MeasurementClass;
+  /** Attributes it measures (→ quality-attribute refs, required non-empty). */
+  measures: ContentRef[];
+  /** The physical/chemical principle it works on. */
+  principle?: string;
+  sampleRequirement?: string;
+  destructive?: boolean;
+  /** The reference method it is calibrated against, when one exists. */
+  referenceMethodNote?: string;
+  /** Where it is unreliable or misread (required). */
+  measurementLimitations: string[];
 }
 
 /* -------------------------------------------------------------------------- */
@@ -681,6 +785,9 @@ export type AnyContent =
   | FarmingSystemContent
   | IrrigationMethodContent
   | PostHarvestContent
+  | QualityAttributeContent
+  | PostHarvestDefectContent
+  | QualityMeasurementContent
   | CommodityContent
   | CommodityProductContent
   | CommodityGradeContent

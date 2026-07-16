@@ -51,6 +51,9 @@ const STATIC_ROUTES: Omit<RouteEntry, 'lastModified'>[] = [
   { path: '/farm-systems', changeFrequency: 'weekly', priority: 0.9 },
   { path: '/irrigation', changeFrequency: 'weekly', priority: 0.9 },
   { path: '/post-harvest', changeFrequency: 'weekly', priority: 0.9 },
+  { path: '/quality-attributes', changeFrequency: 'weekly', priority: 0.9 },
+  { path: '/post-harvest-defects', changeFrequency: 'weekly', priority: 0.9 },
+  { path: '/quality-measurements', changeFrequency: 'weekly', priority: 0.9 },
   { path: '/commodities', changeFrequency: 'weekly', priority: 0.9 },
   { path: '/commodity-products', changeFrequency: 'weekly', priority: 0.9 },
   { path: '/commodity-grades', changeFrequency: 'weekly', priority: 0.9 },
@@ -85,6 +88,7 @@ const STATIC_ROUTES: Omit<RouteEntry, 'lastModified'>[] = [
 export const SITEMAP_SECTIONS = [
   'pages',
   'content',
+  'post-harvest',
   'commodities',
   'geo',
   'tools',
@@ -103,20 +107,31 @@ export function sectionedRoutes(): Record<SitemapSection, RouteEntry[]> {
     'commodity-product',
     'commodity-grade',
   ]);
+  // Phase 5B — the post-harvest quality cluster gets its own shard.
+  const POST_HARVEST_TYPES = new Set([
+    'post-harvest',
+    'quality-attribute',
+    'post-harvest-defect',
+    'quality-measurement',
+  ]);
   const allContentRoutes = PUBLISHED_CONTENT.map((item) => ({
     path: contentUrlPath(item),
     lastModified: item.updatedAt,
     changeFrequency: 'monthly' as const,
     priority: 0.8,
     isCommodity: COMMODITY_TYPES.has(item.contentType),
+    isPostHarvest: POST_HARVEST_TYPES.has(item.contentType),
   }));
   const contentRoutes: RouteEntry[] = allContentRoutes
-    .filter((r) => !r.isCommodity)
-    .map(({ isCommodity: _drop, ...r }) => r);
+    .filter((r) => !r.isCommodity && !r.isPostHarvest)
+    .map(({ isCommodity: _d1, isPostHarvest: _d2, ...r }) => r);
+  const postHarvestRoutes: RouteEntry[] = allContentRoutes
+    .filter((r) => r.isPostHarvest)
+    .map(({ isCommodity: _d1, isPostHarvest: _d2, ...r }) => r);
   // Phase 5A — the commodity cluster gets its own sitemap shard.
   const commodityRoutes: RouteEntry[] = allContentRoutes
     .filter((r) => r.isCommodity)
-    .map(({ isCommodity: _drop, ...r }) => r);
+    .map(({ isCommodity: _d1, isPostHarvest: _d2, ...r }) => r);
 
   // Phase 3B — geographic routes (country profiles, indicators, datasets,
   // regions). Statistics change on the provider's cycle, so these are monthly.
@@ -199,6 +214,9 @@ export function sectionedRoutes(): Record<SitemapSection, RouteEntry[]> {
     pages: staticRoutes,
     // Every structured content-type entry (crops, diseases, post-harvest, …).
     content: contentRoutes,
+    // Post-harvest quality cluster (processes/systems, attributes, defects,
+    // measurements). Hubs live in the `pages` shard.
+    'post-harvest': postHarvestRoutes,
     // Commodity taxonomy cluster (commodities, products, grading standards).
     // The three hubs live in the `pages` shard (STATIC_ROUTES); this shard
     // carries only the entries, so no path appears in two shards.

@@ -13,6 +13,9 @@ import type {
   PestContent,
   PlantDiseaseContent,
   PostHarvestContent,
+  QualityAttributeContent,
+  PostHarvestDefectContent,
+  QualityMeasurementContent,
   CommodityContent,
   CommodityProductContent,
   CommodityGradeContent,
@@ -32,6 +35,9 @@ import { climateFactors } from './climate';
 import { farmingSystems } from './farming-systems';
 import { irrigationMethods } from './irrigation-methods';
 import { postHarvest } from './post-harvest';
+import { qualityAttributes } from './quality-attributes';
+import { postHarvestDefects } from './post-harvest-defects';
+import { qualityMeasurements } from './quality-measurements';
 import { commodities } from './commodities';
 import { commodityProducts } from './commodity-products';
 import { commodityGrades } from './commodity-grades';
@@ -51,6 +57,11 @@ export const CLIMATE: ClimateContent[] = climateFactors;
 export const FARMING_SYSTEMS: FarmingSystemContent[] = farmingSystems;
 export const IRRIGATION_METHODS: IrrigationMethodContent[] = irrigationMethods;
 export const POST_HARVEST: PostHarvestContent[] = postHarvest;
+export const QUALITY_ATTRIBUTES: QualityAttributeContent[] = qualityAttributes;
+export const POST_HARVEST_DEFECTS: PostHarvestDefectContent[] =
+  postHarvestDefects;
+export const QUALITY_MEASUREMENTS: QualityMeasurementContent[] =
+  qualityMeasurements;
 export const COMMODITIES: CommodityContent[] = commodities;
 export const COMMODITY_PRODUCTS: CommodityProductContent[] = commodityProducts;
 export const COMMODITY_GRADES: CommodityGradeContent[] = commodityGrades;
@@ -72,6 +83,9 @@ export const ALL_CONTENT: AnyContent[] = [
   ...farmingSystems,
   ...irrigationMethods,
   ...postHarvest,
+  ...qualityAttributes,
+  ...postHarvestDefects,
+  ...qualityMeasurements,
   ...commodities,
   ...commodityProducts,
   ...commodityGrades,

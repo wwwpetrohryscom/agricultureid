@@ -59,6 +59,17 @@ export const RELATION_TYPES: ReadonlySet<RelationType> = new Set<RelationType>([
   'gradedUnder',
   'gradeAppliesTo',
   'storedUsing',
+  'hasQualityAttribute',
+  'qualityAttributeOf',
+  'measuredBy',
+  'measures',
+  'susceptibleToDefect',
+  'defectOf',
+  'reducedByProcess',
+  'reduces',
+  'monitoredWith',
+  'monitors',
+  'damagesCommodity',
   'relatedConcept',
 ]);
 
@@ -97,6 +108,17 @@ export const INVERSE_RELATION: Partial<Record<RelationType, RelationType>> = {
   byProductOf: 'producesByProduct',
   gradedUnder: 'gradeAppliesTo',
   gradeAppliesTo: 'gradedUnder',
+  // Phase 5B — post-harvest quality graph inverses.
+  hasQualityAttribute: 'qualityAttributeOf',
+  qualityAttributeOf: 'hasQualityAttribute',
+  measuredBy: 'measures',
+  measures: 'measuredBy',
+  susceptibleToDefect: 'defectOf',
+  defectOf: 'susceptibleToDefect',
+  reducedByProcess: 'reduces',
+  reduces: 'reducedByProcess',
+  monitoredWith: 'monitors',
+  monitors: 'monitoredWith',
   relatedConcept: 'relatedConcept',
 };
 
@@ -121,6 +143,17 @@ const FIELD_RELATION: Record<string, RelationType> = {
   storageSystems: 'storedUsing',
   derivedFrom: 'derivedFromCommodity',
   gradedCommodity: 'gradeAppliesTo',
+  // Phase 5B — post-harvest quality graph.
+  appliesToCommodities: 'qualityAttributeOf',
+  measuredBy: 'measuredBy',
+  relatedDefects: 'relatedConcept',
+  affectedCommodities: 'damagesCommodity',
+  reducedByProcesses: 'reducedByProcess',
+  measures: 'measures',
+  applicableCommodities: 'relatedConcept',
+  monitoringMethods: 'monitoredWith',
+  equipment: 'managedWith',
+  relevantStandards: 'gradedUnder',
 };
 
 /**
@@ -273,6 +306,34 @@ function refsWithField(item: AnyContent): { ref: ContentRef; field: string }[] {
       break;
     case 'commodity-grade':
       out.push({ ref: item.gradedCommodity, field: 'gradedCommodity' });
+      break;
+    case 'post-harvest':
+      for (const ref of item.applicableCommodities ?? [])
+        out.push({ ref, field: 'applicableCommodities' });
+      for (const ref of item.equipment ?? [])
+        out.push({ ref, field: 'equipment' });
+      for (const ref of item.monitoringMethods ?? [])
+        out.push({ ref, field: 'monitoringMethods' });
+      for (const ref of item.relevantStandards ?? [])
+        out.push({ ref, field: 'relevantStandards' });
+      break;
+    case 'quality-attribute':
+      for (const ref of item.appliesToCommodities ?? [])
+        out.push({ ref, field: 'appliesToCommodities' });
+      for (const ref of item.measuredBy ?? [])
+        out.push({ ref, field: 'measuredBy' });
+      for (const ref of item.relatedDefects ?? [])
+        out.push({ ref, field: 'relatedDefects' });
+      break;
+    case 'post-harvest-defect':
+      for (const ref of item.affectedCommodities ?? [])
+        out.push({ ref, field: 'affectedCommodities' });
+      for (const ref of item.reducedByProcesses ?? [])
+        out.push({ ref, field: 'reducedByProcesses' });
+      break;
+    case 'quality-measurement':
+      for (const ref of item.measures ?? [])
+        out.push({ ref, field: 'measures' });
       break;
   }
   return out;
