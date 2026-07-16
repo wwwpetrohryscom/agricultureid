@@ -56,8 +56,21 @@ describe('phase 3C — formula registry', () => {
 });
 
 describe('phase 3C — tool integrity', () => {
-  it('has all 7 tools and no validator errors', () => {
-    expect(TOOLS.length).toBe(7);
+  it('keeps the original 7 tools and reports no validator errors', () => {
+    // Phase 5E intentionally grew the set to 18. The point of this assertion
+    // was never the number — it was that the Phase 3C tools still exist and
+    // still validate, so it now names them instead of counting them.
+    for (const slug of [
+      'fertilizer-nutrient-calculator',
+      'seed-rate-calculator',
+      'plant-density-calculator',
+      'irrigation-volume-calculator',
+      'growing-degree-days',
+      'yield-converter',
+      'unit-converters',
+    ])
+      expect(TOOL_BY_SLUG.get(slug), slug).toBeDefined();
+    expect(TOOLS.length).toBeGreaterThanOrEqual(7);
     expect(toolIssues().filter((i) => i.level === 'error')).toEqual([]);
   });
 
