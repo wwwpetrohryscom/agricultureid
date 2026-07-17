@@ -1,11 +1,13 @@
 import { describe, it, expect } from 'vitest';
 import {
   seoAudit,
-  crawlDepth,
+  registryReachabilityAudit,
+  registryNavModel,
   metadataAudit,
   structuredDataAudit,
   accessibilityAudit,
 } from '@/lib/seo/audit';
+import { PUBLISHED_CONTENT, contentUrlPath } from '@/lib/content/registry';
 import { sectionedRoutes, allRoutes, SITEMAP_SECTIONS } from '@/lib/seo/routes';
 import {
   runBenchmark,
@@ -59,24 +61,63 @@ describe('Phase 4E — sitemap sharding', () => {
   });
 });
 
-describe('Phase 4E — crawl depth & discovery', () => {
-  const crawl = crawlDepth();
+/**
+ * These assert properties of the registry navigation MODEL. They are not
+ * evidence about rendered HTML: the model parses no build output, so it cannot
+ * report an orphan or a click-depth. Real rendered reachability is asserted
+ * against emitted HTML by `scripts/rendered-link-audit.ts` (`npm run
+ * seo:rendered`) and documented in `docs/rendered-link-audit.md`, which records
+ * that the real numbers differ (79 pages unreachable from `/`, real max depth 8).
+ */
+describe('Phase 4E — modelled registry reachability (NOT a crawl)', () => {
+  const model = registryReachabilityAudit();
 
-  it('reaches every indexable page by internal navigation (no orphans)', () => {
-    expect(crawl.unreachable).toEqual([]);
+  it('lists every indexable sitemap page somewhere in the registry nav model', () => {
+    expect(model.modelUnreachable).toEqual([]);
   });
 
-  it('keeps the site shallow (max click-depth ≤ 4)', () => {
-    expect(crawl.maxDepth).toBeLessThanOrEqual(4);
+  it('keeps MODELLED depth ≤ 4 (a property of the model, not measured click-depth)', () => {
+    expect(model.maxModelledDepth).toBeLessThanOrEqual(4);
   });
 
-  it('places the vast majority of pages within 2 clicks of home', () => {
+  it('models most pages within 2 hops of home', () => {
     const shallow =
-      (crawl.histogram[0] ?? 0) +
-      (crawl.histogram[1] ?? 0) +
-      (crawl.histogram[2] ?? 0);
-    const total = [...crawl.depthByPath.values()].length;
+      (model.modelledHistogram[0] ?? 0) +
+      (model.modelledHistogram[1] ?? 0) +
+      (model.modelledHistogram[2] ?? 0);
+    const total = [...model.modelledDepthByPath.values()].length;
     expect(shallow / total).toBeGreaterThan(0.85);
+  });
+
+  /**
+   * Pins the reason the model's reachability number is not a discovery finding:
+   * hub→item enumeration alone puts every content page at depth ≤ 2, so the
+   * model would report full reachability even with zero content→content links.
+   * If this ever fails, the model changed shape and the docs must be re-checked.
+   */
+  it('reaches every content page by hub enumeration ALONE, with all content→content edges deleted', () => {
+    const model2 = registryNavModel();
+    const hubOnly = new Map<string, Set<string>>();
+    const contentPaths = new Set(
+      PUBLISHED_CONTENT.map((i) => contentUrlPath(i)),
+    );
+    // Keep only edges that do NOT originate at a content page.
+    for (const [from, tos] of model2) {
+      if (contentPaths.has(from)) continue;
+      hubOnly.set(from, tos);
+    }
+    const seen = new Set<string>(['/']);
+    const queue = ['/'];
+    while (queue.length) {
+      const cur = queue.shift() as string;
+      for (const next of hubOnly.get(cur) ?? []) {
+        if (seen.has(next)) continue;
+        seen.add(next);
+        queue.push(next);
+      }
+    }
+    const missed = [...contentPaths].filter((p) => !seen.has(p));
+    expect(missed).toEqual([]);
   });
 });
 

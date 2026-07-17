@@ -52,10 +52,19 @@ We deliberately do **not** emit `FAQPage`, `HowTo`, `Review`, `Product`, or
 
 - Typed relationships (`lib/content/graph.ts`) connect crops ↔ diseases, pests,
   and soils, and are rendered as "Related topics" with reciprocity.
-- `computeReachable` guarantees every published page is reachable from a hub;
-  orphans fail validation.
-- `npm run content:report` prints pages by type, edge counts, orphans, and
-  weakly-linked pages.
+- `computeReachable` (`lib/content/graph.ts`) is a **registry MODEL**, not a
+  crawl. It seeds every published item as reachable ("hubs list all published
+  items of their type") before propagating any edge, so its orphan check is
+  satisfied by construction and cannot report a non-empty orphan list. The same
+  goes for `registryReachabilityAudit()` in `lib/seo/audit.ts`. Treat both as
+  "does the registry believe this page is listed somewhere?", never as crawl
+  evidence.
+- `npm run content:report` prints pages by type, edge counts, and modelled
+  reachability. **Real orphans, crawl depth, and rendered reachability come only
+  from `npm run seo:rendered`** (`scripts/rendered-link-audit.ts`), which parses
+  the emitted HTML. See [`rendered-link-audit.md`](rendered-link-audit.md) —
+  which records that the real numbers differ sharply from the model
+  (79 pages unreachable from `/`, real max depth 8).
 
 ## Images and social previews
 

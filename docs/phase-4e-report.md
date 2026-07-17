@@ -17,9 +17,16 @@ come from `sectionedRoutes()`; `allRoutes()` flattens them so the two can't drif
 
 ### SEO / discovery audit (`lib/seo/audit.ts`, `npm run seo:audit`)
 
-- **Crawl-depth audit** — BFS over the real internal-link graph (nav + footer +
-  hub listings + country→region nesting + content graph). Max depth **4**, >85%
-  of pages within 2 clicks, **0 orphans**.
+- **Reachability audit** — BFS over a hand-written registry navigation MODEL
+  (nav + footer + hub listings + country→region nesting + content graph). Max
+  MODELLED depth **4**, >85% of pages within 2 modelled hops, **0 pages unlisted
+  by the model**.
+  > **Correction (Phase 5F §5/§10):** this was originally written as "crawl-depth
+  > audit … over the real internal-link graph … 0 orphans". It is not a crawl —
+  > it parses no HTML — and "0 orphans" is guaranteed by hub enumeration alone.
+  > The function is now `registryReachabilityAudit()`. The REAL rendered-HTML
+  > audit (`npm run seo:rendered`) measures **max depth 8** and **79 pages
+  > unreachable from `/`**. See `docs/rendered-link-audit.md`.
 - **Metadata audit** — sitemap path uniqueness/format, https canonicals, priority
   range, and every published page present exactly once.
 - **Structured-data audit** — every content page's `WebPage`/`BreadcrumbList`
@@ -48,7 +55,7 @@ A pre-deployment checklist documents exactly what the user does to link Vercel.
 ## Tests & docs
 
 - `tests/phase4e.test.ts` — **14 tests** (sitemap sharding partition/limits,
-  crawl depth + 0 orphans, metadata/structured-data/accessibility 0 errors,
+  modelled registry reachability, metadata/structured-data/accessibility 0 errors,
   benchmark ≥75 cases at 100% top-1/top-3 with 0 false positives + unsafe
   equivalences).
 - `docs/seo-discovery.md`, `docs/hosting-readiness.md`, this report.

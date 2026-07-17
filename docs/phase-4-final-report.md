@@ -40,8 +40,11 @@ reverted the 4D search index.)
   real scientific/mislink errors. See `docs/post-harvest-model.md`,
   `phase-4d-report.md`.
 - **4E — SEO / discovery / performance / readiness.** A sharded sitemap (index +
-  4 section shards over 916 URLs), a deterministic SEO audit (crawl-depth,
-  metadata, structured data, accessibility — 0 orphans, max depth 4), the search
+  4 section shards over 916 URLs), a deterministic SEO audit (modelled registry
+  reachability, metadata, structured data, accessibility — see the Phase 5F §5/§10
+  correction: "0 orphans / max depth 4" is a property of the model, not a crawl;
+  the real rendered-HTML audit measures max depth 8 and 79 unreachable pages), the
+  search
   benchmark expanded to 82 cases measuring top-1/top-3/false-positive/unsafe-
   equivalence (100% / 100% / 0 / 0), and a hosting-readiness checklist. See
   `docs/seo-discovery.md`, `hosting-readiness.md`, `phase-4e-report.md`.
