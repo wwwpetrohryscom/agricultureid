@@ -1,4 +1,8 @@
-import { INVERSE_RELATION, RELATION_TYPES } from '@/lib/content/relations';
+import {
+  INVERSE_RELATION,
+  RELATION_TYPES,
+  allSemanticEdges,
+} from '@/lib/content/relations';
 import type { RelationType } from '@/types/content';
 
 /**
@@ -145,4 +149,156 @@ export function unjustifiedSymmetry(): RelationType[] {
   return [...RELATION_SPEC.entries()]
     .filter(([, s]) => s.kind === 'symmetric' && !s.symmetryRationale)
     .map(([r]) => r);
+}
+
+/* -------------------------------------------------------------------------- *
+ * Type domains and inverse safety — DERIVED FROM THE CORPUS, not asserted.
+ *
+ * The point of computing this rather than declaring it: a hand-written claim
+ * that "this inverse is safe" is exactly the kind of thing that is true when
+ * written and false two phases later. Reading the domains out of the actual
+ * edges means the check cannot go stale.
+ * -------------------------------------------------------------------------- */
+
+export interface RelationDomain {
+  relation: RelationType;
+  edges: number;
+  sourceTypes: string[];
+  targetTypes: string[];
+}
+
+/** Observed source/target content types for every relation in the corpus. */
+export function relationDomains(): Map<RelationType, RelationDomain> {
+  const out = new Map<RelationType, RelationDomain>();
+  for (const edge of allSemanticEdges()) {
+    const d = out.get(edge.relation) ?? {
+      relation: edge.relation,
+      edges: 0,
+      sourceTypes: [] as string[],
+      targetTypes: [] as string[],
+    };
+    d.edges++;
+    if (!d.sourceTypes.includes(edge.from.type))
+      d.sourceTypes.push(edge.from.type);
+    if (!d.targetTypes.includes(edge.to.type)) d.targetTypes.push(edge.to.type);
+    out.set(edge.relation, d);
+  }
+  for (const d of out.values()) {
+    d.sourceTypes.sort();
+    d.targetTypes.sort();
+  }
+  return out;
+}
+
+/**
+ * The three distinct answers, which must not be collapsed into one.
+ *
+ * `unverified` is NOT `type-unsafe`. An inverse-only label like `hasCultivar`
+ * has no forward use in the corpus because nobody writes it — that makes it
+ * unprovable from the data, not false. Calling it unsafe would overstate;
+ * calling it safe would be a guess. Either way it is not materialised, because
+ * an unresolved inverse must not be, but the report says WHICH it is.
+ */
+export type InverseVerdict = 'safe' | 'type-unsafe' | 'unverified';
+
+export interface InverseSafety {
+  relation: RelationType;
+  inverse: RelationType;
+  verdict: InverseVerdict;
+  safe: boolean;
+  edges: number;
+  sourceTypes: string[];
+  /** Source types of `relation` that the inverse never legitimately targets. */
+  unsafeFor: string[];
+  reason?: string;
+}
+
+/**
+ * Would materialising `relation`'s inverse assert something false?
+ *
+ * Materialising A --r--> B as B --inv--> A only holds if `inv` is legitimately
+ * used with A's type as its TARGET. Where it is not, the inverse label is being
+ * applied to a type it was never meant for, and the resulting edge is a false
+ * claim rather than a missing one.
+ *
+ * The three real cases, all found this way rather than by inspection:
+ *
+ * - `partOfFarmingSystem⁻¹ = includesCrop` (227 edges). Machinery and breeds are
+ *   also "part of" a farming system, so inverting asserts that a farming system
+ *   "includes the CROP" a plough. One inverse label cannot serve every source
+ *   type.
+ * - `affects⁻¹ = susceptibleTo` (411). Climate "affects" things, and inverting
+ *   asserts a crop is "susceptible to" climate — which is `sensitiveToClimate`,
+ *   a different claim.
+ * - `gradedUnder⁻¹ = gradeAppliesTo` (26). A post-harvest operation is performed
+ *   against a grade standard; inverting asserts the grade "applies to" the
+ *   operation, when a grade applies to a commodity.
+ */
+export function inverseSafetyReport(): InverseSafety[] {
+  const domains = relationDomains();
+  const out: InverseSafety[] = [];
+  for (const [relation, domain] of domains) {
+    const inverse = INVERSE_RELATION[relation];
+    if (!inverse || inverse === relation) continue; // absent or symmetric
+    const inverseDomain = domains.get(inverse);
+    // An inverse with no observed use cannot be shown safe from the corpus.
+    if (!inverseDomain) {
+      // Unverified, NOT unsafe: an inverse-only label (hasCultivar, coProductOf)
+      // has no forward use because nobody writes it. The corpus cannot show it
+      // safe, which is a reason not to materialise it — not a reason to call it
+      // false.
+      out.push({
+        relation,
+        inverse,
+        verdict: 'unverified',
+        safe: false,
+        edges: domain.edges,
+        sourceTypes: domain.sourceTypes,
+        unsafeFor: [],
+        reason: `${inverse} has no forward use in the corpus, so its legitimate target types cannot be established from the data`,
+      });
+      continue;
+    }
+    const unsafeFor = domain.sourceTypes.filter(
+      (t) => !inverseDomain.targetTypes.includes(t),
+    );
+    out.push({
+      relation,
+      inverse,
+      verdict: unsafeFor.length ? 'type-unsafe' : 'safe',
+      safe: unsafeFor.length === 0,
+      edges: domain.edges,
+      sourceTypes: domain.sourceTypes,
+      unsafeFor,
+      reason: unsafeFor.length
+        ? `inverting would assert ${inverse} → [${unsafeFor.join(', ')}], which it never legitimately targets`
+        : undefined,
+    });
+  }
+  return out.sort((a, b) => Number(a.safe) - Number(b.safe));
+}
+
+/**
+ * May this relation's inverse be MATERIALISED as a stored edge?
+ *
+ * Symmetric relations: yes — the reverse is the same assertion.
+ * Directional relations: only where the inverse is type-safe for every observed
+ * source type. Otherwise the reverse must be presented by REVERSE LOOKUP over
+ * the forward edges (see lib/content/reverse-lookup.ts), which shows the same
+ * information without storing a false claim.
+ */
+export function isMaterializable(relation: RelationType): boolean {
+  if (isSymmetric(relation)) return true;
+  const report = inverseSafetyReport().find((r) => r.relation === relation);
+  return report?.safe ?? false;
+}
+
+/** Directional inverses that must NOT be materialised (any non-safe verdict). */
+export function unsafeInverses(): InverseSafety[] {
+  return inverseSafetyReport().filter((r) => !r.safe);
+}
+
+/** Inverses that are PROVEN false for some source type — the real defects. */
+export function typeUnsafeInverses(): InverseSafety[] {
+  return inverseSafetyReport().filter((r) => r.verdict === 'type-unsafe');
 }

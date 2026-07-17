@@ -11,8 +11,15 @@ import { isContentRefValue, declaredRefs } from '@/lib/content/graph-coverage';
 import {
   RELATION_SPEC,
   unjustifiedSymmetry,
+  typeUnsafeInverses,
+  inverseSafetyReport,
+  isMaterializable,
 } from '@/lib/content/relation-spec';
-import { RELATION_TYPES, INVERSE_RELATION } from '@/lib/content/relations';
+import {
+  RELATION_TYPES,
+  INVERSE_RELATION,
+  allSemanticEdges,
+} from '@/lib/content/relations';
 import type { AnyContent } from '@/types/content';
 
 /**
@@ -336,5 +343,65 @@ describe('Phase 5F §4 — reciprocity rules are declared, not assumed', () => {
         `${relation}'s rationale must actually say something`,
       ).toBeGreaterThan(30);
     }
+  });
+});
+
+describe('Phase 5F §1/§2 — inverse safety, derived not asserted', () => {
+  it('materialises no type-unsafe inverse', () => {
+    // The guarantee the phase rests on: 664 edges across three relations would
+    // carry a FALSE inverse if materialised, so none is. Safety is computed from
+    // the corpus rather than declared, because a hand-written "this is safe" is
+    // true when written and false two phases later.
+    for (const unsafe of typeUnsafeInverses())
+      expect(
+        isMaterializable(unsafe.relation),
+        `${unsafe.relation}⁻¹=${unsafe.inverse}: ${unsafe.reason}`,
+      ).toBe(false);
+  });
+
+  it('names the three known type-unsafe inverses', () => {
+    const found = typeUnsafeInverses()
+      .map((u) => u.relation)
+      .sort();
+    // partOfFarmingSystem: machinery and breeds are also "part of" a farming
+    // system, so one inverse label cannot serve every source type.
+    // affects: inverting asserts a crop is "susceptible to" climate.
+    // gradedUnder: a grade applies to a commodity, not to an operation.
+    expect(found).toEqual(['affects', 'gradedUnder', 'partOfFarmingSystem']);
+  });
+
+  it('separates "unverified" from "type-unsafe"', () => {
+    // An inverse-only label has no forward use because nobody writes it. That
+    // makes it unprovable, not false — and the distinction must survive, or the
+    // report overstates what is broken.
+    const report = inverseSafetyReport();
+    const verdicts = new Set(report.map((r) => r.verdict));
+    expect(verdicts.has('unverified')).toBe(true);
+    for (const r of report) {
+      if (r.verdict === 'unverified') expect(r.unsafeFor).toEqual([]);
+      if (r.verdict === 'type-unsafe')
+        expect(r.unsafeFor.length).toBeGreaterThan(0);
+      // Neither may be materialised: an unresolved inverse must not be.
+      if (r.verdict !== 'safe')
+        expect(isMaterializable(r.relation)).toBe(false);
+    }
+  });
+
+  it('lets a symmetric relation be materialised, since the reverse is the same claim', () => {
+    for (const r of [
+      'relatedRisk',
+      'relatedMarketTerm',
+      'associatedDocument',
+    ] as const)
+      expect(isMaterializable(r), r).toBe(true);
+  });
+
+  it('materialises NOTHING today — the graph stores only declared edges', () => {
+    // The whole vocabulary is not yet type-safe, so no inverse is stored at all.
+    // Every edge in the graph traces to a field an author or generator wrote.
+    for (const edge of allSemanticEdges())
+      expect(edge.origin, `${edge.from.slug} → ${edge.to.slug}`).not.toBe(
+        'inverse',
+      );
   });
 });
