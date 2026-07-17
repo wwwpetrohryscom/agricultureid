@@ -35,6 +35,49 @@ const RELATION_LABEL: Partial<Record<RelationType, string>> = {
   sensitiveToClimate: 'sensitive to climate',
 };
 
+/**
+ * Relationship-grammar words that must not become retrievable search tokens.
+ *
+ * A relation label like "supplied by fertilizer" exists so that a search for
+ * "fertilizer" can find the nutrients a fertilizer supplies. But tokenised
+ * naively it also makes "supplied" a retrievable token, and a bare query of
+ * "supplied" then returns every nutrient that participates in the edge —
+ * ranked, since they all score identically on the label, by alphabetical
+ * tie-break. That is a graph-derived false positive: the entity ranks for a word
+ * that describes its RELATIONSHIP, not itself. §8 forbids graph labels creating
+ * that kind of expansion.
+ *
+ * Dropping the verbs and keeping the entity nouns ("fertilizer", "soil",
+ * "nutrient", "climate", "cultivar", "breed", "farming", "system") preserves
+ * the useful matches and removes the noise. A label that is pure grammar
+ * ("affects", "irrigated by") contributes nothing and is dropped entirely.
+ */
+const RELATION_GRAMMAR = new Set([
+  'affects',
+  'susceptible',
+  'suitable',
+  'requires',
+  'supplied',
+  'adapted',
+  'irrigated',
+  'managed',
+  'sensitive',
+  'part',
+  'to',
+  'of',
+  'by',
+  'with',
+  'in',
+  'for',
+]);
+
+/** The entity-noun tokens a relation label contributes to the index. */
+function relationLabelTokens(relation: RelationType): string[] {
+  const label = RELATION_LABEL[relation];
+  if (!label) return [];
+  return label.split(' ').filter((t) => !RELATION_GRAMMAR.has(t));
+}
+
 function sourceOrgs(ids: string[]): string[] {
   return [
     ...new Set(
@@ -53,12 +96,11 @@ export function buildSearchDocuments(): SearchDoc[] {
   // Structured content (crops, soils, cultivars, breeds, …).
   for (const item of PUBLISHED_CONTENT) {
     const edges = semanticEdges(item);
+    // Entity-noun tokens only — never bare relationship verbs. See
+    // RELATION_GRAMMAR: a search for "fertilizer" should find nutrients supplied
+    // by one, but a search for "supplied" should not.
     const relationLabels = [
-      ...new Set(
-        edges
-          .map((e) => RELATION_LABEL[e.relation])
-          .filter(Boolean) as string[],
-      ),
+      ...new Set(edges.flatMap((e) => relationLabelTokens(e.relation))),
     ];
     const sources = sourceOrgs(item.sourceReferences.map((r) => r.sourceId));
     const names = [item.title, ...(item.alternativeNames ?? [])];
