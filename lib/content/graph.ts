@@ -5,6 +5,7 @@ import {
   resolveRef,
 } from '@/lib/content/registry';
 import { CONTENT_TYPES, type ContentType } from '@/lib/site';
+import { cultivarsForCrop, breedsForLivestock } from '@/lib/content/registry';
 import { declaredRefs } from '@/lib/content/graph-coverage';
 import { isRefField } from '@/lib/content/ref-fields';
 import type { AnyContent, ContentRef } from '@/types/content';
@@ -56,26 +57,26 @@ export function outgoingRefs(item: AnyContent): ContentRef[] {
 }
 
 /**
- * Child sub-entity refs (cultivars of a crop / breeds of a livestock species),
- * computed from parent links. Modeled as parent→child navigation edges because
- * the parent page renders them (see ParentSubEntities).
+ * Child sub-entity refs (cultivars of a crop / breeds of a livestock species).
+ *
+ * Delegates to the SAME registry functions the semantic graph and the
+ * ParentSubEntities panel use. There is exactly one definition of "the cultivars
+ * of a crop"; nav, graph, and page cannot disagree because they read the same
+ * source (§4).
  */
 function childRefs(
   childType: 'cultivar' | 'breed',
   parentSlug: string,
 ): ContentRef[] {
-  const out: ContentRef[] = [];
-  for (const c of ALL_CONTENT) {
-    if (c.editorialStatus !== 'published') continue;
-    if (c.contentType === 'cultivar' && childType === 'cultivar') {
-      if (c.parentCrop.slug === parentSlug)
-        out.push({ type: 'cultivar', slug: c.slug });
-    } else if (c.contentType === 'breed' && childType === 'breed') {
-      if (c.parentLivestock.slug === parentSlug)
-        out.push({ type: 'breed', slug: c.slug });
-    }
-  }
-  return out;
+  if (childType === 'cultivar')
+    return cultivarsForCrop(parentSlug).map((c) => ({
+      type: 'cultivar' as const,
+      slug: c.slug,
+    }));
+  return breedsForLivestock(parentSlug).map((b) => ({
+    type: 'breed' as const,
+    slug: b.slug,
+  }));
 }
 
 /** Reverse index: refKey(target) → items that reference it. */

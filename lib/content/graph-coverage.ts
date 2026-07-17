@@ -9,6 +9,7 @@ import {
   RELATION_TYPES,
 } from '@/lib/content/relations';
 import { REF_FIELDS, isRefField } from '@/lib/content/ref-fields';
+import { unrenderableRelations } from '@/lib/content/renderable-relations';
 import { CONTENT_TYPES } from '@/lib/site';
 import type { AnyContent, ContentRef } from '@/types/content';
 
@@ -201,6 +202,17 @@ export function graphIssues(): GraphIssue[] {
         where,
       );
   }
+
+  // (4) A relation carrying edges that reaches no panel for some source type.
+  //     This is the gate that would have caught both the Phase 5D relations
+  //     (rendered nowhere) and the appliesToCommodity regression (made precise,
+  //     dropped from the heading list).
+  for (const u of unrenderableRelations())
+    err(
+      'graph-relation-unrenderable',
+      `Relation "${u.relation}" carries ${u.edges} edges but reaches no panel for: ${u.uncoveredFor.join(', ')}`,
+      `relation:${u.relation}`,
+    );
 
   return out;
 }

@@ -105,6 +105,21 @@ export const REF_FIELDS: Readonly<Record<string, RefFieldSpec>> = {
   /* ---- Sub-entities ------------------------------------------------ */
   parentCrop: { relation: 'cultivarOf', origin: 'declared' },
   parentLivestock: { relation: 'breedOf', origin: 'declared' },
+  // Parent → child: DERIVED, not a content field. The crop does not declare its
+  // cultivars; the edge is computed from each child's parentCrop through the one
+  // registry function the panels use, so graph and page agree. This is the only
+  // materialised inverse — safe because hasCultivar is crop→cultivar and nothing
+  // else (see relation-spec.ts inverse safety).
+  cultivarsForCrop: {
+    relation: 'hasCultivar',
+    origin: 'generated',
+    generator: 'lib/content/registry.ts:cultivarsForCrop',
+  },
+  breedsForLivestock: {
+    relation: 'hasBreed',
+    origin: 'generated',
+    generator: 'lib/content/registry.ts:breedsForLivestock',
+  },
 
   /* ---- Phase 5A — commodity taxonomy ------------------------------- */
   sourceCrop: { relation: 'harvestedFrom', origin: 'declared' },

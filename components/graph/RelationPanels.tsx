@@ -5,7 +5,7 @@ import { breedsForLivestock, cultivarsForCrop } from '@/lib/content/registry';
 import type { AnyContent, RelationType } from '@/types/content';
 
 /** Human heading per relation type, plus display order. */
-const RELATION_HEADING: Partial<Record<RelationType, string>> = {
+export const RELATION_HEADING: Partial<Record<RelationType, string>> = {
   susceptibleTo: 'Susceptible to',
   affects: 'Affects',
   requiresNutrient: 'Nutrients required',
@@ -98,7 +98,7 @@ const RELATION_HEADING: Partial<Record<RelationType, string>> = {
  * restoring the 5D edges to the graph would have duplicated every link on those
  * pages — the graph being right is not the same as the page being right.
  */
-const OWNED_BY_DEDICATED_PANEL: Partial<
+export const OWNED_BY_DEDICATED_PANEL: Partial<
   Record<string, ReadonlySet<RelationType>>
 > = {
   'trade-concept': new Set<RelationType>([
@@ -139,6 +139,14 @@ const OWNED_BY_DEDICATED_PANEL: Partial<
     'producesByProduct',
   ]),
 };
+
+/**
+ * The generic "Related topics" panel is capped. It is the conservative
+ * catch-all — over a third of all edges — and an uncapped list of loose
+ * connections would bury the precise relationships a reader actually needs. The
+ * precise panels are never capped.
+ */
+export const GENERIC_CAP = 12;
 
 const ORDER: RelationType[] = [
   'susceptibleTo',
@@ -210,7 +218,10 @@ const ORDER: RelationType[] = [
  */
 export function RelationPanels({ item }: { item: AnyContent }) {
   const edges = semanticEdges(item);
-  const byRelation = new Map<RelationType, { title: string; href: string }[]>();
+  const byRelation = new Map<
+    RelationType,
+    { title: string; href: string; targetKey: string }[]
+  >();
   for (const e of edges) {
     const target = resolveRef(e.to);
     if (!target || target.editorialStatus !== 'published') continue;
@@ -224,15 +235,40 @@ export function RelationPanels({ item }: { item: AnyContent }) {
     list.push({
       title: target.title,
       href: contentPath(target.contentType, target.slug),
+      targetKey: `${target.contentType}:${target.slug}`,
     });
     byRelation.set(e.relation, list);
   }
 
-  const groups = ORDER.filter((r) => byRelation.has(r)).map((r) => ({
-    relation: r,
-    heading: RELATION_HEADING[r] ?? r,
-    items: byRelation.get(r)!.sort((a, b) => a.title.localeCompare(b.title)),
-  }));
+  // §9 — keep the generic "Related topics" panel from dominating. A target
+  // already shown under a PRECISE relation is dropped from the generic panel
+  // (the precise link says more), and the generic panel is capped so a page
+  // with dozens of loose connections does not become a link wall that buries
+  // its precise relationships.
+  const preciseTargets = new Set<string>();
+  for (const [relation, items] of byRelation)
+    if (relation !== 'relatedConcept')
+      for (const it of items) preciseTargets.add(it.targetKey);
+  const generic = byRelation.get('relatedConcept');
+  if (generic) {
+    const deduped = generic.filter((it) => !preciseTargets.has(it.targetKey));
+    byRelation.set('relatedConcept', deduped);
+  }
+
+  const groups = ORDER.filter((r) => byRelation.get(r)?.length).map((r) => {
+    const sorted = byRelation
+      .get(r)!
+      .sort((a, b) => a.title.localeCompare(b.title));
+    return {
+      relation: r,
+      heading: RELATION_HEADING[r] ?? r,
+      // Precise panels are uncapped; the generic catch-all is capped so it
+      // cannot overwhelm the precise relationships it sits beside.
+      items: r === 'relatedConcept' ? sorted.slice(0, GENERIC_CAP) : sorted,
+      truncated: r === 'relatedConcept' && sorted.length > GENERIC_CAP,
+      total: sorted.length,
+    };
+  });
 
   const hasChildren =
     (item.contentType === 'crop' && cultivarsForCrop(item.slug).length > 0) ||
@@ -273,6 +309,11 @@ export function RelationPanels({ item }: { item: AnyContent }) {
                   </Link>
                 </li>
               ))}
+              {g.truncated && (
+                <li className="self-center text-xs text-ink-400">
+                  +{g.total - g.items.length} more
+                </li>
+              )}
             </ul>
           </div>
         ))}

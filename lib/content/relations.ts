@@ -1,4 +1,10 @@
-import { ALL_CONTENT, refKey, resolveRef } from '@/lib/content/registry';
+import {
+  ALL_CONTENT,
+  refKey,
+  resolveRef,
+  cultivarsForCrop,
+  breedsForLivestock,
+} from '@/lib/content/registry';
 import { CONTENT_TYPES } from '@/lib/site';
 import {
   REF_FIELDS,
@@ -368,6 +374,36 @@ const genericRank = (field: string): number =>
  * the same target is declared via multiple fields (e.g. both `relatedTopics`
  * and `connections`), the most specific (non-`relatedConcept`) relation wins.
  */
+/**
+ * Add a derived parent→child edge, unless the child is already a target.
+ *
+ * Marked `generated` with the registry function as its generator, so it never
+ * reads as an author's assertion — the crop's author did not write this; it was
+ * computed from the child's own parent link.
+ */
+function addChildEdge(
+  byTarget: Map<string, SemanticEdge>,
+  from: ContentRef,
+  childType: ContentType,
+  childSlug: string,
+  relation: RelationType,
+): void {
+  const key = refKey(childType, childSlug);
+  if (byTarget.has(key)) return;
+  byTarget.set(key, {
+    from,
+    to: { type: childType, slug: childSlug },
+    relation,
+    field:
+      relation === 'hasCultivar' ? 'cultivarsForCrop' : 'breedsForLivestock',
+    origin: 'generated',
+    generator:
+      relation === 'hasCultivar'
+        ? 'lib/content/registry.ts:cultivarsForCrop'
+        : 'lib/content/registry.ts:breedsForLivestock',
+  });
+}
+
 export function semanticEdges(item: AnyContent): SemanticEdge[] {
   const from: ContentRef = { type: item.contentType, slug: item.slug };
   const byTarget = new Map<string, SemanticEdge>();
@@ -398,6 +434,34 @@ export function semanticEdges(item: AnyContent): SemanticEdge[] {
       ...(spec?.generator ? { generator: spec.generator } : {}),
     });
   }
+
+  // Parent → child, the one derived edge the semantic graph materialises.
+  //
+  // A cultivar declares its parent crop; the crop does not declare its
+  // cultivars. So the semantic graph had crop←cultivar but not crop→cultivar,
+  // and 101 cultivar/breed pages had zero inbound semantic edges — even though
+  // their parent's page renders a link to them (ParentSubEntities). Two modules
+  // disagreed about one fact: graph.ts computed the parent→child edge for
+  // navigation, relations.ts did not for the graph.
+  //
+  // This is the ONE inverse safe to materialise: hasCultivar is crop→cultivar
+  // and nothing else, hasBreed is livestock→breed and nothing else (unlike the
+  // three type-unsafe inverses, which serve several source types). It is
+  // computed through the SAME registry function the panels use, so the graph
+  // and the rendered page cannot drift.
+  if (item.contentType === 'crop')
+    for (const child of cultivarsForCrop(item.slug))
+      addChildEdge(
+        byTarget,
+        from,
+        child.contentType,
+        child.slug,
+        'hasCultivar',
+      );
+  if (item.contentType === 'livestock')
+    for (const child of breedsForLivestock(item.slug))
+      addChildEdge(byTarget, from, child.contentType, child.slug, 'hasBreed');
+
   return [...byTarget.values()];
 }
 
