@@ -472,6 +472,10 @@ export const FOOTER_ABOUT_LINKS = [
 
 export const FOOTER_RESOURCE_LINKS = [
   { label: 'Agricultural Data', href: '/agricultural-data' },
+  { label: 'Calculators', href: '/tools' },
+  { label: 'Explore', href: '/explore' },
+  { label: 'Compare', href: '/compare' },
+  { label: 'Data Health', href: '/data-health' },
   { label: 'Glossary', href: '/glossary' },
   { label: 'Sources', href: '/sources' },
 ];

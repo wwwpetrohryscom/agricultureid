@@ -1,4 +1,17 @@
-import { ALL_CONTENT, refKey, resolveRef } from '@/lib/content/registry';
+import {
+  ALL_CONTENT,
+  refKey,
+  resolveRef,
+  cultivarsForCrop,
+  breedsForLivestock,
+} from '@/lib/content/registry';
+import { CONTENT_TYPES } from '@/lib/site';
+import {
+  REF_FIELDS,
+  isGenericField,
+  isRefField,
+  relationForField,
+} from '@/lib/content/ref-fields';
 import type { ContentType } from '@/lib/site';
 import type {
   AnyContent,
@@ -8,6 +21,9 @@ import type {
 } from '@/types/content';
 
 /** The complete controlled vocabulary (runtime set for validation). */
+/** Every valid content type, for structural ref discovery. */
+const CONTENT_TYPE_SET: ReadonlySet<string> = new Set(CONTENT_TYPES);
+
 export const RELATION_TYPES: ReadonlySet<RelationType> = new Set<RelationType>([
   'affects',
   'susceptibleTo',
@@ -50,8 +66,8 @@ export const RELATION_TYPES: ReadonlySet<RelationType> = new Set<RelationType>([
   'maintainedByRegistry',
   'governedByStandard',
   'standardGoverns',
-  'documentedBy',
-  'documents',
+  'associatedDocument',
+  'relatedProcessingStep',
   'relatedTradeConcept',
   'relatedLogisticsConcept',
   'relatedStandard',
@@ -105,8 +121,24 @@ export const RELATION_TYPES: ReadonlySet<RelationType> = new Set<RelationType>([
 export const INVERSE_RELATION: Partial<Record<RelationType, RelationType>> = {
   governedByStandard: 'standardGoverns',
   standardGoverns: 'governedByStandard',
-  documentedBy: 'documents',
-  documents: 'documentedBy',
+  // Symmetric relations are their OWN inverse, and must say so.
+  //
+  // `associatedDocuments` states an ASSOCIATION, not a direction. A bill of
+  // lading and a packing list accompany each other in a document set; neither
+  // "documents" the other. The field was mapped to a directional `documents`
+  // relation, which made every mutual pair look like a reciprocity error —
+  // and asserting a direction the content does not carry would have been
+  // inventing information to satisfy a checker.
+  associatedDocument: 'associatedDocument',
+  relatedProcessingStep: 'relatedProcessingStep',
+  // "A is related to B" is true exactly when "B is related to A". The Phase 5D
+  // reciprocity generator makes these mutual in the content; the relation has
+  // to be declared symmetric or the graph calls its own correct data an error.
+  relatedTradeConcept: 'relatedTradeConcept',
+  relatedLogisticsConcept: 'relatedLogisticsConcept',
+  relatedStandard: 'relatedStandard',
+  relatedMarketTerm: 'relatedMarketTerm',
+  relatedRisk: 'relatedRisk',
   movedBy: 'movesCommodity',
   movesCommodity: 'movedBy',
   // A risk acts on a thing; that thing is exposed to the risk. Both directions
@@ -175,72 +207,6 @@ export const INVERSE_RELATION: Partial<Record<RelationType, RelationType>> = {
  * This map is consulted FIRST, keyed `contentType.field`. FIELD_RELATION stays
  * the default for the (large majority of) field names that are unambiguous.
  */
-const TYPED_FIELD_RELATION: Record<string, RelationType> = {
-  'trade-concept.relevantStandards': 'governedByStandard',
-  'logistics-concept.relevantStandards': 'governedByStandard',
-  'logistics-concept.applicableCommodities': 'appliesToCommodity',
-  'standard-reference.applicableCommodities': 'appliesToCommodity',
-  'market-term.applicableCommodities': 'appliesToCommodity',
-  'supply-chain-risk.affectedCommodities': 'riskAffects',
-};
-
-const FIELD_RELATION: Record<string, RelationType> = {
-  // Phase 5D — trade, logistics, standards, market data, risk.
-  associatedDocuments: 'documents',
-  relatedConcepts: 'relatedTradeConcept',
-  relatedLogistics: 'relatedLogisticsConcept',
-  qualityRisks: 'assessesQuality',
-  dependsOnOperations: 'dependsOnOperation',
-  relatedTradeConcepts: 'relatedTradeConcept',
-  exposedToRisks: 'exposedToRisk',
-  relatedGrades: 'gradeAppliesTo',
-  relatedStandards: 'relatedStandard',
-  relatedTerms: 'relatedMarketTerm',
-  affectedLogistics: 'riskAffects',
-  affectedTradeConcepts: 'riskAffects',
-  addressedByStandards: 'governedByStandard',
-  relatedRisks: 'relatedRisk',
-  commonDiseases: 'susceptibleTo',
-  commonPests: 'susceptibleTo',
-  suitableSoils: 'suitableForSoil',
-  suitedCrops: 'suitableFor',
-  hostCrops: 'affects',
-  // Phase 3A — sub-entity parent links.
-  parentCrop: 'cultivarOf',
-  parentLivestock: 'breedOf',
-  // Phase 5A — commodity taxonomy. Distinct field names (sourceCrop, not
-  // parentCrop) so commodity edges never collide with cultivar/breed parentage.
-  sourceCrop: 'harvestedFrom',
-  sourceLivestock: 'harvestedFrom',
-  primaryProducts: 'processedInto',
-  coProducts: 'producesCoProduct',
-  byProducts: 'producesByProduct',
-  applicableGrades: 'gradedUnder',
-  storageSystems: 'storedUsing',
-  derivedFrom: 'derivedFromCommodity',
-  gradedCommodity: 'gradeAppliesTo',
-  // Phase 5B — post-harvest quality graph.
-  appliesToCommodities: 'qualityAttributeOf',
-  measuredBy: 'measuredBy',
-  relatedDefects: 'relatedConcept',
-  affectedCommodities: 'damagesCommodity',
-  reducedByProcesses: 'reducedByProcess',
-  measures: 'measures',
-  applicableCommodities: 'relatedConcept',
-  monitoringMethods: 'monitoredWith',
-  // Phase 5C.
-  inputCommodities: 'processInputOf',
-  primaryOutputs: 'producesPrimaryProduct',
-  coProductOutputs: 'producesCoProduct',
-  byProductOutputs: 'producesByProduct',
-  typicalEquipment: 'usesEquipment',
-  precededBy: 'precededByProcess',
-  followedBy: 'followedByProcess',
-  producedBy: 'producedByProcess',
-  relatedOperations: 'relatedConcept',
-  equipment: 'managedWith',
-  relevantStandards: 'gradedUnder',
-};
 
 /**
  * Conservative relation for a generic (connections/relatedTopics) edge, derived
@@ -341,107 +307,66 @@ function machineryCropRelation(item: AnyContent): RelationType {
   }
 }
 
-/** (ref, field) pairs for every outgoing reference an item declares. */
+/**
+ * Is this a reference to another page?
+ *
+ * Both `type` and `slug` must be present AND `type` must be a real content
+ * type. That last check is what keeps structural discovery safe: a
+ * `ContentBlock` also carries a `type` ("paragraph", "callout"), but has no
+ * `slug` and no content-type value, so it can never be mistaken for an edge.
+ */
+function isContentRef(value: unknown): value is ContentRef {
+  if (!value || typeof value !== 'object') return false;
+  const v = value as Partial<ContentRef>;
+  return (
+    typeof v.type === 'string' &&
+    typeof v.slug === 'string' &&
+    CONTENT_TYPE_SET.has(v.type)
+  );
+}
+
+/**
+ * (ref, field) pairs for every outgoing reference an item declares — discovered
+ * STRUCTURALLY, by walking the item's own fields.
+ *
+ * ## Why this is not a switch on contentType
+ *
+ * It was, for fourteen types, and each new type had to remember to add itself.
+ * Phase 5D's five types never did, so `logistics-concept`, `standard-reference`,
+ * `market-term` and `supply-chain-risk` contributed **zero** edges: a risk page
+ * declaring seven affected commodities and six related risks emitted nothing at
+ * all. Nothing failed, because the tests iterated `semanticEdges()` and asserted
+ * every edge it returned was valid — which is vacuously true of an empty set.
+ * Phase 5C's generated `producedBy` inverse was invisible for the same reason.
+ *
+ * Replacing the switch with a walk recovered **2,175 edges** and, more to the
+ * point, means a new content type is in the graph the moment it declares a ref.
+ * The registry cannot fall out of step with itself.
+ *
+ * The walk is deliberately ONE level deep: refs live at the top level or in a
+ * top-level array, never nested inside prose blocks. Going deeper would buy
+ * nothing and risk mistaking authored content for structure.
+ */
 function refsWithField(item: AnyContent): { ref: ContentRef; field: string }[] {
   const out: { ref: ContentRef; field: string }[] = [];
-  for (const ref of item.relatedTopics ?? [])
-    out.push({ ref, field: 'relatedTopics' });
-  for (const ref of item.connections ?? [])
-    out.push({ ref, field: 'connections' });
-  switch (item.contentType) {
-    case 'crop':
-      for (const ref of item.commonDiseases)
-        out.push({ ref, field: 'commonDiseases' });
-      for (const ref of item.commonPests)
-        out.push({ ref, field: 'commonPests' });
-      for (const ref of item.suitableSoils)
-        out.push({ ref, field: 'suitableSoils' });
-      break;
-    case 'soil':
-      for (const ref of item.suitedCrops)
-        out.push({ ref, field: 'suitedCrops' });
-      break;
-    case 'plant-disease':
-    case 'pest':
-      for (const ref of item.hostCrops) out.push({ ref, field: 'hostCrops' });
-      break;
-    case 'cultivar':
-      out.push({ ref: item.parentCrop, field: 'parentCrop' });
-      break;
-    case 'breed':
-      out.push({ ref: item.parentLivestock, field: 'parentLivestock' });
-      break;
-    case 'commodity':
-      if (item.sourceCrop)
-        out.push({ ref: item.sourceCrop, field: 'sourceCrop' });
-      if (item.sourceLivestock)
-        out.push({ ref: item.sourceLivestock, field: 'sourceLivestock' });
-      for (const ref of item.primaryProducts ?? [])
-        out.push({ ref, field: 'primaryProducts' });
-      for (const ref of item.coProducts ?? [])
-        out.push({ ref, field: 'coProducts' });
-      for (const ref of item.byProducts ?? [])
-        out.push({ ref, field: 'byProducts' });
-      for (const ref of item.applicableGrades ?? [])
-        out.push({ ref, field: 'applicableGrades' });
-      for (const ref of item.storageSystems ?? [])
-        out.push({ ref, field: 'storageSystems' });
-      break;
-    case 'commodity-product':
-      out.push({ ref: item.derivedFrom, field: 'derivedFrom' });
-      break;
-    case 'commodity-grade':
-      out.push({ ref: item.gradedCommodity, field: 'gradedCommodity' });
-      break;
-    case 'post-harvest':
-      for (const ref of item.applicableCommodities ?? [])
-        out.push({ ref, field: 'applicableCommodities' });
-      for (const ref of item.equipment ?? [])
-        out.push({ ref, field: 'equipment' });
-      for (const ref of item.monitoringMethods ?? [])
-        out.push({ ref, field: 'monitoringMethods' });
-      for (const ref of item.relevantStandards ?? [])
-        out.push({ ref, field: 'relevantStandards' });
-      break;
-    case 'quality-attribute':
-      for (const ref of item.appliesToCommodities ?? [])
-        out.push({ ref, field: 'appliesToCommodities' });
-      for (const ref of item.measuredBy ?? [])
-        out.push({ ref, field: 'measuredBy' });
-      for (const ref of item.relatedDefects ?? [])
-        out.push({ ref, field: 'relatedDefects' });
-      break;
-    case 'post-harvest-defect':
-      for (const ref of item.affectedCommodities ?? [])
-        out.push({ ref, field: 'affectedCommodities' });
-      for (const ref of item.reducedByProcesses ?? [])
-        out.push({ ref, field: 'reducedByProcesses' });
-      break;
-    case 'quality-measurement':
-      for (const ref of item.measures ?? [])
-        out.push({ ref, field: 'measures' });
-      break;
-    case 'processing-method':
-      for (const ref of item.inputCommodities ?? [])
-        out.push({ ref, field: 'inputCommodities' });
-      for (const ref of item.primaryOutputs ?? [])
-        out.push({ ref, field: 'primaryOutputs' });
-      for (const ref of item.coProductOutputs ?? [])
-        out.push({ ref, field: 'coProductOutputs' });
-      for (const ref of item.byProductOutputs ?? [])
-        out.push({ ref, field: 'byProductOutputs' });
-      for (const ref of item.typicalEquipment ?? [])
-        out.push({ ref, field: 'typicalEquipment' });
-      for (const ref of item.precededBy ?? [])
-        out.push({ ref, field: 'precededBy' });
-      for (const ref of item.followedBy ?? [])
-        out.push({ ref, field: 'followedBy' });
-      for (const ref of item.relatedOperations ?? [])
-        out.push({ ref, field: 'relatedOperations' });
-      break;
+  for (const [field, value] of Object.entries(item)) {
+    if (isContentRef(value)) {
+      out.push({ ref: value, field });
+    } else if (Array.isArray(value)) {
+      for (const entry of value)
+        if (isContentRef(entry)) out.push({ ref: entry, field });
+    }
   }
-  return out;
+  // Generic fields last. `semanticEdges` dedupes by target and keeps the first
+  // non-generic relation it sees, so a target named by BOTH a typed field and
+  // `connections` must meet the typed field first or it would be recorded as a
+  // bare `relatedConcept`.
+  return out.sort((a, b) => genericRank(a.field) - genericRank(b.field));
 }
+
+const GENERIC_FIELDS = new Set(['connections', 'relatedTopics']);
+const genericRank = (field: string): number =>
+  GENERIC_FIELDS.has(field) ? 1 : 0;
 
 /** Semantic edges for a single item, with typed relations.
  *
@@ -449,22 +374,94 @@ function refsWithField(item: AnyContent): { ref: ContentRef; field: string }[] {
  * the same target is declared via multiple fields (e.g. both `relatedTopics`
  * and `connections`), the most specific (non-`relatedConcept`) relation wins.
  */
+/**
+ * Add a derived parent→child edge, unless the child is already a target.
+ *
+ * Marked `generated` with the registry function as its generator, so it never
+ * reads as an author's assertion — the crop's author did not write this; it was
+ * computed from the child's own parent link.
+ */
+function addChildEdge(
+  byTarget: Map<string, SemanticEdge>,
+  from: ContentRef,
+  childType: ContentType,
+  childSlug: string,
+  relation: RelationType,
+): void {
+  const key = refKey(childType, childSlug);
+  if (byTarget.has(key)) return;
+  byTarget.set(key, {
+    from,
+    to: { type: childType, slug: childSlug },
+    relation,
+    field:
+      relation === 'hasCultivar' ? 'cultivarsForCrop' : 'breedsForLivestock',
+    origin: 'generated',
+    generator:
+      relation === 'hasCultivar'
+        ? 'lib/content/registry.ts:cultivarsForCrop'
+        : 'lib/content/registry.ts:breedsForLivestock',
+  });
+}
+
 export function semanticEdges(item: AnyContent): SemanticEdge[] {
   const from: ContentRef = { type: item.contentType, slug: item.slug };
   const byTarget = new Map<string, SemanticEdge>();
   for (const { ref, field } of refsWithField(item)) {
-    const relation =
-      TYPED_FIELD_RELATION[`${item.contentType}.${field}`] ??
-      FIELD_RELATION[field] ??
-      (field === 'relatedTopics'
-        ? 'relatedConcept'
-        : genericRelation(item.contentType, ref.type, item));
+    // Discovery is structural; MAPPING is declared. An unregistered field is
+    // reported by the validator (`graph-unmapped-ref-field`) rather than being
+    // guessed into an edge here — a field whose meaning nobody has stated must
+    // not silently acquire one.
+    if (!isRefField(field)) continue;
+
+    const relation = isGenericField(field)
+      ? // A generic field claims only "these are related"; the relation is
+        // inferred conservatively from the endpoints, never asserted.
+        genericRelation(item.contentType, ref.type, item)
+      : (relationForField(field, item.contentType) ?? 'relatedConcept');
+
     const key = refKey(ref.type, ref.slug);
     const existing = byTarget.get(key);
     // Keep the most specific relation; prefer an existing non-generic one.
     if (existing && existing.relation !== 'relatedConcept') continue;
-    byTarget.set(key, { from, to: ref, relation, field });
+    const spec = REF_FIELDS[field];
+    byTarget.set(key, {
+      from,
+      to: ref,
+      relation,
+      field,
+      origin: spec?.origin ?? 'declared',
+      ...(spec?.generator ? { generator: spec.generator } : {}),
+    });
   }
+
+  // Parent → child, the one derived edge the semantic graph materialises.
+  //
+  // A cultivar declares its parent crop; the crop does not declare its
+  // cultivars. So the semantic graph had crop←cultivar but not crop→cultivar,
+  // and 101 cultivar/breed pages had zero inbound semantic edges — even though
+  // their parent's page renders a link to them (ParentSubEntities). Two modules
+  // disagreed about one fact: graph.ts computed the parent→child edge for
+  // navigation, relations.ts did not for the graph.
+  //
+  // This is the ONE inverse safe to materialise: hasCultivar is crop→cultivar
+  // and nothing else, hasBreed is livestock→breed and nothing else (unlike the
+  // three type-unsafe inverses, which serve several source types). It is
+  // computed through the SAME registry function the panels use, so the graph
+  // and the rendered page cannot drift.
+  if (item.contentType === 'crop')
+    for (const child of cultivarsForCrop(item.slug))
+      addChildEdge(
+        byTarget,
+        from,
+        child.contentType,
+        child.slug,
+        'hasCultivar',
+      );
+  if (item.contentType === 'livestock')
+    for (const child of breedsForLivestock(item.slug))
+      addChildEdge(byTarget, from, child.contentType, child.slug, 'hasBreed');
+
   return [...byTarget.values()];
 }
 

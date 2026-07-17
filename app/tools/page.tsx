@@ -18,13 +18,31 @@ export const metadata: Metadata = buildMetadata({
   path: PATH,
 });
 
-const CATEGORIES: { key: string; label: string }[] = [
-  { key: 'nutrition', label: 'Nutrition' },
-  { key: 'planting', label: 'Planting' },
-  { key: 'water', label: 'Water' },
-  { key: 'climate', label: 'Climate' },
-  { key: 'conversion', label: 'Conversions' },
-];
+const CATEGORY_LABEL: Record<string, string> = {
+  nutrition: 'Nutrition',
+  planting: 'Planting',
+  water: 'Water',
+  climate: 'Climate',
+  conversion: 'Conversions',
+  commodity: 'Commodity',
+  'post-harvest': 'Post-harvest',
+  storage: 'Storage',
+  processing: 'Processing',
+  trade: 'Trade',
+};
+
+/**
+ * Categories are DERIVED from the tools, in first-appearance order, so the hub
+ * cannot list fewer categories than exist. It previously hard-coded five; Phase
+ * 5E added five more (11 tools), and the missing categories orphaned every one
+ * of those tools — the /tools hub listed 7 of 18. A real HTML crawl found it. A
+ * derived list has nothing to forget.
+ */
+const CATEGORIES: { key: string; label: string }[] = (() => {
+  const seen: string[] = [];
+  for (const t of TOOLS) if (!seen.includes(t.category)) seen.push(t.category);
+  return seen.map((key) => ({ key, label: CATEGORY_LABEL[key] ?? key }));
+})();
 
 export default function ToolsPage() {
   return (

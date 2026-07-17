@@ -5,79 +5,78 @@ import {
   resolveRef,
 } from '@/lib/content/registry';
 import { CONTENT_TYPES, type ContentType } from '@/lib/site';
+import { cultivarsForCrop, breedsForLivestock } from '@/lib/content/registry';
+import { declaredRefs } from '@/lib/content/graph-coverage';
+import { isRefField } from '@/lib/content/ref-fields';
 import type { AnyContent, ContentRef } from '@/types/content';
 
 /**
- * Extract every outgoing typed reference declared by a content item, across
- * both the generic `relatedTopics` field and the domain-specific relationship
- * fields. This is the single place that knows which fields hold references, so
- * validation and graph traversal stay in sync.
+ * Every outgoing reference an item declares, for navigation and reachability.
+ *
+ * ## This used to be a second, divergent copy of the same switch
+ *
+ * It carried its own `switch (item.contentType)` over seven types, and a
+ * `default` case asserting that "newer content types express all their
+ * relationships through relatedTopics and connections" — false since Phase 5A,
+ * and catastrophically so by 5D, where `logistics-concept` really has 784 typed
+ * edges and this function reported none.
+ *
+ * Its docstring claimed to be "the single place that knows which fields hold
+ * references, so validation and graph traversal stay in sync". It was not: the
+ * semantic graph had its own discovery, so the two modules gave different
+ * answers about the same content, and the SEO audit's link model was built on
+ * the stale one.
+ *
+ * It now shares the ONE discovery path — structural walk, declared mapping (see
+ * lib/content/ref-fields.ts) — so there is nothing left to keep in sync.
+ *
+ * The one thing it adds over the semantic graph is parent→child navigation:
+ * a crop page renders its cultivars (ParentSubEntities), so those are genuine
+ * navigation edges even though the child declares the parent, not the reverse.
  */
 export function outgoingRefs(item: AnyContent): ContentRef[] {
-  const refs: ContentRef[] = [
-    ...(item.relatedTopics ?? []),
-    ...(item.connections ?? []),
-  ];
-  switch (item.contentType) {
-    case 'crop':
-      refs.push(
-        ...item.commonDiseases,
-        ...item.commonPests,
-        ...item.suitableSoils,
-        // Parent → child: the crop page enumerates its notable cultivars
-        // (ParentSubEntities panel), so those are genuine navigation edges.
-        ...childRefs('cultivar', item.slug),
-      );
-      break;
-    case 'soil':
-      refs.push(...item.suitedCrops);
-      break;
-    case 'plant-disease':
-      refs.push(...item.hostCrops);
-      break;
-    case 'pest':
-      refs.push(...item.hostCrops);
-      break;
-    case 'livestock':
-      // Parent → child: the livestock page enumerates its notable breeds.
-      refs.push(...childRefs('breed', item.slug));
-      break;
-    case 'cultivar':
-      refs.push(item.parentCrop);
-      break;
-    case 'breed':
-      refs.push(item.parentLivestock);
-      break;
-    default:
-      // Newer content types (nutrient, fertilizer, soil-topic, machinery,
-      // climate, farming-system, irrigation-method) and livestock express all
-      // their relationships through `relatedTopics` and `connections`.
-      break;
-  }
-  return refs;
+  const refs: ContentRef[] = declaredRefs(item)
+    .filter((d) => isRefField(d.field))
+    .map((d) => d.ref);
+
+  // Parent → child, which no field declares: the child names its parent, and
+  // the parent page renders the list.
+  if (item.contentType === 'crop')
+    refs.push(...childRefs('cultivar', item.slug));
+  if (item.contentType === 'livestock')
+    refs.push(...childRefs('breed', item.slug));
+
+  // De-duplicate: a target named by several fields is one navigation edge.
+  const seen = new Set<string>();
+  return refs.filter((r) => {
+    const k = refKey(r.type, r.slug);
+    if (seen.has(k)) return false;
+    seen.add(k);
+    return true;
+  });
 }
 
 /**
- * Child sub-entity refs (cultivars of a crop / breeds of a livestock species),
- * computed from parent links. Modeled as parent→child navigation edges because
- * the parent page renders them (see ParentSubEntities).
+ * Child sub-entity refs (cultivars of a crop / breeds of a livestock species).
+ *
+ * Delegates to the SAME registry functions the semantic graph and the
+ * ParentSubEntities panel use. There is exactly one definition of "the cultivars
+ * of a crop"; nav, graph, and page cannot disagree because they read the same
+ * source (§4).
  */
 function childRefs(
   childType: 'cultivar' | 'breed',
   parentSlug: string,
 ): ContentRef[] {
-  const out: ContentRef[] = [];
-  for (const c of ALL_CONTENT) {
-    if (c.editorialStatus !== 'published') continue;
-    if (c.contentType === 'cultivar' && childType === 'cultivar') {
-      if (c.parentCrop.slug === parentSlug)
-        out.push({ type: 'cultivar', slug: c.slug });
-    } else if (c.contentType === 'breed' && childType === 'breed') {
-      if (c.parentLivestock.slug === parentSlug)
-        out.push({ type: 'breed', slug: c.slug });
-    }
-  }
-  return out;
+  if (childType === 'cultivar')
+    return cultivarsForCrop(parentSlug).map((c) => ({
+      type: 'cultivar' as const,
+      slug: c.slug,
+    }));
+  return breedsForLivestock(parentSlug).map((b) => ({
+    type: 'breed' as const,
+    slug: b.slug,
+  }));
 }
 
 /** Reverse index: refKey(target) → items that reference it. */

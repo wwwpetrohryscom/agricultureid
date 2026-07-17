@@ -45,3 +45,6 @@ jobs:
 
       - name: Production build
         run: npm run build
+
+      - name: Rendered-link audit (real HTML crawl — needs the build output)
+        run: npm run seo:rendered

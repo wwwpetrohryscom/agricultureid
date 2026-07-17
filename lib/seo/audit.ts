@@ -46,16 +46,36 @@ export interface AuditIssue {
 }
 
 /* -------------------------------------------------------------------------- */
-/*  Internal navigation graph (for crawl-depth)                               */
+/*  Modelled registry reachability (NOT a crawl)                              */
 /* -------------------------------------------------------------------------- */
 
 /**
- * Build the directed internal-link graph a crawler would actually traverse:
- * home → nav hubs → hub listings → per-page cross-links. This models real
- * navigation (header/footer nav, hub `EntryGrid`s, country→region nesting,
- * and content-to-content graph edges), not the sitemap (which is flat).
+ * A hand-written MODEL of internal navigation, built from the registry.
+ *
+ * **This is not a crawl and must never be reported as one.** It renders no JSX,
+ * parses no HTML, and reads no build output. It asserts the edges an author
+ * believed the site has. Three consequences, all measured and documented in
+ * `docs/rendered-link-audit.md`:
+ *
+ * 1. It links every type hub to every published item of that type, and all 27
+ *    content types have an `active` section — so every content page is depth ≤ 2
+ *    *before any content→content link is considered*. It would report full
+ *    reachability even if no page linked to any other page.
+ * 2. Its home→hub edges are asserted here, not observed. Seven of them
+ *    (`/compare`, `/explore`, `/tools`, `/countries`, `/datasets`,
+ *    `/data-health`, `/agroecological-zones`) are **not** rendered on the home
+ *    page at all.
+ * 3. Its content→content edges come from `outgoingRefs()`, which is itself a
+ *    model of which fields hold refs.
+ *
+ * It remains useful: it answers "does the registry believe every page is
+ * listed somewhere?", which is a real question about editorial structure. It
+ * does not answer "can a crawler reach this page?" — for that, and for any
+ * claim about orphans, crawl depth, or rendered reachability, use
+ * `scripts/rendered-link-audit.ts` (`npm run seo:rendered`), which parses the
+ * emitted HTML.
  */
-export function navGraph(): Map<string, Set<string>> {
+export function registryNavModel(): Map<string, Set<string>> {
   const edges = new Map<string, Set<string>>();
   const add = (from: string, to: string) => {
     if (from === to) return;
@@ -145,18 +165,36 @@ export function navGraph(): Map<string, Set<string>> {
   return edges;
 }
 
-export interface CrawlDepthReport {
-  depthByPath: Map<string, number>;
-  maxDepth: number;
-  histogram: Record<number, number>;
-  /** Indexable sitemap paths not reachable by internal navigation. */
-  unreachable: string[];
+/**
+ * The result of walking the registry MODEL. Every field is modelled, not
+ * observed — the names say so deliberately, because the previous names
+ * (`crawlDepth`, `maxDepth`, `unreachable`) read as findings about rendered
+ * HTML and were repeatedly cited as such.
+ */
+export interface RegistryReachabilityReport {
+  /** Modelled distance from '/' over `registryNavModel()`. Not crawl depth. */
+  modelledDepthByPath: Map<string, number>;
+  /** Deepest modelled distance. Not a measured click-depth. */
+  maxModelledDepth: number;
+  modelledHistogram: Record<number, number>;
+  /**
+   * Sitemap paths the MODEL does not reach. **Not an orphan list**: a page
+   * absent here can still have zero rendered inbound links, and a page listed
+   * here may render fine. Orphans are reported by the rendered-HTML audit.
+   */
+  modelUnreachable: string[];
   deepest: { path: string; depth: number }[];
 }
 
-/** BFS crawl-depth from the home page over the internal navigation graph. */
-export function crawlDepth(): CrawlDepthReport {
-  const edges = navGraph();
+/**
+ * BFS over the registry navigation MODEL from '/'.
+ *
+ * Reports modelled registry reachability — whether the registry believes each
+ * page is listed somewhere. **It is not a crawl**; see `registryNavModel()`.
+ * For rendered reachability, run `npm run seo:rendered`.
+ */
+export function registryReachabilityAudit(): RegistryReachabilityReport {
+  const edges = registryNavModel();
   const depth = new Map<string, number>([['/', 0]]);
   const queue: string[] = ['/'];
   while (queue.length) {
@@ -173,9 +211,9 @@ export function crawlDepth(): CrawlDepthReport {
   const histogram: Record<number, number> = {};
   for (const d of depth.values()) histogram[d] = (histogram[d] ?? 0) + 1;
 
-  // Sitemap paths that navigation never reaches (dangling on the sitemap only).
+  // Sitemap paths the MODEL never reaches. Not an orphan list.
   const smPaths = sitemapPaths();
-  const unreachable = [...smPaths].filter((p) => !depth.has(p)).sort();
+  const modelUnreachable = [...smPaths].filter((p) => !depth.has(p)).sort();
 
   const deepest = [...depth.entries()]
     .map(([path, d]) => ({ path, depth: d }))
@@ -183,10 +221,10 @@ export function crawlDepth(): CrawlDepthReport {
     .slice(0, 10);
 
   return {
-    depthByPath: depth,
-    maxDepth: Math.max(...depth.values()),
-    histogram,
-    unreachable,
+    modelledDepthByPath: depth,
+    maxModelledDepth: Math.max(...depth.values()),
+    modelledHistogram: histogram,
+    modelUnreachable,
     deepest,
   };
 }
@@ -430,33 +468,44 @@ export interface SeoAuditReport {
   metadata: AuditIssue[];
   structuredData: AuditIssue[];
   accessibility: AuditIssue[];
-  crawl: CrawlDepthReport;
+  /**
+   * Modelled registry reachability. **Not a crawl, and not an orphan report.**
+   * Rendered reachability comes from `npm run seo:rendered`.
+   */
+  registryReachability: RegistryReachabilityReport;
   errorCount: number;
 }
 
+/**
+ * Sitemap/metadata/structured-data/accessibility hygiene, plus **modelled**
+ * registry reachability. This audit reads no rendered HTML: nothing it reports
+ * is evidence about what a crawler can reach. See `docs/rendered-link-audit.md`.
+ */
 export function seoAudit(): SeoAuditReport {
   const metadata = metadataAudit();
   const structuredData = structuredDataAudit();
   const accessibility = accessibilityAudit();
-  const crawl = crawlDepth();
-  const crawlIssues: AuditIssue[] = crawl.unreachable.map((p) => ({
-    level: 'error' as const,
-    code: 'crawl-unreachable',
-    message: `Indexable page not reachable by internal navigation: ${p}`,
-    where: p,
-  }));
+  const registryReachability = registryReachabilityAudit();
+  const modelIssues: AuditIssue[] = registryReachability.modelUnreachable.map(
+    (p) => ({
+      level: 'error' as const,
+      code: 'registry-model-unreachable',
+      message: `Indexable page not listed anywhere in the registry navigation model: ${p}`,
+      where: p,
+    }),
+  );
   const errorCount = [
     ...metadata,
     ...structuredData,
     ...accessibility,
-    ...crawlIssues,
+    ...modelIssues,
   ].filter((i) => i.level === 'error').length;
   return {
     routes: allRoutes().length,
     metadata,
     structuredData,
-    accessibility: [...accessibility, ...crawlIssues],
-    crawl,
+    accessibility: [...accessibility, ...modelIssues],
+    registryReachability,
     errorCount,
   };
 }

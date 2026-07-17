@@ -171,18 +171,18 @@ cannot walk back.
 
 ## Gates on the final branch state
 
-| Gate               | Result                                              |
-| ------------------ | --------------------------------------------------- |
-| `format:check`     | ✓                                                   |
-| `typecheck`        | 0 errors                                            |
-| `lint`             | 0 warnings                                          |
-| `content:validate` | **0 errors, 0 warnings** (1,068 items)              |
-| `vitest`           | **253 passed** (22 files)                           |
-| `build`            | ✓ 102 kB shared JS                                  |
-| `audit`            | 0 missing quantitative provenance                   |
-| `seo:audit`        | **0 errors, 0 orphans** (1,350 routes, max depth 4) |
-| `search:benchmark` | 82/82 · TOP-1 100% · 0 unsafe equivalences          |
-| `data:validate`    | 0 errors, 0 warnings                                |
+| Gate               | Result                                                               |
+| ------------------ | -------------------------------------------------------------------- |
+| `format:check`     | ✓                                                                    |
+| `typecheck`        | 0 errors                                                             |
+| `lint`             | 0 warnings                                                           |
+| `content:validate` | **0 errors, 0 warnings** (1,068 items)                               |
+| `vitest`           | **253 passed** (22 files)                                            |
+| `build`            | ✓ 102 kB shared JS                                                   |
+| `audit`            | 0 missing quantitative provenance                                    |
+| `seo:audit`        | **0 errors** (1,350 routes; modelled reachability only — see 5F §10) |
+| `search:benchmark` | 82/82 · TOP-1 100% · 0 unsafe equivalences                           |
+| `data:validate`    | 0 errors, 0 warnings                                                 |
 
 ## Deployment
 

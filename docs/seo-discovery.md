@@ -21,20 +21,43 @@ The sitemap is split into a **sitemap index** plus four section sitemaps
 [`sectionedRoutes()`](../lib/seo/routes.ts); `allRoutes()` flattens them, so the
 flat and sharded views can never drift.
 
-## Crawl depth & internal linking
+## Modelled registry reachability (NOT crawl depth)
 
-[`crawlDepth()`](../lib/seo/audit.ts) BFS-walks the **real internal-link graph** a
-crawler would traverse — home → header/footer nav → hub `EntryGrid` listings →
-country→region nesting → content-to-content graph edges — not the flat sitemap.
+> **This section previously claimed `crawlDepth()` walked "the real internal-link
+> graph a crawler would traverse", with "max click-depth 4" and "0 orphans".
+> That was wrong.** The function parsed no HTML. It walked a hand-written model.
+> The real figures, measured from emitted HTML, are **max depth 8** and **79
+> pages unreachable from `/`**. See
+> [`rendered-link-audit.md`](./rendered-link-audit.md).
 
-- **Max click-depth: 4** (only subnational region profiles, nested under
-  `countries → country → regions → region`).
-- **> 85% of pages within 2 clicks** of home.
-- **0 orphans**: every indexable sitemap URL is reachable by internal navigation.
+[`registryReachabilityAudit()`](../lib/seo/audit.ts) (formerly `crawlDepth`)
+BFS-walks [`registryNavModel()`](../lib/seo/audit.ts) — a **model** of navigation
+asserted from the registry, not a traversal of rendered output. It reports:
 
-The audit found and fixed two internal-linking gaps during development (the
-footer link groups were centralised in [`lib/site.ts`](../lib/site.ts) as a single
-source of truth shared by the footer and the audit).
+- **Max modelled depth: 4**
+- **> 85% of pages within 2 modelled hops** of home
+- **0 sitemap pages unlisted by the model**
+
+None of those are crawl findings. The model links every type hub to every
+published item of that type, and all 27 content types have an `active` section,
+so **every content page is at modelled depth ≤ 2 before any content→content link
+is considered** — the model would report full reachability even if no page linked
+to any other page. `tests/phase4e.test.ts` pins exactly that property.
+
+What the model is good for: confirming the registry believes every page is listed
+somewhere. What it cannot tell you: whether a crawler can reach a page.
+
+## Rendered-link audit (the real one)
+
+[`scripts/rendered-link-audit.ts`](../scripts/rendered-link-audit.ts) parses the
+emitted HTML from `npm run build` and BFS-walks the actual `<a href>` anchors.
+Every orphan / crawl-depth / rendered-reachability claim must come from it:
+
+```
+npm run build && npm run seo:rendered
+```
+
+Findings are in [`rendered-link-audit.md`](./rendered-link-audit.md).
 
 ## Metadata & structured data
 
@@ -74,7 +97,9 @@ Run it with `npm run search:benchmark`.
 ## Running the audits
 
 ```
-npm run seo:audit         # sitemap, crawl depth, structured data, accessibility
+npm run seo:audit         # sitemap, MODELLED registry reachability, schema, a11y
+npm run build             # required before seo:rendered — it parses build output
+npm run seo:rendered      # REAL rendered-HTML links: orphans, crawl depth
 npm run search:benchmark  # search relevance + safety
 ```
 

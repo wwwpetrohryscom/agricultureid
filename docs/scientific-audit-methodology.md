@@ -7,7 +7,9 @@ This documents how AgricultureID audits factual and semantic integrity (Phase
 
 1. **Structural integrity (deterministic, offline, CI-gating).**
    `npm run content:validate` — resolvable references, unique metadata, valid
-   dates/URLs, no placeholder text, no orphans, sitemap coverage, and now:
+   dates/URLs, no placeholder text, no registry-modelled orphans (a model, not a
+   crawl — real rendered orphans come from `npm run seo:rendered`, see
+   [`rendered-link-audit.md`](rendered-link-audit.md)), sitemap coverage, and now:
    semantic-relation validity, field-provenance rules, evidence-tier rules,
    image licensing/identity completeness, and safety rules.
 

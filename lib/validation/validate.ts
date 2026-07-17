@@ -27,6 +27,7 @@ import { postHarvestIssues } from '@/lib/post-harvest/validate-post-harvest';
 import { processingIssues } from '@/lib/processing/validate-processing';
 import { tradeIssues } from '@/lib/trade/validate-trade';
 import { contractIssues } from '@/lib/tools/contract';
+import { graphIssues } from '@/lib/content/graph-coverage';
 import { UNRESOLVED_ISSUES } from '@/data/unresolved-issues';
 import {
   articleSchema,
@@ -899,6 +900,15 @@ export function validateAll(): ValidationResult {
   for (const ci of contractIssues()) {
     if (ci.level === 'error') error(ci.code, ci.message, ci.where);
     else warn(ci.code, ci.message, ci.where);
+  }
+
+  /* ---- Graph coverage (Phase 5F §2) ------------------------------------ */
+  // Asks the question the old gates could not: is anything MISSING? Declared
+  // refs are compared against discovered edges per type, so a type that
+  // contributes nothing fails loudly instead of passing vacuously.
+  for (const gi of graphIssues()) {
+    if (gi.level === 'error') error(gi.code, gi.message, gi.where);
+    else warn(gi.code, gi.message, gi.where);
   }
 
   /* ---- Reachability / orphans ----------------------------------------- */

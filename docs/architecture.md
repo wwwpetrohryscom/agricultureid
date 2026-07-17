@@ -44,7 +44,11 @@ client-side JavaScript footprint minimal.
    sources, and related content, and emits WebPage + Article + BreadcrumbList
    JSON-LD.
 5. `lib/content/graph.ts` computes typed and reciprocal relationships used for
-   internal linking and orphan detection.
+   internal linking and (modelled) orphan detection. That orphan check
+   (`computeReachable`) is a registry model, not a crawl, and seeds every page as
+   reachable before propagating — so it cannot report a non-empty orphan list.
+   Real orphans come from `npm run seo:rendered`; see
+   [`rendered-link-audit.md`](rendered-link-audit.md).
 
 ## Rendering and performance
 
