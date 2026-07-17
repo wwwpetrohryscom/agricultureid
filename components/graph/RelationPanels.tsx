@@ -210,6 +210,63 @@ const ORDER: RelationType[] = [
   'relatedConcept',
 ];
 
+/** One display row: an already-resolved, published edge target. */
+export interface RelationTarget {
+  title: string;
+  href: string;
+  targetKey: string;
+}
+
+/** One rendered panel: a relation, its heading, and its (capped) targets. */
+export interface RelationGroup {
+  relation: RelationType;
+  heading: string;
+  items: RelationTarget[];
+  truncated: boolean;
+  total: number;
+}
+
+/**
+ * §9 — turn an entity's resolved edge targets, grouped by relation, into the
+ * ordered panels the page renders. Two properties the render depends on live
+ * here, extracted from the component so they are unit-testable rather than
+ * trapped inside JSX (they were, and the test that named them asserted nothing):
+ *
+ *  - a target already reachable through a PRECISE relation is dropped from the
+ *    generic `relatedConcept` panel — the precise link says more, and nothing is
+ *    listed twice;
+ *  - the generic panel is capped at `GENERIC_CAP` while every precise panel is
+ *    uncapped, so a page with dozens of loose connections cannot become a link
+ *    wall that buries the precise relationships beside it.
+ *
+ * Does not mutate the input map.
+ */
+export function buildRelationGroups(
+  byRelation: ReadonlyMap<RelationType, RelationTarget[]>,
+): RelationGroup[] {
+  const preciseTargets = new Set<string>();
+  for (const [relation, items] of byRelation)
+    if (relation !== 'relatedConcept')
+      for (const it of items) preciseTargets.add(it.targetKey);
+
+  const groups: RelationGroup[] = [];
+  for (const r of ORDER) {
+    let list = byRelation.get(r) ?? [];
+    if (r === 'relatedConcept')
+      list = list.filter((it) => !preciseTargets.has(it.targetKey));
+    if (list.length === 0) continue;
+    const sorted = [...list].sort((a, b) => a.title.localeCompare(b.title));
+    groups.push({
+      relation: r,
+      heading: RELATION_HEADING[r] ?? r,
+      items: r === 'relatedConcept' ? sorted.slice(0, GENERIC_CAP) : sorted,
+      truncated: r === 'relatedConcept' && sorted.length > GENERIC_CAP,
+      total: sorted.length,
+    });
+  }
+  return groups;
+}
+
 /**
  * Relation-aware panels for an entity page (Phase 3D). Groups the entity's
  * supported semantic edges by relation type with human headings. Only relations
@@ -218,10 +275,7 @@ const ORDER: RelationType[] = [
  */
 export function RelationPanels({ item }: { item: AnyContent }) {
   const edges = semanticEdges(item);
-  const byRelation = new Map<
-    RelationType,
-    { title: string; href: string; targetKey: string }[]
-  >();
+  const byRelation = new Map<RelationType, RelationTarget[]>();
   for (const e of edges) {
     const target = resolveRef(e.to);
     if (!target || target.editorialStatus !== 'published') continue;
@@ -240,35 +294,7 @@ export function RelationPanels({ item }: { item: AnyContent }) {
     byRelation.set(e.relation, list);
   }
 
-  // §9 — keep the generic "Related topics" panel from dominating. A target
-  // already shown under a PRECISE relation is dropped from the generic panel
-  // (the precise link says more), and the generic panel is capped so a page
-  // with dozens of loose connections does not become a link wall that buries
-  // its precise relationships.
-  const preciseTargets = new Set<string>();
-  for (const [relation, items] of byRelation)
-    if (relation !== 'relatedConcept')
-      for (const it of items) preciseTargets.add(it.targetKey);
-  const generic = byRelation.get('relatedConcept');
-  if (generic) {
-    const deduped = generic.filter((it) => !preciseTargets.has(it.targetKey));
-    byRelation.set('relatedConcept', deduped);
-  }
-
-  const groups = ORDER.filter((r) => byRelation.get(r)?.length).map((r) => {
-    const sorted = byRelation
-      .get(r)!
-      .sort((a, b) => a.title.localeCompare(b.title));
-    return {
-      relation: r,
-      heading: RELATION_HEADING[r] ?? r,
-      // Precise panels are uncapped; the generic catch-all is capped so it
-      // cannot overwhelm the precise relationships it sits beside.
-      items: r === 'relatedConcept' ? sorted.slice(0, GENERIC_CAP) : sorted,
-      truncated: r === 'relatedConcept' && sorted.length > GENERIC_CAP,
-      total: sorted.length,
-    };
-  });
+  const groups = buildRelationGroups(byRelation);
 
   const hasChildren =
     (item.contentType === 'crop' && cultivarsForCrop(item.slug).length > 0) ||

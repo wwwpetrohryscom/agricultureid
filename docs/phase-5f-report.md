@@ -27,7 +27,7 @@ finding and closing them.
 | Graph-derived search false positives  | 1                         | **0**                                          |
 | Rendered-HTML unreachable from `/`    | 79 (real) / "0" (claimed) | **0**                                          |
 | Edges reaching a reader (rendered)    | ~65.6%                    | **80.6%** + the rest owned by dedicated panels |
-| Tests                                 | 428                       | **451**                                        |
+| Tests                                 | 428                       | **453**                                        |
 
 ## The findings, in order
 
@@ -160,6 +160,46 @@ utility hubs were in no footer. After the fixes: **0 unreachable, 0 sitemap-only
 0 broken links**. `navGraph`→`registryNavModel`; every doc claiming crawl depth
 off the model corrected.
 
+### 11. The §12 adversarial review caught two more — one of them mine
+
+A nine-lens adversarial review (each finding then verified by three refute-first
+skeptics) surfaced two confirmed defects the gates above had passed. Both are
+fixed; the three other candidates were refuted on verification and left alone.
+
+- **An inverted relation, rendered as a false claim.** `appliesToCommodities` is
+  declared on a **quality-attribute** and points **at** commodities — the
+  attribute _is an attribute of_ the commodity. It was mapped to the possessor-
+  side relation `hasQualityAttribute` (commodity → attribute), exactly backwards,
+  so all **208** edges read quality-attribute → commodity under that label. Every
+  quality-attribute page rendered a panel headed "Quality attributes" listing
+  _commodities_ — asserting that "Broken Kernels **has** quality attributes: maize
+  grain, wheat grain, …". Remapped to the dependent-side `qualityAttributeOf`
+  ("Quality attribute of"), the same convention already used for `derivedFrom →
+derivedFromCommodity`. `hasQualityAttribute` becomes a 0-edge inverse-only
+  label; the 208 edges are unchanged in number, correct in direction. This is the
+  same class as the `documents`/`associatedDocument` mis-description from finding
+  3 — a graph edge must not present a false claim to a reader — and it is guarded
+  by a new corpus assertion (no `quality-attribute → commodity` edge may carry any
+  label but `qualityAttributeOf`).
+- **A vacuous test I wrote — the exact anti-pattern this phase exists to abolish.**
+  The §9 "does not double-count" test computed the generic-vs-precise duplicate
+  set, threw it away with `void`, and asserted `expect(true).toBe(true)`. It
+  covered the dedup deliverable with nothing. The dedup/cap logic was trapped
+  inside the `RelationPanels` component where no test could reach it; it is now a
+  pure exported `buildRelationGroups`, and two real tests assert the property — a
+  target shown under a precise relation is dropped from the generic panel, and the
+  generic panel is capped while precise panels are not. A second, redundant
+  `phase5f` sitemap test that asserted a loop-invariant (`paths.size > 0` per page,
+  route computed and voided) was rewritten to assert real membership via the
+  emitted `contentUrlPath` — the regression it claimed to guard now actually fails
+  it.
+
+The refuted three were the two symmetric/`producedByProcess` inverse-safety notes
+(no code path materialises those inverses, so the guard hole is unreachable — a
+latent-robustness observation, not a live defect) and the sitemap-vacuity finding
+(a real gate in `sitemap.test.ts` already covered the invariant; the phase5f
+duplicate was cleaned up anyway).
+
 ## Gates on the final branch state
 
 | Gate               | Result                                                                                       |
@@ -168,7 +208,7 @@ off the model corrected.
 | `typecheck`        | 0                                                                                            |
 | `lint`             | 0                                                                                            |
 | `content:validate` | **0 errors, 0 warnings** (now includes graph coverage + renderable)                          |
-| `test`             | **451 passed** (28 files)                                                                    |
+| `test`             | **453 passed** (28 files)                                                                    |
 | `build`            | ✓                                                                                            |
 | `audit`            | 0 missing quantitative provenance                                                            |
 | `seo:audit`        | 0 errors (modelled registry reachability, labelled as such)                                  |

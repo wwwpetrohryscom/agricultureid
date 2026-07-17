@@ -133,7 +133,15 @@ export const REF_FIELDS: Readonly<Record<string, RefFieldSpec>> = {
   gradedCommodity: { relation: 'gradeAppliesTo', origin: 'declared' },
 
   /* ---- Phase 5B — post-harvest quality ----------------------------- */
-  appliesToCommodities: { relation: 'hasQualityAttribute', origin: 'declared' },
+  // `appliesToCommodities` is declared ON a quality-attribute and points AT the
+  // commodities it is an attribute of — so the edge is quality-attribute →
+  // commodity and reads "is a quality attribute OF". The dependent-side relation
+  // is `qualityAttributeOf`, NOT the possessor-side `hasQualityAttribute`
+  // (commodity → attribute). Mapping it to `hasQualityAttribute` inverted the
+  // claim, rendering "Quality attributes: [maize-grain, wheat-grain, …]" on every
+  // quality-attribute page — asserting the attribute POSSESSES those commodities.
+  // Same dependent-side convention as `derivedFrom → derivedFromCommodity`.
+  appliesToCommodities: { relation: 'qualityAttributeOf', origin: 'declared' },
   measuredBy: { relation: 'measuredBy', origin: 'declared' },
   measures: { relation: 'measures', origin: 'declared' },
   relatedDefects: { relation: 'susceptibleToDefect', origin: 'declared' },

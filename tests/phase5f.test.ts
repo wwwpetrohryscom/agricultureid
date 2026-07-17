@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest';
 import {
   ALL_CONTENT,
   PUBLISHED_CONTENT,
+  contentUrlPath,
   resolveRef,
 } from '@/lib/content/registry';
 import {
@@ -204,11 +205,11 @@ describe('Phase 5F — search and route integration', () => {
 
   it('routes every published page into the sitemap', () => {
     const paths = sitemapPaths();
-    for (const item of PUBLISHED_CONTENT) {
-      const route = `/${item.contentType}`;
-      expect(paths.size).toBeGreaterThan(0);
-      void route;
-    }
+    // Assert real membership using the same pluralised URL the sitemap emits —
+    // `contentUrlPath` — not a bare `/${contentType}`, which matches almost
+    // nothing. A build change dropping a content type must fail here.
+    for (const item of PUBLISHED_CONTENT)
+      expect(paths.has(contentUrlPath(item)), contentUrlPath(item)).toBe(true);
     // Every tool too.
     for (const tool of TOOLS)
       expect(paths.has(`/tools/${tool.slug}`), tool.slug).toBe(true);

@@ -13,14 +13,16 @@ import {
 import {
   RELATION_HEADING,
   GENERIC_CAP,
+  buildRelationGroups,
 } from '@/components/graph/RelationPanels';
+import type { RelationTarget } from '@/components/graph/RelationPanels';
 import { graphIssues, declaredRefs } from '@/lib/content/graph-coverage';
 import {
   isMaterializable,
   typeUnsafeInverses,
 } from '@/lib/content/relation-spec';
 import { isRefField } from '@/lib/content/ref-fields';
-import type { AnyContent, ContentRef } from '@/types/content';
+import type { AnyContent, ContentRef, RelationType } from '@/types/content';
 
 describe('Phase 5F §4 — parent↔child, one canonical definition', () => {
   it('gives every cultivar and breed an inbound edge from its parent', () => {
@@ -163,35 +165,103 @@ describe('Phase 5F §8 — every relation with edges reaches a reader', () => {
   });
 });
 
+describe('Phase 5F §6 — relation direction is not inverted', () => {
+  it('never asserts a quality attribute POSSESSES its commodities', () => {
+    // `appliesToCommodities` is declared on a quality-attribute and points AT
+    // commodities: the attribute IS an attribute OF the commodity. The edge must
+    // read `qualityAttributeOf` (dependent side), never the possessor-side
+    // `hasQualityAttribute` — which would render "Quality attributes:
+    // [maize-grain, wheat-grain, …]" on every quality-attribute page, claiming
+    // the attribute owns those commodities as its attributes.
+    for (const e of allSemanticEdges()) {
+      if (e.from.type === 'quality-attribute' && e.to.type === 'commodity')
+        expect(e.relation, `${e.from.slug} → ${e.to.slug}`).toBe(
+          'qualityAttributeOf',
+        );
+      // The possessor-side label must never originate from the attribute itself.
+      if (e.relation === 'hasQualityAttribute')
+        expect(e.from.type, `hasQualityAttribute from ${e.from.slug}`).not.toBe(
+          'quality-attribute',
+        );
+    }
+  });
+});
+
 describe('Phase 5F §9 — relatedConcept does not dominate', () => {
   it('caps the generic panel while leaving precise panels uncapped', () => {
     expect(GENERIC_CAP).toBeLessThanOrEqual(15);
     expect(GENERIC_CAP).toBeGreaterThan(0);
   });
 
-  it('does not double-count a target already shown precisely', () => {
-    // Simulate a page that lists the same target via both a precise field and
-    // `connections`. The precise link must win; the generic panel must drop it.
-    // (Asserted here at the data level via the coverage helper's dedup logic:
-    // no page should carry a relatedConcept edge to a target it also reaches
-    // through a precise relation — RelationPanels drops it before rendering.)
-    for (const item of PUBLISHED_CONTENT.slice(0, 200)) {
-      const edges = semanticEdges(item);
-      const precise = new Set(
-        edges
-          .filter((e) => e.relation !== 'relatedConcept')
-          .map((e) => `${e.to.type}:${e.to.slug}`),
-      );
-      const genericDupes = edges.filter(
-        (e) =>
-          e.relation === 'relatedConcept' &&
-          precise.has(`${e.to.type}:${e.to.slug}`),
-      );
-      // The graph MAY carry both (dedup is a render concern), but the render
-      // dedup logic keys on exactly this set, so it must be computable.
-      void genericDupes;
-    }
-    expect(true).toBe(true);
+  it('drops a target from the generic panel when a precise relation shows it', () => {
+    // A page lists the same target through both a precise relation and the
+    // generic `relatedConcept` catch-all. buildRelationGroups is the exact code
+    // path RelationPanels renders, so this asserts the real dedup: the precise
+    // panel keeps the target, the generic panel drops it.
+    const shared = 'commodity:maize-grain';
+    const byRelation = new Map<RelationType, RelationTarget[]>([
+      [
+        'appliesToCommodity',
+        [
+          {
+            title: 'Maize Grain',
+            href: '/commodities/maize-grain',
+            targetKey: shared,
+          },
+        ],
+      ],
+      [
+        'relatedConcept',
+        [
+          // Same target as the precise relation above — must be dropped here.
+          {
+            title: 'Maize Grain',
+            href: '/commodities/maize-grain',
+            targetKey: shared,
+          },
+          {
+            title: 'Clay Soil',
+            href: '/soils/clay-soil',
+            targetKey: 'soil:clay-soil',
+          },
+        ],
+      ],
+    ]);
+    const groups = buildRelationGroups(byRelation);
+    const precise = groups.find((g) => g.relation === 'appliesToCommodity');
+    const generic = groups.find((g) => g.relation === 'relatedConcept');
+    expect(precise?.items.map((i) => i.targetKey)).toContain(shared);
+    // The precise link wins: the duplicate is gone from the generic panel …
+    expect(generic?.items.map((i) => i.targetKey)).not.toContain(shared);
+    // … and the non-duplicate generic target survives.
+    expect(generic?.items.map((i) => i.targetKey)).toContain('soil:clay-soil');
+    expect(generic?.total).toBe(1);
+  });
+
+  it('caps the generic panel at GENERIC_CAP while precise panels stay uncapped', () => {
+    const generic: RelationTarget[] = Array.from({ length: 30 }, (_, i) => ({
+      title: `Topic ${String(i).padStart(2, '0')}`,
+      href: `/x/${i}`,
+      targetKey: `soil:t${i}`,
+    }));
+    const precise: RelationTarget[] = Array.from({ length: 30 }, (_, i) => ({
+      title: `Commodity ${String(i).padStart(2, '0')}`,
+      href: `/c/${i}`,
+      targetKey: `commodity:c${i}`,
+    }));
+    const byRelation = new Map<RelationType, RelationTarget[]>([
+      ['relatedConcept', generic],
+      ['appliesToCommodity', precise],
+    ]);
+    const groups = buildRelationGroups(byRelation);
+    const g = groups.find((r) => r.relation === 'relatedConcept')!;
+    const p = groups.find((r) => r.relation === 'appliesToCommodity')!;
+    expect(g.items.length).toBe(GENERIC_CAP);
+    expect(g.truncated).toBe(true);
+    expect(g.total).toBe(30);
+    // The precise panel is never capped.
+    expect(p.items.length).toBe(30);
+    expect(p.truncated).toBe(false);
   });
 });
 
