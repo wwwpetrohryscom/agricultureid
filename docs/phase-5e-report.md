@@ -264,19 +264,19 @@ conversion constant, not a lot's measured test weight.
 
 ## Gates on the final branch state
 
-| Gate               | Result                                            |
-| ------------------ | ------------------------------------------------- |
-| `format:check`     | ✓                                                 |
-| `typecheck`        | 0 errors                                          |
-| `lint`             | 0 warnings                                        |
-| `content:validate` | **0 errors, 0 warnings**                          |
-| `vitest`           | **329 passed** (23 files)                         |
-| `build`            | ✓ 102 kB shared JS                                |
-| `audit`            | 0 missing quantitative provenance                 |
-| `seo:audit`        | **0 errors, 0 orphans** (1,361 routes)            |
-| `search:benchmark` | 94/94 · TOP-1 100% · 0 unsafe equivalences        |
-| `data:validate`    | 0 errors, 0 warnings                              |
-| formula validator  | 42 formulas · 104 cases · 18 tools · **0 errors** |
+| Gate               | Result                                                               |
+| ------------------ | -------------------------------------------------------------------- |
+| `format:check`     | ✓                                                                    |
+| `typecheck`        | 0 errors                                                             |
+| `lint`             | 0 warnings                                                           |
+| `content:validate` | **0 errors, 0 warnings**                                             |
+| `vitest`           | **329 passed** (23 files)                                            |
+| `build`            | ✓ 102 kB shared JS                                                   |
+| `audit`            | 0 missing quantitative provenance                                    |
+| `seo:audit`        | **0 errors** (1,361 routes; modelled reachability only — see 5F §10) |
+| `search:benchmark` | 94/94 · TOP-1 100% · 0 unsafe equivalences                           |
+| `data:validate`    | 0 errors, 0 warnings                                                 |
+| formula validator  | 42 formulas · 104 cases · 18 tools · **0 errors**                    |
 
 ## Deployment
 

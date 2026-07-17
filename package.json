@@ -28,6 +28,7 @@
     "data:diff": "tsx scripts/data-diff.ts",
     "trade:fetch": "node scripts/fetch-faostat-trade.mjs",
     "calc:contract": "tsx scripts/calculator-contract.ts",
+    "graph:audit": "tsx scripts/graph-audit.ts",
     "provenance:health": "tsx scripts/provenance-health.ts",
     "search:benchmark": "tsx scripts/search-benchmark.ts",
     "seo:audit": "tsx scripts/seo-audit.ts",

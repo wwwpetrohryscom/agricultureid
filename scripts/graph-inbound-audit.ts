@@ -31,7 +31,7 @@ import {
   outgoingRefs,
   relatedGroupsFor,
 } from '../lib/content/graph';
-import { navGraph } from '../lib/seo/audit';
+import { registryNavModel } from '../lib/seo/audit';
 import { readFileSync } from 'node:fs';
 import type { AnyContent, RelationType, SemanticEdge } from '../types/content';
 
@@ -157,7 +157,7 @@ export function zeroInboundReport() {
 /* -------------------------------------------------------------------------- */
 
 export function renderedReport() {
-  const nav = navGraph();
+  const nav = registryNavModel();
   const navInbound = new Map<string, Set<string>>();
   for (const [from, tos] of nav)
     for (const to of tos) {
@@ -200,7 +200,7 @@ export function renderedReport() {
  *                          minus cultivar/breed groups
  *
  * None of them slice or cap. This is the graph a crawler would traverse from a
- * content page — as opposed to `navGraph`, which models the same thing from the
+ * content page — as opposed to `registryNavModel`, which models the same thing from the
  * stale `outgoingRefs` switch and therefore misses every Phase 5D typed field.
  */
 /**
@@ -551,9 +551,14 @@ function main() {
   );
 
   const rend = renderedReport();
-  console.log(`\n--- Reachability: the SEO audit's model (navGraph) ---`);
   console.log(
-    `Published pages with ZERO navGraph inbound:            ${rend.zeroNavInbound}`,
+    `\n--- Reachability: the SEO audit's MODEL (registryNavModel) ---`,
+  );
+  console.log(
+    `(modelled, not crawled — real rendered links: npm run seo:rendered)`,
+  );
+  console.log(
+    `Published pages with ZERO modelled inbound:            ${rend.zeroNavInbound}`,
   );
   console.log(
     `Published pages the MODEL sees as hub-only:            ${rend.hubOnly}`,
