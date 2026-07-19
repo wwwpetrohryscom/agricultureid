@@ -11,6 +11,7 @@ import {
   CONSENT_STORAGE_KEY,
   CONSENT_VERSION,
   CONSENT_MAX_AGE_MS,
+  CONSENT_FUTURE_SKEW_MS,
 } from '@/lib/consent/config';
 
 const NOW = Date.parse('2026-07-19T12:00:00.000Z');
@@ -154,6 +155,22 @@ describe('parseConsent — expiry', () => {
     const s = parseConsent(validRaw(true, decidedAt), NOW);
     expect(s.status).toBe('undecided');
     expect(s.analytics).toBe(false);
+  });
+
+  it('distrusts an implausibly future decidedAt (mis-set clock) — no over-retention', () => {
+    const decidedAt = new Date(
+      NOW + CONSENT_FUTURE_SKEW_MS + 60_000,
+    ).toISOString();
+    const s = parseConsent(validRaw(true, decidedAt), NOW);
+    expect(s.status).toBe('undecided');
+    expect(s.analytics).toBe(false);
+  });
+
+  it('tolerates a small forward clock skew', () => {
+    const decidedAt = new Date(
+      NOW + CONSENT_FUTURE_SKEW_MS - 60_000,
+    ).toISOString();
+    expect(parseConsent(validRaw(true, decidedAt), NOW).status).toBe('decided');
   });
 });
 

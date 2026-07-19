@@ -12,6 +12,14 @@ import { useConsent } from './context';
  * grant it. Native `<button>`s make it fully keyboard operable. Focus is not
  * stolen, so normal tab order is undisturbed.
  */
+/**
+ * One shared style for all three first-layer actions, so Accept and Reject (and
+ * Manage) carry EQUAL visual weight — no filled-vs-outline hierarchy that would
+ * make accepting more prominent than refusing (EDPB 03/2022 deceptive-design).
+ */
+const BANNER_BTN =
+  'inline-flex items-center justify-center rounded-md border border-olive-700 bg-white px-4 py-2 text-sm font-semibold text-olive-800 hover:bg-olive-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-olive-700';
+
 export function ConsentBanner() {
   const { showBanner, acceptAll, rejectAll, openPreferences } = useConsent();
 
@@ -46,24 +54,16 @@ export function ConsentBanner() {
           </p>
         </div>
         <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap">
-          <button
-            type="button"
-            onClick={acceptAll}
-            className="inline-flex items-center justify-center rounded-md border border-olive-700 bg-olive-700 px-4 py-2 text-sm font-semibold text-white hover:bg-olive-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-olive-700"
-          >
+          <button type="button" onClick={acceptAll} className={BANNER_BTN}>
             Accept analytics
           </button>
-          <button
-            type="button"
-            onClick={rejectAll}
-            className="inline-flex items-center justify-center rounded-md border border-olive-700 bg-white px-4 py-2 text-sm font-semibold text-olive-800 hover:bg-olive-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-olive-700"
-          >
+          <button type="button" onClick={rejectAll} className={BANNER_BTN}>
             Reject analytics
           </button>
           <button
             type="button"
             onClick={openPreferences}
-            className="inline-flex items-center justify-center rounded-md border border-ink-300 bg-white px-4 py-2 text-sm font-semibold text-ink-800 hover:bg-ink-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink-400"
+            className={BANNER_BTN}
           >
             Manage preferences
           </button>

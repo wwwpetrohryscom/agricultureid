@@ -139,8 +139,10 @@ export default function PrivacyPage() {
             accepted or rejected analytics so we do not ask again on every
             visit. It contains only your choice, a version number, and the date;
             no identifier, IP address, or analytics data. Retained for up to
-            about 6 months, after which we ask again. You can clear it via your
-            browser’s site-data controls or by rejecting analytics.
+            about 6 months, after which we ask again. Choosing “Reject
+            analytics” updates this entry to record your refusal (analytics
+            stays off); to remove the entry entirely, use your browser’s
+            site-data controls.
           </li>
         </ul>
         <p>

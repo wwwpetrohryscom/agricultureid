@@ -1,9 +1,10 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { UNDECIDED_STATE } from '@/lib/consent/config';
+import { CONSENT_STORAGE_KEY, UNDECIDED_STATE } from '@/lib/consent/config';
 import { readConsent, writeConsent } from '@/lib/consent/storage';
 import { reloadPage } from '@/lib/consent/reload';
+import { removeWebmasterID } from '@/lib/analytics/webmasterid';
 import type { ConsentState } from '@/lib/consent/types';
 import { ConsentContext, type ConsentContextValue } from './context';
 import { ConsentBanner } from './ConsentBanner';
@@ -37,12 +38,31 @@ export function ConsentProvider({ children }: { children: React.ReactNode }) {
     setHydrated(true);
   }, []);
 
+  // Cross-tab consent: if the decision changes in ANOTHER tab (localStorage
+  // `storage` events fire only in other documents), mirror it here. A withdrawal
+  // that happened elsewhere (analytics true → false) tears this tab's tracker
+  // down too, so withdrawal actually stops processing in every open tab.
+  useEffect(() => {
+    function onStorage(e: StorageEvent) {
+      if (e.key !== null && e.key !== CONSENT_STORAGE_KEY) return;
+      const prevAnalytics = stateRef.current.analytics;
+      const next = readConsent(Date.now());
+      setState(next);
+      if (prevAnalytics && !next.analytics) {
+        if (typeof document !== 'undefined') removeWebmasterID(document);
+        reloadPage();
+      }
+    }
+    window.addEventListener('storage', onStorage);
+    return () => window.removeEventListener('storage', onStorage);
+  }, []);
+
   const applyChoice = useCallback((nextAnalytics: boolean) => {
     const prevAnalytics = stateRef.current.analytics;
     const now = Date.now();
-    // Best-effort persist; a denied write simply means we ask again next visit
-    // (fail closed on the next read), never that analytics turns on silently.
-    writeConsent(nextAnalytics, now);
+    // Best-effort persist; a denied write means we ask again next visit (fail
+    // closed on the next read), never that analytics turns on silently.
+    const persisted = writeConsent(nextAnalytics, now).status === 'decided';
     setState({
       status: 'decided',
       necessary: true,
@@ -50,8 +70,13 @@ export function ConsentProvider({ children }: { children: React.ReactNode }) {
       decidedAt: new Date(now).toISOString(),
     });
     setPreferencesOpen(false);
-    // Withdrawal from an already-running tracker → reload for a clean teardown.
-    if (prevAnalytics && !nextAnalytics) reloadPage();
+    // Withdrawal from an already-running tracker: remove the script now, and
+    // reload for a clean teardown — but ONLY if the refusal actually persisted,
+    // so we never reload back into a stale, still-stored analytics=true record.
+    if (prevAnalytics && !nextAnalytics) {
+      if (typeof document !== 'undefined') removeWebmasterID(document);
+      if (persisted) reloadPage();
+    }
   }, []);
 
   const acceptAll = useCallback(() => applyChoice(true), [applyChoice]);

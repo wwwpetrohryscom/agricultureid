@@ -23,6 +23,14 @@ export const CONSENT_STORAGE_KEY = 'agricultureid_consent';
  */
 export const CONSENT_MAX_AGE_MS = 1000 * 60 * 60 * 24 * 183; // ≈ 6 months
 
+/**
+ * How far in the future a stored `decidedAt` may be before we distrust it (clock
+ * skew tolerance, ~1 day). A record dated further ahead is treated as invalid
+ * and re-asked, so a mis-set device clock cannot mint a decision that outlives
+ * the retention window.
+ */
+export const CONSENT_FUTURE_SKEW_MS = 1000 * 60 * 60 * 24; // 1 day
+
 /** The default state for anyone without a valid stored decision: fail closed. */
 export const UNDECIDED_STATE: ConsentState = {
   status: 'undecided',

@@ -17,6 +17,7 @@
  * state (analytics OFF, banner shown). Analytics is never enabled by accident.
  */
 import {
+  CONSENT_FUTURE_SKEW_MS,
   CONSENT_MAX_AGE_MS,
   CONSENT_STORAGE_KEY,
   CONSENT_VERSION,
@@ -65,6 +66,10 @@ export function parseConsent(raw: string | null, nowMs: number): ConsentState {
   if (typeof rec.decidedAt !== 'string') return UNDECIDED_STATE;
   const decidedMs = Date.parse(rec.decidedAt);
   if (Number.isNaN(decidedMs)) return UNDECIDED_STATE;
+  // Implausibly future timestamps (mis-set clock) are distrusted and re-asked —
+  // otherwise a future date would never satisfy the expiry check below and the
+  // decision would outlive the retention window.
+  if (decidedMs - nowMs > CONSENT_FUTURE_SKEW_MS) return UNDECIDED_STATE;
   // Expired decisions are re-asked (age computed against MAX_AGE).
   if (nowMs - decidedMs > CONSENT_MAX_AGE_MS) return UNDECIDED_STATE;
 

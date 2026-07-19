@@ -97,6 +97,45 @@ describe('first visit (no stored choice)', () => {
     expect(tracker()).toBeNull();
     expect(stored()).toBeNull();
   });
+
+  it('gives Accept and Reject equal prominence (identical styling)', async () => {
+    renderApp();
+    const accept = await screen.findByRole('button', {
+      name: 'Accept analytics',
+    });
+    const reject = screen.getByRole('button', { name: 'Reject analytics' });
+    // Guards against reintroducing a filled-vs-outline hierarchy (dark pattern).
+    expect(accept.className).toBe(reject.className);
+  });
+});
+
+describe('cross-tab consent', () => {
+  it('withdrawal in another tab tears this tab down too', async () => {
+    renderApp();
+    fireEvent.click(
+      await screen.findByRole('button', { name: 'Accept analytics' }),
+    );
+    await waitFor(() => expect(tracker()).not.toBeNull());
+
+    // Another tab writes a rejection; the browser fires a `storage` event here.
+    window.localStorage.setItem(
+      CONSENT_STORAGE_KEY,
+      JSON.stringify({
+        version: CONSENT_VERSION,
+        necessary: true,
+        analytics: false,
+        decidedAt: new Date().toISOString(),
+      }),
+    );
+    act(() => {
+      window.dispatchEvent(
+        new StorageEvent('storage', { key: CONSENT_STORAGE_KEY }),
+      );
+    });
+
+    await waitFor(() => expect(tracker()).toBeNull());
+    expect(reloadPage).toHaveBeenCalledTimes(1);
+  });
 });
 
 describe('reject', () => {

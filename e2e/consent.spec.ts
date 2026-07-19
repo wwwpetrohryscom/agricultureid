@@ -29,9 +29,15 @@ function watch(page: Page) {
 }
 
 test.beforeEach(async ({ page }) => {
-  // Stub vendor endpoints so no real analytics traffic leaves the browser.
+  // Stub vendor endpoints so no real analytics traffic leaves the browser. The
+  // tracker stub is a minimal DOUBLE for the real IIFE: on load it reads its own
+  // data-endpoint and POSTs one event, so the ingest assertions below are
+  // meaningful (they observe whether an event fires, gated on consent).
   await page.route(TRACKER_RE, (route) =>
-    route.fulfill({ contentType: 'application/javascript', body: '' }),
+    route.fulfill({
+      contentType: 'application/javascript',
+      body: `(function(){try{var s=document.getElementById('webmasterid-tracker');if(!s)return;var e=s.getAttribute('data-endpoint');fetch(e,{method:'POST',keepalive:true,body:JSON.stringify({t:'pageview',p:location.pathname})});}catch(_){}})();`,
+    }),
   );
   await page.route(INGEST_RE, (route) =>
     route.fulfill({ status: 204, body: '' }),
@@ -67,6 +73,11 @@ test('accepting loads exactly one tracker; client-side navigation does not dupli
   await page.getByRole('button', { name: 'Accept analytics' }).click();
   await page.waitForLoadState('networkidle');
   expect(seen.tracker.length, 'one tracker request after accept').toBe(1);
+  // The tracker double fires its ingest event only after acceptance.
+  expect(
+    seen.ingest.length,
+    'ingest begins only after acceptance',
+  ).toBeGreaterThanOrEqual(1);
 
   // Client-side (SPA) navigation via in-app links: the root layout — and the
   // injected tracker — persist, so the script must NOT be re-requested. (A full
@@ -107,11 +118,15 @@ test('withdrawing analytics removes the tracker and blocks further requests', as
 
   // After withdrawal + reload, the tracker must not be present or re-requested.
   await expect(page.locator('#webmasterid-tracker')).toHaveCount(0);
+  const ingestBeforeNav = seen.ingest.length;
   for (const path of ['/soils', '/pests']) {
     await page.goto(path);
     await page.waitForLoadState('networkidle');
   }
   expect(seen.tracker.length, 'no new tracker requests after withdrawal').toBe(
     countBeforeSave,
+  );
+  expect(seen.ingest.length, 'no new ingest after withdrawal').toBe(
+    ingestBeforeNav,
   );
 });

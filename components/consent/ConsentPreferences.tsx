@@ -7,6 +7,10 @@ import { useConsent } from './context';
 const FOCUSABLE =
   'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
+/** Shared style so "Accept all" and "Reject all" have identical prominence. */
+const PREFS_SECONDARY_BTN =
+  'inline-flex items-center justify-center rounded-md border border-olive-700 bg-white px-4 py-2 text-sm font-semibold text-olive-800 hover:bg-olive-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-olive-700';
+
 /**
  * Preferences dialog (second layer). A real modal: `role="dialog"` +
  * `aria-modal`, focus is moved in on open and trapped, Escape / Cancel / the
@@ -159,17 +163,19 @@ export function ConsentPreferences() {
         </ul>
 
         <div className="mt-6 flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:justify-end">
+          {/* Accept all / Reject all carry EQUAL weight (same style); Save is the
+              primary because it applies the toggle above, which may be OFF. */}
           <button
             type="button"
             onClick={() => savePreferences(false)}
-            className="inline-flex items-center justify-center rounded-md border border-ink-300 bg-white px-4 py-2 text-sm font-semibold text-ink-800 hover:bg-ink-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink-400"
+            className={PREFS_SECONDARY_BTN}
           >
             Reject all
           </button>
           <button
             type="button"
             onClick={() => savePreferences(true)}
-            className="inline-flex items-center justify-center rounded-md border border-olive-700 bg-white px-4 py-2 text-sm font-semibold text-olive-800 hover:bg-olive-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-olive-700"
+            className={PREFS_SECONDARY_BTN}
           >
             Accept all
           </button>
