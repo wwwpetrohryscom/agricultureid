@@ -7,7 +7,6 @@ import { webPageSchema } from '@/lib/schema/jsonld';
 import { pageBreadcrumbs } from '@/lib/seo/breadcrumbs';
 import { buildMetadata } from '@/lib/seo/metadata';
 import { SITE } from '@/lib/site';
-import { SITE_LAST_UPDATED } from '@/lib/seo/routes';
 
 const TITLE = 'Privacy Policy';
 const PATH = '/privacy';
@@ -15,7 +14,7 @@ const PATH = '/privacy';
 export const metadata: Metadata = buildMetadata({
   title: TITLE,
   description:
-    'AgricultureID’s privacy approach: a static informational site that does not use analytics, advertising, cookies, or trackers in this phase.',
+    'AgricultureID’s privacy approach: an informational site that uses WebmasterID analytics to understand usage, shows no advertising, and collects no personal information through the site itself.',
   path: PATH,
 });
 
@@ -37,16 +36,25 @@ export default function PrivacyPage() {
       />
 
       <Prose>
-        <p className="text-sm text-ink-500">
-          Last updated: {SITE_LAST_UPDATED}
-        </p>
+        <p className="text-sm text-ink-500">Last updated: 2026-07-19</p>
 
         <h2>Summary</h2>
         <p>
-          In its current phase, AgricultureID does not use analytics,
-          advertising, cookies, chat widgets, or third-party trackers, and it
-          does not require accounts or logins. We collect no personal
-          information through the website itself.
+          AgricultureID shows no advertising, uses no chat widgets, and does not
+          require accounts or logins. We collect no personal information through
+          the website itself. The site does use a third-party analytics service
+          (WebmasterID) to understand how it is used — see “Analytics” below.
+        </p>
+
+        <h2>Analytics</h2>
+        <p>
+          AgricultureID uses WebmasterID, a third-party web analytics service,
+          to understand how the site is used — for example, which pages are
+          viewed. When a page loads, a WebmasterID script runs in your browser
+          and sends usage events to WebmasterID’s servers. What WebmasterID
+          collects and how it processes that data is governed by WebmasterID’s
+          own terms and privacy practices. We use it to improve the site, not to
+          serve advertising.
         </p>
 
         <h2>Information you send us</h2>
@@ -68,10 +76,10 @@ export default function PrivacyPage() {
 
         <h2>Cookies</h2>
         <p>
-          AgricultureID does not set its own tracking or advertising cookies in
-          this phase. If this changes — for example if we introduce
-          privacy-respecting analytics — we will update this policy and provide
-          appropriate notice before enabling it.
+          AgricultureID does not set its own advertising cookies. The
+          WebmasterID analytics described above may use cookies or similar
+          browser storage; whether it does, and for how long, is determined by
+          WebmasterID. See WebmasterID’s documentation for specifics.
         </p>
 
         <h2>External links</h2>

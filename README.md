@@ -110,8 +110,9 @@ steps on every push and pull request to `main`.
 The project targets **Vercel** with zero required configuration. It uses static
 generation for all pages plus a small set of security headers (see
 `next.config.mjs`). Set `NEXT_PUBLIC_SITE_URL` if deploying to a non-production
-origin so canonical URLs and the sitemap resolve correctly. Analytics are wired
-but inert until explicitly configured and authorized (see `.env.example`).
+origin so canonical URLs and the sitemap resolve correctly. WebmasterID
+analytics loads on every page (see `components/analytics/Analytics.tsx` and the
+privacy policy at `/privacy`).
 
 ## Current scope
 
