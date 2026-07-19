@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import '@/styles/globals.css';
 import { SiteHeader } from '@/components/layout/SiteHeader';
 import { SiteFooter } from '@/components/layout/SiteFooter';
-import { Analytics } from '@/components/analytics/Analytics';
+import { ConsentProvider } from '@/components/consent/ConsentProvider';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { organizationSchema, websiteSchema } from '@/lib/schema/jsonld';
 import { SITE } from '@/lib/site';
@@ -60,16 +60,17 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="flex min-h-screen flex-col">
-        <JsonLd data={[organizationSchema(), websiteSchema()]} />
-        <a href="#main-content" className="skip-link">
-          Skip to main content
-        </a>
-        <SiteHeader />
-        <main id="main-content" className="flex-1">
-          {children}
-        </main>
-        <SiteFooter />
-        <Analytics />
+        <ConsentProvider>
+          <JsonLd data={[organizationSchema(), websiteSchema()]} />
+          <a href="#main-content" className="skip-link">
+            Skip to main content
+          </a>
+          <SiteHeader />
+          <main id="main-content" className="flex-1">
+            {children}
+          </main>
+          <SiteFooter />
+        </ConsentProvider>
       </body>
     </html>
   );

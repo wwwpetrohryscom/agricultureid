@@ -9,3 +9,5 @@ public/*.svg
 public/*.png
 public/*.ico
 coverage
+test-results
+playwright-report

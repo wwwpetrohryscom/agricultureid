@@ -19,6 +19,7 @@
     "format:check": "prettier --check .",
     "test": "vitest run",
     "test:watch": "vitest",
+    "test:e2e": "playwright test",
     "content:validate": "tsx scripts/validate-content.ts",
     "content:report": "tsx scripts/content-report.ts",
     "audit": "tsx scripts/audit.ts",
@@ -33,6 +34,7 @@
     "search:benchmark": "tsx scripts/search-benchmark.ts",
     "seo:audit": "tsx scripts/seo-audit.ts",
     "seo:rendered": "tsx scripts/rendered-link-audit.ts",
+    "consent:audit": "tsx scripts/consent-audit.ts",
     "validate": "npm run format:check && npm run typecheck && npm run lint && npm run content:validate && npm run test"
   },
   "dependencies": {
@@ -41,6 +43,10 @@
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.61.1",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
     "@types/node": "^22.10.5",
     "@types/react": "^19.0.7",
     "@types/react-dom": "^19.0.3",
@@ -48,6 +54,7 @@
     "eslint": "^8.57.1",
     "eslint-config-next": "^15.1.6",
     "eslint-config-prettier": "^9.1.0",
+    "jsdom": "^25.0.1",
     "postcss": "^8.4.49",
     "prettier": "^3.4.2",
     "prettier-plugin-tailwindcss": "^0.6.9",

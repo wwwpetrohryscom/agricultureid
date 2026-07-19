@@ -1,29 +1,31 @@
-/**
- * WebmasterID analytics — loaded on every page (rendered from the root layout).
- *
- * These are PUBLIC, client-side identifiers supplied by the site owner, not
- * secrets: the same values are visible in the page source. The attribute names
- * below are WebmasterID's contract — the vendor's IIFE tracker reads `data-wmid`
- * and `data-endpoint` off its own `<script>` tag (located by `id`), so they must
- * match exactly.
- *
- * See `app/privacy/page.tsx` for the corresponding privacy disclosure. This
- * loads a third-party script and sends usage events to WebmasterID; it replaces
- * the earlier no-analytics phase.
- */
-const WEBMASTERID_SITE_ID = 'wm_e5zinq4tbv63jqtx';
-const WEBMASTERID_SRC = 'https://webmasterid.com/tracker.iife.min.js';
-const WEBMASTERID_ENDPOINT =
-  'https://webmasterid-ingest-api.vercel.app/api/events';
+'use client';
 
+import { useEffect } from 'react';
+import { useConsent } from '@/components/consent/context';
+import { syncWebmasterID } from '@/lib/analytics/webmasterid';
+
+/**
+ * Consent-gated WebmasterID loader. Renders NOTHING — it injects the tracker
+ * imperatively so the script never appears in the server-rendered HTML and is
+ * requested only after an explicit analytics opt-in.
+ *
+ * - undecided or analytics=false → no script is present;
+ * - analytics=true → the tracker is injected exactly once
+ *   ({@link syncWebmasterID} is idempotent, so re-renders and client-side
+ *   navigation never duplicate it);
+ * - the effect re-runs only when the analytics flag flips, not on navigation
+ *   (the root layout — and this component — persist across route changes).
+ *
+ * Withdrawal from an active tracker is handled by ConsentProvider with a page
+ * reload; this component simply reflects the current flag.
+ */
 export function Analytics() {
-  return (
-    <script
-      id="webmasterid-tracker"
-      defer
-      src={WEBMASTERID_SRC}
-      data-wmid={WEBMASTERID_SITE_ID}
-      data-endpoint={WEBMASTERID_ENDPOINT}
-    />
-  );
+  const { hydrated, state } = useConsent();
+
+  useEffect(() => {
+    if (!hydrated) return; // do nothing until the stored decision is known
+    syncWebmasterID(document, state.analytics);
+  }, [hydrated, state.analytics]);
+
+  return null;
 }
