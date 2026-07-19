@@ -32,7 +32,8 @@ Git integration when ready.
   bytes (content is data-driven, server-rendered HTML).
 - **Search index:** 866 documents, ~691 kB raw / ~96 kB gzipped, fetched
   client-side on demand (not part of initial load).
-- **Sitemap:** 916 URLs across 4 static shards + an index.
+- **Sitemap:** a single static `/sitemap.xml` listing every indexable URL
+  (~1,361) — not sharded (see `app/sitemap.ts`).
 - No blocking third-party scripts; a strict CSP is compatible (see
   `next.config`). Images, when present, are self-hosted and licensed.
 
@@ -45,8 +46,8 @@ every page is static HTML, and the heaviest asset (the search index) loads lazil
 2. Framework preset: **Next.js**. Build command `npm run build`; install
    `npm install`. No env vars required (optionally set `NEXT_PUBLIC_SITE_URL`).
 3. Verify the first production deployment renders the home page, a content page,
-   a country/region page, a tool, and `/sitemap.xml` (the index) with its four
-   shards.
+   a country/region page, a tool, and `/sitemap.xml` (the full sitemap — it must
+   return 200 `application/xml`, not a 404).
 4. Point the custom domain and configure DNS.
 5. Submit `/sitemap.xml` to Search Console / Bing Webmaster (and IndexNow if
    used) — **only after** the user decides to.
