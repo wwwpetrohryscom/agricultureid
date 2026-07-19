@@ -1,8 +1,9 @@
 /** @type {import('next').NextConfig} */
 
 // Security headers applied to every route. Kept conservative so they remain
-// compatible with Vercel's static + serverless output. No CSP with unsafe
-// directives; the site ships no third-party runtime scripts in Phase 1.
+// compatible with Vercel's static + serverless output. No CSP is set, so the
+// one third-party runtime script (WebmasterID analytics, see
+// components/analytics/Analytics.tsx) loads without a policy change.
 const securityHeaders = [
   { key: 'X-Content-Type-Options', value: 'nosniff' },
   { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
