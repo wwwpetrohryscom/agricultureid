@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Container } from '@/components/ui/Container';
 import { BrandMark } from '@/components/ui/Logo';
+import { PrivacySettingsButton } from '@/components/consent/PrivacySettingsButton';
 import {
   HEADER_NAV,
   SITE,
@@ -49,6 +50,9 @@ export function SiteFooter() {
                 </Link>
               </li>
             ))}
+            <li>
+              <PrivacySettingsButton className="rounded hover:text-white" />
+            </li>
           </ul>
         </div>
       </Container>

@@ -110,9 +110,34 @@ steps on every push and pull request to `main`.
 The project targets **Vercel** with zero required configuration. It uses static
 generation for all pages plus a small set of security headers (see
 `next.config.mjs`). Set `NEXT_PUBLIC_SITE_URL` if deploying to a non-production
-origin so canonical URLs and the sitemap resolve correctly. WebmasterID
-analytics loads on every page (see `components/analytics/Analytics.tsx` and the
-privacy policy at `/privacy`).
+origin so canonical URLs and the sitemap resolve correctly.
+
+### Analytics consent (GDPR/ePrivacy)
+
+WebmasterID analytics is **consent-gated and default-denied**. The tracker is not
+requested, initialised, or sent any event until the visitor explicitly accepts
+analytics; rejecting leaves the site fully functional. Rejecting or ignoring the
+banner keeps the tracker entirely absent (including from the server-rendered
+HTML).
+
+- **Consent state** lives in one first-party `localStorage` entry,
+  `agricultureid_consent` (`{ version, necessary, analytics, decidedAt }`),
+  retained ~6 months, then re-asked. Anything malformed, expired, or of an
+  unknown `CONSENT_VERSION` fails closed (analytics off, banner re-shown).
+- **Configuration** is in [`lib/consent/config.ts`](lib/consent/config.ts)
+  (`CONSENT_VERSION`, storage key, retention, categories). The tracker contract
+  and its single injection path are in
+  [`lib/analytics/webmasterid.ts`](lib/analytics/webmasterid.ts); the UI is under
+  [`components/consent/`](components/consent/). Withdrawal (from the footer
+  **“Privacy settings”** link) reloads to guarantee teardown.
+- **Bump `CONSENT_VERSION`** when purposes/vendors/material processing change; the
+  old decision is invalidated and consent is re-requested.
+- **Verify locally:** `npm run build && npm run consent:audit` proves no page's
+  HTML contains the tracker; `npm test` covers the consent logic, injection
+  singleton, and UI flows; `npm run test:e2e` (after
+  `npx playwright install chromium`) observes real browser requests — no
+  `tracker.iife.min.js` before consent, exactly one after accept, none after
+  withdrawal. See the privacy policy at `/privacy`.
 
 ## Current scope
 

@@ -2,8 +2,10 @@
 
 // Security headers applied to every route. Kept conservative so they remain
 // compatible with Vercel's static + serverless output. No CSP is set, so the
-// one third-party runtime script (WebmasterID analytics, see
-// components/analytics/Analytics.tsx) loads without a policy change.
+// one third-party runtime script (WebmasterID analytics) is compatible when it
+// loads. It is consent-gated and injected client-side only after an explicit
+// opt-in (see components/consent/ and components/analytics/Analytics.tsx), never
+// in the server-rendered HTML.
 const securityHeaders = [
   { key: 'X-Content-Type-Options', value: 'nosniff' },
   { key: 'X-Frame-Options', value: 'SAMEORIGIN' },

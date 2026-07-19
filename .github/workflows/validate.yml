@@ -48,3 +48,6 @@ jobs:
 
       - name: Rendered-link audit (real HTML crawl — needs the build output)
         run: npm run seo:rendered
+
+      - name: Consent audit (no pre-consent tracker in built HTML)
+        run: npm run consent:audit
