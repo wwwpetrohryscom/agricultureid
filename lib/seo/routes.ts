@@ -89,9 +89,10 @@ const STATIC_ROUTES: Omit<RouteEntry, 'lastModified'>[] = [
 ];
 
 /**
- * Sitemap shard sections. The sitemap is split into a small index of
- * section sitemaps so it scales and so crawlers can prioritise. Order is
- * stable (used as the shard id).
+ * Route groups used to assemble the sitemap in a stable order and to let the SEO
+ * audit reason about sections. These are internal groupings, NOT separate
+ * sitemap files: the sitemap is a single `/sitemap.xml` (see `app/sitemap.ts`),
+ * because the URL count is far below the per-sitemap limit. Order is stable.
  */
 export const SITEMAP_SECTIONS = [
   'pages',

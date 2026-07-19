@@ -1,25 +1,24 @@
 import type { MetadataRoute } from 'next';
 import { absoluteUrl } from '@/lib/seo/metadata';
-import {
-  sectionedRoutes,
-  SITEMAP_SECTIONS,
-  type SitemapSection,
-} from '@/lib/seo/routes';
+import { allRoutes } from '@/lib/seo/routes';
 
 /**
- * Sharded sitemap. `generateSitemaps` emits one sitemap per section plus a
- * sitemap index at /sitemap.xml, so the sitemap scales cleanly and crawlers
- * can fetch sections independently. Each shard stays far under the 50,000-URL
- * limit. `id` is the section's index in SITEMAP_SECTIONS.
+ * The site's sitemap, served by Next.js at `/sitemap.xml`.
+ *
+ * One file with every indexable route. At ~1.4k URLs this is far under the
+ * sitemaps.org ceiling (50,000 URLs / 50 MB uncompressed), so a single sitemap
+ * is both sufficient and exactly what `robots.txt` advertises and crawlers fetch
+ * first.
+ *
+ * DO NOT reintroduce `generateSitemaps` here. Next.js serves those shards at
+ * `/sitemap/[id].xml` and does **not** emit a `/sitemap.xml` index — which is
+ * exactly why the deployed `/sitemap.xml` (the URL robots.txt points to) 404'd.
+ * If the corpus ever nears 50,000 URLs, add a real `<sitemapindex>` at
+ * `/sitemap.xml` via a route handler rather than trusting `generateSitemaps` to
+ * create one.
  */
-export async function generateSitemaps(): Promise<{ id: number }[]> {
-  return SITEMAP_SECTIONS.map((_, id) => ({ id }));
-}
-
-export default function sitemap({ id }: { id: number }): MetadataRoute.Sitemap {
-  const section = (SITEMAP_SECTIONS[id] ?? 'pages') as SitemapSection;
-  const routes = sectionedRoutes()[section] ?? [];
-  return routes.map((route) => ({
+export default function sitemap(): MetadataRoute.Sitemap {
+  return allRoutes().map((route) => ({
     url: absoluteUrl(route.path),
     lastModified: route.lastModified,
     changeFrequency: route.changeFrequency,

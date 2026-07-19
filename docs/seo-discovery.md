@@ -4,22 +4,26 @@ Phase 4E hardens how the site is discovered, crawled, and searched, and adds a
 deterministic, test-enforced audit for each concern. Nothing here changes
 content; it improves how the existing 916 indexable pages are surfaced.
 
-## Sharded sitemap
+## Sitemap
 
-The sitemap is split into a **sitemap index** plus four section sitemaps
-([`app/sitemap.ts`](../app/sitemap.ts) via Next.js `generateSitemaps`):
+> **This section previously described a "sharded sitemap": a sitemap index plus
+> four section sitemaps emitted by Next.js `generateSitemaps`. That was wrong.**
+> `generateSitemaps` serves the shards at `/sitemap/N.xml` but emits **no**
+> `/sitemap.xml` index, so the URL `robots.txt` advertises returned **404** in
+> production. Fixed 2026-07-19: the sitemap is a single `/sitemap.xml`.
 
-| Shard     | `/sitemap/N.xml` | URLs | Contents                                                                |
-| --------- | ---------------- | ---: | ----------------------------------------------------------------------- |
-| `pages`   | 0                |   34 | static, overview, reference, legal                                      |
-| `content` | 1                |  647 | every structured content entry                                          |
-| `geo`     | 2                |  171 | countries, indicators, datasets, WB regions, zones, subnational regions |
-| `tools`   | 3                |   64 | calculator tools + fixed comparisons                                    |
+The sitemap is a single file at `/sitemap.xml`
+([`app/sitemap.ts`](../app/sitemap.ts)) listing every indexable route. At ~1.4k
+URLs it is far under the sitemaps.org ceiling (50,000 URLs / 50 MB uncompressed),
+so one sitemap is sufficient and is exactly what `robots.txt` points to and what
+crawlers fetch first. Routes come from [`allRoutes()`](../lib/seo/routes.ts),
+which assembles the stable section groupings in `sectionedRoutes()`; a
+route-level test asserts `/sitemap.xml` carries one absolute-URL entry per
+indexable path.
 
-`robots.txt` points to `/sitemap.xml` (the index). Each shard stays far under the
-50,000-URL limit, so the sitemap scales as content grows. Sections come from
-[`sectionedRoutes()`](../lib/seo/routes.ts); `allRoutes()` flattens them, so the
-flat and sharded views can never drift.
+If the corpus ever nears 50,000 URLs, add a real `<sitemapindex>` at
+`/sitemap.xml` via a route handler — do not rely on `generateSitemaps` to create
+the index.
 
 ## Modelled registry reachability (NOT crawl depth)
 

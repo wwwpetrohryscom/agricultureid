@@ -15,6 +15,13 @@ changed.
 build prerenders `/sitemap/0..3.xml`; `robots.txt` points to the index. Sections
 come from `sectionedRoutes()`; `allRoutes()` flattens them so the two can't drift.
 
+> **Correction (2026-07-19):** `generateSitemaps` emits only the
+> `/sitemap/N.xml` shards, **not** a `/sitemap.xml` index — so the index
+> `robots.txt` pointed to returned 404 once deployed. The sitemap is now a single
+> `/sitemap.xml` (see `app/sitemap.ts`); at this URL count sharding was
+> unnecessary. `sectionedRoutes()`/`allRoutes()` are retained as the internal
+> route assembly.
+
 ### SEO / discovery audit (`lib/seo/audit.ts`, `npm run seo:audit`)
 
 - **Reachability audit** — BFS over a hand-written registry navigation MODEL
