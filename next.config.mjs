@@ -1,11 +1,15 @@
 /** @type {import('next').NextConfig} */
 
 // Security headers applied to every route. Kept conservative so they remain
-// compatible with Vercel's static + serverless output. No CSP is set, so the
+// compatible with static + serverless output on any host. No CSP is set, so the
 // one third-party runtime script (WebmasterID analytics) is compatible when it
 // loads. It is consent-gated and injected client-side only after an explicit
 // opt-in (see components/consent/ and components/analytics/Analytics.tsx), never
 // in the server-rendered HTML.
+//
+// This block is the SINGLE canonical source of production security headers.
+// Do not duplicate it in netlify.toml or a _headers file — two sources drift.
+// Netlify's Next.js adapter applies next.config `headers()` in full.
 const securityHeaders = [
   { key: 'X-Content-Type-Options', value: 'nosniff' },
   { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
@@ -23,9 +27,9 @@ const securityHeaders = [
 const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
-  // Pin the file-tracing root to this project. A lockfile exists in a parent
+  // Pin the file-tracing root to this project. A lockfile can exist in a parent
   // directory of the build environment, which would otherwise make Next infer
-  // the wrong workspace root for output tracing on deploy.
+  // the wrong workspace root for output tracing on deploy. Host-agnostic.
   outputFileTracingRoot: import.meta.dirname,
   // Deterministic trailing-slash behaviour keeps canonical URLs stable.
   trailingSlash: false,
