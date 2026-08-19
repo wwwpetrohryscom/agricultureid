@@ -5,13 +5,17 @@ current, deliberate deployment status.
 
 ## Deployment status
 
-**AWAITING USER — Vercel project linking.**
+**AWAITING USER — Netlify site creation.**
 
-The repository is deploy-ready but has **not** been deployed. By instruction, no
-Vercel project has been created or linked, no CLI/token/deploy has been run, no
-domain or DNS has been configured, and no sitemaps or IndexNow have been
-submitted. The user will link the GitHub repository to Vercel manually via the
-Git integration when ready.
+The repository is Netlify-ready. No Netlify site has been created or linked, no
+CLI/token/deploy has been run, no DNS has been changed, and no sitemaps or
+IndexNow have been submitted. The user will import the GitHub repository into
+Netlify manually via the Git integration when ready.
+
+Hosting previously targeted Vercel. The migration is repository-side only and is
+fully reversible — see
+[`netlify-deployment.md`](netlify-deployment.md) for build settings, the
+environment-variable table, the DNS sequence, and the rollback plan.
 
 ## Build & output
 
@@ -23,14 +27,15 @@ Git integration when ready.
   `next build`). No environment variables are required to build; the canonical
   origin defaults to `https://agricultureid.com` and is overridable with
   `NEXT_PUBLIC_SITE_URL`.
-- **Node:** ≥ 18.18 (see `engines`).
+- **Node:** ≥ 18.18 (see `engines`); pinned to 20 for CI and hosting via
+  `.nvmrc`.
 
 ## Performance profile (static analysis of the production build)
 
 - **Shared First Load JS:** ~102 kB (two chunks, ~46 kB + ~54 kB).
 - **Per content page First Load JS:** ~106 kB; page-specific JS is a few hundred
   bytes (content is data-driven, server-rendered HTML).
-- **Search index:** 866 documents, ~691 kB raw / ~96 kB gzipped, fetched
+- **Search index:** 1,298 documents, ~1,068 kB raw / ~150 kB gzipped, fetched
   client-side on demand (not part of initial load).
 - **Sitemap:** a single static `/sitemap.xml` listing every indexable URL
   (~1,361) — not sharded (see `app/sitemap.ts`).
@@ -42,15 +47,20 @@ every page is static HTML, and the heaviest asset (the search index) loads lazil
 
 ## Pre-deployment checklist (for the user, when ready)
 
-1. Link the GitHub repo to a Vercel project via the Git integration.
-2. Framework preset: **Next.js**. Build command `npm run build`; install
-   `npm install`. No env vars required (optionally set `NEXT_PUBLIC_SITE_URL`).
-3. Verify the first production deployment renders the home page, a content page,
-   a country/region page, a tool, and `/sitemap.xml` (the full sitemap — it must
-   return 200 `application/xml`, not a 404).
-4. Point the custom domain and configure DNS.
+1. Import the GitHub repo into Netlify via the Git integration.
+2. Accept the auto-detected Next.js settings. Build command `npm run build`;
+   leave the publish directory **blank**. No env vars required — leave
+   `NEXT_PUBLIC_SITE_URL` unset so previews emit production canonicals.
+3. Verify the first `*.netlify.app` deployment renders the home page, a content
+   page, a country/region page, a tool, and `/sitemap.xml` (the full sitemap —
+   it must return 200 `application/xml`, not a 404).
+4. Only after that passes, add the custom domain and change DNS to the records
+   Netlify displays. Do not guess DNS values in advance.
 5. Submit `/sitemap.xml` to Search Console / Bing Webmaster (and IndexNow if
    used) — **only after** the user decides to.
+
+The full sequence, including TLS/redirect verification and rollback, is in
+[`netlify-deployment.md`](netlify-deployment.md).
 
 ## What is verified before hosting
 

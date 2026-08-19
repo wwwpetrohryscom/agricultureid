@@ -42,3 +42,6 @@ next-env.d.ts
 /test-results/
 /playwright-report/
 /playwright/.cache/
+
+# Netlify CLI local state (site link, local build output)
+.netlify/

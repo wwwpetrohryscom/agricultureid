@@ -1,0 +1,61 @@
+# Netlify build configuration for AgricultureID.
+#
+# Deliberately minimal. Netlify auto-detects Next.js and applies the official
+# OpenNext adapter (github.com/opennextjs/opennextjs-netlify), which handles
+# static assets, the prerendered route cache, and the serverless functions for
+# the two searchParams-driven routes (/search, /compare/custom).
+#
+# Intentionally NOT set here, and why:
+#
+#   publish          The Next.js adapter sets the publish directory itself.
+#                    Hardcoding it — especially to "out" — would break the
+#                    build: this project does NOT use `output: 'export'`, and
+#                    cannot, because /search and /compare/custom are rendered
+#                    on demand from searchParams.
+#
+#   [[plugins]]      Netlify advises against pinning @netlify/plugin-nextjs so
+#                    the adapter is updated automatically on each build. The
+#                    legacy runtime is only for Next.js < 13.5; this is 15.5.
+#
+#   NODE_VERSION     `.nvmrc` (checked in, = 20) already pins Node and takes
+#                    precedence over the Netlify UI. A second declaration here
+#                    would be a conflicting source of truth.
+#
+#   production       next.config.mjs `headers()` is the single canonical path
+#   headers          for security headers and is fully supported by the
+#                    adapter. Duplicating them here would create two places to
+#                    drift out of sync.
+#
+#   redirects /      The app defines none, in next.config or anywhere else, and
+#   rewrites         all public URLs are unchanged by this migration. Note that
+#                    a blanket SPA rewrite (`/* /index.html 200`) must never be
+#                    added — it breaks Next.js routing on the adapter.
+
+[build]
+  # Explicit rather than relying on auto-detection, so the repository — not the
+  # Netlify UI — is the source of truth for how production is built.
+  #
+  # `prebuild` runs first via the npm lifecycle and regenerates
+  # public/search-index.json from the corpus, so a stale index can never ship
+  # and a failure there fails the deploy.
+  command = "npm run build"
+
+# --- Deploy Preview / branch deploy de-indexing -----------------------------
+#
+# Previews are served on public *.netlify.app URLs. app/robots.ts already
+# serves `Disallow: /` in these contexts; the header below is a second,
+# independent layer (robots.txt stops crawling, X-Robots-Tag stops indexing of
+# anything reached by a direct link).
+#
+# These blocks are CONTEXT-SCOPED: Netlify applies them only to the named
+# context, so the production deploy can never be de-indexed by them.
+
+[[context.deploy-preview.headers]]
+  for = "/*"
+  [context.deploy-preview.headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+
+[[context.branch-deploy.headers]]
+  for = "/*"
+  [context.branch-deploy.headers.values]
+    X-Robots-Tag = "noindex, nofollow"

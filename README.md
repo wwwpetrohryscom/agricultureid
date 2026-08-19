@@ -107,10 +107,22 @@ steps on every push and pull request to `main`.
 
 ## Deployment notes
 
-The project targets **Vercel** with zero required configuration. It uses static
-generation for all pages plus a small set of security headers (see
-`next.config.mjs`). Set `NEXT_PUBLIC_SITE_URL` if deploying to a non-production
-origin so canonical URLs and the sitemap resolve correctly.
+The project targets **Netlify** with zero required configuration — see
+[`docs/netlify-deployment.md`](docs/netlify-deployment.md) for the full
+operational reference (build settings, environment variables, DNS, rollback).
+
+Netlify auto-detects Next.js and applies the official OpenNext adapter; do not
+add `@netlify/plugin-nextjs`. Build command is `npm run build` (pinned in
+`netlify.toml`), Node 20 comes from `.nvmrc`, and the publish directory is left
+blank for the adapter to set. Most pages are prerendered; `/search` and
+`/compare/custom` render on demand from `searchParams`, so `output: 'export'` is
+not usable. Security headers live only in `next.config.mjs`.
+
+**No environment variables are required.** `NEXT_PUBLIC_SITE_URL` should stay
+unset in production so canonical URLs, the sitemap, and Open Graph resolve to
+`https://agricultureid.com` — including on Deploy Previews, which are kept out
+of the index by `app/robots.ts` and a context-scoped `X-Robots-Tag`. Set it only
+when serving a genuinely different origin.
 
 ### Analytics consent (GDPR/ePrivacy)
 
