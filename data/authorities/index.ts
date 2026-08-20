@@ -40,6 +40,28 @@ import { japanMaff } from './japan-maff';
 import { chinaMoa } from './china-moa';
 import { uaeMoccae } from './uae-moccae';
 import { usdaErs } from './united-states-ers';
+import { usCaCdfa } from './us-ca-cdfa';
+import { usFlFdacs } from './us-fl-fdacs';
+import { usIlAgr } from './us-il-agr';
+import { usInIsda } from './us-in-isda';
+import { usIaIdals } from './us-ia-idals';
+import { usMnMda } from './us-mn-mda';
+import { usNeNda } from './us-ne-nda';
+import { usSdDanr } from './us-sd-danr';
+import { usTxTda } from './us-tx-tda';
+import { usWaWsda } from './us-wa-wsda';
+import { usWiDatcp } from './us-wi-datcp';
+import { caAbAgi } from './ca-ab-agi';
+import { caBcAgf } from './ca-bc-agf';
+import { caMbAgr } from './ca-mb-agr';
+import { caQcMapaq } from './ca-qc-mapaq';
+import { caSkAgr } from './ca-sk-agr';
+import { auNswDpird } from './au-nsw-dpird';
+import { auQldDpi } from './au-qld-dpi';
+import { auSaPirsa } from './au-sa-pirsa';
+import { auTasNre } from './au-tas-nre';
+import { auVicAgvic } from './au-vic-agvic';
+import { auWaDpird } from './au-wa-dpird';
 
 export const AUTHORITIES: AgriculturalAuthorityEntry[] = [
   ecDgAgri,
@@ -73,4 +95,26 @@ export const AUTHORITIES: AgriculturalAuthorityEntry[] = [
   chinaMoa,
   uaeMoccae,
   usdaErs,
+  usCaCdfa,
+  usFlFdacs,
+  usIlAgr,
+  usInIsda,
+  usIaIdals,
+  usMnMda,
+  usNeNda,
+  usSdDanr,
+  usTxTda,
+  usWaWsda,
+  usWiDatcp,
+  caAbAgi,
+  caBcAgf,
+  caMbAgr,
+  caQcMapaq,
+  caSkAgr,
+  auNswDpird,
+  auQldDpi,
+  auSaPirsa,
+  auTasNre,
+  auVicAgvic,
+  auWaDpird,
 ];

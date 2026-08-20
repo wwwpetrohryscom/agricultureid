@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Container } from '@/components/ui/Container';
 import { Breadcrumbs } from '@/components/navigation/Breadcrumbs';
 import { SourceList } from '@/components/content/SourceList';
+import { RegionAuthorities } from '@/components/authorities/RegionAuthorities';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { webPageSchema } from '@/lib/schema/jsonld';
 import { pageBreadcrumbs } from '@/lib/seo/breadcrumbs';
@@ -194,6 +195,11 @@ export default async function RegionPage({ params }: Params) {
         <p className="mt-2 text-sm leading-7 text-ink-700">{r.dataCoverage}</p>
         <List items={r.limitations} />
       </section>
+
+      {/* Verified authorities for this jurisdiction. Registry-driven and
+          renders nothing when none is verified, so a region page never
+          implies an authority exists where none was confirmed. */}
+      <RegionAuthorities regionId={r.regionId} />
 
       <SourceList references={r.sourceReferences} />
     </Container>

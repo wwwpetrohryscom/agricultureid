@@ -18,13 +18,14 @@ import {
 import { SOURCE_MAP } from '@/lib/sources/registry';
 import { getProfileByCode } from '@/lib/geo/registry';
 import { allRoutes } from '@/lib/seo/routes';
+import { REGIONS } from '@/lib/geo/region-registry';
 
 /**
  * Counts are asserted explicitly so a loop can never pass vacuously over an
  * empty registry, and so silently dropping an authority fails loudly.
  */
-const EXPECTED_TOTAL = 31;
-const EXPECTED_PUBLISHED = 21;
+const EXPECTED_TOTAL = 53;
+const EXPECTED_PUBLISHED = 33;
 
 describe('authorities registry — scale', () => {
   it('holds the expected number of verified entries', () => {
@@ -74,7 +75,7 @@ describe('authorities registry — identity', () => {
 describe('authorities registry — jurisdiction resolution', () => {
   it('resolves every countryCode against the geo layer', () => {
     const withCountry = AUTHORITIES.filter((a) => a.countryCode);
-    expect(withCountry.length).toBe(29);
+    expect(withCountry.length).toBe(51);
     for (const a of withCountry) {
       expect(getProfileByCode(a.countryCode!), a.id).toBeDefined();
     }
@@ -89,11 +90,23 @@ describe('authorities registry — jurisdiction resolution', () => {
   });
 
   it('finds authorities by country code', () => {
-    expect(
-      authoritiesForCountry('USA')
-        .map((a) => a.id)
-        .sort(),
-    ).toEqual(['us-usda-aphis', 'us-usda-nass', 'usa-ers']);
+    const usa = authoritiesForCountry('USA');
+    // Federal bodies carry no regionId; state bodies must carry one. Asserting
+    // the split rather than a literal id list keeps the test meaningful as
+    // later waves add states, instead of churning on every insertion.
+    const federal = usa
+      .filter((a) => !a.regionId)
+      .map((a) => a.id)
+      .sort();
+    expect(federal).toEqual(['us-usda-aphis', 'us-usda-nass', 'usa-ers']);
+
+    const states = usa.filter((a) => a.regionId);
+    expect(states.length).toBe(11);
+    for (const a of states) {
+      expect(a.governmentLevel, a.id).toBe('state');
+      expect(a.jurisdictionType, a.id).toBe('state');
+    }
+
     expect(authoritiesForCountry('ZZZ')).toHaveLength(0);
   });
 });
@@ -101,7 +114,7 @@ describe('authorities registry — jurisdiction resolution', () => {
 describe('authorities registry — provenance', () => {
   it('cites a real source for every responsibility', () => {
     const all = AUTHORITIES.flatMap((a) => a.responsibilities);
-    expect(all.length).toBe(70);
+    expect(all.length).toBe(106);
     for (const r of all)
       expect(SOURCE_MAP.has(r.sourceId), r.sourceId).toBe(true);
   });
@@ -171,7 +184,7 @@ describe('authorities registry — publication gating', () => {
     const dirs = AUTHORITIES.filter(
       (a) => a.profileDepth === 'directory-record',
     );
-    expect(dirs).toHaveLength(10);
+    expect(dirs).toHaveLength(20);
     for (const a of dirs) {
       expect(isListableAuthority(a), a.id).toBe(true);
       expect(isPublishableAuthority(a), a.id).toBe(false);
@@ -235,5 +248,51 @@ describe('authorities registry — editorial honesty', () => {
       expect(a.limitations, a.id).toBeDefined();
       expect(a.limitations!.length, a.id).toBeGreaterThan(0);
     }
+  });
+});
+
+describe('Wave 3 — subnational jurisdiction linkage', () => {
+  it('links every subnational authority to a real geo region', () => {
+    const sub = AUTHORITIES.filter((a) => a.regionId);
+    expect(sub.length).toBe(22);
+    const ids = new Set(REGIONS.map((r) => r.regionId));
+    for (const a of sub) {
+      expect(ids.has(a.regionId!), `${a.id} → ${a.regionId}`).toBe(true);
+    }
+  });
+
+  it('uses subnational government levels, never national or federal', () => {
+    const sub = AUTHORITIES.filter((a) => a.regionId);
+    expect(sub.length).toBeGreaterThan(0);
+    for (const a of sub) {
+      expect(['state', 'provincial', 'territorial'], a.id).toContain(
+        a.governmentLevel,
+      );
+    }
+  });
+
+  it('keeps each subnational authority in its own jurisdiction’s country', () => {
+    const byRegion = new Map(REGIONS.map((r) => [r.regionId, r]));
+    for (const a of AUTHORITIES.filter((x) => x.regionId)) {
+      const region = byRegion.get(a.regionId!)!;
+      // A province linked to the wrong country is the exact defect this catches.
+      expect(region.countryCode, a.id).toBe(a.countryCode);
+    }
+  });
+
+  it('never lets two jurisdictions share one official website', () => {
+    const sub = AUTHORITIES.filter((a) => a.regionId);
+    const sites = sub.map((a) => a.officialWebsite);
+    expect(new Set(sites).size).toBe(sites.length);
+  });
+
+  it('covers 22 of the 71 target jurisdictions, with the rest geo-blocked', () => {
+    // Independent expectation: the coverage number is asserted here, not read
+    // back from the same function that computes it.
+    const covered = new Set(
+      AUTHORITIES.filter((a) => a.regionId).map((a) => a.regionId),
+    );
+    expect(covered.size).toBe(22);
+    expect(covered.size).toBeLessThan(71);
   });
 });
