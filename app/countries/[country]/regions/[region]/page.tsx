@@ -199,7 +199,7 @@ export default async function RegionPage({ params }: Params) {
       {/* Verified authorities for this jurisdiction. Registry-driven and
           renders nothing when none is verified, so a region page never
           implies an authority exists where none was confirmed. */}
-      <RegionAuthorities regionId={r.regionId} />
+      <RegionAuthorities jurisdictionId={r.officialCode} />
 
       <SourceList references={r.sourceReferences} />
     </Container>

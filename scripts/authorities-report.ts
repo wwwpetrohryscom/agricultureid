@@ -32,7 +32,7 @@ console.log(
   `  Supranational bodies      ${AUTHORITIES.filter((a) => a.governmentLevel === 'supranational').length}`,
 );
 console.log(
-  `  Subnational bodies        ${AUTHORITIES.filter((a) => a.regionId).length}`,
+  `  Subnational bodies        ${AUTHORITIES.filter((a) => a.jurisdictionId).length}`,
 );
 console.log(
   `  Cited responsibilities    ${AUTHORITIES.reduce((n, a) => n + a.responsibilities.length, 0)}`,

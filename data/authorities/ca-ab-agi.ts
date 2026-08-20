@@ -14,7 +14,7 @@ export const caAbAgi: AgriculturalAuthorityEntry = {
   governmentLevel: 'provincial',
   jurisdictionType: 'province',
   countryCode: 'CAN',
-  regionId: 'alberta',
+  jurisdictionId: 'CA-AB',
   jurisdictionName: 'Alberta',
   authorityStatus: 'active',
   officialWebsite: 'https://www.alberta.ca/agriculture-and-irrigation',

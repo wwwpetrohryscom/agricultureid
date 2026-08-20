@@ -14,7 +14,7 @@ export const caSkAgr: AgriculturalAuthorityEntry = {
   governmentLevel: 'provincial',
   jurisdictionType: 'province',
   countryCode: 'CAN',
-  regionId: 'saskatchewan',
+  jurisdictionId: 'CA-SK',
   jurisdictionName: 'Saskatchewan',
   authorityStatus: 'active',
   officialWebsite:

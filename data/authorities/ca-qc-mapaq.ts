@@ -16,7 +16,7 @@ export const caQcMapaq: AgriculturalAuthorityEntry = {
   governmentLevel: 'provincial',
   jurisdictionType: 'province',
   countryCode: 'CAN',
-  regionId: 'quebec',
+  jurisdictionId: 'CA-QC',
   jurisdictionName: 'Quebec',
   authorityStatus: 'active',
   officialWebsite:

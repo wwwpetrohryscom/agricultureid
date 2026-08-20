@@ -14,7 +14,7 @@ export const auWaDpird: AgriculturalAuthorityEntry = {
   governmentLevel: 'state',
   jurisdictionType: 'state',
   countryCode: 'AUS',
-  regionId: 'western-australia',
+  jurisdictionId: 'AU-WA',
   jurisdictionName: 'Western Australia',
   authorityStatus: 'active',
   officialWebsite: 'https://www.dpird.wa.gov.au',

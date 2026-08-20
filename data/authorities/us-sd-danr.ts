@@ -15,7 +15,7 @@ export const usSdDanr: AgriculturalAuthorityEntry = {
   governmentLevel: 'state',
   jurisdictionType: 'state',
   countryCode: 'USA',
-  regionId: 'south-dakota',
+  jurisdictionId: 'US-SD',
   jurisdictionName: 'South Dakota',
   authorityStatus: 'active',
   officialWebsite: 'https://danr.sd.gov',

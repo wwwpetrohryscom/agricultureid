@@ -338,8 +338,17 @@ export interface AgriculturalAuthorityEntry {
    * enforces in both directions.
    */
   countryCode?: string;
-  /** `regionId` from data/geo/regions, for subnational bodies. */
-  regionId?: string;
+  /**
+   * Canonical jurisdiction id (ISO 3166-2, e.g. `US-RI`) for subnational
+   * bodies. Replaces the former `regionId`, which pointed at a `RegionProfile`
+   * and so wrongly required substantive agronomy to exist before a state could
+   * be represented at all. Identity now resolves against
+   * `data/jurisdictions`; a `RegionProfile` is optional enrichment.
+   *
+   * There is deliberately no `regionId` fallback — one canonical field, no
+   * dual source of truth.
+   */
+  jurisdictionId?: string;
   /** Human-readable jurisdiction ("France", "State of Texas"). */
   jurisdictionName: string;
   /** Parent body's `id`, for agencies under a ministry. */

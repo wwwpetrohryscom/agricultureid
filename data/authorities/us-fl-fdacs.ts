@@ -14,7 +14,7 @@ export const usFlFdacs: AgriculturalAuthorityEntry = {
   governmentLevel: 'state',
   jurisdictionType: 'state',
   countryCode: 'USA',
-  regionId: 'florida',
+  jurisdictionId: 'US-FL',
   jurisdictionName: 'Florida',
   authorityStatus: 'active',
   officialWebsite: 'https://www.fdacs.gov',

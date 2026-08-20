@@ -14,7 +14,7 @@ export const usMnMda: AgriculturalAuthorityEntry = {
   governmentLevel: 'state',
   jurisdictionType: 'state',
   countryCode: 'USA',
-  regionId: 'minnesota',
+  jurisdictionId: 'US-MN',
   jurisdictionName: 'Minnesota',
   authorityStatus: 'active',
   officialWebsite: 'https://www.mda.state.mn.us',

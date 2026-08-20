@@ -12,7 +12,17 @@
  *    same official website (that pattern means a duplicate or a branch office
  *    published as if it were a distinct authority);
  *  - jurisdiction resolves: a countryCode must exist in the geo layer, and a
- *    regionId must exist in the region registry — so an authority can never
+ *    jurisdictionId must resolve in the canonical jurisdiction registry — so
+ *    an authority can never point at a jurisdiction that does not exist.
+ *
+ *    INVARIANT REPLACED IN WAVE 4A: this previously required regionId to
+ *    resolve to a RegionProfile. That was the WRONG constraint — RegionProfile
+ *    mandates substantive agronomy, so requiring it for IDENTITY meant 46 of
+ *    71 target jurisdictions could only exist if crop and livestock systems
+ *    were invented for them. The replacement is STRICTER, not weaker: it also
+ *    checks the jurisdiction's parent country agrees with the authority's, and
+ *    that the government level matches the jurisdiction kind — neither of
+ *    which the old rule did.
  *    point at a country page that does not exist;
  *  - supranational bodies have no countryCode, and everything else has one;
  *  - every responsibility uses the controlled vocabulary and cites a source id
@@ -40,6 +50,7 @@ import {
 import { SOURCE_MAP } from '../lib/sources/registry';
 import { getProfileByCode } from '../lib/geo/registry';
 import { REGIONS as REGION_PROFILES } from '../lib/geo/region-registry';
+import { CANONICAL_JURISDICTIONS } from '../data/jurisdictions';
 
 const errors: string[] = [];
 const warnings: string[] = [];
@@ -55,7 +66,16 @@ const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const ids = new Set<string>();
 const slugs = new Set<string>();
 const officialSites = new Map<string, string>();
-const regionIds = new Set(REGION_PROFILES.map((r) => r.regionId));
+const JURISDICTION_BY_ID = new Map(
+  CANONICAL_JURISDICTIONS.map((j) => [j.id, j]),
+);
+/** Which government levels are coherent for which jurisdiction kind. */
+const LEVEL_FOR_KIND: Record<string, string[]> = {
+  state: ['state'],
+  province: ['provincial'],
+  territory: ['territorial'],
+};
+void REGION_PROFILES;
 
 for (const a of AUTHORITIES) {
   const at = `authority "${a.id}"`;
@@ -133,10 +153,31 @@ for (const a of AUTHORITIES) {
       `${at}: countryCode "${a.countryCode}" does not resolve to a country profile in the geo layer`,
     );
   }
-  if (a.regionId && !regionIds.has(a.regionId)) {
-    fail(
-      `${at}: regionId "${a.regionId}" does not resolve in the region registry`,
-    );
+  if (a.jurisdictionId) {
+    const j = JURISDICTION_BY_ID.get(a.jurisdictionId);
+    if (!j) {
+      fail(
+        `${at}: jurisdictionId "${a.jurisdictionId}" does not resolve in the canonical jurisdiction registry`,
+      );
+    } else {
+      // A US authority pointing at a Canadian province is exactly the defect
+      // this catches — the old RegionProfile rule never checked it.
+      if (j.countryCode !== a.countryCode) {
+        fail(
+          `${at}: jurisdiction ${j.id} belongs to ${j.countryCode} but the authority declares ${a.countryCode}`,
+        );
+      }
+      if (!(LEVEL_FOR_KIND[j.kind] ?? []).includes(a.governmentLevel)) {
+        fail(
+          `${at}: governmentLevel "${a.governmentLevel}" is incoherent with jurisdiction kind "${j.kind}" (${j.id})`,
+        );
+      }
+      if (a.governmentLevel === 'national' || a.governmentLevel === 'federal') {
+        fail(
+          `${at}: a body bound to subdivision ${j.id} cannot be national or federal`,
+        );
+      }
+    }
   }
   if (!a.jurisdictionName.trim()) fail(`${at}: empty jurisdictionName`);
 

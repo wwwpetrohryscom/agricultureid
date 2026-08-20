@@ -14,7 +14,7 @@ export const auVicAgvic: AgriculturalAuthorityEntry = {
   governmentLevel: 'state',
   jurisdictionType: 'state',
   countryCode: 'AUS',
-  regionId: 'victoria',
+  jurisdictionId: 'AU-VIC',
   jurisdictionName: 'Victoria',
   authorityStatus: 'active',
   officialWebsite: 'https://agriculture.vic.gov.au',

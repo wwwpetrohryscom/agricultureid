@@ -14,7 +14,7 @@ export const usInIsda: AgriculturalAuthorityEntry = {
   governmentLevel: 'state',
   jurisdictionType: 'state',
   countryCode: 'USA',
-  regionId: 'indiana',
+  jurisdictionId: 'US-IN',
   jurisdictionName: 'Indiana',
   authorityStatus: 'active',
   officialWebsite: 'https://www.in.gov/isda/',

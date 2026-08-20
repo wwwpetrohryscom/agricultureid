@@ -18,7 +18,7 @@ export const auQldDpi: AgriculturalAuthorityEntry = {
   governmentLevel: 'state',
   jurisdictionType: 'state',
   countryCode: 'AUS',
-  regionId: 'queensland',
+  jurisdictionId: 'AU-QLD',
   jurisdictionName: 'Queensland',
   authorityStatus: 'active',
   officialWebsite: 'https://www.daf.qld.gov.au',

@@ -66,11 +66,28 @@ export function authoritiesForCountry(
   return listedAuthorities().filter((a) => a.countryCode === iso3);
 }
 
-/** Listed authorities for one region id from the geo layer. */
-export function authoritiesForRegion(
-  regionId: string,
+/**
+ * Listed authorities for one canonical jurisdiction (ISO 3166-2 id).
+ *
+ * Resolves against the jurisdiction registry, NOT against RegionProfile, so a
+ * state with no researched agronomy still surfaces its authority.
+ */
+export function authoritiesForJurisdiction(
+  jurisdictionId: string,
 ): AgriculturalAuthorityEntry[] {
-  return listedAuthorities().filter((a) => a.regionId === regionId);
+  return listedAuthorities().filter((a) => a.jurisdictionId === jurisdictionId);
+}
+
+/** All listed subnational authorities for a country, jurisdiction-grouped. */
+export function subnationalAuthoritiesByJurisdiction(
+  iso3: string,
+): Map<string, AgriculturalAuthorityEntry[]> {
+  const out = new Map<string, AgriculturalAuthorityEntry[]>();
+  for (const a of listedAuthorities()) {
+    if (!a.jurisdictionId || a.countryCode !== iso3) continue;
+    out.set(a.jurisdictionId, [...(out.get(a.jurisdictionId) ?? []), a]);
+  }
+  return out;
 }
 
 /** Supranational bodies, which belong to no single country. */
