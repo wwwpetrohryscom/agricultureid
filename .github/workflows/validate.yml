@@ -40,6 +40,9 @@ jobs:
       - name: Content validation
         run: npm run content:validate
 
+      - name: Ecosystem registry validation
+        run: npm run ecosystem:validate
+
       - name: Tests
         run: npm test
 
@@ -51,3 +54,6 @@ jobs:
 
       - name: Consent audit (no pre-consent tracker in built HTML)
         run: npm run consent:audit
+
+      - name: Ecosystem audit (real rendered HTML — one nav + all anchors per page)
+        run: npm run ecosystem:audit

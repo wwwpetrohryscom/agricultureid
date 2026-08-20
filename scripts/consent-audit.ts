@@ -15,15 +15,67 @@ import { join } from 'node:path';
 
 const APP_DIR = join(process.cwd(), '.next', 'server', 'app');
 
-/** Tokens that must never appear in server-rendered HTML before consent. */
+/**
+ * Tokens that must never appear in server-rendered HTML before consent.
+ *
+ * These identify the tracker ITSELF — its script file, its ingest endpoint,
+ * and the attributes/id of its script tag. Any one of them in the markup means
+ * analytics would load without an opt-in.
+ *
+ * The bare host `webmasterid.com` is deliberately NOT in this list. The global
+ * HELPERG ecosystem bar renders an ordinary navigation anchor to
+ * <https://webmasterid.com>, which is a sibling product's home page: an inert
+ * link that issues no request until a user chooses to click it. Matching the
+ * bare host flagged every page for that anchor while proving nothing about
+ * consent. The host is still fully covered — more precisely than before — by
+ * `hostIsLoaded()` below, which fails on any tag that would actually FETCH
+ * from the analytics origin (script src, or a preconnect/dns-prefetch/
+ * preload/prefetch resource hint). A link a user must click is not a load; a
+ * tag the browser acts on automatically is.
+ */
 const FORBIDDEN = [
   'tracker.iife.min.js',
-  'webmasterid.com',
   'webmasterid-ingest-api',
   'data-wmid',
   'data-endpoint',
   'webmasterid-tracker',
 ];
+
+/** The analytics origin's host, used for the load-shaped checks below. */
+const ANALYTICS_HOST = 'webmasterid.com';
+
+/**
+ * Does this document contain markup that would make the browser fetch from the
+ * analytics origin on its own — before any consent decision?
+ *
+ * Covers <script src>, and every resource hint that triggers a connection or
+ * download. Returns the offending kinds, empty when the document is clean.
+ */
+function analyticsLoads(html: string): string[] {
+  const found: string[] = [];
+
+  // Any <script> tag that references the analytics origin, in any attribute.
+  const scriptTags = html.match(/<script\b[^>]*>/gi) ?? [];
+  if (scriptTags.some((tag) => tag.toLowerCase().includes(ANALYTICS_HOST))) {
+    found.push('script referencing the analytics origin');
+  }
+
+  // Resource hints that open a connection or fetch ahead of time.
+  const linkTags = html.match(/<link\b[^>]*>/gi) ?? [];
+  for (const tag of linkTags) {
+    const lower = tag.toLowerCase();
+    if (!lower.includes(ANALYTICS_HOST)) continue;
+    if (
+      /rel=["']?(preconnect|dns-prefetch|preload|prefetch|modulepreload)/i.test(
+        tag,
+      )
+    ) {
+      found.push('resource hint to the analytics origin');
+    }
+  }
+
+  return found;
+}
 
 /** Representative pages that must expose the consent entry point. */
 const REPRESENTATIVE = [
@@ -69,9 +121,10 @@ function main(): void {
         `${file.replace(APP_DIR, '')} → ${hits.join(', ')}`,
       );
     }
-    // Preconnect / dns-prefetch to the analytics origin must not exist either.
-    if (/rel=["']?(preconnect|dns-prefetch)["']?[^>]*webmasterid/i.test(html)) {
-      trackerViolations.push(`${file.replace(APP_DIR, '')} → preconnect`);
+    // Anything that would actually FETCH from the analytics origin before a
+    // consent decision — script tags and resource hints alike.
+    for (const kind of analyticsLoads(html)) {
+      trackerViolations.push(`${file.replace(APP_DIR, '')} → ${kind}`);
     }
   }
 

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import '@/styles/globals.css';
 import { SiteHeader } from '@/components/layout/SiteHeader';
+import { EcosystemBar } from '@/components/ecosystem/EcosystemBar';
 import { SiteFooter } from '@/components/layout/SiteFooter';
 import { ConsentProvider } from '@/components/consent/ConsentProvider';
 import { JsonLd } from '@/components/seo/JsonLd';
@@ -65,6 +66,9 @@ export default function RootLayout({
           <a href="#main-content" className="skip-link">
             Skip to main content
           </a>
+          {/* Global HELPERG ecosystem layer. Mounted once here so it appears
+              on every public route; never add it per page. */}
+          <EcosystemBar />
           <SiteHeader />
           <main id="main-content" className="flex-1">
             {children}
