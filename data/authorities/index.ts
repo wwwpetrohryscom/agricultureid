@@ -20,6 +20,26 @@ import { spainMapa } from './spain-mapa';
 import { polandMrirw } from './poland-mrirw';
 import { netherlandsLvvn } from './netherlands-lvvn';
 import { efsa } from './efsa';
+import { ukraineMinagro } from './ukraine-minagro';
+import { saudiMewa } from './saudi-arabia-mewa';
+import { nzMpi } from './new-zealand-mpi';
+import { canadaCfia } from './canada-cfia';
+import { czechiaMze } from './czechia-mze';
+import { argentinaAgri } from './argentina-agricultura';
+import { brazilMapa } from './brazil-mapa';
+import { chileMinagri } from './chile-minagri';
+import { colombiaMinagri } from './colombia-minagricultura';
+import { peruMidagri } from './peru-midagri';
+import { turkiyeTarim } from './turkiye-tarim-orman';
+import { nigeriaFmafs } from './nigeria-fmafs';
+import { pakistanMnfsr } from './pakistan-mnfsr';
+import { indonesiaPertanian } from './indonesia-pertanian';
+import { ethiopiaMoa } from './ethiopia-moa';
+import { hungaryAm } from './hungary-agrarminiszterium';
+import { japanMaff } from './japan-maff';
+import { chinaMoa } from './china-moa';
+import { uaeMoccae } from './uae-moccae';
+import { usdaErs } from './united-states-ers';
 
 export const AUTHORITIES: AgriculturalAuthorityEntry[] = [
   ecDgAgri,
@@ -33,4 +53,24 @@ export const AUTHORITIES: AgriculturalAuthorityEntry[] = [
   netherlandsLvvn,
   usdaAphis,
   usdaNass,
+  ukraineMinagro,
+  saudiMewa,
+  nzMpi,
+  canadaCfia,
+  czechiaMze,
+  argentinaAgri,
+  brazilMapa,
+  chileMinagri,
+  colombiaMinagri,
+  peruMidagri,
+  turkiyeTarim,
+  nigeriaFmafs,
+  pakistanMnfsr,
+  indonesiaPertanian,
+  ethiopiaMoa,
+  hungaryAm,
+  japanMaff,
+  chinaMoa,
+  uaeMoccae,
+  usdaErs,
 ];
