@@ -24,8 +24,8 @@ import { CANONICAL_JURISDICTIONS } from '@/data/jurisdictions';
  * Counts are asserted explicitly so a loop can never pass vacuously over an
  * empty registry, and so silently dropping an authority fails loudly.
  */
-const EXPECTED_TOTAL = 53;
-const EXPECTED_PUBLISHED = 33;
+const EXPECTED_TOTAL = 58;
+const EXPECTED_PUBLISHED = 34;
 
 describe('authorities registry — scale', () => {
   it('holds the expected number of verified entries', () => {
@@ -75,7 +75,7 @@ describe('authorities registry — identity', () => {
 describe('authorities registry — jurisdiction resolution', () => {
   it('resolves every countryCode against the geo layer', () => {
     const withCountry = AUTHORITIES.filter((a) => a.countryCode);
-    expect(withCountry.length).toBe(51);
+    expect(withCountry.length).toBe(56);
     for (const a of withCountry) {
       expect(getProfileByCode(a.countryCode!), a.id).toBeDefined();
     }
@@ -101,7 +101,7 @@ describe('authorities registry — jurisdiction resolution', () => {
     expect(federal).toEqual(['us-usda-aphis', 'us-usda-nass', 'usa-ers']);
 
     const states = usa.filter((a) => a.jurisdictionId);
-    expect(states.length).toBe(11);
+    expect(states.length).toBe(16);
     for (const a of states) {
       expect(a.governmentLevel, a.id).toBe('state');
       expect(a.jurisdictionType, a.id).toBe('state');
@@ -114,7 +114,7 @@ describe('authorities registry — jurisdiction resolution', () => {
 describe('authorities registry — provenance', () => {
   it('cites a real source for every responsibility', () => {
     const all = AUTHORITIES.flatMap((a) => a.responsibilities);
-    expect(all.length).toBe(106);
+    expect(all.length).toBe(112);
     for (const r of all)
       expect(SOURCE_MAP.has(r.sourceId), r.sourceId).toBe(true);
   });
@@ -184,7 +184,7 @@ describe('authorities registry — publication gating', () => {
     const dirs = AUTHORITIES.filter(
       (a) => a.profileDepth === 'directory-record',
     );
-    expect(dirs).toHaveLength(20);
+    expect(dirs).toHaveLength(24);
     for (const a of dirs) {
       expect(isListableAuthority(a), a.id).toBe(true);
       expect(isPublishableAuthority(a), a.id).toBe(false);
@@ -254,7 +254,7 @@ describe('authorities registry — editorial honesty', () => {
 describe('Wave 3 — subnational jurisdiction linkage', () => {
   it('links every subnational authority to a canonical jurisdiction', () => {
     const sub = AUTHORITIES.filter((a) => a.jurisdictionId);
-    expect(sub.length).toBe(22);
+    expect(sub.length).toBe(27);
     const ids = new Set(CANONICAL_JURISDICTIONS.map((j) => j.id));
     for (const a of sub) {
       expect(ids.has(a.jurisdictionId!), `${a.id} → ${a.jurisdictionId}`).toBe(
@@ -296,7 +296,7 @@ describe('Wave 3 — subnational jurisdiction linkage', () => {
     const covered = new Set(
       AUTHORITIES.filter((a) => a.jurisdictionId).map((a) => a.jurisdictionId),
     );
-    expect(covered.size).toBe(22);
+    expect(covered.size).toBe(27);
     // Jurisdiction identity is complete even though authority evidence is not —
     // the two are separate metrics and this asserts they stay separate.
     expect(CANONICAL_JURISDICTIONS.length).toBe(71);

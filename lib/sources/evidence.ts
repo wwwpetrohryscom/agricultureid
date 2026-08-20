@@ -107,6 +107,12 @@ export const EVIDENCE_TIER: Record<string, EvidenceTier> = {
   'it-masaf': 1,
   'pl-minrol': 1,
   'nl-lvvn': 1,
+  // Wave 4A — additional US state authority sources.
+  'us-nc-ncdas': 1,
+  'us-pa-pda': 1,
+  'us-co-cda': 1,
+  'us-or-oda': 1,
+  'us-az-azda': 1,
   // Wave 3 — subnational authority sources.
   'us-ca-cdfa': 1,
   'us-fl-fdacs': 1,

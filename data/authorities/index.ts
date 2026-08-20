@@ -51,6 +51,11 @@ import { usSdDanr } from './us-sd-danr';
 import { usTxTda } from './us-tx-tda';
 import { usWaWsda } from './us-wa-wsda';
 import { usWiDatcp } from './us-wi-datcp';
+import { usNcNcdas } from './us-nc-ncdas';
+import { usPaPda } from './us-pa-pda';
+import { usCoCda } from './us-co-cda';
+import { usOrOda } from './us-or-oda';
+import { usAzAzda } from './us-az-azda';
 import { caAbAgi } from './ca-ab-agi';
 import { caBcAgf } from './ca-bc-agf';
 import { caMbAgr } from './ca-mb-agr';
@@ -117,4 +122,9 @@ export const AUTHORITIES: AgriculturalAuthorityEntry[] = [
   auTasNre,
   auVicAgvic,
   auWaDpird,
+  usNcNcdas,
+  usPaPda,
+  usCoCda,
+  usOrOda,
+  usAzAzda,
 ];
