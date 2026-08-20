@@ -97,6 +97,245 @@ export interface Benchmark {
 }
 
 export const BENCHMARKS: Benchmark[] = [
+  /* ---- Agricultural authorities (Wave 4B) --------------------------------
+   * These assert JURISDICTION PRECISION, which is the failure mode that
+   * matters: a national body has far stronger term frequency for "agriculture"
+   * than any state body, so without this the right answer for "Texas
+   * agriculture" is easily outranked by USDA-family records. Expectations
+   * below state the correct answer, not the observed one.
+   */
+  {
+    query: 'USDA APHIS',
+    titleIncludes: ['animal and plant health'],
+    types: ['agricultural-authority'],
+    kind: 'abbreviation',
+  },
+  {
+    query: 'national agricultural statistics service',
+    titleIncludes: ['national agricultural statistics'],
+    types: ['agricultural-authority'],
+    kind: 'exact',
+  },
+  {
+    query: 'BMLEH',
+    titleIncludes: ['landwirtschaft'],
+    types: ['agricultural-authority'],
+    kind: 'abbreviation',
+  },
+  {
+    query: 'MASAF',
+    titleIncludes: ['agricoltura'],
+    types: ['agricultural-authority'],
+    kind: 'abbreviation',
+  },
+  {
+    query: 'Defra',
+    titleIncludes: ['environment, food'],
+    types: ['agricultural-authority'],
+    kind: 'abbreviation',
+  },
+  {
+    query: 'MAPAQ',
+    titleIncludes: ['agriculture'],
+    types: ['agricultural-authority'],
+    kind: 'abbreviation',
+  },
+  {
+    query: 'agriculture ministry France',
+    titleIncludes: ['agriculture'],
+    types: ['agricultural-authority'],
+    kind: 'multiword',
+  },
+  {
+    query: 'Ukraine agrarian policy ministry',
+    titleIncludes: ['agrarian policy'],
+    types: ['agricultural-authority'],
+    kind: 'multiword',
+  },
+
+  // United States — jurisdiction precision.
+  {
+    query: 'California department of food and agriculture',
+    titleIncludes: ['california'],
+    types: ['agricultural-authority'],
+    kind: 'exact',
+  },
+  {
+    query: 'Texas department of agriculture',
+    titleIncludes: ['texas'],
+    types: ['agricultural-authority'],
+    kind: 'exact',
+  },
+  {
+    query: 'Florida agriculture consumer services',
+    titleIncludes: ['florida'],
+    types: ['agricultural-authority'],
+    kind: 'multiword',
+  },
+  {
+    query: 'Wisconsin agriculture trade consumer protection',
+    titleIncludes: ['wisconsin'],
+    types: ['agricultural-authority'],
+    kind: 'multiword',
+  },
+  {
+    query: 'Iowa agriculture land stewardship',
+    titleIncludes: ['iowa'],
+    types: ['agricultural-authority'],
+    kind: 'multiword',
+  },
+  {
+    query: 'South Dakota agriculture natural resources',
+    titleIncludes: ['south dakota'],
+    types: ['agricultural-authority'],
+    kind: 'multiword',
+  },
+  {
+    query: 'North Carolina agriculture',
+    titleIncludes: ['north carolina'],
+    types: ['agricultural-authority'],
+    kind: 'multiword',
+  },
+  {
+    query: 'Pennsylvania department of agriculture',
+    titleIncludes: ['pennsylvania'],
+    types: ['agricultural-authority'],
+    kind: 'exact',
+  },
+  {
+    query: 'Colorado department of agriculture',
+    titleIncludes: ['colorado'],
+    types: ['agricultural-authority'],
+    kind: 'exact',
+  },
+  {
+    query: 'Oregon department of agriculture',
+    titleIncludes: ['oregon'],
+    types: ['agricultural-authority'],
+    kind: 'exact',
+  },
+  {
+    query: 'Arizona department of agriculture',
+    titleIncludes: ['arizona'],
+    types: ['agricultural-authority'],
+    kind: 'exact',
+  },
+  {
+    query: 'Minnesota department of agriculture',
+    titleIncludes: ['minnesota'],
+    types: ['agricultural-authority'],
+    kind: 'exact',
+  },
+  {
+    query: 'Nebraska department of agriculture',
+    titleIncludes: ['nebraska'],
+    types: ['agricultural-authority'],
+    kind: 'exact',
+  },
+  {
+    query: 'Illinois department of agriculture',
+    titleIncludes: ['illinois'],
+    types: ['agricultural-authority'],
+    kind: 'exact',
+  },
+  {
+    query: 'Indiana state department of agriculture',
+    titleIncludes: ['indiana'],
+    types: ['agricultural-authority'],
+    kind: 'exact',
+  },
+  {
+    query: 'Washington state department of agriculture',
+    titleIncludes: ['washington'],
+    types: ['agricultural-authority'],
+    kind: 'exact',
+  },
+
+  // Canada.
+  {
+    query: 'Alberta agriculture and irrigation',
+    titleIncludes: ['agriculture and irrigation'],
+    types: ['agricultural-authority'],
+    kind: 'exact',
+  },
+  {
+    query: 'Saskatchewan ministry of agriculture',
+    titleIncludes: ['agriculture'],
+    types: ['agricultural-authority'],
+    kind: 'multiword',
+  },
+  {
+    query: 'Manitoba agriculture',
+    titleIncludes: ['manitoba'],
+    types: ['agricultural-authority'],
+    kind: 'exact',
+  },
+  {
+    query: 'British Columbia agriculture and food',
+    titleIncludes: ['agriculture and food'],
+    types: ['agricultural-authority'],
+    kind: 'multiword',
+  },
+  {
+    query: 'Canadian Food Inspection Agency',
+    titleIncludes: ['food inspection'],
+    types: ['agricultural-authority'],
+    kind: 'exact',
+  },
+
+  // Australia — machinery-of-government naming, not "department of agriculture".
+  {
+    query: 'NSW primary industries',
+    titleIncludes: ['primary industries'],
+    types: ['agricultural-authority'],
+    kind: 'abbreviation',
+  },
+  {
+    query: 'Queensland primary industries',
+    titleIncludes: ['primary industries'],
+    types: ['agricultural-authority'],
+    kind: 'multiword',
+  },
+  {
+    query: 'PIRSA',
+    titleIncludes: ['primary industries and regions'],
+    types: ['agricultural-authority'],
+    kind: 'abbreviation',
+  },
+  {
+    query: 'Agriculture Victoria',
+    titleIncludes: ['agriculture victoria'],
+    types: ['agricultural-authority'],
+    kind: 'exact',
+  },
+  {
+    query: 'Western Australia primary industries regional development',
+    titleIncludes: ['primary industries'],
+    types: ['agricultural-authority'],
+    kind: 'multiword',
+  },
+  {
+    query: 'Tasmania natural resources environment',
+    titleIncludes: ['natural resources'],
+    types: ['agricultural-authority'],
+    kind: 'multiword',
+  },
+
+  // Former names must still resolve to the CURRENT body, never a duplicate.
+  {
+    query: 'Queensland department of agriculture and fisheries',
+    titleIncludes: ['primary industries'],
+    types: ['agricultural-authority'],
+    kind: 'synonym',
+    note: 'Former name; must resolve to the current Department of Primary Industries.',
+  },
+  {
+    query: 'BMEL',
+    titleIncludes: ['landwirtschaft'],
+    types: ['agricultural-authority'],
+    kind: 'synonym',
+    note: 'Former German ministry name; must resolve to BMLEH.',
+  },
   /* ---- Exact entity lookups across every type ----------------------------- */
   { query: 'maize', titleIncludes: ['maize'], kind: 'exact' },
   { query: 'wheat', titleIncludes: ['wheat'], kind: 'exact' },

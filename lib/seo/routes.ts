@@ -7,6 +7,8 @@ import {
   publishedAuthorities,
   authorityPath,
   AUTHORITIES_HUB_PATH,
+  AUTHORITY_VIEW_COUNTRIES,
+  countryAuthoritiesPath,
 } from '@/lib/authorities/registry';
 import {
   countryPath,
@@ -258,12 +260,22 @@ export function sectionedRoutes(): Record<SitemapSection, RouteEntry[]> {
   // Agricultural authorities cluster. ONLY publishable bodies appear here:
   // directory records are verified but evidence-thin, so they are listed on the
   // hub without a detail page and must never enter the sitemap.
-  const authorityRoutes: RouteEntry[] = publishedAuthorities().map((a) => ({
-    path: authorityPath(a.slug),
-    lastModified: a.reviewedAt ?? SITE_LAST_UPDATED,
-    changeFrequency: 'monthly' as const,
-    priority: 0.6,
-  }));
+  const authorityRoutes: RouteEntry[] = [
+    // Country authority views are substantive canonical listings — they are the
+    // crawl path for jurisdictions that have no RegionProfile page.
+    ...AUTHORITY_VIEW_COUNTRIES.map((c) => ({
+      path: countryAuthoritiesPath(c.slug),
+      lastModified: SITE_LAST_UPDATED,
+      changeFrequency: 'monthly' as const,
+      priority: 0.6,
+    })),
+    ...publishedAuthorities().map((a) => ({
+      path: authorityPath(a.slug),
+      lastModified: a.reviewedAt ?? SITE_LAST_UPDATED,
+      changeFrequency: 'monthly' as const,
+      priority: 0.6,
+    })),
+  ];
 
   return {
     // Static, overview, reference, and legal pages.
