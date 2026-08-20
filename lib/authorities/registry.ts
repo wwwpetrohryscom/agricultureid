@@ -24,6 +24,26 @@ export function authorityPath(slug: string): string {
 export const AUTHORITIES_HUB_PATH = '/agricultural-authorities';
 
 /**
+ * Country-scoped authority view. This is the route a directory-only record
+ * points at: it is real, substantive and lists that record, so search can
+ * surface such a body without ever linking to a detail page that does not exist.
+ */
+export function countryAuthoritiesPath(countrySlug: string): string {
+  return `/countries/${countrySlug}/agricultural-authorities`;
+}
+
+/** Countries that have subnational authorities and therefore a country view. */
+export const AUTHORITY_VIEW_COUNTRIES: {
+  iso3: string;
+  slug: string;
+  name: string;
+}[] = [
+  { iso3: 'USA', slug: 'united-states', name: 'United States' },
+  { iso3: 'CAN', slug: 'canada', name: 'Canada' },
+  { iso3: 'AUS', slug: 'australia', name: 'Australia' },
+];
+
+/**
  * Bodies that get an indexable detail page: accepted, active, evidence-rich,
  * and verified against a domain that is not `uncertain`.
  */

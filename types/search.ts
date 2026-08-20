@@ -34,7 +34,8 @@ export type SearchEntityType =
   | 'glossary'
   | 'comparison'
   | 'region'
-  | 'agroecological-zone';
+  | 'agroecological-zone'
+  | 'agricultural-authority';
 
 /**
  * A published, indexable search document. Holds only the text needed for search

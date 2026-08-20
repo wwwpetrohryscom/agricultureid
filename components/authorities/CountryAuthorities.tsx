@@ -5,6 +5,8 @@ import {
   publishedAuthorities,
   humanizeToken,
   AUTHORITIES_HUB_PATH,
+  AUTHORITY_VIEW_COUNTRIES,
+  countryAuthoritiesPath,
 } from '@/lib/authorities/registry';
 
 /**
@@ -20,6 +22,9 @@ export function CountryAuthorities({ countryCode }: { countryCode: string }) {
   if (items.length === 0) return null;
 
   const publishedSlugs = new Set(publishedAuthorities().map((a) => a.slug));
+  // Countries with subnational authorities get a dedicated view; link there
+  // rather than dumping fifty states onto the country profile page.
+  const view = AUTHORITY_VIEW_COUNTRIES.find((c) => c.iso3 === countryCode);
 
   return (
     <section id="agricultural-authorities" className="mt-10">
@@ -56,12 +61,21 @@ export function CountryAuthorities({ countryCode }: { countryCode: string }) {
         })}
       </ul>
       <p className="mt-2 text-sm">
-        <Link
-          href={AUTHORITIES_HUB_PATH}
-          className="text-forest-700 hover:underline"
-        >
-          All agricultural authorities
-        </Link>
+        {view ? (
+          <Link
+            href={countryAuthoritiesPath(view.slug)}
+            className="text-forest-700 hover:underline"
+          >
+            All agricultural authorities in {view.name}
+          </Link>
+        ) : (
+          <Link
+            href={AUTHORITIES_HUB_PATH}
+            className="text-forest-700 hover:underline"
+          >
+            All agricultural authorities
+          </Link>
+        )}
       </p>
     </section>
   );

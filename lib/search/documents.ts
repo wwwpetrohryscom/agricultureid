@@ -19,6 +19,16 @@ import {
 import { countryPath, indicatorPath } from '@/lib/geo/paths';
 import type { RelationType } from '@/types/content';
 import type { SearchDoc, SearchEntityType } from '@/types/search';
+import {
+  listedAuthorities,
+  publishedAuthorities,
+  authorityPath,
+  countryAuthoritiesPath,
+  AUTHORITIES_HUB_PATH,
+  AUTHORITY_VIEW_COUNTRIES,
+  humanizeToken,
+} from '@/lib/authorities/registry';
+import { getJurisdiction } from '@/lib/jurisdictions/registry';
 
 const RELATION_LABEL: Partial<Record<RelationType, string>> = {
   affects: 'affects',
@@ -220,6 +230,76 @@ export function buildSearchDocuments(): SearchDoc[] {
     });
   }
 
+  // Agricultural authorities. Registry-driven: a new authority record appears
+  // in search with no switch to edit here, which is what keeps later research
+  // waves from silently missing the index.
+  const publishedSlugs = new Set(publishedAuthorities().map((a) => a.slug));
+  const countryViewBySlug = new Map(
+    AUTHORITY_VIEW_COUNTRIES.map((c) => [c.iso3, c]),
+  );
+  for (const a of listedAuthorities()) {
+    const hasProfile = publishedSlugs.has(a.slug);
+    const jurisdiction = a.jurisdictionId
+      ? getJurisdiction(a.jurisdictionId)
+      : undefined;
+    const countryView = a.countryCode
+      ? countryViewBySlug.get(a.countryCode)
+      : undefined;
+
+    // A directory-only record has no detail page, so it must never be given
+    // one here. It routes to the country authority view that really lists it,
+    // falling back to the hub for national bodies without a country view.
+    const route = hasProfile
+      ? authorityPath(a.slug)
+      : countryView
+        ? countryAuthoritiesPath(countryView.slug)
+        : AUTHORITIES_HUB_PATH;
+
+    // Names carry the weight. Jurisdiction name and code ride here so
+    // "Texas agriculture" and "CA agriculture department" both reach the right
+    // body rather than a generic national one.
+    const names = [
+      a.officialName,
+      ...(a.shortName ? [a.shortName] : []),
+      ...(a.alternativeNames ?? []),
+      ...(a.localLanguageNames ?? []).map((n) => n.name),
+      ...(jurisdiction
+        ? [
+            jurisdiction.name,
+            jurisdiction.subdivisionCode,
+            ...(jurisdiction.aliases ?? []),
+          ]
+        : []),
+      a.jurisdictionName,
+    ].filter(Boolean);
+
+    docs.push({
+      id: `authority:${a.id}`,
+      type: 'agricultural-authority',
+      route,
+      title: a.officialName,
+      names: [...new Set(names)],
+      category: hasProfile
+        ? `Agricultural authority · ${a.jurisdictionName}`
+        : `Agricultural authority (directory record) · ${a.jurisdictionName}`,
+      parent: a.jurisdictionName,
+      summary: a.summary,
+      country: a.countryCode,
+      region: a.jurisdictionId,
+      // Responsibilities are the "what does it actually do" signal; they are
+      // already evidence-backed, so they are safe to index as labels.
+      relationLabels: a.responsibilities.map((r) => humanizeToken(r.area)),
+      facets: {
+        entityType: ['agricultural-authority'],
+        category: [
+          humanizeToken(a.governmentLevel),
+          humanizeToken(a.authorityType),
+        ],
+        ...(a.countryCode ? { country: [a.countryCode] } : {}),
+      },
+    });
+  }
+
   // Tools.
   for (const t of TOOLS) {
     docs.push({
@@ -249,6 +329,7 @@ const ENTITY_TYPE_LABEL: Record<string, string> = {
   nutrient: 'Nutrient',
   fertilizer: 'Fertilizer',
   'soil-topic': 'Soil health',
+  'agricultural-authority': 'Agricultural authority',
   machinery: 'Machinery',
   climate: 'Climate',
   'farming-system': 'Farming system',

@@ -42,6 +42,8 @@ import {
   authoritiesForCountry,
   authorityPath,
   AUTHORITIES_HUB_PATH,
+  AUTHORITY_VIEW_COUNTRIES,
+  countryAuthoritiesPath,
 } from '@/lib/authorities/registry';
 
 export interface AuditIssue {
@@ -155,6 +157,20 @@ export function registryNavModel(): Map<string, Set<string>> {
     for (const a of authoritiesForCountry(p.countryCode)) {
       if (publishedAuthorities().some((x) => x.id === a.id)) {
         add(countryPath(p.slug), authorityPath(a.slug));
+      }
+    }
+  }
+  // Country authority views: reachable from the hub and from the country page,
+  // and themselves linking every published authority of that country. This is
+  // the crawl path for jurisdictions with no RegionProfile.
+  for (const c of AUTHORITY_VIEW_COUNTRIES) {
+    const view = countryAuthoritiesPath(c.slug);
+    add(AUTHORITIES_HUB_PATH, view);
+    add(countryPath(c.slug), view);
+    add(view, AUTHORITIES_HUB_PATH);
+    for (const a of authoritiesForCountry(c.iso3)) {
+      if (publishedAuthorities().some((x) => x.id === a.id)) {
+        add(view, authorityPath(a.slug));
       }
     }
   }
