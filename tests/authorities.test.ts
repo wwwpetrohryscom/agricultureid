@@ -23,8 +23,8 @@ import { allRoutes } from '@/lib/seo/routes';
  * Counts are asserted explicitly so a loop can never pass vacuously over an
  * empty registry, and so silently dropping an authority fails loudly.
  */
-const EXPECTED_TOTAL = 11;
-const EXPECTED_PUBLISHED = 6;
+const EXPECTED_TOTAL = 31;
+const EXPECTED_PUBLISHED = 21;
 
 describe('authorities registry — scale', () => {
   it('holds the expected number of verified entries', () => {
@@ -74,7 +74,7 @@ describe('authorities registry — identity', () => {
 describe('authorities registry — jurisdiction resolution', () => {
   it('resolves every countryCode against the geo layer', () => {
     const withCountry = AUTHORITIES.filter((a) => a.countryCode);
-    expect(withCountry.length).toBe(9);
+    expect(withCountry.length).toBe(29);
     for (const a of withCountry) {
       expect(getProfileByCode(a.countryCode!), a.id).toBeDefined();
     }
@@ -93,7 +93,7 @@ describe('authorities registry — jurisdiction resolution', () => {
       authoritiesForCountry('USA')
         .map((a) => a.id)
         .sort(),
-    ).toEqual(['us-usda-aphis', 'us-usda-nass']);
+    ).toEqual(['us-usda-aphis', 'us-usda-nass', 'usa-ers']);
     expect(authoritiesForCountry('ZZZ')).toHaveLength(0);
   });
 });
@@ -101,7 +101,7 @@ describe('authorities registry — jurisdiction resolution', () => {
 describe('authorities registry — provenance', () => {
   it('cites a real source for every responsibility', () => {
     const all = AUTHORITIES.flatMap((a) => a.responsibilities);
-    expect(all.length).toBe(32);
+    expect(all.length).toBe(70);
     for (const r of all)
       expect(SOURCE_MAP.has(r.sourceId), r.sourceId).toBe(true);
   });
@@ -171,7 +171,7 @@ describe('authorities registry — publication gating', () => {
     const dirs = AUTHORITIES.filter(
       (a) => a.profileDepth === 'directory-record',
     );
-    expect(dirs).toHaveLength(5);
+    expect(dirs).toHaveLength(10);
     for (const a of dirs) {
       expect(isListableAuthority(a), a.id).toBe(true);
       expect(isPublishableAuthority(a), a.id).toBe(false);

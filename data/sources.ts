@@ -1052,4 +1052,263 @@ export const SOURCES: Source[] = [
       'Dutch national ministry for agriculture, fisheries, food security and nature, published on the official rijksoverheid.nl government portal.',
     reliability: 'authoritative',
   },
+  {
+    id: 'ua-minagro',
+    organization: 'Ministry of Agrarian Policy and Food of Ukraine',
+    title: 'Ministry of Agrarian Policy and Food of Ukraine',
+    url: 'https://minagro.gov.ua/',
+    accessDate: ACCESS_AUTH,
+    sourceType: 'government',
+    jurisdiction: 'Ministry of Agrarian Policy and Food of Ukraine',
+    language: 'uk',
+    notes:
+      'Official national authority website, loaded and verified in a real browser during the Wave 2 verification pass.',
+    reliability: 'authoritative',
+  },
+  {
+    id: 'sa-mewa',
+    organization:
+      'Ministry of Environment, Water and Agriculture (MEWA), Saudi Arabia',
+    title:
+      'Ministry of Environment, Water and Agriculture (MEWA), Saudi Arabia',
+    url: 'https://www.mewa.gov.sa/en/',
+    accessDate: ACCESS_AUTH,
+    sourceType: 'government',
+    jurisdiction: 'Saudi Arabia',
+    language: 'ar',
+    notes:
+      'Official national authority website, loaded and verified in a real browser during the Wave 2 verification pass.',
+    reliability: 'authoritative',
+  },
+  {
+    id: 'nz-mpi',
+    organization: 'Ministry for Primary Industries (MPI), New Zealand',
+    title: 'Ministry for Primary Industries (MPI), New Zealand',
+    url: 'https://www.mpi.govt.nz/',
+    accessDate: ACCESS_AUTH,
+    sourceType: 'government',
+    jurisdiction: 'New Zealand',
+    language: 'en',
+    notes:
+      'Official national authority website, loaded and verified in a real browser during the Wave 2 verification pass.',
+    reliability: 'authoritative',
+  },
+  {
+    id: 'ca-cfia',
+    organization: 'Canadian Food Inspection Agency (CFIA)',
+    title: 'Canadian Food Inspection Agency (CFIA)',
+    url: 'https://inspection.canada.ca/en',
+    accessDate: ACCESS_AUTH,
+    sourceType: 'government',
+    jurisdiction: 'Canadian Food Inspection Agency (CFIA)',
+    language: 'en',
+    notes:
+      'Official national authority website, loaded and verified in a real browser during the Wave 2 verification pass.',
+    reliability: 'authoritative',
+  },
+  {
+    id: 'cz-mze',
+    organization: 'Ministerstvo zemědělství České republiky',
+    title: 'Ministerstvo zemědělství České republiky',
+    url: 'https://mze.gov.cz/public/portal/mze/',
+    accessDate: ACCESS_AUTH,
+    sourceType: 'government',
+    jurisdiction: 'Ministerstvo zemědělství České republiky',
+    language: 'cs',
+    notes:
+      'Official national authority website, loaded and verified in a real browser during the Wave 2 verification pass.',
+    reliability: 'authoritative',
+  },
+  {
+    id: 'ar-agri',
+    organization:
+      'Agricultura, Ganadería y Pesca, Ministerio de Economía, Argentina',
+    title: 'Agricultura, Ganadería y Pesca, Ministerio de Economía, Argentina',
+    url: 'https://www.argentina.gob.ar/economia/agricultura',
+    accessDate: ACCESS_AUTH,
+    sourceType: 'government',
+    jurisdiction: 'Argentina',
+    language: 'es',
+    notes:
+      'Official national authority website, loaded and verified in a real browser during the Wave 2 verification pass.',
+    reliability: 'authoritative',
+  },
+  {
+    id: 'br-mapa',
+    organization: 'Ministério da Agricultura e Pecuária (MAPA), Brazil',
+    title: 'Ministério da Agricultura e Pecuária (MAPA), Brazil',
+    url: 'https://www.gov.br/agricultura/pt-br',
+    accessDate: ACCESS_AUTH,
+    sourceType: 'government',
+    jurisdiction: 'Brazil',
+    language: 'pt',
+    notes:
+      'Official national authority website, loaded and verified in a real browser during the Wave 2 verification pass.',
+    reliability: 'authoritative',
+  },
+  {
+    id: 'cl-minagri',
+    organization: 'Ministerio de Agricultura de Chile',
+    title: 'Ministerio de Agricultura de Chile',
+    url: 'https://minagri.gob.cl/',
+    accessDate: ACCESS_AUTH,
+    sourceType: 'government',
+    jurisdiction: 'Ministerio de Agricultura de Chile',
+    language: 'es',
+    notes:
+      'Official national authority website, loaded and verified in a real browser during the Wave 2 verification pass.',
+    reliability: 'authoritative',
+  },
+  {
+    id: 'co-minagri',
+    organization: 'Ministerio de Agricultura y Desarrollo Rural, Colombia',
+    title: 'Ministerio de Agricultura y Desarrollo Rural, Colombia',
+    url: 'https://www.minagricultura.gov.co/',
+    accessDate: ACCESS_AUTH,
+    sourceType: 'government',
+    jurisdiction: 'Colombia',
+    language: 'es',
+    notes:
+      'Official national authority website, loaded and verified in a real browser during the Wave 2 verification pass.',
+    reliability: 'authoritative',
+  },
+  {
+    id: 'pe-midagri',
+    organization: 'Ministerio de Desarrollo Agrario y Riego (MIDAGRI), Peru',
+    title: 'Ministerio de Desarrollo Agrario y Riego (MIDAGRI), Peru',
+    url: 'https://www.gob.pe/midagri',
+    accessDate: ACCESS_AUTH,
+    sourceType: 'government',
+    jurisdiction: 'Peru',
+    language: 'es',
+    notes:
+      'Official national authority website, loaded and verified in a real browser during the Wave 2 verification pass.',
+    reliability: 'authoritative',
+  },
+  {
+    id: 'tr-tarim',
+    organization:
+      'T.C. Tarım ve Orman Bakanlığı (Ministry of Agriculture and Forestry), Türkiye',
+    title:
+      'T.C. Tarım ve Orman Bakanlığı (Ministry of Agriculture and Forestry), Türkiye',
+    url: 'https://www.tarimorman.gov.tr/',
+    accessDate: ACCESS_AUTH,
+    sourceType: 'government',
+    jurisdiction: 'Türkiye',
+    language: 'tr',
+    notes:
+      'Official national authority website, loaded and verified in a real browser during the Wave 2 verification pass.',
+    reliability: 'authoritative',
+  },
+  {
+    id: 'ng-fmafs',
+    organization: 'Federal Ministry of Agriculture and Food Security, Nigeria',
+    title: 'Federal Ministry of Agriculture and Food Security, Nigeria',
+    url: 'https://agriculture.gov.ng/',
+    accessDate: ACCESS_AUTH,
+    sourceType: 'government',
+    jurisdiction: 'Nigeria',
+    language: 'en',
+    notes:
+      'Official national authority website, loaded and verified in a real browser during the Wave 2 verification pass.',
+    reliability: 'authoritative',
+  },
+  {
+    id: 'pk-mnfsr',
+    organization: 'Ministry of National Food Security & Research, Pakistan',
+    title: 'Ministry of National Food Security & Research, Pakistan',
+    url: 'https://mnfsr.gov.pk/',
+    accessDate: ACCESS_AUTH,
+    sourceType: 'government',
+    jurisdiction: 'Pakistan',
+    language: 'en',
+    notes:
+      'Official national authority website, loaded and verified in a real browser during the Wave 2 verification pass.',
+    reliability: 'authoritative',
+  },
+  {
+    id: 'id-pertanian',
+    organization: 'Kementerian Pertanian Republik Indonesia',
+    title: 'Kementerian Pertanian Republik Indonesia',
+    url: 'https://www.pertanian.go.id/',
+    accessDate: ACCESS_AUTH,
+    sourceType: 'government',
+    jurisdiction: 'Kementerian Pertanian Republik Indonesia',
+    language: 'id',
+    notes:
+      'Official national authority website, loaded and verified in a real browser during the Wave 2 verification pass.',
+    reliability: 'authoritative',
+  },
+  {
+    id: 'et-moa',
+    organization:
+      'Ministry of Agriculture, Federal Democratic Republic of Ethiopia',
+    title: 'Ministry of Agriculture, Federal Democratic Republic of Ethiopia',
+    url: 'https://www.moa.gov.et/',
+    accessDate: ACCESS_AUTH,
+    sourceType: 'government',
+    jurisdiction: 'Federal Democratic Republic of Ethiopia',
+    language: 'am',
+    notes:
+      'Official national authority website, loaded and verified in a real browser during the Wave 2 verification pass.',
+    reliability: 'authoritative',
+  },
+  {
+    id: 'hu-am',
+    organization: 'Agrárminisztérium, Hungary',
+    title: 'Agrárminisztérium, Hungary',
+    url: 'https://kormany.hu/kormanyzat/agrarminiszterium',
+    accessDate: ACCESS_AUTH,
+    sourceType: 'government',
+    jurisdiction: 'Hungary',
+    language: 'hu',
+    notes:
+      'Official national authority website, loaded and verified in a real browser during the Wave 2 verification pass.',
+    reliability: 'authoritative',
+  },
+  {
+    id: 'jp-maff',
+    organization:
+      'Ministry of Agriculture, Forestry and Fisheries (MAFF), Japan',
+    title: 'Ministry of Agriculture, Forestry and Fisheries (MAFF), Japan',
+    url: 'https://www.maff.go.jp/',
+    accessDate: ACCESS_AUTH,
+    sourceType: 'government',
+    jurisdiction: 'Japan',
+    language: 'ja',
+    notes:
+      'Official national authority website, loaded and verified in a real browser during the Wave 2 verification pass.',
+    reliability: 'authoritative',
+  },
+  {
+    id: 'cn-mara',
+    organization:
+      'Ministry of Agriculture and Rural Affairs of the People’s Republic of China',
+    title:
+      'Ministry of Agriculture and Rural Affairs of the People’s Republic of China',
+    url: 'https://www.moa.gov.cn/',
+    accessDate: ACCESS_AUTH,
+    sourceType: 'government',
+    jurisdiction:
+      'Ministry of Agriculture and Rural Affairs of the People’s Republic of China',
+    language: 'zh',
+    notes:
+      'Official national authority website, loaded and verified in a real browser during the Wave 2 verification pass.',
+    reliability: 'authoritative',
+  },
+  {
+    id: 'ae-moccae',
+    organization:
+      'Ministry of Climate Change and Environment (MOCCAE), United Arab Emirates',
+    title:
+      'Ministry of Climate Change and Environment (MOCCAE), United Arab Emirates',
+    url: 'https://www.moccae.gov.ae/ar/home',
+    accessDate: ACCESS_AUTH,
+    sourceType: 'government',
+    jurisdiction: 'United Arab Emirates',
+    language: 'ar',
+    notes:
+      'Official national authority website, loaded and verified in a real browser during the Wave 2 verification pass.',
+    reliability: 'authoritative',
+  },
 ];
