@@ -14,7 +14,7 @@ export const usNeNda: AgriculturalAuthorityEntry = {
   governmentLevel: 'state',
   jurisdictionType: 'state',
   countryCode: 'USA',
-  regionId: 'nebraska',
+  jurisdictionId: 'US-NE',
   jurisdictionName: 'Nebraska',
   authorityStatus: 'active',
   officialWebsite: 'https://nda.nebraska.gov',

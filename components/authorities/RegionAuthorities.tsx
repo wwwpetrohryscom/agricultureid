@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import {
-  authoritiesForRegion,
+  authoritiesForJurisdiction,
   authorityPath,
   publishedAuthorities,
   humanizeToken,
@@ -18,8 +18,12 @@ import {
  * link, because they have no detail page. That is the whole point of the
  * two-tier model: useful on the region page without a thin route.
  */
-export function RegionAuthorities({ regionId }: { regionId: string }) {
-  const items = authoritiesForRegion(regionId);
+export function RegionAuthorities({
+  jurisdictionId,
+}: {
+  jurisdictionId: string;
+}) {
+  const items = authoritiesForJurisdiction(jurisdictionId);
   if (items.length === 0) return null;
 
   const published = new Set(publishedAuthorities().map((a) => a.slug));

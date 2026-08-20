@@ -14,7 +14,7 @@ export const usIaIdals: AgriculturalAuthorityEntry = {
   governmentLevel: 'state',
   jurisdictionType: 'state',
   countryCode: 'USA',
-  regionId: 'iowa',
+  jurisdictionId: 'US-IA',
   jurisdictionName: 'Iowa',
   authorityStatus: 'active',
   officialWebsite: 'https://iowaagriculture.gov',

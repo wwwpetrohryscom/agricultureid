@@ -14,7 +14,7 @@ export const usTxTda: AgriculturalAuthorityEntry = {
   governmentLevel: 'state',
   jurisdictionType: 'state',
   countryCode: 'USA',
-  regionId: 'texas',
+  jurisdictionId: 'US-TX',
   jurisdictionName: 'Texas',
   authorityStatus: 'active',
   officialWebsite: 'https://www.texasagriculture.gov',

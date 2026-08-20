@@ -14,7 +14,7 @@ export const caMbAgr: AgriculturalAuthorityEntry = {
   governmentLevel: 'provincial',
   jurisdictionType: 'province',
   countryCode: 'CAN',
-  regionId: 'manitoba',
+  jurisdictionId: 'CA-MB',
   jurisdictionName: 'Manitoba',
   authorityStatus: 'active',
   officialWebsite: 'https://www.gov.mb.ca/agriculture/',

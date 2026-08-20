@@ -15,7 +15,7 @@ export const auNswDpird: AgriculturalAuthorityEntry = {
   governmentLevel: 'state',
   jurisdictionType: 'state',
   countryCode: 'AUS',
-  regionId: 'new-south-wales',
+  jurisdictionId: 'AU-NSW',
   jurisdictionName: 'New South Wales',
   authorityStatus: 'active',
   officialWebsite: 'https://www.dpi.nsw.gov.au',

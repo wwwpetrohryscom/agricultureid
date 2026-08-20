@@ -14,7 +14,7 @@ export const auSaPirsa: AgriculturalAuthorityEntry = {
   governmentLevel: 'state',
   jurisdictionType: 'state',
   countryCode: 'AUS',
-  regionId: 'south-australia',
+  jurisdictionId: 'AU-SA',
   jurisdictionName: 'South Australia',
   authorityStatus: 'active',
   officialWebsite: 'https://pir.sa.gov.au',

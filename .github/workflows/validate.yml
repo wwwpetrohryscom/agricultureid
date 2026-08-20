@@ -43,6 +43,9 @@ jobs:
       - name: Ecosystem registry validation
         run: npm run ecosystem:validate
 
+      - name: Canonical jurisdiction validation
+        run: npm run jurisdictions:validate
+
       - name: Agricultural authorities validation
         run: npm run authorities:validate
 

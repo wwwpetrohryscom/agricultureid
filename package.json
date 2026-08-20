@@ -36,11 +36,12 @@
     "seo:rendered": "tsx scripts/rendered-link-audit.ts",
     "consent:audit": "tsx scripts/consent-audit.ts",
     "authorities:validate": "tsx scripts/authorities-validate.ts",
+    "jurisdictions:validate": "tsx scripts/jurisdictions-validate.ts",
     "authorities:report": "tsx scripts/authorities-report.ts",
     "authorities:health": "tsx -e \"import { AUTHORITIES } from './data/authorities'; for (const a of AUTHORITIES) console.log(a.id + ' ' + a.officialWebsite);\" | node scripts/authorities-health.mjs",
     "ecosystem:validate": "tsx scripts/ecosystem-validate.ts",
     "ecosystem:audit": "tsx scripts/ecosystem-audit.ts",
-    "validate": "npm run format:check && npm run typecheck && npm run lint && npm run content:validate && npm run ecosystem:validate && npm run authorities:validate && npm run test",
+    "validate": "npm run format:check && npm run typecheck && npm run lint && npm run content:validate && npm run ecosystem:validate && npm run jurisdictions:validate && npm run authorities:validate && npm run test",
     "authorities:discover": "node scripts/authorities-discover.mjs",
     "authorities:ledger": "tsx scripts/authorities-ledger.ts",
     "authorities:coverage": "tsx scripts/authorities-coverage.ts"

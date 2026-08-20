@@ -14,7 +14,7 @@ export const usIlAgr: AgriculturalAuthorityEntry = {
   governmentLevel: 'state',
   jurisdictionType: 'state',
   countryCode: 'USA',
-  regionId: 'illinois',
+  jurisdictionId: 'US-IL',
   jurisdictionName: 'Illinois',
   authorityStatus: 'active',
   officialWebsite: 'https://agr.illinois.gov',

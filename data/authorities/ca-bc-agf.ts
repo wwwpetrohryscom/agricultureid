@@ -14,7 +14,7 @@ export const caBcAgf: AgriculturalAuthorityEntry = {
   governmentLevel: 'provincial',
   jurisdictionType: 'province',
   countryCode: 'CAN',
-  regionId: 'british-columbia',
+  jurisdictionId: 'CA-BC',
   jurisdictionName: 'British Columbia',
   authorityStatus: 'active',
   officialWebsite:

@@ -16,7 +16,7 @@ export const usWiDatcp: AgriculturalAuthorityEntry = {
   governmentLevel: 'state',
   jurisdictionType: 'state',
   countryCode: 'USA',
-  regionId: 'wisconsin',
+  jurisdictionId: 'US-WI',
   jurisdictionName: 'Wisconsin',
   authorityStatus: 'active',
   officialWebsite: 'https://datcp.wi.gov',

@@ -14,7 +14,7 @@ export const usWaWsda: AgriculturalAuthorityEntry = {
   governmentLevel: 'state',
   jurisdictionType: 'state',
   countryCode: 'USA',
-  regionId: 'washington',
+  jurisdictionId: 'US-WA',
   jurisdictionName: 'Washington',
   authorityStatus: 'active',
   officialWebsite: 'https://agr.wa.gov',

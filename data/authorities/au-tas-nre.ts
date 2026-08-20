@@ -14,7 +14,7 @@ export const auTasNre: AgriculturalAuthorityEntry = {
   governmentLevel: 'state',
   jurisdictionType: 'state',
   countryCode: 'AUS',
-  regionId: 'tasmania',
+  jurisdictionId: 'AU-TAS',
   jurisdictionName: 'Tasmania',
   authorityStatus: 'active',
   officialWebsite: 'https://nre.tas.gov.au',

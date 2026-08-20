@@ -18,7 +18,7 @@ import {
 import { SOURCE_MAP } from '@/lib/sources/registry';
 import { getProfileByCode } from '@/lib/geo/registry';
 import { allRoutes } from '@/lib/seo/routes';
-import { REGIONS } from '@/lib/geo/region-registry';
+import { CANONICAL_JURISDICTIONS } from '@/data/jurisdictions';
 
 /**
  * Counts are asserted explicitly so a loop can never pass vacuously over an
@@ -95,12 +95,12 @@ describe('authorities registry — jurisdiction resolution', () => {
     // the split rather than a literal id list keeps the test meaningful as
     // later waves add states, instead of churning on every insertion.
     const federal = usa
-      .filter((a) => !a.regionId)
+      .filter((a) => !a.jurisdictionId)
       .map((a) => a.id)
       .sort();
     expect(federal).toEqual(['us-usda-aphis', 'us-usda-nass', 'usa-ers']);
 
-    const states = usa.filter((a) => a.regionId);
+    const states = usa.filter((a) => a.jurisdictionId);
     expect(states.length).toBe(11);
     for (const a of states) {
       expect(a.governmentLevel, a.id).toBe('state');
@@ -252,17 +252,19 @@ describe('authorities registry — editorial honesty', () => {
 });
 
 describe('Wave 3 — subnational jurisdiction linkage', () => {
-  it('links every subnational authority to a real geo region', () => {
-    const sub = AUTHORITIES.filter((a) => a.regionId);
+  it('links every subnational authority to a canonical jurisdiction', () => {
+    const sub = AUTHORITIES.filter((a) => a.jurisdictionId);
     expect(sub.length).toBe(22);
-    const ids = new Set(REGIONS.map((r) => r.regionId));
+    const ids = new Set(CANONICAL_JURISDICTIONS.map((j) => j.id));
     for (const a of sub) {
-      expect(ids.has(a.regionId!), `${a.id} → ${a.regionId}`).toBe(true);
+      expect(ids.has(a.jurisdictionId!), `${a.id} → ${a.jurisdictionId}`).toBe(
+        true,
+      );
     }
   });
 
   it('uses subnational government levels, never national or federal', () => {
-    const sub = AUTHORITIES.filter((a) => a.regionId);
+    const sub = AUTHORITIES.filter((a) => a.jurisdictionId);
     expect(sub.length).toBeGreaterThan(0);
     for (const a of sub) {
       expect(['state', 'provincial', 'territorial'], a.id).toContain(
@@ -272,16 +274,18 @@ describe('Wave 3 — subnational jurisdiction linkage', () => {
   });
 
   it('keeps each subnational authority in its own jurisdiction’s country', () => {
-    const byRegion = new Map(REGIONS.map((r) => [r.regionId, r]));
-    for (const a of AUTHORITIES.filter((x) => x.regionId)) {
-      const region = byRegion.get(a.regionId!)!;
+    const byId = new Map(CANONICAL_JURISDICTIONS.map((j) => [j.id, j]));
+    const sub = AUTHORITIES.filter((x) => x.jurisdictionId);
+    expect(sub.length).toBeGreaterThan(0);
+    for (const a of sub) {
+      const j = byId.get(a.jurisdictionId!)!;
       // A province linked to the wrong country is the exact defect this catches.
-      expect(region.countryCode, a.id).toBe(a.countryCode);
+      expect(j.countryCode, a.id).toBe(a.countryCode);
     }
   });
 
   it('never lets two jurisdictions share one official website', () => {
-    const sub = AUTHORITIES.filter((a) => a.regionId);
+    const sub = AUTHORITIES.filter((a) => a.jurisdictionId);
     const sites = sub.map((a) => a.officialWebsite);
     expect(new Set(sites).size).toBe(sites.length);
   });
@@ -290,9 +294,12 @@ describe('Wave 3 — subnational jurisdiction linkage', () => {
     // Independent expectation: the coverage number is asserted here, not read
     // back from the same function that computes it.
     const covered = new Set(
-      AUTHORITIES.filter((a) => a.regionId).map((a) => a.regionId),
+      AUTHORITIES.filter((a) => a.jurisdictionId).map((a) => a.jurisdictionId),
     );
     expect(covered.size).toBe(22);
-    expect(covered.size).toBeLessThan(71);
+    // Jurisdiction identity is complete even though authority evidence is not —
+    // the two are separate metrics and this asserts they stay separate.
+    expect(CANONICAL_JURISDICTIONS.length).toBe(71);
+    expect(covered.size).toBeLessThan(CANONICAL_JURISDICTIONS.length);
   });
 });

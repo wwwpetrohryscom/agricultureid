@@ -14,6 +14,7 @@
  */
 import { AUTHORITIES } from '../data/authorities';
 import { REGIONS } from '../lib/geo/region-registry';
+import { CANONICAL_JURISDICTIONS } from '../data/jurisdictions';
 import { isPublishableAuthority } from '../types/authority';
 
 /** Independent target lists. Written out, not derived. */
@@ -101,13 +102,16 @@ const TARGETS: [string, string[]][] = [
   ['AUS', AU_JURISDICTIONS],
 ];
 
-const regionByName = new Map(REGIONS.map((r) => [r.name, r]));
-const authoritiesByRegion = new Map<string, typeof AUTHORITIES>();
+const jurisdictionByName = new Map(
+  CANONICAL_JURISDICTIONS.map((j) => [j.name, j]),
+);
+const hasProfile = new Set(REGIONS.map((r) => r.officialCode));
+const authoritiesByJurisdiction = new Map<string, typeof AUTHORITIES>();
 for (const a of AUTHORITIES) {
-  if (!a.regionId) continue;
-  const list = authoritiesByRegion.get(a.regionId) ?? [];
+  if (!a.jurisdictionId) continue;
+  const list = authoritiesByJurisdiction.get(a.jurisdictionId) ?? [];
   list.push(a);
-  authoritiesByRegion.set(a.regionId, list);
+  authoritiesByJurisdiction.set(a.jurisdictionId, list);
 }
 
 console.log('\nWave 3 — subnational jurisdiction coverage\n');
@@ -121,23 +125,21 @@ for (const [cc, names] of TARGETS) {
   let covered = 0;
   const rows: string[] = [];
   for (const name of names) {
-    const region = regionByName.get(name);
-    const auths = region
-      ? (authoritiesByRegion.get(region.regionId) ?? [])
-      : [];
+    const j = jurisdictionByName.get(name);
+    const auths = j ? (authoritiesByJurisdiction.get(j.id) ?? []) : [];
     const hasAuthority = auths.length > 0;
     if (hasAuthority) covered++;
-    if (!region) blockedByGeo++;
+    if (!j) blockedByGeo++;
 
     const state = hasAuthority
       ? auths.some((a) => isPublishableAuthority(a))
         ? 'profile'
         : 'directory'
-      : region
-        ? 'DEFERRED (verification)'
-        : 'BLOCKED (no geo region)';
+      : j
+        ? 'DEFERRED (authority evidence)'
+        : 'MISSING JURISDICTION';
     rows.push(
-      `    ${name.padEnd(26)} ${region ? region.officialCode.padEnd(8) : '—'.padEnd(8)} ${state}`,
+      `    ${name.padEnd(26)} ${(j?.id ?? '—').padEnd(8)} ${(j && hasProfile.has(j.id) ? 'profile' : '—').padEnd(8)} ${state}`,
     );
     if (!hasAuthority) missingDetail.push(`${cc}/${name}: ${state}`);
   }
@@ -148,7 +150,7 @@ for (const [cc, names] of TARGETS) {
   console.log('');
 }
 
-const subnational = AUTHORITIES.filter((a) => a.regionId);
+const subnational = AUTHORITIES.filter((a) => a.jurisdictionId);
 console.log(`  TOTAL: ${totalCovered} / ${totalTargets}`);
 console.log(`  Subnational authority records:  ${subnational.length}`);
 console.log(
@@ -157,15 +159,19 @@ console.log(
 console.log(
   `  …directory-only:                ${subnational.filter((a) => !isPublishableAuthority(a)).length}`,
 );
-console.log(`  Blocked by missing geo region:  ${blockedByGeo}`);
 console.log(
-  `  Deferred after verification:    ${totalTargets - totalCovered - blockedByGeo}`,
+  `  Canonical jurisdictions:        ${CANONICAL_JURISDICTIONS.length} / ${totalTargets}`,
 );
 console.log(
-  '\n  A jurisdiction marked BLOCKED has no RegionProfile in data/geo/regions.\n' +
-    '  RegionProfile requires climateContext, agroecologicalZones,\n' +
-    '  agriculturalLandContext, majorCropSystems, majorLivestockSystems,\n' +
-    '  irrigationContext, dataCoverage and limitations — all mandatory\n' +
-    '  agricultural content. Creating those to unlock an authority would mean\n' +
-    '  fabricating agronomy, so they are reported, not invented.\n',
+  `  …with a RegionProfile:          ${CANONICAL_JURISDICTIONS.filter((j) => hasProfile.has(j.id)).length}  (optional enrichment)`,
+);
+console.log(`  Missing jurisdiction identity:  ${blockedByGeo}`);
+console.log(
+  `  Deferred on authority evidence: ${totalTargets - totalCovered - blockedByGeo}`,
+);
+console.log(
+  '\n  Jurisdiction identity and authority evidence are SEPARATE metrics.\n' +
+    '  The profile column shows whether a jurisdiction also has a rich\n' +
+    '  RegionProfile. That is optional enrichment: it is NOT required for an\n' +
+    '  authority to exist, and is never created merely to unlock one.\n',
 );

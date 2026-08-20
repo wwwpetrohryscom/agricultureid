@@ -14,7 +14,7 @@ export const usCaCdfa: AgriculturalAuthorityEntry = {
   governmentLevel: 'state',
   jurisdictionType: 'state',
   countryCode: 'USA',
-  regionId: 'california',
+  jurisdictionId: 'US-CA',
   jurisdictionName: 'California',
   authorityStatus: 'active',
   officialWebsite: 'https://www.cdfa.ca.gov',
