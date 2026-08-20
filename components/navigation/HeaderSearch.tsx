@@ -75,7 +75,7 @@ export function HeaderSearch({ items }: HeaderSearchProps) {
       {open && (
         <div
           id="site-search-panel"
-          className="fixed left-4 right-4 top-16 z-50 rounded-md border border-ink-100 bg-white p-3 shadow-card sm:absolute sm:left-auto sm:right-0 sm:top-12 sm:w-[min(22rem,calc(100vw-2rem))]"
+          className="fixed left-4 right-4 top-[calc(var(--ecosystem-bar-h)+4rem)] z-50 rounded-md border border-ink-100 bg-white p-3 shadow-card sm:absolute sm:left-auto sm:right-0 sm:top-12 sm:w-[min(22rem,calc(100vw-2rem))]"
         >
           <label htmlFor="site-search-input" className="sr-only">
             Search routes and reference entries

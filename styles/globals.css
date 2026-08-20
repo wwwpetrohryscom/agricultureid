@@ -5,6 +5,44 @@
 @layer base {
   :root {
     --content-width: 78rem;
+
+    /*
+     * Height of the global HELPERG ecosystem bar. Declared ONCE here and
+     * consumed wherever a layer must line up beneath it, so the height can be
+     * changed in a single place without hunting for hardcoded offsets.
+     *
+     * 2.75rem (44px) on small screens keeps the disclosure triggers at a
+     * comfortable touch size; 2.25rem (36px) from `sm` up keeps the bar
+     * visually restrained on desktop.
+     */
+    --ecosystem-bar-h: 2.75rem;
+  }
+
+  @media (min-width: 640px) {
+    :root {
+      --ecosystem-bar-h: 2.25rem;
+    }
+  }
+
+  /*
+   * Deterministic stacking order for the fixed/sticky layers. Kept together so
+   * the hierarchy is reviewable in one place:
+   *
+   *   60  skip link            must never be obscured when focused
+   *   50  dialogs / overlays   consent banner, consent preferences, search panel
+   *   45  ecosystem bar        highest *navigation* layer
+   *   40  site header          sits directly beneath the ecosystem bar
+   *   0   page content         normal flow
+   */
+
+  /*
+   * The ecosystem bar is sticky, so an in-page anchor target scrolled to the
+   * top of the viewport would sit underneath it. Offset every scroll target by
+   * the bar height rather than adding manual padding at each call site.
+   */
+  :target,
+  [id] {
+    scroll-margin-top: calc(var(--ecosystem-bar-h) + 0.5rem);
   }
 
   html {
@@ -57,7 +95,7 @@
     @apply sr-only;
   }
   .skip-link:focus {
-    @apply not-sr-only fixed left-4 top-4 z-50 rounded-md bg-forest-700 px-4 py-2 text-sm font-semibold text-white;
+    @apply not-sr-only fixed left-4 top-4 z-[60] rounded-md bg-forest-700 px-4 py-2 text-sm font-semibold text-white;
   }
 
   /* Long-form article typography. Kept deliberate and readable. */
