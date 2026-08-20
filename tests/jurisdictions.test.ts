@@ -190,7 +190,7 @@ describe('canonical jurisdictions — identity is independent of agronomy', () =
 describe('authority → jurisdiction migration integrity', () => {
   it('migrated all 22 subnational records and lost none', () => {
     const sub = AUTHORITIES.filter((a) => a.jurisdictionId);
-    expect(sub).toHaveLength(27);
+    expect(sub).toHaveLength(45);
   });
 
   it('leaves no record carrying the retired regionId field', () => {
@@ -206,7 +206,7 @@ describe('authority → jurisdiction migration integrity', () => {
   it('binds every subnational authority to an existing jurisdiction in its own country', () => {
     const byId = new Map(CANONICAL_JURISDICTIONS.map((j) => [j.id, j]));
     const sub = AUTHORITIES.filter((a) => a.jurisdictionId);
-    expect(sub.length).toBe(27);
+    expect(sub.length).toBe(45);
     for (const a of sub) {
       const j = byId.get(a.jurisdictionId!);
       expect(j, `${a.id} → ${a.jurisdictionId}`).toBeDefined();
