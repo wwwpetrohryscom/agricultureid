@@ -37,6 +37,12 @@ import {
 import { contentBreadcrumbs } from '@/lib/seo/breadcrumbs';
 import { SECTIONS, CONTENT_TYPE_ROUTE, FOOTER_HREFS } from '@/lib/site';
 import type { AnyContent, ContentBlock } from '@/types/content';
+import {
+  publishedAuthorities,
+  authoritiesForCountry,
+  authorityPath,
+  AUTHORITIES_HUB_PATH,
+} from '@/lib/authorities/registry';
 
 export interface AuditIssue {
   level: 'error' | 'warning';
@@ -135,6 +141,23 @@ export function registryNavModel(): Map<string, Set<string>> {
   }
   // The countries hub also groups profiles under their World Bank macro-region.
   for (const r of regionProfiles()) add('/countries', wbRegionPath(r.slug));
+
+  // Agricultural authorities: the hub lists every published profile, and each
+  // country page carries a section linking the authorities for that country.
+  // Directory records are deliberately absent — they are listed on the hub but
+  // have no page, so they are not indexable and must not appear here.
+  for (const a of publishedAuthorities()) {
+    add(AUTHORITIES_HUB_PATH, authorityPath(a.slug));
+    // Every profile links back to its jurisdiction and to the hub.
+    add(authorityPath(a.slug), AUTHORITIES_HUB_PATH);
+  }
+  for (const p of COUNTRY_PROFILES) {
+    for (const a of authoritiesForCountry(p.countryCode)) {
+      if (publishedAuthorities().some((x) => x.id === a.id)) {
+        add(countryPath(p.slug), authorityPath(a.slug));
+      }
+    }
+  }
 
   // Data-methodology page is linked from the data overview/registry pages.
   for (const from of ['/agricultural-data', '/datasets', '/data-health']) {

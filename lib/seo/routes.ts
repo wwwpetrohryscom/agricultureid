@@ -4,6 +4,11 @@ import { allSnapshots } from '@/lib/geo/snapshots';
 import { tradeSnapshot } from '@/lib/trade/snapshot';
 import { FAOSTAT_TRADE_DATASET_ID } from '@/lib/data-ops/registry';
 import {
+  publishedAuthorities,
+  authorityPath,
+  AUTHORITIES_HUB_PATH,
+} from '@/lib/authorities/registry';
+import {
   countryPath,
   datasetPath,
   datasetSlug,
@@ -77,6 +82,11 @@ const STATIC_ROUTES: Omit<RouteEntry, 'lastModified'>[] = [
   // Reference
   { path: '/glossary', changeFrequency: 'monthly', priority: 0.6 },
   { path: '/sources', changeFrequency: 'monthly', priority: 0.6 },
+  {
+    path: AUTHORITIES_HUB_PATH,
+    changeFrequency: 'monthly',
+    priority: 0.6,
+  },
   // Trust, editorial, legal
   { path: '/about', changeFrequency: 'yearly', priority: 0.4 },
   { path: '/editorial-policy', changeFrequency: 'yearly', priority: 0.4 },
@@ -102,6 +112,7 @@ export const SITEMAP_SECTIONS = [
   'trade',
   'geo',
   'tools',
+  'authorities',
 ] as const;
 export type SitemapSection = (typeof SITEMAP_SECTIONS)[number];
 
@@ -244,6 +255,16 @@ export function sectionedRoutes(): Record<SitemapSection, RouteEntry[]> {
     })),
   ];
 
+  // Agricultural authorities cluster. ONLY publishable bodies appear here:
+  // directory records are verified but evidence-thin, so they are listed on the
+  // hub without a detail page and must never enter the sitemap.
+  const authorityRoutes: RouteEntry[] = publishedAuthorities().map((a) => ({
+    path: authorityPath(a.slug),
+    lastModified: a.reviewedAt ?? SITE_LAST_UPDATED,
+    changeFrequency: 'monthly' as const,
+    priority: 0.6,
+  }));
+
   return {
     // Static, overview, reference, and legal pages.
     pages: staticRoutes,
@@ -264,6 +285,8 @@ export function sectionedRoutes(): Record<SitemapSection, RouteEntry[]> {
     geo: [...geoRoutes, ...zoneRoutes, ...regionRoutes],
     // Interactive + editorial: calculator tools and fixed comparisons.
     tools: [...toolRoutes, ...comparisonRoutes],
+    // Official agricultural authority profiles. The hub lives in `pages`.
+    authorities: authorityRoutes,
   };
 }
 
