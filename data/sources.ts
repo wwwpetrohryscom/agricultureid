@@ -16,6 +16,9 @@ const ACCESS_5D = '2026-07-16';
 /** Review date for the Phase 5E metrology cohort. */
 const ACCESS_5E = '2026-07-16';
 
+/** Verification pass for the agricultural-authorities cluster. */
+const ACCESS_AUTH = '2026-08-19';
+
 export const SOURCES: Source[] = [
   {
     id: 'fao',
@@ -948,6 +951,105 @@ export const SOURCES: Source[] = [
     language: 'en',
     notes:
       'Legal definitions of units and exact conversion factors (Handbook 44, Special Publication 811). Used for unit-conversion constants, which are exact by definition rather than measured.',
+    reliability: 'authoritative',
+  },
+  {
+    id: 'defra',
+    organization:
+      'Department for Environment, Food & Rural Affairs (Defra), United Kingdom',
+    title: 'Defra — Department for Environment, Food & Rural Affairs',
+    url: 'https://www.gov.uk/government/organisations/department-for-environment-food-rural-affairs',
+    accessDate: ACCESS_AUTH,
+    sourceType: 'government',
+    jurisdiction: 'United Kingdom',
+    language: 'en',
+    notes:
+      'UK ministerial department for the environment, food, farming and fisheries, published on the official GOV.UK organisations directory.',
+    reliability: 'authoritative',
+  },
+  {
+    id: 'fr-agriculture-gouv',
+    organization:
+      "Ministère de l'Agriculture, de l'Agro-alimentaire et de la Souveraineté alimentaire, France",
+    title: "Ministère de l'Agriculture — France",
+    url: 'https://agriculture.gouv.fr',
+    accessDate: ACCESS_AUTH,
+    sourceType: 'government',
+    jurisdiction: 'France',
+    language: 'fr',
+    notes:
+      'French national ministry responsible for agriculture, agri-food and food sovereignty, on the official .gouv.fr domain.',
+    reliability: 'authoritative',
+  },
+  {
+    id: 'de-bmleh',
+    organization:
+      'Bundesministerium für Landwirtschaft, Ernährung und Heimat (BMLEH), Germany',
+    title: 'BMLEH — Bundesministerium für Landwirtschaft, Ernährung und Heimat',
+    url: 'https://www.bmleh.de',
+    accessDate: ACCESS_AUTH,
+    sourceType: 'government',
+    jurisdiction: 'Germany',
+    language: 'de',
+    notes:
+      'German federal ministry for agriculture, food and rural affairs. Successor naming to the former BMEL; the previous bmel.de domain redirects here.',
+    reliability: 'authoritative',
+  },
+  {
+    id: 'es-mapa',
+    organization:
+      'Ministerio de Agricultura, Pesca y Alimentación (MAPA), Spain',
+    title: 'MAPA — Ministerio de Agricultura, Pesca y Alimentación',
+    url: 'https://www.mapa.gob.es',
+    accessDate: ACCESS_AUTH,
+    sourceType: 'government',
+    jurisdiction: 'Spain',
+    language: 'es',
+    notes:
+      'Spanish national ministry for agriculture, fisheries and food, on the official .gob.es domain.',
+    reliability: 'authoritative',
+  },
+  {
+    id: 'it-masaf',
+    organization:
+      "Ministero dell'agricoltura, della sovranità alimentare e delle foreste (MASAF), Italy",
+    title:
+      'MASAF — Ministero dell’agricoltura, della sovranità alimentare e delle foreste',
+    url: 'https://www.masaf.gov.it',
+    accessDate: ACCESS_AUTH,
+    sourceType: 'government',
+    jurisdiction: 'Italy',
+    language: 'it',
+    notes:
+      'Italian national ministry for agriculture, food sovereignty and forests. The former politicheagricole.it domain redirects here.',
+    reliability: 'authoritative',
+  },
+  {
+    id: 'pl-minrol',
+    organization: 'Ministerstwo Rolnictwa i Rozwoju Wsi, Poland',
+    title: 'Ministerstwo Rolnictwa i Rozwoju Wsi — Poland',
+    url: 'https://www.gov.pl/web/rolnictwo',
+    accessDate: ACCESS_AUTH,
+    sourceType: 'government',
+    jurisdiction: 'Poland',
+    language: 'pl',
+    notes:
+      'Polish national ministry of agriculture and rural development, published on the official gov.pl government portal.',
+    reliability: 'authoritative',
+  },
+  {
+    id: 'nl-lvvn',
+    organization:
+      'Ministerie van Landbouw, Visserij, Voedselzekerheid en Natuur (LVVN), Netherlands',
+    title:
+      'LVVN — Ministerie van Landbouw, Visserij, Voedselzekerheid en Natuur',
+    url: 'https://www.rijksoverheid.nl/ministeries/ministerie-van-landbouw-visserij-voedselzekerheid-en-natuur',
+    accessDate: ACCESS_AUTH,
+    sourceType: 'government',
+    jurisdiction: 'Netherlands',
+    language: 'nl',
+    notes:
+      'Dutch national ministry for agriculture, fisheries, food security and nature, published on the official rijksoverheid.nl government portal.',
     reliability: 'authoritative',
   },
 ];

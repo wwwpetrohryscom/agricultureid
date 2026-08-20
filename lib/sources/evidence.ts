@@ -99,6 +99,14 @@ export const EVIDENCE_TIER: Record<string, EvidenceTier> = {
   // Phase 5E — metrology. Unit conversion factors are legal definitions, not
   // measurements, so the defining authority is the right (and only) citation.
   nist: 1,
+  // Agricultural-authorities cluster — official national government sources.
+  defra: 1,
+  'fr-agriculture-gouv': 1,
+  'de-bmleh': 1,
+  'es-mapa': 1,
+  'it-masaf': 1,
+  'pl-minrol': 1,
+  'nl-lvvn': 1,
   // Tier 3 — general secondary references
   rhs: 3,
   britannica: 3,

@@ -16,6 +16,7 @@ import { INDICATOR_BY_ID } from '@/data/geo/indicators';
 import { countryPath } from '@/lib/geo/paths';
 import { regionsForCountry } from '@/lib/geo/region-registry';
 import type { CountryAgricultureProfile } from '@/types/geo';
+import { CountryAuthorities } from '@/components/authorities/CountryAuthorities';
 
 function Section({
   id,
@@ -245,6 +246,11 @@ export function CountryProfileView({
           </ul>
         </Section>
       )}
+
+      {/* Verified official agricultural authorities for this country. Renders
+          nothing when the registry holds none, so no country page ever shows an
+          empty section or implies an authority exists where none is verified. */}
+      <CountryAuthorities countryCode={profile.countryCode} />
 
       {/* 8. Limitations */}
       <Section id="limitations" heading="Data coverage & limitations">

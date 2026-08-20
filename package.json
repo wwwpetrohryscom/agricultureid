@@ -2,7 +2,7 @@
   "name": "agricultureid",
   "version": "0.1.0",
   "private": true,
-  "description": "AgricultureID — Global Agriculture Knowledge and Intelligence Platform",
+  "description": "AgricultureID \u2014 Global Agriculture Knowledge and Intelligence Platform",
   "license": "MIT",
   "engines": {
     "node": ">=18.18.0"
@@ -35,9 +35,12 @@
     "seo:audit": "tsx scripts/seo-audit.ts",
     "seo:rendered": "tsx scripts/rendered-link-audit.ts",
     "consent:audit": "tsx scripts/consent-audit.ts",
+    "authorities:validate": "tsx scripts/authorities-validate.ts",
+    "authorities:report": "tsx scripts/authorities-report.ts",
+    "authorities:health": "tsx -e \"import { AUTHORITIES } from './data/authorities'; for (const a of AUTHORITIES) console.log(a.id + ' ' + a.officialWebsite);\" | node scripts/authorities-health.mjs",
     "ecosystem:validate": "tsx scripts/ecosystem-validate.ts",
     "ecosystem:audit": "tsx scripts/ecosystem-audit.ts",
-    "validate": "npm run format:check && npm run typecheck && npm run lint && npm run content:validate && npm run ecosystem:validate && npm run test"
+    "validate": "npm run format:check && npm run typecheck && npm run lint && npm run content:validate && npm run ecosystem:validate && npm run authorities:validate && npm run test"
   },
   "dependencies": {
     "next": "^15.1.6",

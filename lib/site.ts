@@ -387,6 +387,13 @@ export const SECTIONS: NavSection[] = [
     active: true,
   },
   {
+    label: 'Agricultural Authorities',
+    href: '/agricultural-authorities',
+    description:
+      'Official public bodies responsible for agriculture — ministries, departments, inspection and statistics authorities — verified against government sources.',
+    active: true,
+  },
+  {
     label: 'Sources',
     href: '/sources',
     description:
@@ -521,6 +528,7 @@ export const REFERENCE_NAV = SECTIONS.filter(
       '/compare',
       '/glossary',
       '/sources',
+      '/agricultural-authorities',
       '/data-health',
     ].includes(s.href),
 );
