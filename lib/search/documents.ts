@@ -73,6 +73,14 @@ import {
   observationCount,
 } from '@/lib/markets/registry';
 import { METRIC_LABEL } from '@/types/market';
+import {
+  EXTENSION_RESOURCES,
+  EXTENSION_HUB_PATH,
+  resourcesByTopic,
+  presentTopics,
+  EXTENSION_INSTITUTIONS,
+} from '@/lib/extension/registry';
+import { TOPIC_LABEL } from '@/types/extension';
 
 const RELATION_LABEL: Partial<Record<RelationType, string>> = {
   affects: 'affects',
@@ -648,6 +656,66 @@ export function buildSearchDocuments(): SearchDoc[] {
     });
   }
 
+  // Extension guidance. One document per TOPIC plus a hub — not one per
+  // resource: a resource document would have to route to an off-site page or to
+  // the hub, and both are worse than landing on the table that lists it.
+  if (EXTENSION_RESOURCES.length > 0) {
+    const byTopic = resourcesByTopic();
+    for (const topic of presentTopics()) {
+      const rows = byTopic.get(topic) ?? [];
+      if (!rows.length) continue;
+      const label = TOPIC_LABEL[topic];
+      const places = [
+        ...new Set(rows.map((r) => r.jurisdictionId ?? r.countryCode)),
+      ];
+      docs.push({
+        id: `extension:${topic}`,
+        type: 'extension-resource',
+        route: `${EXTENSION_HUB_PATH}#${topic}`,
+        title: `${label} extension guidance`,
+        names: [
+          `${label} extension`,
+          `${label} extension guide`,
+          `extension guidance ${label.toLowerCase()}`,
+        ],
+        category: 'Extension guidance',
+        summary: `${rows.length} official extension resource${rows.length === 1 ? '' : 's'} on ${label.toLowerCase()}, published for ${places.join(', ')}.`,
+        relationLabels: [
+          'extension guidance',
+          ...rows.flatMap((r) => [
+            ...r.cropRefs,
+            ...r.pestRefs,
+            ...r.diseaseRefs,
+          ]),
+        ],
+        facets: {
+          entityType: ['extension-resource'],
+          category: ['Extension guidance'],
+        },
+      });
+    }
+    docs.push({
+      id: 'extension:hub',
+      type: 'extension-resource',
+      route: EXTENSION_HUB_PATH,
+      title: 'Official extension resources',
+      names: [
+        'extension resources',
+        'extension guidance',
+        'cooperative extension',
+        'agronomy guidance',
+        'extension publications',
+      ],
+      category: 'Extension guidance',
+      summary: `${EXTENSION_RESOURCES.length} resources indexed from ${EXTENSION_INSTITUTIONS.length} publishers with verified public extension mandates.`,
+      relationLabels: EXTENSION_INSTITUTIONS.map((i) => i.officialName),
+      facets: {
+        entityType: ['extension-resource'],
+        category: ['Extension guidance'],
+      },
+    });
+  }
+
   // Tools.
   for (const t of TOOLS) {
     docs.push({
@@ -685,6 +753,7 @@ const ENTITY_TYPE_LABEL: Record<string, string> = {
   'biosecurity-listing': 'Biosecurity listing',
   'variety-registration': 'Variety registration',
   'market-data': 'Market data',
+  'extension-resource': 'Extension guidance',
   machinery: 'Machinery',
   climate: 'Climate',
   'farming-system': 'Farming system',

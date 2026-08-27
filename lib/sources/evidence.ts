@@ -116,6 +116,12 @@ export const EVIDENCE_TIER: Record<string, EvidenceTier> = {
   // Wave 9 — biosecurity listing sources.
   'eu-pvp-national-lists': 1,
   'eu-pvp-cpvo-rights': 1,
+  // Wave 12 — verified public extension publishers. Tier 2 by this repo's own
+  // hierarchy: extension and knowledge-exchange publications, not authorities
+  // or official registers, however public the publisher.
+  'ext-psu-extension': 2,
+  'ext-ncsu-extension': 2,
+  'ext-ahdb': 2,
   'eppo-a1-list': 1,
   'eppo-a2-list': 1,
   // Wave 8 — crop calendar sources.

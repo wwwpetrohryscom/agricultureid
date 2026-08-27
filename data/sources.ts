@@ -19,6 +19,7 @@ const ACCESS_5E = '2026-07-16';
 /** Verification pass for the agricultural-authorities cluster. */
 const ACCESS_AUTH = '2026-08-19';
 const ACCESS_VARIETY = '2026-08-27';
+const ACCESS_EXTENSION = '2026-08-27';
 
 export const SOURCES: Source[] = [
   {
@@ -2498,6 +2499,45 @@ export const SOURCES: Source[] = [
     notes:
       'State-by-state usual planting and harvesting dates for US field crops. The October 2010 edition is the latest published; its plain-text release file was downloaded and parsed during the Wave 8 pass. The vintage is recorded on every entry derived from it.',
     reliability: 'authoritative',
+  },
+  {
+    id: 'ext-psu-extension',
+    organization: 'Penn State Extension',
+    title: 'Penn State Extension',
+    url: 'https://extension.psu.edu/',
+    accessDate: ACCESS_EXTENSION,
+    sourceType: 'university-extension',
+    jurisdiction: 'Pennsylvania, United States',
+    language: 'en',
+    notes:
+      'Cooperative Extension of Pennsylvania\u2019s land-grant university. Penn State College of Agricultural Sciences describes it as building on the land-grant tradition; the extension site\u2019s own About page does not restate that basis. Articles carry a publisher-stated "Updated" date.',
+    reliability: 'high',
+  },
+  {
+    id: 'ext-ncsu-extension',
+    organization: 'NC State Extension',
+    title: 'NC State Extension Publications',
+    url: 'https://content.ces.ncsu.edu/',
+    accessDate: ACCESS_EXTENSION,
+    sourceType: 'university-extension',
+    jurisdiction: 'North Carolina, United States',
+    language: 'en',
+    notes:
+      'Cooperative Extension run by NC State University and N.C. A&T State University, staffing offices in all 100 North Carolina counties. Publications state no publication or revision date, so indexed resources carry none.',
+    reliability: 'high',
+  },
+  {
+    id: 'ext-ahdb',
+    organization: 'Agriculture and Horticulture Development Board',
+    title: 'AHDB Knowledge Library',
+    url: 'https://ahdb.org.uk/knowledge-library',
+    accessDate: ACCESS_EXTENSION,
+    sourceType: 'government',
+    jurisdiction: 'Great Britain',
+    language: 'en',
+    notes:
+      'Independent public body funded by a levy on British producers, with knowledge exchange among its statutory purposes. Levy sectors cover Great Britain, so guidance does not automatically apply in Northern Ireland. Knowledge Library entries state no date.',
+    reliability: 'high',
   },
   {
     id: 'eu-pvp-national-lists',

@@ -81,6 +81,10 @@ import {
   seriesForCommodity,
 } from '@/lib/markets/registry';
 import { getProfileByCode } from '@/lib/geo/registry';
+import {
+  EXTENSION_HUB_PATH,
+  entitiesWithResources,
+} from '@/lib/extension/registry';
 
 export interface AuditIssue {
   level: 'error' | 'warning';
@@ -314,6 +318,15 @@ export function registryNavModel(): Map<string, Set<string>> {
       add(`/countries/${profile.slug}`, marketPath);
       add(marketPath, `/countries/${profile.slug}`);
     }
+  }
+
+  // Every entity with indexed guidance links to the extension hub, and the hub
+  // links back through the resource tables. Resources themselves link OFF-site
+  // to their publisher and are never routes here.
+  for (const slug of entitiesWithResources()) {
+    const item = PUBLISHED_CONTENT.find((c) => c.slug === slug);
+    if (!item) continue;
+    add(contentUrlPath(item), EXTENSION_HUB_PATH);
   }
 
   // Data-methodology page is linked from the data overview/registry pages.

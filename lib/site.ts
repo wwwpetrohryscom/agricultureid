@@ -401,6 +401,13 @@ export const SECTIONS: NavSection[] = [
     active: true,
   },
   {
+    label: 'Extension Resources',
+    href: '/extension-resources',
+    description:
+      'An index of agronomic guidance published by public extension services — who published it, for where, and where to read it at the source.',
+    active: true,
+  },
+  {
     label: 'Agricultural Markets',
     href: '/agricultural-markets',
     description:
@@ -585,6 +592,7 @@ export const REFERENCE_NAV = SECTIONS.filter(
       '/agricultural-biosecurity',
       '/variety-registration',
       '/agricultural-markets',
+      '/extension-resources',
       '/data-health',
     ].includes(s.href),
 );

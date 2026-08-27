@@ -70,6 +70,9 @@ jobs:
       - name: Market data validation
         run: npm run markets:validate
 
+      - name: Extension resource validation
+        run: npm run extension:validate
+
       - name: Tests
         run: npm test
 

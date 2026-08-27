@@ -42,7 +42,8 @@ export type SearchEntityType =
   | 'crop-calendar'
   | 'biosecurity-listing'
   | 'variety-registration'
-  | 'market-data';
+  | 'market-data'
+  | 'extension-resource';
 
 /**
  * A published, indexable search document. Holds only the text needed for search
