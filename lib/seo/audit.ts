@@ -70,6 +70,10 @@ import {
   BIOSECURITY_STATUS,
   BIOSECURITY_HUB_PATH,
 } from '@/lib/biosecurity/registry';
+import {
+  VARIETY_REGISTRATIONS,
+  VARIETY_REGISTRATION_HUB_PATH,
+} from '@/lib/varieties/registry';
 
 export interface AuditIssue {
   level: 'error' | 'warning';
@@ -266,6 +270,17 @@ export function registryNavModel(): Map<string, Set<string>> {
     if (!organism) continue;
     add(BIOSECURITY_HUB_PATH, contentUrlPath(organism));
     add(contentUrlPath(organism), BIOSECURITY_HUB_PATH);
+  }
+
+  // The variety-registration hub links each registered cultivar's page, and
+  // each of those pages links back to the hub through its registration table.
+  for (const reg of VARIETY_REGISTRATIONS) {
+    const cultivar = PUBLISHED_CONTENT.find(
+      (c) => c.contentType === 'cultivar' && c.slug === reg.cultivarRef,
+    );
+    if (!cultivar) continue;
+    add(VARIETY_REGISTRATION_HUB_PATH, contentUrlPath(cultivar));
+    add(contentUrlPath(cultivar), VARIETY_REGISTRATION_HUB_PATH);
   }
 
   // Data-methodology page is linked from the data overview/registry pages.

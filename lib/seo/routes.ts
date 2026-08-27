@@ -47,6 +47,7 @@ import {
   CALENDARS_HUB_PATH,
 } from '@/lib/calendars/registry';
 import { BIOSECURITY_HUB_PATH } from '@/lib/biosecurity/registry';
+import { VARIETY_REGISTRATION_HUB_PATH } from '@/lib/varieties/registry';
 
 /** Stable last-modified date for static (non-content) routes. */
 export const SITE_LAST_UPDATED = '2026-07-12';
@@ -132,6 +133,11 @@ const STATIC_ROUTES: Omit<RouteEntry, 'lastModified'>[] = [
   },
   {
     path: BIOSECURITY_HUB_PATH,
+    changeFrequency: 'monthly',
+    priority: 0.6,
+  },
+  {
+    path: VARIETY_REGISTRATION_HUB_PATH,
     changeFrequency: 'monthly',
     priority: 0.6,
   },

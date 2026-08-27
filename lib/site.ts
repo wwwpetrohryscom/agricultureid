@@ -394,6 +394,13 @@ export const SECTIONS: NavSection[] = [
     active: true,
   },
   {
+    label: 'Variety Registration',
+    href: '/variety-registration',
+    description:
+      'Official variety register entries for cultivars — which country, which legal instrument, and whether the entry is still current.',
+    active: true,
+  },
+  {
     label: 'Crop Calendars',
     href: '/crop-calendars',
     description:
@@ -569,6 +576,7 @@ export const REFERENCE_NAV = SECTIONS.filter(
       '/agricultural-support',
       '/crop-calendars',
       '/agricultural-biosecurity',
+      '/variety-registration',
       '/data-health',
     ].includes(s.href),
 );

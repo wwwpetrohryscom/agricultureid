@@ -23,6 +23,7 @@ import { CONTENT_TYPE_LABEL } from '@/lib/site';
 import type { AnyContent } from '@/types/content';
 import { CropCalendarLink } from '@/components/calendars/CropCalendarLink';
 import { OrganismBiosecurityStatus } from '@/components/biosecurity/OrganismBiosecurityStatus';
+import { CultivarRegistrations } from '@/components/varieties/CultivarRegistrations';
 
 /** Full rendering of a structured content page, shared by all content types. */
 export function ContentArticle({ item }: { item: AnyContent }) {
@@ -118,6 +119,12 @@ export function ContentArticle({ item }: { item: AnyContent }) {
               component renders nothing for crops that have none. */}
           {item.contentType === 'crop' && (
             <CropCalendarLink cropSlug={item.slug} />
+          )}
+
+          {/* Official register entries for a cultivar. Renders nothing when
+              none is recorded — silence is not a claim of "unregistered". */}
+          {item.contentType === 'cultivar' && (
+            <CultivarRegistrations cultivarRef={item.slug} />
           )}
 
           <RelationPanels item={item} />

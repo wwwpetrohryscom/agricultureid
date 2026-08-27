@@ -64,6 +64,9 @@ jobs:
       - name: Biosecurity status validation
         run: npm run biosecurity:validate
 
+      - name: Variety registration validation
+        run: npm run varieties:validate
+
       - name: Tests
         run: npm test
 
