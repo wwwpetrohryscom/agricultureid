@@ -9,6 +9,7 @@
  */
 import { EXTENSION_RESOURCES } from '@/data/extension';
 import { EXTENSION_INSTITUTIONS } from '@/data/extension/institutions';
+import { CANONICAL_JURISDICTIONS } from '@/data/jurisdictions';
 import type {
   ExtensionInstitution,
   ExtensionResource,
@@ -91,6 +92,30 @@ export function resourcesByTopic(): Map<ExtensionTopic, ExtensionResource[]> {
 /** Topics that actually occur, so no empty grouping is ever rendered. */
 export function presentTopics(): ExtensionTopic[] {
   return [...new Set(EXTENSION_RESOURCES.flatMap((r) => r.topics))].sort();
+}
+
+/** Resources grouped by the jurisdiction their publisher serves. */
+export function resourcesByJurisdiction(): Map<string, ExtensionResource[]> {
+  const out = new Map<string, ExtensionResource[]>();
+  for (const r of EXTENSION_RESOURCES) {
+    const key = r.jurisdictionId ?? r.countryCode;
+    out.set(key, [...(out.get(key) ?? []), r]);
+  }
+  return out;
+}
+
+/**
+ * A jurisdiction's human label.
+ *
+ * Resolved from the canonical jurisdiction registry rather than printed as an
+ * ISO code: "Ohio" is what a reader searches for and what the guidance says it
+ * was written for, and "US-OH" on a page is an identifier leaking into prose.
+ */
+export function jurisdictionLabel(key: string): string {
+  const canonical = CANONICAL_JURISDICTIONS.find((j) => j.id === key);
+  if (canonical) return canonical.name;
+  if (key === 'GBR') return 'Great Britain';
+  return key;
 }
 
 /** Jurisdictions represented, as the institutions define them. */

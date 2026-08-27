@@ -97,6 +97,31 @@ export interface Benchmark {
 }
 
 export const BENCHMARKS: Benchmark[] = [
+  /* ---- Extension network (Wave 16) ----------------------------------------
+   * Wrong-jurisdiction retrieval is the failure that matters: agronomic
+   * guidance written for one state is wrong almost everywhere else.
+   */
+  {
+    query: 'extension Ohio',
+    titleIncludes: ['ohio'],
+    mustNotTop: ['maryland', 'pennsylvania', 'north carolina'],
+    types: ['extension-resource'],
+    kind: 'multiword',
+  },
+  {
+    query: 'extension guidance Maryland',
+    titleIncludes: ['maryland'],
+    mustNotTop: ['ohio', 'pennsylvania'],
+    types: ['extension-resource'],
+    kind: 'multiword',
+  },
+  {
+    query: 'extension Pennsylvania',
+    titleIncludes: ['pennsylvania'],
+    mustNotTop: ['ohio', 'maryland'],
+    types: ['extension-resource'],
+    kind: 'multiword',
+  },
   /* ---- Global input registers (Wave 15) -----------------------------------
    * The failure these guard is wrong-jurisdiction retrieval: a reader asking
    * about one register must not be shown another, and a country with no

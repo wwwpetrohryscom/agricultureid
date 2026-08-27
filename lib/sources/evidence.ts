@@ -119,6 +119,8 @@ export const EVIDENCE_TIER: Record<string, EvidenceTier> = {
   // Wave 12 — verified public extension publishers. Tier 2 by this repo's own
   // hierarchy: extension and knowledge-exchange publications, not authorities
   // or official registers, however public the publisher.
+  'ext-osu-extension': 2,
+  'ext-umd-extension': 2,
   'ext-psu-extension': 2,
   'ext-ncsu-extension': 2,
   'ext-ahdb': 2,

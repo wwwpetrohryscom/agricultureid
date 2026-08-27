@@ -5,6 +5,8 @@ import {
   resourcesForEntity,
   entitiesWithResources,
   resourcesByTopic,
+  resourcesByJurisdiction,
+  jurisdictionLabel,
   presentTopics,
   institutionFor,
   isDated,
@@ -174,9 +176,11 @@ describe('extension — routes and search', () => {
     ).toHaveLength(0);
   });
 
-  it('indexes one document per present topic plus a hub', () => {
+  it('indexes one document per topic and per jurisdiction, plus a hub', () => {
     const docs = DOCS.filter((d) => d.type === 'extension-resource');
-    expect(docs).toHaveLength(presentTopics().length + 1);
+    expect(docs).toHaveLength(
+      presentTopics().length + resourcesByJurisdiction().size + 1,
+    );
     expect(docs.some((d) => d.route === EXTENSION_HUB_PATH)).toBe(true);
     for (const d of docs) {
       if (d.route === EXTENSION_HUB_PATH) continue;
@@ -198,5 +202,71 @@ describe('extension — routes and search', () => {
 
   it('returns nothing for an entity with no indexed guidance', () => {
     expect(resourcesForEntity('not-an-entity')).toEqual([]);
+  });
+});
+
+describe('extension — network expansion (Wave 16)', () => {
+  it('carries every publisher with a verified mandate and no empty ones', () => {
+    expect(EXTENSION_INSTITUTIONS.length).toBeGreaterThanOrEqual(5);
+    for (const i of EXTENSION_INSTITUTIONS) {
+      const own = EXTENSION_RESOURCES.filter((r) => r.institutionId === i.id);
+      // A publisher with no resources is dead weight, and a verified mandate
+      // is not a reason to list one. UC ANR was verified and then removed for
+      // exactly this reason.
+      expect(own.length, i.id).toBeGreaterThan(0);
+    }
+  });
+
+  it('never widens a resource beyond the jurisdiction its publisher serves', () => {
+    // The Wave 16 regression guard: five publishers now serve four US states
+    // and Great Britain, so a widened jurisdiction is newly easy to introduce.
+    const byId = new Map(EXTENSION_INSTITUTIONS.map((i) => [i.id, i]));
+    for (const r of EXTENSION_RESOURCES) {
+      const i = byId.get(r.institutionId)!;
+      expect(r.jurisdictionId, r.id).toBe(i.jurisdictionId);
+      expect(r.countryCode, r.id).toBe(i.countryCode);
+    }
+  });
+
+  it('resolves a jurisdiction to a place name, not an identifier', () => {
+    const byJ = resourcesByJurisdiction();
+    expect(byJ.size).toBeGreaterThanOrEqual(5);
+    for (const key of byJ.keys()) {
+      const label = jurisdictionLabel(key);
+      expect(label, key).not.toBe(key);
+      expect(label, key).not.toMatch(/^[A-Z]{2}-[A-Z]{2}$/);
+    }
+    expect(jurisdictionLabel('US-OH')).toBe('Ohio');
+  });
+
+  it('indexes one document per jurisdiction as well as per topic', () => {
+    const docs = DOCS.filter((d) => d.type === 'extension-resource');
+    const jurisdictionDocs = docs.filter((d) =>
+      d.id.startsWith('extension:jurisdiction:'),
+    );
+    expect(jurisdictionDocs).toHaveLength(resourcesByJurisdiction().size);
+    for (const d of jurisdictionDocs) {
+      expect(d.route.startsWith(`${EXTENSION_HUB_PATH}#`)).toBe(true);
+    }
+  });
+
+  it('gives every new resource an entity link and a stated place', () => {
+    const wave16 = EXTENSION_RESOURCES.filter((r) =>
+      ['osu-extension', 'umd-extension'].includes(r.institutionId),
+    );
+    expect(wave16.length).toBeGreaterThan(40);
+    for (const r of wave16) {
+      const linked =
+        r.cropRefs.length +
+        r.livestockRefs.length +
+        r.pestRefs.length +
+        r.diseaseRefs.length +
+        r.topicRefs.length;
+      expect(linked, r.id).toBeGreaterThan(0);
+      expect(
+        r.limitations.some((l) => /written for/i.test(l)),
+        r.id,
+      ).toBe(true);
+    }
   });
 });
