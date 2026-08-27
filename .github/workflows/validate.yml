@@ -49,6 +49,9 @@ jobs:
       - name: Agricultural authorities validation
         run: npm run authorities:validate
 
+      - name: Agricultural registries validation
+        run: npm run registries:validate
+
       - name: Tests
         run: npm test
 

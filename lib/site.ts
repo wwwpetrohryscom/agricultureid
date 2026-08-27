@@ -387,6 +387,13 @@ export const SECTIONS: NavSection[] = [
     active: true,
   },
   {
+    label: 'Official Registries',
+    href: '/agricultural-registries',
+    description:
+      'Official agricultural registries and databases — pesticide and variety registers, organic operator databases, plant-health and statistics systems.',
+    active: true,
+  },
+  {
     label: 'Agricultural Authorities',
     href: '/agricultural-authorities',
     description:
@@ -529,6 +536,7 @@ export const REFERENCE_NAV = SECTIONS.filter(
       '/glossary',
       '/sources',
       '/agricultural-authorities',
+      '/agricultural-registries',
       '/data-health',
     ].includes(s.href),
 );

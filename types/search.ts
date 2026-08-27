@@ -35,7 +35,8 @@ export type SearchEntityType =
   | 'comparison'
   | 'region'
   | 'agroecological-zone'
-  | 'agricultural-authority';
+  | 'agricultural-authority'
+  | 'agricultural-registry';
 
 /**
  * A published, indexable search document. Holds only the text needed for search

@@ -26,6 +26,11 @@ import {
   regionPath as subRegionPath,
   countriesWithRegions,
 } from '@/lib/geo/region-registry';
+import {
+  publishedRegistries,
+  registryPath,
+  REGISTRIES_HUB_PATH,
+} from '@/lib/registries/registry';
 
 /** Stable last-modified date for static (non-content) routes. */
 export const SITE_LAST_UPDATED = '2026-07-12';
@@ -86,6 +91,11 @@ const STATIC_ROUTES: Omit<RouteEntry, 'lastModified'>[] = [
   { path: '/sources', changeFrequency: 'monthly', priority: 0.6 },
   {
     path: AUTHORITIES_HUB_PATH,
+    changeFrequency: 'monthly',
+    priority: 0.6,
+  },
+  {
+    path: REGISTRIES_HUB_PATH,
     changeFrequency: 'monthly',
     priority: 0.6,
   },
@@ -266,6 +276,12 @@ export function sectionedRoutes(): Record<SitemapSection, RouteEntry[]> {
     ...AUTHORITY_VIEW_COUNTRIES.map((c) => ({
       path: countryAuthoritiesPath(c.slug),
       lastModified: SITE_LAST_UPDATED,
+      changeFrequency: 'monthly' as const,
+      priority: 0.6,
+    })),
+    ...publishedRegistries().map((r) => ({
+      path: registryPath(r.slug),
+      lastModified: r.lastVerifiedAt,
       changeFrequency: 'monthly' as const,
       priority: 0.6,
     })),
