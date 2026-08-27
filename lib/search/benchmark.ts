@@ -97,6 +97,42 @@ export interface Benchmark {
 }
 
 export const BENCHMARKS: Benchmark[] = [
+  /* ---- Extension guidance (Wave 12) ---------------------------------------
+   * The index must be reachable by topic, and must NOT take an entity query
+   * from the entity. "Potato storage" is a post-harvest concept page before it
+   * is an extension reading list.
+   */
+  {
+    query: 'extension resources',
+    titleIncludes: ['extension'],
+    types: ['extension-resource'],
+    kind: 'exact',
+  },
+  {
+    query: 'nutrient management extension',
+    titleIncludes: ['nutrient management'],
+    types: ['extension-resource'],
+    kind: 'multiword',
+  },
+  {
+    query: 'disease management extension guide',
+    titleIncludes: ['disease management'],
+    types: ['extension-resource'],
+    kind: 'multiword',
+  },
+  {
+    query: 'cooperative extension',
+    titleIncludes: ['extension'],
+    types: ['extension-resource'],
+    kind: 'exact',
+  },
+  {
+    // Guard: an extension topic document must not outrank the concept page.
+    query: 'potato storage',
+    titleIncludes: ['potato storage'],
+    mustNotTopTypes: ['extension-resource'],
+    kind: 'multiword',
+  },
   /* ---- Market data (Wave 11) ----------------------------------------------
    * These assert the boundary this layer must not cross: a market query must
    * reach the market page, and a bare entity query must still reach the entity.

@@ -53,6 +53,7 @@ import {
   commodityMarketPath,
   commoditiesWithMarketData,
 } from '@/lib/markets/registry';
+import { EXTENSION_HUB_PATH } from '@/lib/extension/registry';
 
 /** Stable last-modified date for static (non-content) routes. */
 export const SITE_LAST_UPDATED = '2026-07-12';
@@ -150,6 +151,11 @@ const STATIC_ROUTES: Omit<RouteEntry, 'lastModified'>[] = [
     path: MARKETS_HUB_PATH,
     changeFrequency: 'monthly',
     priority: 0.7,
+  },
+  {
+    path: EXTENSION_HUB_PATH,
+    changeFrequency: 'monthly',
+    priority: 0.6,
   },
   // Trust, editorial, legal
   { path: '/about', changeFrequency: 'yearly', priority: 0.4 },

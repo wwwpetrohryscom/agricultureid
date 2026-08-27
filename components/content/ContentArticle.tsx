@@ -25,6 +25,7 @@ import { CropCalendarLink } from '@/components/calendars/CropCalendarLink';
 import { OrganismBiosecurityStatus } from '@/components/biosecurity/OrganismBiosecurityStatus';
 import { CultivarRegistrations } from '@/components/varieties/CultivarRegistrations';
 import { CommodityMarketLink } from '@/components/markets/CommodityMarketLink';
+import { EntityExtensionResources } from '@/components/extension/EntityExtensionResources';
 
 /** Full rendering of a structured content page, shared by all content types. */
 export function ContentArticle({ item }: { item: AnyContent }) {
@@ -133,6 +134,10 @@ export function ContentArticle({ item }: { item: AnyContent }) {
           {item.contentType === 'commodity' && (
             <CommodityMarketLink commoditySlug={item.slug} />
           )}
+
+          {/* Indexed extension guidance. Renders nothing when none is indexed;
+              an empty list is not a claim that none exists. */}
+          <EntityExtensionResources entitySlug={item.slug} />
 
           <RelationPanels item={item} />
 
