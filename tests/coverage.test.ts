@@ -98,7 +98,13 @@ describe('coverage — a research finding is its evidence', () => {
     // whether any one country's own register was looked for, and letting it
     // fall through reported twenty-five countries as researched on one
     // robots.txt.
-    expect(globalFindings()).toHaveLength(1);
+    // Findings about cross-jurisdiction sources are reported apart from any
+    // country's row. There are two: a variety aggregator and a modelled global
+    // soil dataset.
+    expect(globalFindings().length).toBeGreaterThan(0);
+    expect(globalFindings().every((f) => f.jurisdiction === 'GLOBAL')).toBe(
+      true,
+    );
     const withOwnFinding = new Set(
       RESEARCH_LEDGER.filter(
         (r) => r.layer === 'varieties' && r.jurisdiction !== 'GLOBAL',

@@ -79,6 +79,9 @@ jobs:
       - name: Coverage validation
         run: npm run coverage:validate
 
+      - name: Soil observation validation
+        run: npm run soils:validate
+
       - name: Market data validation
         run: npm run markets:validate
 

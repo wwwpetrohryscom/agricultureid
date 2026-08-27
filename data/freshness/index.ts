@@ -28,6 +28,22 @@ import type { SourceSnapshotDescriptor } from '@/types/freshness';
  */
 export const SOURCE_SNAPSHOTS: SourceSnapshotDescriptor[] = [
   {
+    id: 'ssurgo-component-surface-horizons-2026-08-27',
+    releaseLineId: 'ssurgo:component-surface-horizons',
+    sourceId: 'reg-usda-nrcs-ssurgo',
+    snapshotKind: 'api-response',
+    retrievedAt: '2026-08-27',
+    sourceReleaseId: '2026-08-27',
+    checksum:
+      '75210d67efdb8adec406b2d38ce015f1802ae78aa72b508d6cbcd1b3eb41972c',
+    byteLength: 6907658,
+    parserVersion: 'ssurgo-sda@1',
+    normalizationVersion: 'ssurgo-sda@1',
+    status: 'success',
+    payloadPath:
+      'data/snapshots/ssurgo__component-surface-horizons__2026-08-27.json',
+  },
+  {
     id: 'apvma-pubcris-2026-06-25',
     releaseLineId: 'apvma:pubcris',
     sourceId: 'reg-apvma-pubcris',

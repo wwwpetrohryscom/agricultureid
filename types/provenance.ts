@@ -47,6 +47,7 @@ export const CLAIM_KINDS = [
   'compliance-requirement',
   'authority-identity',
   'support-programme-status',
+  'soil-observation',
 ] as const;
 export type ClaimKind = (typeof CLAIM_KINDS)[number];
 

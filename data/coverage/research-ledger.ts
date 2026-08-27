@@ -73,6 +73,18 @@ export const RESEARCH_LEDGER: readonly ResearchRecord[] = [
     verifiedAt: '2026-08-27',
   },
 
+  /* -- Wave 23: soil datasets ---------------------------------------------- */
+  {
+    layer: 'soils',
+    jurisdiction: 'GLOBAL',
+    status: 'researchedSourceNotIngestible',
+    note: 'A global modelled soil dataset was found and read. It predicts soil properties for grid cells rather than describing mapped soil bodies, and placing those beside a survey’s own units as though they were the same kind of fact would misdescribe both.',
+    internalNote:
+      'ISRIC SoilGrids v2.0 REST API: works, returns 250 m raster-cell predictions. Needs its own spatial basis (`raster-cell`) and its own contract before it can be ingested; merging it into the SSURGO contract would be scale conflation.',
+    sourceIds: ['isric'],
+    verifiedAt: '2026-08-27',
+  },
+
   /* -- Wave 18: variety registers ------------------------------------------ */
   {
     layer: 'varieties',

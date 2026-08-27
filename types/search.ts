@@ -44,6 +44,7 @@ export type SearchEntityType =
   | 'variety-registration'
   | 'change-history'
   | 'coverage'
+  | 'soil-observation'
   | 'market-data'
   | 'extension-resource'
   | 'input-authorization';

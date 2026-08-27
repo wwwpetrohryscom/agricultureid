@@ -92,6 +92,38 @@ export function validateDescriptors(
         report(
           `${at}: byteLength ${d.byteLength} does not match the payload on disk (${actual})`,
         );
+      // A descriptor is the identity of a capture. If the payload it points at
+      // says it is a different release, one of the two is describing something
+      // it is not — and a payload can be swapped under a descriptor without
+      // any other check noticing.
+      try {
+        const payload = JSON.parse(readFileSync(d.payloadPath, 'utf8')) as {
+          datasetVersion?: string;
+          retrievedAt?: string;
+        };
+        if (
+          payload.datasetVersion &&
+          d.sourceReleaseId &&
+          payload.datasetVersion !== d.sourceReleaseId
+        )
+          report(
+            `${at}: the descriptor says release "${d.sourceReleaseId}" and the payload says "${payload.datasetVersion}"`,
+          );
+        if (payload.retrievedAt && payload.retrievedAt !== d.retrievedAt)
+          report(
+            `${at}: the descriptor was retrieved ${d.retrievedAt} and the payload says ${payload.retrievedAt}`,
+          );
+        if (
+          payload.datasetVersion &&
+          payload.retrievedAt &&
+          payload.datasetVersion > payload.retrievedAt
+        )
+          report(
+            `${at}: the payload claims release ${payload.datasetVersion}, later than the retrieval ${payload.retrievedAt} that observed it`,
+          );
+      } catch {
+        report(`${at}: payload could not be read as JSON`);
+      }
     }
 
     // A later retrieval carrying an earlier release means the source went

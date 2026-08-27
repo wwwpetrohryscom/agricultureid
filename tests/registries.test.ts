@@ -14,7 +14,7 @@ import { SOURCE_MAP } from '@/lib/sources/registry';
 import { allRoutes } from '@/lib/seo/routes';
 import { buildSearchDocuments } from '@/lib/search/documents';
 
-const EXPECTED_TOTAL = 29;
+const EXPECTED_TOTAL = 30;
 const EXPECTED_PUBLISHED = 23;
 const DOCS = buildSearchDocuments();
 const REG_DOCS = DOCS.filter((d) => d.type === 'agricultural-registry');
@@ -68,13 +68,22 @@ describe('registries — access claims are never guessed', () => {
     }
   });
 
-  it('records zero APIs, because none was documented on the systems read', () => {
-    // Including IP Australia, whose search is served by a public JSON endpoint
-    // the register was read through. An internal call a site makes is not an
-    // API its operator documents, and this field means the second thing.
-    // An honest expectation: if a future record sets apiAvailable it must come
-    // with an endpoint, which the rule above enforces.
-    expect(REGISTRIES.filter((r) => r.apiAvailable)).toHaveLength(0);
+  it('claims an API only where the operator documents one', () => {
+    // For twenty-nine systems the honest value was false, including IP
+    // Australia, whose search is served by a public JSON endpoint the register
+    // was read through: an internal call a site makes is not an API its
+    // operator documents. USDA's Soil Data Access is the other case — a public
+    // query service with published schema documentation — so the assertion is
+    // no longer "no record claims an API" but the rule underneath it: a record
+    // that claims one must carry the documentation it was read from.
+    for (const r of REGISTRIES) {
+      if (!r.apiAvailable) continue;
+      expect(r.apiUrl, r.id).toBeTruthy();
+      expect(r.documentationUrl, r.id).toBeTruthy();
+    }
+    expect(REGISTRIES.filter((r) => r.apiAvailable).map((r) => r.id)).toEqual([
+      'usda-nrcs-ssurgo',
+    ]);
   });
 
   it('keeps accessType coherent with the capability flags', () => {
@@ -112,10 +121,10 @@ describe('registries — access claims are never guessed', () => {
       expect(evidence, r.id).toContain(r.updateFrequency.toLowerCase());
     }
     expect(
-      REGISTRIES.filter((r) => r.updateFrequency !== 'unknown').map(
-        (r) => r.id,
-      ),
-    ).toEqual(['uk-variety-lists']);
+      REGISTRIES.filter((r) => r.updateFrequency !== 'unknown')
+        .map((r) => r.id)
+        .sort(),
+    ).toEqual(['uk-variety-lists', 'usda-nrcs-ssurgo']);
   });
 
   it('marks login-gated operational systems as restricted, not public', () => {
