@@ -15,6 +15,7 @@ import {
   AUTHORITIES_HUB_PATH,
 } from '@/lib/authorities/registry';
 import { AuthorityNonAffiliationNotice } from '@/components/authorities/AuthorityNonAffiliationNotice';
+import { AuthorityRegistries } from '@/components/registries/AuthorityRegistries';
 
 type Params = { params: Promise<{ slug: string }> };
 
@@ -201,6 +202,10 @@ export default async function AuthorityPage({ params }: Params) {
           </ul>
         </Section>
       )}
+
+      {/* Systems this authority administers. Data-driven; renders nothing
+          when none is recorded. */}
+      <AuthorityRegistries authorityId={a.id} />
 
       <Section heading="Sources and verification">
         <ul className="space-y-4">

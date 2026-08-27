@@ -45,6 +45,12 @@ import {
   AUTHORITY_VIEW_COUNTRIES,
   countryAuthoritiesPath,
 } from '@/lib/authorities/registry';
+import {
+  publishedRegistries,
+  registriesForAuthority,
+  registryPath,
+  REGISTRIES_HUB_PATH,
+} from '@/lib/registries/registry';
 
 export interface AuditIssue {
   level: 'error' | 'warning';
@@ -171,6 +177,20 @@ export function registryNavModel(): Map<string, Set<string>> {
     for (const a of authoritiesForCountry(c.iso3)) {
       if (publishedAuthorities().some((x) => x.id === a.id)) {
         add(view, authorityPath(a.slug));
+      }
+    }
+  }
+
+  // Registries hub lists every published system; each profile links back, and
+  // an authority page links the systems it administers.
+  for (const r of publishedRegistries()) {
+    add(REGISTRIES_HUB_PATH, registryPath(r.slug));
+    add(registryPath(r.slug), REGISTRIES_HUB_PATH);
+  }
+  for (const a of publishedAuthorities()) {
+    for (const r of registriesForAuthority(a.id)) {
+      if (publishedRegistries().some((x) => x.id === r.id)) {
+        add(authorityPath(a.slug), registryPath(r.slug));
       }
     }
   }

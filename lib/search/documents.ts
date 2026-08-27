@@ -29,6 +29,12 @@ import {
   humanizeToken,
 } from '@/lib/authorities/registry';
 import { getJurisdiction } from '@/lib/jurisdictions/registry';
+import {
+  listedRegistries,
+  publishedRegistries,
+  registryPath,
+  REGISTRIES_HUB_PATH,
+} from '@/lib/registries/registry';
 
 const RELATION_LABEL: Partial<Record<RelationType, string>> = {
   affects: 'affects',
@@ -300,6 +306,47 @@ export function buildSearchDocuments(): SearchDoc[] {
     });
   }
 
+  // Official registries and databases. Registry-driven like authorities, so a
+  // new record indexes with no switch to edit here.
+  const publishedRegistrySlugs = new Set(
+    publishedRegistries().map((r) => r.slug),
+  );
+  for (const r of listedRegistries()) {
+    const hasProfile = publishedRegistrySlugs.has(r.slug);
+    docs.push({
+      id: `registry:${r.id}`,
+      type: 'agricultural-registry',
+      // A directory-only registry has no detail page; it routes to the hub
+      // that really lists it rather than to a page that does not exist.
+      route: hasProfile ? registryPath(r.slug) : REGISTRIES_HUB_PATH,
+      title: r.officialName,
+      names: [
+        ...new Set(
+          [
+            r.officialName,
+            ...(r.shortName ? [r.shortName] : []),
+            ...(r.aliases ?? []),
+            ...(r.localNames ?? []),
+            r.jurisdictionName,
+          ].filter(Boolean),
+        ),
+      ],
+      category: hasProfile
+        ? `Official registry · ${r.jurisdictionName}`
+        : `Official registry (directory record) · ${r.jurisdictionName}`,
+      parent: r.jurisdictionName,
+      // Scope is the "what can I look up here" signal and is already evidenced.
+      summary: r.scope[0] ?? r.officialName,
+      ...(r.countryCode ? { country: r.countryCode } : {}),
+      relationLabels: [humanizeToken(r.registryType), ...r.scope.slice(0, 3)],
+      facets: {
+        entityType: ['agricultural-registry'],
+        category: [humanizeToken(r.registryType)],
+        ...(r.countryCode ? { country: [r.countryCode] } : {}),
+      },
+    });
+  }
+
   // Tools.
   for (const t of TOOLS) {
     docs.push({
@@ -330,6 +377,7 @@ const ENTITY_TYPE_LABEL: Record<string, string> = {
   fertilizer: 'Fertilizer',
   'soil-topic': 'Soil health',
   'agricultural-authority': 'Agricultural authority',
+  'agricultural-registry': 'Official registry',
   machinery: 'Machinery',
   climate: 'Climate',
   'farming-system': 'Farming system',
