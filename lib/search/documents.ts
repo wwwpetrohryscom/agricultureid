@@ -19,6 +19,7 @@ import {
 import { countryPath, indicatorPath } from '@/lib/geo/paths';
 import type { RelationType } from '@/types/content';
 import type { SearchDoc, SearchEntityType } from '@/types/search';
+import { CHANGE_HUB_PATH, changeEvents } from '@/lib/history/registry';
 import {
   listedAuthorities,
   publishedAuthorities,
@@ -614,6 +615,44 @@ export function buildSearchDocuments(): SearchDoc[] {
       facets: {
         entityType: ['variety-registration'],
         category: ['Variety registration'],
+      },
+    });
+  }
+
+  // Change history. One hub document, never one per event: 21,000 documents
+  // each reading "<product> was withdrawn" would bury every product page the
+  // events are about. Only CHANGE vocabulary rides at name weight — the entity
+  // names belong to the entity pages, and putting "France" or a substance name
+  // here would let a page about change outrank the thing that changed.
+  {
+    const events = changeEvents();
+    const dated = events.filter((e) => e.occurredAt !== undefined).length;
+    docs.push({
+      id: 'history:changes',
+      type: 'change-history',
+      route: CHANGE_HUB_PATH,
+      title: 'Agricultural change history',
+      names: [
+        'agricultural change history',
+        'register change',
+        'authorization change',
+        'withdrawn authorisation',
+        'registration expired',
+        'authority renamed',
+        'what changed',
+      ],
+      category: 'Change history',
+      summary: `${events.length.toLocaleString('en')} recorded changes in official agricultural registers, ${dated.toLocaleString('en')} of them carrying the date the source says they took effect.`,
+      relationLabels: [
+        'effective date',
+        'detection date',
+        'former name',
+        'no longer authorised',
+        'no longer listed',
+      ],
+      facets: {
+        entityType: ['change-history'],
+        category: ['Change history'],
       },
     });
   }

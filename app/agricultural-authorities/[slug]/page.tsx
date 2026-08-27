@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Container } from '@/components/ui/Container';
+import { EntityChangeHistory } from '@/components/history/EntityChangeHistory';
+import { eventsForEntity } from '@/lib/history/registry';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { webPageSchema, breadcrumbSchema } from '@/lib/schema/jsonld';
 import { buildMetadata } from '@/lib/seo/metadata';
@@ -206,6 +208,15 @@ export default async function AuthorityPage({ params }: Params) {
       {/* Systems this authority administers. Data-driven; renders nothing
           when none is recorded. */}
       <AuthorityRegistries authorityId={a.id} />
+
+      {/* A former name, where one was established when the body was verified.
+          Renders nothing otherwise: silence is correct, because no note is not
+          evidence that a body has always had its current name. */}
+      <EntityChangeHistory
+        events={eventsForEntity('authority', a.id)}
+        heading="Former name"
+        intro="Established by reading the body’s own material. An alias, an abbreviation or a legacy domain is not a former name."
+      />
 
       <Section heading="Sources and verification">
         <ul className="space-y-4">

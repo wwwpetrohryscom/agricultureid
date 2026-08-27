@@ -54,7 +54,7 @@ export const caOnOmafa: AgriculturalAuthorityEntry = {
   ],
   limitations: [
     'Portfolio scope is taken from the body’s official title; the statutory powers behind each portfolio are set out in law and are not asserted here.',
-    'The ministry was formerly the Ministry of Agriculture, Food and Rural Affairs (OMAFRA); the former name is retained as an alias and its old URLs no longer resolve.',
+    'The ministry was formerly the Ministry of Agriculture, Food and Rural Affairs (OMAFRA); its old URLs no longer resolve, and the former name is recorded in the change history rather than as an alias, because an alias is not evidence of a former name.',
   ],
   profileDepth: 'full-profile',
   candidateStatus: 'accepted',

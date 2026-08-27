@@ -401,6 +401,13 @@ export const SECTIONS: NavSection[] = [
     active: true,
   },
   {
+    label: 'Change History',
+    href: '/agricultural-changes',
+    description:
+      'What official registers have changed, separated by whether the source states when it took effect or AgricultureID only observed it.',
+    active: true,
+  },
+  {
     label: 'Agricultural Inputs',
     href: '/agricultural-inputs',
     description:
@@ -598,6 +605,7 @@ export const REFERENCE_NAV = SECTIONS.filter(
       '/crop-calendars',
       '/agricultural-biosecurity',
       '/variety-registration',
+      '/agricultural-changes',
       '/agricultural-markets',
       '/extension-resources',
       '/agricultural-inputs',

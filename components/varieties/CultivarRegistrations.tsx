@@ -4,6 +4,8 @@ import {
   isCurrent,
   VARIETY_REGISTRATION_HUB_PATH,
 } from '@/lib/varieties/registry';
+import { eventsForEntity } from '@/lib/history/registry';
+import { EntityChangeHistory } from '@/components/history/EntityChangeHistory';
 import {
   CULTIVAR_MATCH_CAVEAT,
   INSTRUMENT_KIND,
@@ -29,10 +31,12 @@ const INSTRUMENT_LABEL: Record<string, string> = {
  * established, not one that is unregistered. "Not registered" would be a claim;
  * saying nothing is not.
  *
- * Current and historical entries are shown in SEPARATE tables rather than one
- * table with a status column, because a reader skimming a mixed list reads the
- * row count as "registered in 10 countries" when three of those countries
- * surrendered the listing years ago.
+ * Current entries are a table; entries that are no longer current are a dated
+ * history below it. One mixed table would be read as "registered in 10
+ * countries" when three of those countries surrendered the listing years ago,
+ * and a second table of past rows would say what changed without saying when —
+ * which for these registers is usually "the register does not publish a date",
+ * a fact worth stating rather than hiding behind a blank column.
  *
  * Nor are the two KINDS of instrument summed. Permission to market a variety
  * and ownership of it are different facts, so each table names the instrument
@@ -119,7 +123,7 @@ export function CultivarRegistrations({
   if (entries.length === 0) return null;
 
   const current = entries.filter(isCurrent);
-  const historical = entries.filter((e) => !isCurrent(e));
+  const history = eventsForEntity('variety-registration', cultivarRef);
 
   return (
     <section className="mt-8 rounded-lg border border-ink-100 bg-[#FAFAF7] p-4">
@@ -136,9 +140,17 @@ export function CultivarRegistrations({
         caption={`Current entries (${current.length})`}
         entries={current}
       />
-      <RegistrationTable
-        caption={`No longer listed (${historical.length})`}
-        entries={historical}
+      {current.length === 0 ? (
+        <p className="mt-3 text-sm text-ink-600">
+          No entry for this cultivar is currently listed in the registers
+          AgricultureID reads.
+        </p>
+      ) : null}
+
+      <EntityChangeHistory
+        events={history}
+        heading="Entries that are no longer current"
+        intro="Each register decides separately, so these are grouped by instrument and jurisdiction and never combined into one timeline."
       />
 
       <p className="mt-4 text-xs text-ink-500">{INSTRUMENT_KIND_CAVEAT}</p>
