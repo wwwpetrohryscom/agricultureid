@@ -97,6 +97,36 @@ export interface Benchmark {
 }
 
 export const BENCHMARKS: Benchmark[] = [
+  /* ---- Input authorisations (Wave 13) -------------------------------------
+   * A substance query must reach the substance page; a corpus entity query
+   * must still reach the entity. "Copper sulfate" is a fertilizer article
+   * before it is a row on an approval list.
+   */
+  {
+    query: 'glyphosate',
+    titleIncludes: ['active substance'],
+    types: ['input-authorization'],
+    kind: 'exact',
+  },
+  {
+    query: 'active substance approval',
+    titleIncludes: ['active substance'],
+    types: ['input-authorization'],
+    kind: 'multiword',
+  },
+  {
+    query: 'authorised products France',
+    titleIncludes: ['products'],
+    types: ['input-authorization'],
+    kind: 'multiword',
+  },
+  {
+    query: 'copper sulfate',
+    titleIncludes: ['copper sulfate'],
+    mustNotTopTypes: ['input-authorization'],
+    types: ['fertilizer'],
+    kind: 'exact',
+  },
   /* ---- Extension guidance (Wave 12) ---------------------------------------
    * The index must be reachable by topic, and must NOT take an entity query
    * from the entity. "Potato storage" is a post-harvest concept page before it

@@ -73,6 +73,9 @@ jobs:
       - name: Extension resource validation
         run: npm run extension:validate
 
+      - name: Agricultural input validation
+        run: npm run inputs:validate
+
       - name: Tests
         run: npm test
 

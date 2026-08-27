@@ -43,7 +43,8 @@ export type SearchEntityType =
   | 'biosecurity-listing'
   | 'variety-registration'
   | 'market-data'
-  | 'extension-resource';
+  | 'extension-resource'
+  | 'input-authorization';
 
 /**
  * A published, indexable search document. Holds only the text needed for search

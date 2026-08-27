@@ -401,6 +401,13 @@ export const SECTIONS: NavSection[] = [
     active: true,
   },
   {
+    label: 'Agricultural Inputs',
+    href: '/agricultural-inputs',
+    description:
+      'Which active substances are approved and which products are authorised, in which jurisdiction — from official registers, kept apart from how anything may be applied.',
+    active: true,
+  },
+  {
     label: 'Extension Resources',
     href: '/extension-resources',
     description:
@@ -593,6 +600,7 @@ export const REFERENCE_NAV = SECTIONS.filter(
       '/variety-registration',
       '/agricultural-markets',
       '/extension-resources',
+      '/agricultural-inputs',
       '/data-health',
     ].includes(s.href),
 );
