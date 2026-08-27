@@ -67,6 +67,9 @@ jobs:
       - name: Variety registration validation
         run: npm run varieties:validate
 
+      - name: Market data validation
+        run: npm run markets:validate
+
       - name: Tests
         run: npm test
 

@@ -97,6 +97,70 @@ export interface Benchmark {
 }
 
 export const BENCHMARKS: Benchmark[] = [
+  /* ---- Market data (Wave 11) ----------------------------------------------
+   * These assert the boundary this layer must not cross: a market query must
+   * reach the market page, and a bare entity query must still reach the entity.
+   * The market documents carry metric PHRASES rather than bare commodity names
+   * precisely so that "wheat" keeps returning the crop, not a statistics page.
+   */
+  {
+    query: 'wheat production by country',
+    titleIncludes: ['wheat'],
+    types: ['market-data'],
+    kind: 'multiword',
+  },
+  {
+    // Strict on TITLE, not only on type: this query returned "Cocoa Beans
+    // production and market data" while still satisfying a type-only
+    // assertion. The engine prefix-expands only the final query token, so
+    // "soybean" earned the plural-titled document nothing and every market
+    // document tied on "production" alone, alphabetically. The guard names the
+    // wrong answer so the tie can never come back silently.
+    query: 'soybean production',
+    titleIncludes: ['soybean'],
+    mustNotTop: ['cocoa', 'dry beans', 'vanilla'],
+    types: ['market-data'],
+    kind: 'multiword',
+  },
+  {
+    query: 'tomato production by country',
+    titleIncludes: ['tomato'],
+    mustNotTop: ['almond'],
+    types: ['market-data'],
+    kind: 'multiword',
+  },
+  {
+    query: 'maize yield',
+    titleIncludes: ['maize'],
+    types: ['market-data', 'commodity', 'crop'],
+    kind: 'multiword',
+  },
+  {
+    query: 'agricultural market data',
+    titleIncludes: ['market'],
+    types: ['market-data'],
+    kind: 'multiword',
+  },
+  {
+    query: 'commodity production statistics',
+    titleIncludes: ['market', 'production'],
+    types: ['market-data'],
+    kind: 'multiword',
+  },
+  {
+    // The guard that matters: market documents must never take the bare
+    // commodity or crop name away from the entity pages.
+    query: 'wheat',
+    mustNotTopTypes: ['market-data'],
+    types: ['crop', 'commodity'],
+    kind: 'exact',
+  },
+  {
+    query: 'barley',
+    mustNotTopTypes: ['market-data'],
+    types: ['crop', 'commodity'],
+    kind: 'exact',
+  },
   /* ---- Agricultural authorities (Wave 4B) --------------------------------
    * These assert JURISDICTION PRECISION, which is the failure mode that
    * matters: a national body has far stronger term frequency for "agriculture"

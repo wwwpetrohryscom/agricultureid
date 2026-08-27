@@ -3,6 +3,12 @@ import { join } from 'node:path';
 import { INDICATORS } from '@/data/geo/indicators';
 import { allSnapshots, getSnapshot, COUNTRY_META } from '@/lib/geo/snapshots';
 import { tradeSnapshot, tradeSnapshotFiles } from '@/lib/trade/snapshot';
+import {
+  marketSnapshots,
+  marketSnapshotFiles,
+  FAOSTAT_PRODUCTION_DATASET_ID,
+  USDA_PSD_DATASET_ID,
+} from '@/lib/markets/snapshot';
 import type { DatasetRegistryEntry } from '@/types/data-ops';
 
 /**
@@ -164,6 +170,73 @@ export function buildDatasetRegistry(): DatasetRegistryEntry[] {
       revisionPolicy:
         'Historical values are revised by FAO; this snapshot is one dated version and is never overwritten in place. A changed dataset version is stored as a NEW immutable snapshot.',
       knownLimitations: [...trade.limitations],
+      publicationStatus: 'published',
+    });
+  }
+
+  // Market time series (Wave 11). Series-shaped, not indicator-shaped: each
+  // file declares its own metrics, units, period basis and status rule, so all
+  // metadata below is read from the snapshot rather than restated here.
+  const MARKET_TITLES: Record<string, { title: string; description: string }> =
+    {
+      [FAOSTAT_PRODUCTION_DATASET_ID]: {
+        title: 'FAOSTAT production, area and yield',
+        description:
+          'National production, area harvested and yield for agricultural commodities, read from the FAOSTAT Crops and livestock products domain. Yield is taken as FAOSTAT publishes it and is never recomputed from production over area.',
+      },
+      [USDA_PSD_DATASET_ID]: {
+        title: 'USDA PSD supply and use',
+        description:
+          'Marketing-year stocks, domestic use, feed use and trade quantities from the USDA Foreign Agricultural Service Production, Supply and Distribution database. Production, area and yield are deliberately not ingested, so PSD never contradicts FAOSTAT on the same figure.',
+      },
+    };
+  for (const [datasetId, snap] of marketSnapshots()) {
+    const meta = MARKET_TITLES[datasetId];
+    if (!meta) continue;
+    const files = marketSnapshotFiles(datasetId);
+    out.push({
+      datasetId,
+      provider: datasetId === USDA_PSD_DATASET_ID ? 'USDA' : 'FAO',
+      title: meta.title,
+      description: meta.description,
+      sourceUrl: snap.sourceUrl,
+      license: snap.license,
+      licenseUrl: snap.licenseUrl,
+      accessRequirements: ['open', 'attribution-required'],
+      jurisdiction: 'Global',
+      geographicCoverage: `${new Set(snap.series.map((s) => s.iso3)).size} countries; ${snap.seriesCount.toLocaleString('en')} series; ${snap.observationCount.toLocaleString('en')} observations. ${snap.geographyRule}`,
+      temporalCoverage: [snap.coveredYears[0], snap.coveredYears[1]],
+      // PSD is revised monthly; the shared vocabulary's nearest token is
+      // 'periodic', and the monthly cadence is stated in the revision policy.
+      updateFrequency:
+        datasetId === USDA_PSD_DATASET_ID ? 'periodic' : 'annual',
+      latestAvailableRelease: snap.datasetVersion,
+      retrievalDate: snap.retrievedAt,
+      snapshotIds: files.length
+        ? files.map((f) => f.replace(/\.json$/, ''))
+        : [snap.snapshotId],
+      schemaVersion: '1',
+      transformationVersion: snap.transformationVersion,
+      checksum: snap.checksum,
+      expectedColumns: [
+        'iso3',
+        'commoditySlug',
+        'metric',
+        'unit',
+        'years',
+        'values',
+        'statuses',
+      ],
+      expectedUnit: Object.entries(snap.metrics)
+        .map(([m, u]) => `${m}: ${u}`)
+        .join('; '),
+      missingValueRule: `${snap.seriesRule} ${snap.commodityRule}`,
+      revisionPolicy: `${snap.statusRule} A changed release is stored as a NEW immutable snapshot; prior releases are never overwritten.`,
+      knownLimitations: [
+        ...snap.limitations,
+        ...(snap.withheldRule ? [snap.withheldRule] : []),
+        ...(snap.metricRule ? [snap.metricRule] : []),
+      ],
       publicationStatus: 'published',
     });
   }

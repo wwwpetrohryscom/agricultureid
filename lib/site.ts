@@ -401,6 +401,13 @@ export const SECTIONS: NavSection[] = [
     active: true,
   },
   {
+    label: 'Agricultural Markets',
+    href: '/agricultural-markets',
+    description:
+      'Production, area, yield, stocks and trade series for agricultural commodities, each figure with the unit, status and release its source published.',
+    active: true,
+  },
+  {
     label: 'Crop Calendars',
     href: '/crop-calendars',
     description:
@@ -577,6 +584,7 @@ export const REFERENCE_NAV = SECTIONS.filter(
       '/crop-calendars',
       '/agricultural-biosecurity',
       '/variety-registration',
+      '/agricultural-markets',
       '/data-health',
     ].includes(s.href),
 );

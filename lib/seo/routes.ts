@@ -48,6 +48,11 @@ import {
 } from '@/lib/calendars/registry';
 import { BIOSECURITY_HUB_PATH } from '@/lib/biosecurity/registry';
 import { VARIETY_REGISTRATION_HUB_PATH } from '@/lib/varieties/registry';
+import {
+  MARKETS_HUB_PATH,
+  commodityMarketPath,
+  commoditiesWithMarketData,
+} from '@/lib/markets/registry';
 
 /** Stable last-modified date for static (non-content) routes. */
 export const SITE_LAST_UPDATED = '2026-07-12';
@@ -140,6 +145,11 @@ const STATIC_ROUTES: Omit<RouteEntry, 'lastModified'>[] = [
     path: VARIETY_REGISTRATION_HUB_PATH,
     changeFrequency: 'monthly',
     priority: 0.6,
+  },
+  {
+    path: MARKETS_HUB_PATH,
+    changeFrequency: 'monthly',
+    priority: 0.7,
   },
   // Trust, editorial, legal
   { path: '/about', changeFrequency: 'yearly', priority: 0.4 },
@@ -328,6 +338,15 @@ export function sectionedRoutes(): Record<SitemapSection, RouteEntry[]> {
       lastModified: SITE_LAST_UPDATED,
       changeFrequency: 'yearly' as const,
       priority: 0.5,
+    })),
+    // One route per commodity. A commodity×country market page would be 2,480
+    // routes, each a single table the commodity page already shows in context,
+    // so country detail stays a table row rather than becoming a URL.
+    ...commoditiesWithMarketData().map((commodity) => ({
+      path: commodityMarketPath(commodity),
+      lastModified: SITE_LAST_UPDATED,
+      changeFrequency: 'monthly' as const,
+      priority: 0.6,
     })),
     ...publishedSupportPrograms().map((p) => ({
       path: supportPath(p.slug),
