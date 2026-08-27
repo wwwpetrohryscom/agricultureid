@@ -114,6 +114,8 @@ export const EVIDENCE_TIER: Record<string, EvidenceTier> = {
   'us-or-oda': 1,
   'us-az-azda': 1,
   // Wave 9 — biosecurity listing sources.
+  'eu-pvp-national-lists': 1,
+  'eu-pvp-cpvo-rights': 1,
   'eppo-a1-list': 1,
   'eppo-a2-list': 1,
   // Wave 8 — crop calendar sources.

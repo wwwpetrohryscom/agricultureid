@@ -18,6 +18,7 @@ const ACCESS_5E = '2026-07-16';
 
 /** Verification pass for the agricultural-authorities cluster. */
 const ACCESS_AUTH = '2026-08-19';
+const ACCESS_VARIETY = '2026-08-27';
 
 export const SOURCES: Source[] = [
   {
@@ -2496,6 +2497,33 @@ export const SOURCES: Source[] = [
     language: 'en',
     notes:
       'State-by-state usual planting and harvesting dates for US field crops. The October 2010 edition is the latest published; its plain-text release file was downloaded and parsed during the Wave 8 pass. The vintage is recorded on every entry derived from it.',
+    reliability: 'authoritative',
+  },
+  {
+    id: 'eu-pvp-national-lists',
+    organization: 'European Commission',
+    title: 'EU Plant Variety Portal — national list entries',
+    url: 'https://ec.europa.eu/food/plant-variety-portal/',
+    accessDate: ACCESS_VARIETY,
+    sourceType: 'registry',
+    jurisdiction: 'European Union',
+    language: 'en',
+    notes:
+      'Entries on EU member state and cooperating country national catalogues, read from the portal search in a real browser. A national list entry permits seed marketing in that country; it is not an intellectual property right. Each entry carries the register\u2019s own stable identifier, UPOV species and status wording.',
+    reliability: 'authoritative',
+  },
+  {
+    id: 'eu-pvp-cpvo-rights',
+    organization: 'Community Plant Variety Office (CPVO)',
+    title:
+      'EU Plant Variety Portal \u2014 Community plant variety right entries',
+    url: 'https://ec.europa.eu/food/plant-variety-portal/',
+    accessDate: ACCESS_VARIETY,
+    sourceType: 'registry',
+    jurisdiction: 'European Union',
+    language: 'en',
+    notes:
+      'Community plant variety rights granted by the CPVO, read from the portal search in a real browser. A right is an EU-wide intellectual property grant, a different legal instrument from a national catalogue listing, and is never totalled together with one.',
     reliability: 'authoritative',
   },
   {

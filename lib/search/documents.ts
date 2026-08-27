@@ -57,6 +57,13 @@ import {
   BIOSECURITY_STATUS,
   BIOSECURITY_HUB_PATH,
 } from '@/lib/biosecurity/registry';
+import {
+  VARIETY_REGISTRATIONS,
+  VARIETY_REGISTRATION_HUB_PATH,
+  isCurrent,
+  presentSpecies,
+  presentJurisdictions,
+} from '@/lib/varieties/registry';
 
 const RELATION_LABEL: Partial<Record<RelationType, string>> = {
   affects: 'affects',
@@ -512,6 +519,45 @@ export function buildSearchDocuments(): SearchDoc[] {
     });
   }
 
+  // Variety registration. One hub document, not one per register entry: 123
+  // documents each reading "<name> is listed in <country>" would swamp the
+  // cultivar pages they point at without answering a question anyone asks.
+  if (VARIETY_REGISTRATIONS.length > 0) {
+    const denominations = [
+      ...new Set(VARIETY_REGISTRATIONS.map((r) => r.denomination)),
+    ];
+    const speciesNames = presentSpecies().map((s) => s.name);
+    docs.push({
+      id: 'variety:registration',
+      type: 'variety-registration',
+      route: VARIETY_REGISTRATION_HUB_PATH,
+      title: 'Official variety registration',
+      // Only registration vocabulary rides at name weight. Denominations and
+      // species names belong to the cultivar and crop pages, and putting them
+      // here made this hub outrank the wheat page for "triticum aestivum".
+      names: [
+        'variety registration',
+        'national list',
+        'plant variety catalogue',
+        'plant breeders rights',
+        'variety denomination',
+      ],
+      category: 'Variety registration',
+      summary: `Official register entries recorded for ${new Set(VARIETY_REGISTRATIONS.map((r) => r.cultivarRef)).size} cultivars across ${presentJurisdictions().length} registers, ${VARIETY_REGISTRATIONS.filter(isCurrent).length} of them still current.`,
+      relationLabels: [
+        'registered variety',
+        'national list entry',
+        'plant variety right',
+        ...denominations,
+        ...speciesNames,
+      ],
+      facets: {
+        entityType: ['variety-registration'],
+        category: ['Variety registration'],
+      },
+    });
+  }
+
   // Tools.
   for (const t of TOOLS) {
     docs.push({
@@ -547,6 +593,7 @@ const ENTITY_TYPE_LABEL: Record<string, string> = {
   'agricultural-support': 'Support programme',
   'crop-calendar': 'Crop calendar',
   'biosecurity-listing': 'Biosecurity listing',
+  'variety-registration': 'Variety registration',
   machinery: 'Machinery',
   climate: 'Climate',
   'farming-system': 'Farming system',

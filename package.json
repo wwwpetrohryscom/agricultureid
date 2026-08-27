@@ -2,7 +2,7 @@
   "name": "agricultureid",
   "version": "0.1.0",
   "private": true,
-  "description": "AgricultureID \u2014 Global Agriculture Knowledge and Intelligence Platform",
+  "description": "AgricultureID — Global Agriculture Knowledge and Intelligence Platform",
   "license": "MIT",
   "engines": {
     "node": ">=18.18.0"
@@ -41,7 +41,7 @@
     "authorities:health": "tsx -e \"import { AUTHORITIES } from './data/authorities'; for (const a of AUTHORITIES) console.log(a.id + ' ' + a.officialWebsite);\" | node scripts/authorities-health.mjs",
     "ecosystem:validate": "tsx scripts/ecosystem-validate.ts",
     "ecosystem:audit": "tsx scripts/ecosystem-audit.ts",
-    "validate": "npm run format:check && npm run typecheck && npm run lint && npm run content:validate && npm run ecosystem:validate && npm run jurisdictions:validate && npm run authorities:validate && npm run registries:validate && npm run regulations:validate && npm run support:validate && npm run calendars:validate && npm run biosecurity:validate && npm run test",
+    "validate": "npm run format:check && npm run typecheck && npm run lint && npm run content:validate && npm run ecosystem:validate && npm run jurisdictions:validate && npm run authorities:validate && npm run registries:validate && npm run regulations:validate && npm run support:validate && npm run calendars:validate && npm run biosecurity:validate && npm run varieties:validate && npm run test",
     "authorities:discover": "node scripts/authorities-discover.mjs",
     "authorities:ledger": "tsx scripts/authorities-ledger.ts",
     "authorities:coverage": "tsx scripts/authorities-coverage.ts",
@@ -54,7 +54,9 @@
     "calendars:validate": "tsx scripts/calendars-validate.ts",
     "calendars:report": "tsx scripts/calendars-report.ts",
     "biosecurity:validate": "tsx scripts/biosecurity-validate.ts",
-    "biosecurity:report": "tsx scripts/biosecurity-report.ts"
+    "biosecurity:report": "tsx scripts/biosecurity-report.ts",
+    "varieties:validate": "tsx scripts/varieties-validate.ts",
+    "varieties:report": "tsx scripts/varieties-report.ts"
   },
   "dependencies": {
     "next": "^15.1.6",
