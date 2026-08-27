@@ -73,6 +73,9 @@ jobs:
       - name: Change history validation
         run: npm run history:validate
 
+      - name: Evidence lineage validation
+        run: npm run provenance:validate
+
       - name: Market data validation
         run: npm run markets:validate
 
