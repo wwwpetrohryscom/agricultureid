@@ -32,8 +32,12 @@ import {
   marketSnapshots,
   FAOSTAT_PRODUCTION_DATASET_ID,
   USDA_PSD_DATASET_ID,
+  FAOSTAT_PRICES_DATASET_ID,
+  FAOSTAT_TRADE_CL_DATASET_ID,
 } from '../lib/markets/snapshot';
 import {
+  CURRENCY_BASES,
+  MONETARY_METRICS,
   MARKET_METRICS,
   METRIC_DIMENSION,
   OBSERVATION_STATUSES,
@@ -71,6 +75,8 @@ const MIN_SERIES_LENGTH = 10;
 const REQUIRED_BASIS: Record<string, string> = {
   [FAOSTAT_PRODUCTION_DATASET_ID]: 'calendar-year',
   [USDA_PSD_DATASET_ID]: 'marketing-year',
+  [FAOSTAT_PRICES_DATASET_ID]: 'calendar-year',
+  [FAOSTAT_TRADE_CL_DATASET_ID]: 'calendar-year',
 };
 
 /**
@@ -88,6 +94,8 @@ const REQUIRED_BASIS: Record<string, string> = {
 const PERMITTED_STATUSES: Record<string, readonly string[]> = {
   [FAOSTAT_PRODUCTION_DATASET_ID]: ['observed', 'estimated'],
   [USDA_PSD_DATASET_ID]: ['estimated'],
+  [FAOSTAT_PRICES_DATASET_ID]: ['observed', 'estimated'],
+  [FAOSTAT_TRADE_CL_DATASET_ID]: ['observed', 'estimated'],
 };
 
 /**
@@ -103,7 +111,7 @@ function unitFitsDimension(unit: string, dimension: MetricDimension): boolean {
   const massTerm =
     /\b(t|tonne|tonnes|mt|kg|kilogram|lb|pound|bale|bales|bu|bushel)\b/.test(u);
   const areaTerm = /\b(ha|hectare|hectares|ac|acre|acres|km2|km²)\b/.test(u);
-  const currencyTerm = /\b(usd|eur|dollar|euro|\$|€)\b/.test(u);
+  const currencyTerm = /\b(usd|eur|lcu|slc|dollar|euro|\$|€)\b/.test(u);
   switch (dimension) {
     case 'mass':
       return massTerm && !perArea;
@@ -207,9 +215,15 @@ const claims = new Map<string, Set<string>>();
  *
  * Cotton is legitimately published in bales where wheat is published in tonnes,
  * so a single unit per metric is not a true invariant. What IS true: within one
- * source and one commodity, everything measuring the same dimension shares a
- * unit. A commodity whose production is in tonnes and whose stocks are in bales
- * is a fourfold error wearing a plausible unit string.
+ * source and one commodity, everything measuring the same dimension AND
+ * denominated in the same currency shares a unit. A commodity whose production
+ * is in tonnes and whose stocks are in bales is a fourfold error wearing a
+ * plausible unit string.
+ *
+ * Currency belongs in the key because FAOSTAT publishes the same producer price
+ * in local currency AND in US dollars as two separate series. Those are two
+ * published facts, not one fact in two units — and keying on currency also
+ * asserts the converse, that a single currency never carries two units.
  */
 const unitsByDimension = new Map<string, Set<string>>();
 
@@ -244,10 +258,15 @@ for (const s of allMarketSeries()) {
   const legend = new Set(Object.values(snap?.statusLegend ?? {}));
   const [from, to] = snap?.coveredYears ?? [-Infinity, Infinity];
 
-  const key = `${s.metric}|${s.commodityRef}|${s.countryCode}`;
+  // The period basis is part of the fact. USDA reports trade on a marketing
+  // year and FAOSTAT on a calendar year: those are different windows over
+  // different months, not two answers to one question. Two sources claiming
+  // the same metric for the same commodity, country AND basis would be a real
+  // conflict, and that is what this still catches.
+  const key = `${s.metric}|${s.commodityRef}|${s.countryCode}|${s.basis}`;
   claims.set(key, (claims.get(key) ?? new Set()).add(s.sourceDatasetId));
 
-  const dimKey = `${s.sourceDatasetId}|${s.commodityRef}|${METRIC_DIMENSION[s.metric]}`;
+  const dimKey = `${s.sourceDatasetId}|${s.commodityRef}|${METRIC_DIMENSION[s.metric]}|${s.currency ?? '-'}`;
   unitsByDimension.set(
     dimKey,
     (unitsByDimension.get(dimKey) ?? new Set()).add(s.unit),
@@ -303,10 +322,58 @@ for (const s of allMarketSeries()) {
 
 for (const [dimKey, units] of unitsByDimension) {
   if (units.size > 1) {
-    const [datasetId, commodity, dimension] = dimKey.split('|');
+    const [datasetId, commodity, dimension, currency] = dimKey.split('|');
     fail(
-      `${datasetId} / ${commodity}: ${dimension} is published in more than one unit [${[...units].join(', ')}] — figures for one commodity would not be comparable with each other`,
+      `${datasetId} / ${commodity}: ${dimension} in ${currency} is published in more than one unit [${[...units].join(', ')}] — figures for one commodity would not be comparable with each other`,
     );
+  }
+}
+
+/* -- money carries a currency; everything else carries none ---------------- */
+for (const s of allMarketSeries()) {
+  const monetary = MONETARY_METRICS.includes(s.metric);
+  if (monetary && METRIC_DIMENSION[s.metric] === 'currency-per-mass') {
+    // A price without a currency is a number nobody can act on.
+    if (!s.currency)
+      fail(
+        `${s.id}: a price series must name the currency it is denominated in`,
+      );
+    if (!s.currencyBasis)
+      fail(
+        `${s.id}: a price series must say what kind of currency figure it is — a nominal local unit and a standardised construct are different facts`,
+      );
+    else if (!CURRENCY_BASES.includes(s.currencyBasis))
+      fail(
+        `${s.id}: currencyBasis "${s.currencyBasis}" is not in the vocabulary`,
+      );
+  }
+  if (!monetary && s.currency)
+    fail(
+      `${s.id}: ${s.metric} is not money and must not carry a currency — an index in "USD" reads as a price`,
+    );
+  if (s.metric === 'indexValue' && (s.currency || s.currencyBasis))
+    fail(
+      `${s.id}: an index is not money. It shares no unit with a price and must carry no currency.`,
+    );
+  for (const o of s.observations) {
+    if (o.currency !== s.currency)
+      fail(`${s.id}: an observation's currency differs from its series`);
+  }
+}
+
+/* -- a price basis is never merged with another --------------------------- */
+{
+  // producerPrice and wholesalePrice are different quantities for the same
+  // commodity in the same week. A series may hold exactly one basis, and the
+  // metric IS the basis — there is no bare "price" metric to fall back to.
+  const priceMetrics = allMarketSeries()
+    .filter((s) => METRIC_DIMENSION[s.metric] === 'currency-per-mass')
+    .map((s) => s.metric);
+  for (const m of new Set(priceMetrics)) {
+    if (!MARKET_METRICS.includes(m))
+      fail(`price metric "${m}" is not in the vocabulary`);
+    if (m === ('price' as MarketMetric))
+      fail('a bare "price" metric would hide which basis a figure is on');
   }
 }
 
@@ -314,8 +381,35 @@ for (const [dimKey, units] of unitsByDimension) {
 for (const [key, datasets] of claims) {
   if (datasets.size > 1)
     fail(
-      `${key}: published by more than one dataset (${[...datasets].join(', ')}) — two sourced figures for one fact would silently disagree`,
+      `${key}: published by more than one dataset (${[...datasets].join(', ')}) on the SAME period basis — two sourced figures for one fact would silently disagree`,
     );
+}
+
+/* -- where two sources cover one fact on different bases, say so ----------- */
+{
+  // Allowed, but only when the difference is visible: both series must declare
+  // a basis, and the two bases must actually differ.
+  const byFact = new Map<string, { basis: string; dataset: string }[]>();
+  for (const s of allMarketSeries()) {
+    const k = `${s.metric}|${s.commodityRef}|${s.countryCode}`;
+    byFact.set(k, [
+      ...(byFact.get(k) ?? []),
+      { basis: s.basis, dataset: s.sourceDatasetId },
+    ]);
+  }
+  for (const [k, entries] of byFact) {
+    const datasets = new Set(entries.map((e) => e.dataset));
+    if (datasets.size < 2) continue;
+    const bases = new Set(entries.map((e) => e.basis));
+    if (bases.size < 2)
+      fail(
+        `${k}: covered by ${datasets.size} datasets that declare the same period basis`,
+      );
+    for (const e of entries) {
+      if (!PERIOD_BASES.includes(e.basis as never))
+        fail(`${k}: dataset ${e.dataset} declares no valid period basis`);
+    }
+  }
 }
 
 const missing = commoditiesWithMarketData().filter((c) => !COMMODITIES.has(c));

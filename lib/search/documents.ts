@@ -632,7 +632,11 @@ export function buildSearchDocuments(): SearchDoc[] {
       id: `market:${slug}`,
       type: 'market-data',
       route: commodityMarketPath(slug),
-      title: `${item.title} production and market data`,
+      // Named for what the page now holds. "market data" was accurate when the
+      // page carried production only; with trade and prices on it the word
+      // "market" in the title also let 64 commodity documents outrank the
+      // market-term concept pages for the query "market price".
+      title: `${item.title} production, trade and price statistics`,
       names: [
         ...new Set(
           titleForms(item.title).flatMap((form) => [
@@ -643,14 +647,26 @@ export function buildSearchDocuments(): SearchDoc[] {
           ]),
         ),
       ],
-      category: 'Market data',
-      summary: `Production, area, yield and supply series for ${item.title.toLowerCase()} across ${countries} countries, with the status and unit each figure carries in its source.`,
+      category: 'Commodity statistics',
+      summary: `Production, area, yield, trade and producer price series for ${item.title.toLowerCase()} across ${countries} countries, with the status, unit and currency each figure carries in its source.`,
       relationLabels: [
         'production statistics',
-        'commodity market data',
         ...metrics.map((m) => METRIC_LABEL[m]),
+        // Price phrasing rides at RELATION weight, not name weight. Carrying
+        // the bare token "price" on 64 commodity documents let them outrank
+        // the market-term concept pages for the query "market price" — the
+        // documents changed, not the benchmark.
+        ...(metrics.includes('producerPrice')
+          ? titleForms(item.title).flatMap((form) => [
+              `${form} producer price`,
+              `${form} farm gate price`,
+            ])
+          : []),
       ],
-      facets: { entityType: ['market-data'], category: ['Market data'] },
+      facets: {
+        entityType: ['market-data'],
+        category: ['Commodity statistics'],
+      },
     });
   }
   if (marketCommodities.length > 0) {
@@ -665,9 +681,13 @@ export function buildSearchDocuments(): SearchDoc[] {
         'production by country',
         'crop production statistics',
         'agricultural statistics',
+        'producer prices',
+        'farm gate prices',
+        'agricultural trade statistics',
+        'exports by country',
       ],
       category: 'Market data',
-      summary: `${observationCount().toLocaleString('en')} official market observations for ${marketCommodities.length} commodities across ${countriesWithMarketData().length} countries, from FAOSTAT and USDA releases.`,
+      summary: `${observationCount().toLocaleString('en')} official market observations for ${marketCommodities.length} commodities across ${countriesWithMarketData().length} countries — production, area, yield, stocks, trade and producer prices — from FAOSTAT and USDA releases.`,
       relationLabels: ['FAOSTAT', 'USDA PSD', 'production statistics'],
       facets: { entityType: ['market-data'], category: ['Market data'] },
     });

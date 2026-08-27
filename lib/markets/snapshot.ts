@@ -29,6 +29,9 @@ export interface MarketSnapshotSeries {
   commoditySlug: string;
   metric: string;
   unit: string;
+  /** Present only on monetary series. Never converted. */
+  currency?: string | null;
+  currencyBasis?: string | null;
   years: number[];
   values: number[];
   /** One legend character per year, parallel to `years`. */
@@ -54,6 +57,13 @@ export interface MarketSnapshot {
   statusLegend: Record<string, ObservationStatus>;
   statusRule: string;
   withheldRule?: string;
+  priceBasisRule?: string;
+  currencyRule?: string;
+  excludedElementRule?: string;
+  marketRule?: string;
+  unitRule?: string;
+  valueRule?: string;
+  aggregateRule?: string;
   geographyRule: string;
   commodityRule: string;
   metricRule?: string;
@@ -69,10 +79,14 @@ export interface MarketSnapshot {
 /** Registry ids of the market datasets, used to link a figure to its dataset. */
 export const FAOSTAT_PRODUCTION_DATASET_ID = 'faostat-production';
 export const USDA_PSD_DATASET_ID = 'usda-psd-supply-use';
+export const FAOSTAT_PRICES_DATASET_ID = 'faostat-producer-prices';
+export const FAOSTAT_TRADE_CL_DATASET_ID = 'faostat-trade-cl';
 
 const PREFIXES: Record<string, string> = {
   [FAOSTAT_PRODUCTION_DATASET_ID]: 'faostat__production__',
   [USDA_PSD_DATASET_ID]: 'usda-psd__supply-use__',
+  [FAOSTAT_PRICES_DATASET_ID]: 'faostat__producer-prices__',
+  [FAOSTAT_TRADE_CL_DATASET_ID]: 'faostat__trade-cl__',
 };
 
 function snapshotFilesFor(prefix: string): string[] {

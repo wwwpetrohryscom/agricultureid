@@ -45,7 +45,10 @@ function toSeries(
   datasetId: string,
   raw: MarketSnapshotSeries,
 ): MarketSeries {
-  const id = `${datasetId}:${raw.iso3}:${raw.commoditySlug}:${raw.metric}`;
+  // The currency is part of series identity: a producer price in local
+  // currency and the same price in US dollars are two published series, not
+  // one series in two units.
+  const id = `${datasetId}:${raw.iso3}:${raw.commoditySlug}:${raw.metric}${raw.currency ? `:${raw.currency}` : ''}`;
   const observations: AgriculturalMarketObservation[] = raw.years.map(
     (year, i) => ({
       id: `${id}:${year}`,
@@ -61,6 +64,9 @@ function toSeries(
       unit: raw.unit,
       observationStatus: (snap.statusLegend[raw.statuses[i]!] ??
         'unknown') as ObservationStatus,
+      currency: raw.currency ?? undefined,
+      currencyBasis: (raw.currencyBasis ?? undefined) as
+        AgriculturalMarketObservation['currencyBasis'] | undefined,
       sourceDatasetId: datasetId,
       sourceSnapshotId: snap.snapshotId,
       retrievedAt: snap.retrievedAt,
@@ -72,6 +78,9 @@ function toSeries(
     countryCode: raw.iso3,
     metric: raw.metric as MarketMetric,
     unit: raw.unit,
+    currency: raw.currency ?? undefined,
+    currencyBasis: (raw.currencyBasis ?? undefined) as
+      MarketSeries['currencyBasis'] | undefined,
     basis: snap.periodBasis,
     frequency: snap.periodFrequency,
     sourceDatasetId: datasetId,
@@ -148,9 +157,15 @@ export function rankedByLatest(
   commodityRef: string,
   metric: MarketMetric,
   datasetId: string,
+  currency?: string,
 ): { countryCode: string; observation: AgriculturalMarketObservation }[] {
   const series = seriesForCommodity(commodityRef).filter(
-    (s) => s.metric === metric && s.sourceDatasetId === datasetId,
+    (s) =>
+      s.metric === metric &&
+      s.sourceDatasetId === datasetId &&
+      // A ranking compares one currency. Ranking a local-currency price
+      // against a US dollar price would rank exchange rates.
+      (currency === undefined || s.currency === currency),
   );
   if (!series.length) return [];
   const units = new Set(series.map((s) => s.unit));
@@ -167,6 +182,35 @@ export function rankedByLatest(
     })
     .filter((r): r is NonNullable<typeof r> => r !== null);
   return rows.sort((a, b) => b.observation.value - a.observation.value);
+}
+
+/**
+ * The (metric, currency) pairs a dataset publishes for a commodity.
+ *
+ * Prices arrive in more than one currency, and a currency is part of what the
+ * number is. Iterating metrics alone would collapse a local-currency series and
+ * a US dollar series into one table with two units in it.
+ */
+export function metricViewsFor(
+  commodityRef: string,
+  datasetId: string,
+): { metric: MarketMetric; currency?: string }[] {
+  const seen = new Map<string, { metric: MarketMetric; currency?: string }>();
+  for (const s of seriesForCommodity(commodityRef)) {
+    if (s.sourceDatasetId !== datasetId) continue;
+    seen.set(`${s.metric}|${s.currency ?? ''}`, {
+      metric: s.metric,
+      currency: s.currency,
+    });
+  }
+  return [...seen.values()];
+}
+
+/** Commodities a country has any series for, for its dashboard. */
+export function commoditiesForCountry(countryCode: string): string[] {
+  return [
+    ...new Set(seriesForCountry(countryCode).map((s) => s.commodityRef)),
+  ].sort();
 }
 
 /** Series grouped by dataset, so two sources are never drawn as one line. */
