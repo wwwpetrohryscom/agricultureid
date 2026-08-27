@@ -18,6 +18,8 @@ import { countryPath } from '@/lib/geo/paths';
 import { regionsForCountry } from '@/lib/geo/region-registry';
 import type { CountryAgricultureProfile } from '@/types/geo';
 import { CountryAuthorities } from '@/components/authorities/CountryAuthorities';
+import { countryCoverage } from '@/lib/coverage/derive';
+import { COVERAGE_CAVEAT, COVERAGE_LAYER_LABEL } from '@/types/coverage';
 
 function Section({
   id,
@@ -260,6 +262,60 @@ export function CountryProfileView({
       {/* 8. Limitations */}
       <Section id="limitations" heading="Data coverage & limitations">
         <p className="text-sm leading-7 text-ink-700">{profile.dataCoverage}</p>
+
+        {/* What AgricultureID holds for this country, layer by layer. Absence
+            is never a dash on its own: a blank invites a reader to conclude the
+            thing does not exist here, which is a different claim entirely. */}
+        <div className="mt-6 overflow-x-auto">
+          <table className="w-full min-w-[30rem] border-collapse text-sm">
+            <caption className="mb-2 text-left text-xs uppercase tracking-wide text-ink-500">
+              What AgricultureID has indexed for {profile.name}
+            </caption>
+            <thead>
+              <tr className="border-b border-ink-200 text-left text-xs uppercase tracking-wide text-ink-500">
+                <th scope="col" className="py-2 pr-3 font-medium">
+                  Layer
+                </th>
+                <th scope="col" className="py-2 pr-3 font-medium">
+                  Status
+                </th>
+                <th scope="col" className="py-2 font-medium">
+                  What is held
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {countryCoverage(profile.countryCode, profile.name).map((c) => (
+                <tr key={c.layer} className="border-b border-ink-100 align-top">
+                  <th
+                    scope="row"
+                    className="py-1.5 pr-3 font-normal text-ink-900"
+                  >
+                    {COVERAGE_LAYER_LABEL[c.layer]}
+                  </th>
+                  <td className="py-1.5 pr-3 text-ink-700">{c.publicLabel}</td>
+                  <td className="py-1.5 text-ink-600">
+                    {c.recordCount > 0
+                      ? `${c.recordCount.toLocaleString('en')} record${c.recordCount === 1 ? '' : 's'}`
+                      : '—'}
+                    {c.evidence ? (
+                      <span className="block text-xs text-ink-500">
+                        {c.evidence.note}
+                      </span>
+                    ) : null}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p className="mt-2 text-xs text-ink-500">
+          {COVERAGE_CAVEAT}{' '}
+          <Link href="/coverage" className="underline hover:text-forest-800">
+            How coverage is worked out
+          </Link>
+          .
+        </p>
         <div className="mt-2">
           <List items={profile.keyLimitations} />
         </div>

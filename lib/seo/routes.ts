@@ -49,6 +49,7 @@ import {
 import { BIOSECURITY_HUB_PATH } from '@/lib/biosecurity/registry';
 import { VARIETY_REGISTRATION_HUB_PATH } from '@/lib/varieties/registry';
 import { CHANGE_HUB_PATH } from '@/lib/history/registry';
+import { COVERAGE_PATH } from '@/lib/coverage/paths';
 import {
   MARKETS_HUB_PATH,
   commodityMarketPath,
@@ -161,6 +162,11 @@ const STATIC_ROUTES: Omit<RouteEntry, 'lastModified'>[] = [
     path: CHANGE_HUB_PATH,
     changeFrequency: 'monthly',
     priority: 0.5,
+  },
+  {
+    path: COVERAGE_PATH,
+    changeFrequency: 'monthly',
+    priority: 0.4,
   },
   {
     path: MARKETS_HUB_PATH,
