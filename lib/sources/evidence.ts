@@ -113,6 +113,8 @@ export const EVIDENCE_TIER: Record<string, EvidenceTier> = {
   'us-co-cda': 1,
   'us-or-oda': 1,
   'us-az-azda': 1,
+  // Wave 8 — crop calendar sources.
+  'usda-usual-planting-dates': 1,
   // Wave 7 — support programmes and administering agencies.
   'gov-us-usda-nrcs': 1,
   'gov-us-usda-fsa': 1,
