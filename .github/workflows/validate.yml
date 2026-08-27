@@ -67,6 +67,9 @@ jobs:
       - name: Variety registration validation
         run: npm run varieties:validate
 
+      - name: Source freshness validation
+        run: npm run freshness:validate
+
       - name: Market data validation
         run: npm run markets:validate
 
