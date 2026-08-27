@@ -2197,6 +2197,20 @@ export const SOURCES: Source[] = [
     reliability: 'authoritative',
   },
   {
+    id: 'reg-usda-nrcs-ssurgo',
+    organization:
+      'United States Department of Agriculture — Natural Resources Conservation Service',
+    title: 'Soil Survey Geographic Database (SSURGO), via Soil Data Access',
+    url: 'https://sdmdataaccess.sc.egov.usda.gov/',
+    accessDate: ACCESS_VARIETY,
+    sourceType: 'registry',
+    jurisdiction: 'United States',
+    language: 'en',
+    notes:
+      'The detailed soil survey of the United States. Queried through Soil Data Access, the survey’s own public query service, at the survey’s own grain of survey area, map unit and component.',
+    reliability: 'authoritative',
+  },
+  {
     id: 'reg-cfia-variety-registration',
     organization: 'Variety Registration (CFIA)',
     title: 'Variety Registration (CFIA)',

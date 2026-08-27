@@ -112,13 +112,16 @@ describe('provenance — no score, and no claim stronger than its evidence', () 
   it('uses categorical standing only', () => {
     for (const l of L.slice(0, 200))
       expect(TRUTH_STATES).toContain(l.truthState);
-    // Nothing anywhere in the layer carries a number that could read as one.
-    const numeric = L.filter((l) =>
-      /\b\d{1,3}\s?%|confidence/i.test(
+    // Nothing anywhere in the layer carries a CONFIDENCE number. A percentage
+    // that is a soil's clay content is a measurement of the world; a
+    // percentage that is a confidence is a claim about ourselves, and only the
+    // second is forbidden.
+    const scored = L.filter((l) =>
+      /\bconfidence\b|\b\d{1,3}\s?%\s*(confident|certain|sure|reliab)/i.test(
         `${l.statement} ${l.locator.value ?? ''} ${l.interpretation?.value ?? ''}`,
       ),
     ).map((l) => l.claimId);
-    expect(numeric).toEqual([]);
+    expect(scored).toEqual([]);
   });
 
   it('never calls a claim verified without a source and a date', () => {

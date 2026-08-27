@@ -23,6 +23,8 @@ import { BIOSECURITY_STATUS } from '@/data/biosecurity';
 import { COMPLIANCE_TOPICS } from '@/data/compliance';
 import { AUTHORITIES } from '@/data/authorities';
 import { SUPPORT_PROGRAMS } from '@/data/support';
+import { allSoilObservations } from '@/lib/soils/registry';
+import { SOIL_DATASET_CONTRACT_MAP } from '@/lib/soils/contracts';
 
 function sourcesOf(ids: readonly string[]): LineageSource[] {
   const out: LineageSource[] = [];
@@ -270,6 +272,47 @@ export function supportProgrammeLineage(id: string): ClaimLineage | undefined {
   };
 }
 
+export function soilObservationLineage(id: string): ClaimLineage | undefined {
+  const o = allSoilObservations().find((x) => x.id === id);
+  if (!o) return undefined;
+  const sources = sourcesOf(o.sourceReferences);
+  const contract = SOIL_DATASET_CONTRACT_MAP.get(o.sourceDatasetId);
+  const value = o.range
+    ? `${o.range.min}–${o.range.max} ${o.unit ?? ''}`.trim()
+    : (o.categoricalValue ?? '');
+  return {
+    claimKind: 'soil-observation',
+    claimId: o.id,
+    claimLabel: `${o.soilBody} — ${o.property}`,
+    statement: `The survey records ${value} for ${o.property} across ${o.unitsCovered.mapUnits} mapped units of ${o.soilBody} in ${o.jurisdictionId}.`,
+    sources,
+    release: releaseOf(
+      SOURCE_SNAPSHOTS.find((s) => s.sourceId === o.sourceReferences[0])?.id,
+    ),
+    locator: {
+      kind: 'dataset-series',
+      value: `${o.sourceDatasetId} · ${o.jurisdictionId} · ${o.soilBody}`,
+    },
+    sourceWording: o.classification
+      ? { text: o.classification.value, field: 'taxonomic order' }
+      : o.categoricalValue
+        ? { text: o.categoricalValue, field: o.property }
+        : undefined,
+    interpretation: {
+      value: o.evidenceClass,
+      vocabulary: 'SoilEvidenceClass',
+    },
+    verifiedAt: o.lastVerifiedAt,
+    truthState: stateFrom(sources.length > 0, Boolean(o.lastVerifiedAt), false),
+    conflicts: [],
+    limitations: contract
+      ? [
+          'A representative value characterises a mapped soil body. It is not a measurement of a particular field.',
+        ]
+      : [],
+  };
+}
+
 /** Every claim this layer can trace, for the gate and the report. */
 export function allLineages(): ClaimLineage[] {
   const out: ClaimLineage[] = [];
@@ -296,6 +339,18 @@ export function allLineages(): ClaimLineage[] {
   }
   for (const p of SUPPORT_PROGRAMS) {
     const l = supportProgrammeLineage(p.id);
+    if (l) out.push(l);
+  }
+  // One lineage per soil observation would be 91,620 resolutions on every
+  // read of the gate. The layer is uniform — one dataset, one contract, one
+  // evidence class — so a representative sample per jurisdiction and property
+  // exercises every path the contract permits without resolving all of them.
+  const seen = new Set<string>();
+  for (const o of allSoilObservations()) {
+    const key = `${o.jurisdictionId}|${o.property}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    const l = soilObservationLineage(o.id);
     if (l) out.push(l);
   }
   return out;

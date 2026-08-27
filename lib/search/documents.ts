@@ -21,6 +21,11 @@ import type { RelationType } from '@/types/content';
 import type { SearchDoc, SearchEntityType } from '@/types/search';
 import { CHANGE_HUB_PATH, changeEvents } from '@/lib/history/registry';
 import { COVERAGE_PATH } from '@/lib/coverage/paths';
+import { SOIL_SURVEYS_PATH } from '@/lib/soils/paths';
+import {
+  allSoilObservations,
+  jurisdictionsCovered,
+} from '@/lib/soils/registry';
 import { allCountryCoverage } from '@/lib/coverage/derive';
 import {
   listedAuthorities,
@@ -686,6 +691,44 @@ export function buildSearchDocuments(): SearchDoc[] {
         'editorial backlog',
       ],
       facets: { entityType: ['coverage'], category: ['Coverage'] },
+    });
+  }
+
+  // Soil survey observations. One hub document, not one per soil body: 13,390
+  // documents each naming one series would bury the soil-type and crop pages a
+  // reader is usually after. Only SURVEY vocabulary rides at name weight —
+  // "clay soil" and "soil pH" belong to the existing soil and soil-topic
+  // pages, and carrying them here would let this hub outrank them.
+  {
+    const obs = allSoilObservations();
+    const bodies = new Set(obs.map((o) => `${o.jurisdictionId}|${o.soilBody}`))
+      .size;
+    docs.push({
+      id: 'soils:hub',
+      type: 'soil-observation',
+      route: SOIL_SURVEYS_PATH,
+      title: 'Soil survey observations',
+      names: [
+        'soil survey',
+        'soil survey observations',
+        'usda soil survey',
+        'ssurgo',
+        'mapped soil bodies',
+        'soil map unit',
+      ],
+      category: 'Soil surveys',
+      summary: `${obs.length.toLocaleString('en')} representative values from official soil surveys, covering ${bodies.toLocaleString('en')} mapped soil bodies across ${jurisdictionsCovered().length} jurisdictions.`,
+      relationLabels: [
+        'representative value',
+        'soil taxonomy order',
+        'drainage class',
+        'surface horizon',
+        'survey area',
+      ],
+      facets: {
+        entityType: ['soil-observation'],
+        category: ['Soil surveys'],
+      },
     });
   }
 

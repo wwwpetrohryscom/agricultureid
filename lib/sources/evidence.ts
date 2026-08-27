@@ -169,6 +169,7 @@ export const EVIDENCE_TIER: Record<string, EvidenceTier> = {
   'reg-hse-pesticides-register': 1,
   'reg-health-canada-pesticide-label-search': 1,
   'reg-cfia-variety-registration': 1,
+  'reg-usda-nrcs-ssurgo': 1,
   'reg-uk-seeds-gazette': 1,
   'reg-usda-pvpo': 1,
   'reg-ip-australia-pbr': 1,

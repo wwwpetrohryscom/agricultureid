@@ -82,6 +82,17 @@ export const LINEAGE_CONTRACTS: readonly LineageContract[] = [
     why: 'A ministry publishes its own title on its own page. There is no record identifier and no normalisation: the official name is the official name. All eighty bodies carry a verification page, so a body without one fails the gate rather than resolving to no locator at all.',
   },
   {
+    claimKind: 'soil-observation',
+    permittedLocators: ['dataset-series'],
+    hasRelease: true,
+    // The survey publishes a soil body's classification and drainage class in
+    // its own words; the numbers are its representative values, not wording.
+    publishesWording: true,
+    hasInterpretation: true,
+    vocabulary: 'SoilEvidenceClass',
+    why: 'A soil observation is addressed by the survey’s own component within a state, and the capture it was read from is recorded. Its evidence class is what the survey produces, not what the record claims.',
+  },
+  {
     claimKind: 'support-programme-status',
     permittedLocators: ['page-heading'],
     hasRelease: false,

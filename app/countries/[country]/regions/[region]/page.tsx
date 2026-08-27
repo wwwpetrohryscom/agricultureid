@@ -12,6 +12,7 @@ import { buildMetadata } from '@/lib/seo/metadata';
 import { getProfile } from '@/lib/geo/registry';
 import { countryPath } from '@/lib/geo/paths';
 import { contentPath, resolveRef } from '@/lib/content/registry';
+import { RegionSoils } from '@/components/soils/RegionSoils';
 import {
   allRegions,
   getRegion,
@@ -200,6 +201,11 @@ export default async function RegionPage({ params }: Params) {
           renders nothing when none is verified, so a region page never
           implies an authority exists where none was confirmed. */}
       <RegionAuthorities jurisdictionId={r.officialCode} />
+
+      {/* Soil bodies the official survey maps in this jurisdiction. Renders
+          nothing where no survey is ingested: an empty table would read as an
+          absence of soil data in the world rather than in this corpus. */}
+      <RegionSoils jurisdictionId={r.officialCode} regionName={r.name} />
 
       <SourceList references={r.sourceReferences} />
     </Container>

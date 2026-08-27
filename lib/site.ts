@@ -408,6 +408,13 @@ export const SECTIONS: NavSection[] = [
     active: true,
   },
   {
+    label: 'Soil Surveys',
+    href: '/soil-surveys',
+    description:
+      'What official soil surveys document about mapped soil bodies — their properties, their classification, and the scale each value belongs to.',
+    active: true,
+  },
+  {
     label: 'Coverage & Gaps',
     href: '/coverage',
     description:
@@ -614,6 +621,7 @@ export const REFERENCE_NAV = SECTIONS.filter(
       '/variety-registration',
       '/agricultural-changes',
       '/coverage',
+      '/soil-surveys',
       '/agricultural-markets',
       '/extension-resources',
       '/agricultural-inputs',
