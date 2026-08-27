@@ -2498,4 +2498,34 @@ export const SOURCES: Source[] = [
       'State-by-state usual planting and harvesting dates for US field crops. The October 2010 edition is the latest published; its plain-text release file was downloaded and parsed during the Wave 8 pass. The vintage is recorded on every entry derived from it.',
     reliability: 'authoritative',
   },
+  {
+    id: 'eppo-a1-list',
+    organization:
+      'European and Mediterranean Plant Protection Organization (EPPO)',
+    title:
+      'EPPO A1 List of pests recommended for regulation as quarantine pests',
+    url: 'https://www.eppo.int/ACTIVITIES/plant_quarantine/A1_list',
+    accessDate: ACCESS_AUTH,
+    sourceType: 'intergovernmental',
+    jurisdiction: 'EPPO region',
+    language: 'en',
+    notes:
+      'Pests EPPO recommends its member countries regulate as quarantine pests, and which EPPO records as absent from the EPPO region. A recommendation to members, not statutory status in any country. Version 2025-09.',
+    reliability: 'authoritative',
+  },
+  {
+    id: 'eppo-a2-list',
+    organization:
+      'European and Mediterranean Plant Protection Organization (EPPO)',
+    title:
+      'EPPO A2 List of pests recommended for regulation as quarantine pests',
+    url: 'https://www.eppo.int/ACTIVITIES/plant_quarantine/A2_list',
+    accessDate: ACCESS_AUTH,
+    sourceType: 'intergovernmental',
+    jurisdiction: 'EPPO region',
+    language: 'en',
+    notes:
+      'Pests EPPO recommends its member countries regulate as quarantine pests, and which EPPO records as present but locally distributed in the EPPO region. A recommendation to members, not statutory status in any country. Version 2025-09.',
+    reliability: 'authoritative',
+  },
 ];

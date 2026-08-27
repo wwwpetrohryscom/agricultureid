@@ -22,6 +22,7 @@ import { contentBreadcrumbs } from '@/lib/seo/breadcrumbs';
 import { CONTENT_TYPE_LABEL } from '@/lib/site';
 import type { AnyContent } from '@/types/content';
 import { CropCalendarLink } from '@/components/calendars/CropCalendarLink';
+import { OrganismBiosecurityStatus } from '@/components/biosecurity/OrganismBiosecurityStatus';
 
 /** Full rendering of a structured content page, shared by all content types. */
 export function ContentArticle({ item }: { item: AnyContent }) {
@@ -105,6 +106,13 @@ export function ContentArticle({ item }: { item: AnyContent }) {
               </div>
             </section>
           ))}
+
+          {/* Regulatory listings for pests and pathogens. Renders nothing
+              when none is recorded — silence is not a claim of "unregulated". */}
+          {(item.contentType === 'pest' ||
+            item.contentType === 'plant-disease') && (
+            <OrganismBiosecurityStatus organismRef={item.slug} />
+          )}
 
           {/* Crops with transcribed timing data link to their calendar; the
               component renders nothing for crops that have none. */}

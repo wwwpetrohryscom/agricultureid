@@ -41,7 +41,7 @@
     "authorities:health": "tsx -e \"import { AUTHORITIES } from './data/authorities'; for (const a of AUTHORITIES) console.log(a.id + ' ' + a.officialWebsite);\" | node scripts/authorities-health.mjs",
     "ecosystem:validate": "tsx scripts/ecosystem-validate.ts",
     "ecosystem:audit": "tsx scripts/ecosystem-audit.ts",
-    "validate": "npm run format:check && npm run typecheck && npm run lint && npm run content:validate && npm run ecosystem:validate && npm run jurisdictions:validate && npm run authorities:validate && npm run registries:validate && npm run regulations:validate && npm run support:validate && npm run calendars:validate && npm run test",
+    "validate": "npm run format:check && npm run typecheck && npm run lint && npm run content:validate && npm run ecosystem:validate && npm run jurisdictions:validate && npm run authorities:validate && npm run registries:validate && npm run regulations:validate && npm run support:validate && npm run calendars:validate && npm run biosecurity:validate && npm run test",
     "authorities:discover": "node scripts/authorities-discover.mjs",
     "authorities:ledger": "tsx scripts/authorities-ledger.ts",
     "authorities:coverage": "tsx scripts/authorities-coverage.ts",
@@ -52,7 +52,9 @@
     "support:validate": "tsx scripts/support-validate.ts",
     "support:report": "tsx scripts/support-report.ts",
     "calendars:validate": "tsx scripts/calendars-validate.ts",
-    "calendars:report": "tsx scripts/calendars-report.ts"
+    "calendars:report": "tsx scripts/calendars-report.ts",
+    "biosecurity:validate": "tsx scripts/biosecurity-validate.ts",
+    "biosecurity:report": "tsx scripts/biosecurity-report.ts"
   },
   "dependencies": {
     "next": "^15.1.6",
