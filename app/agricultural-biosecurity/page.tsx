@@ -109,8 +109,24 @@ export default function BiosecurityPage() {
                           {e.organismType}
                         </span>
                       </p>
+                      {/* The list entry is the source's own words and the
+                          status beside it is AgricultureID's vocabulary. They
+                          are labelled apart because "recommended for
+                          regulation as quarantine pests" is EPPO speaking and
+                          `recommended-for-regulation` is not. */}
                       <p className="mt-1 text-sm italic text-ink-700">
-                        {e.officialListEntry}
+                        &ldquo;{e.officialListEntry}&rdquo;
+                        <span className="ml-2 text-xs not-italic text-ink-500">
+                          entry as published on the {e.officialListName}
+                          {e.listVersion ? ` (${e.listVersion})` : ''}
+                        </span>
+                      </p>
+                      <p className="mt-1 text-xs text-ink-500">
+                        AgricultureID records this as{' '}
+                        <span className="rounded bg-olive-50 px-1 py-0.5 font-mono">
+                          {e.regulatoryStatus}
+                        </span>{' '}
+                        — a value from RegulatoryStatus, not a quotation.
                       </p>
                     </li>
                   );

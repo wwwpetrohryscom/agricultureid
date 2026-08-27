@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Container } from '@/components/ui/Container';
 import { EntityChangeHistory } from '@/components/history/EntityChangeHistory';
+import { EvidencePanel } from '@/components/provenance/EvidencePanel';
+import { authorityIdentityLineage } from '@/lib/provenance/lineage';
 import { eventsForEntity } from '@/lib/history/registry';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { webPageSchema, breadcrumbSchema } from '@/lib/schema/jsonld';
@@ -217,6 +219,16 @@ export default async function AuthorityPage({ params }: Params) {
         heading="Former name"
         intro="Established by reading the body’s own material. An alias, an abbreviation or a legacy domain is not a former name."
       />
+
+      {(() => {
+        const lineage = authorityIdentityLineage(a.id);
+        return lineage ? (
+          <EvidencePanel
+            lineage={lineage}
+            heading="Why this body is recorded"
+          />
+        ) : null;
+      })()}
 
       <Section heading="Sources and verification">
         <ul className="space-y-4">

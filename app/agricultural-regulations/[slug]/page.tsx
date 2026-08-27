@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Container } from '@/components/ui/Container';
+import { EvidencePanel } from '@/components/provenance/EvidencePanel';
+import { complianceRequirementLineage } from '@/lib/provenance/lineage';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { webPageSchema, breadcrumbSchema } from '@/lib/schema/jsonld';
 import { buildMetadata } from '@/lib/seo/metadata';
@@ -128,6 +130,19 @@ export default async function CompliancePage({ params }: Params) {
               <p className="mt-3 text-xs text-ink-500">
                 Applies to: {r.appliesTo.join('; ')}
               </p>
+
+              {/* Why AgricultureID records this requirement as it does. Wave 6
+                  allowed `required` only where the operative article itself was
+                  read, and the panel shows which of the two this is. */}
+              {(() => {
+                const lineage = complianceRequirementLineage(r.id);
+                return lineage ? (
+                  <EvidencePanel
+                    lineage={lineage}
+                    heading="Why this is recorded"
+                  />
+                ) : null;
+              })()}
 
               {(r.registryIds ?? []).length > 0 && (
                 <p className="mt-2 text-sm">

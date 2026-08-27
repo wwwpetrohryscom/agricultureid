@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Container } from '@/components/ui/Container';
+import { EvidencePanel } from '@/components/provenance/EvidencePanel';
+import { supportProgrammeLineage } from '@/lib/provenance/lineage';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { webPageSchema, breadcrumbSchema } from '@/lib/schema/jsonld';
 import { buildMetadata } from '@/lib/seo/metadata';
@@ -196,6 +198,11 @@ export default async function SupportProgramPage({ params }: Params) {
           })}
         </ul>
       </Section>
+
+      {(() => {
+        const lineage = supportProgrammeLineage(p.id);
+        return lineage ? <EvidencePanel lineage={lineage} /> : null;
+      })()}
 
       <Section heading="Sources and verification">
         <ul className="space-y-3">
