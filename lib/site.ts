@@ -387,6 +387,13 @@ export const SECTIONS: NavSection[] = [
     active: true,
   },
   {
+    label: 'Agricultural Regulations',
+    href: '/agricultural-regulations',
+    description:
+      'Which authority regulates an agricultural activity, which official register confirms status, and which official source establishes the rule.',
+    active: true,
+  },
+  {
     label: 'Official Registries',
     href: '/agricultural-registries',
     description:
@@ -537,6 +544,7 @@ export const REFERENCE_NAV = SECTIONS.filter(
       '/sources',
       '/agricultural-authorities',
       '/agricultural-registries',
+      '/agricultural-regulations',
       '/data-health',
     ].includes(s.href),
 );

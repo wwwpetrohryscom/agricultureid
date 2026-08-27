@@ -2243,4 +2243,101 @@ export const SOURCES: Source[] = [
       'Official agricultural registry or database, loaded and verified in a real browser during the Wave 5 verification pass.',
     reliability: 'authoritative',
   },
+  {
+    id: 'law-eu-1107-2009',
+    organization:
+      'Regulation (EC) No 1107/2009 concerning the placing of plant protection products on the market',
+    title:
+      'Regulation (EC) No 1107/2009 concerning the placing of plant protection products on the market',
+    url: 'https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A32009R1107',
+    accessDate: ACCESS_AUTH,
+    sourceType: 'government',
+    jurisdiction: 'European Union',
+    language: 'en',
+    notes:
+      'Official legal instrument or competent-authority guidance, loaded and verified in a real browser during the Wave 6 verification pass.',
+    reliability: 'authoritative',
+  },
+  {
+    id: 'law-eu-2018-848',
+    organization:
+      'Regulation (EU) 2018/848 on organic production and labelling of organic products',
+    title:
+      'Regulation (EU) 2018/848 on organic production and labelling of organic products',
+    url: 'https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A32018R0848',
+    accessDate: ACCESS_AUTH,
+    sourceType: 'government',
+    jurisdiction: 'European Union',
+    language: 'en',
+    notes:
+      'Official legal instrument or competent-authority guidance, loaded and verified in a real browser during the Wave 6 verification pass.',
+    reliability: 'authoritative',
+  },
+  {
+    id: 'law-eu-2016-2031',
+    organization:
+      'Regulation (EU) 2016/2031 on protective measures against pests of plants',
+    title:
+      'Regulation (EU) 2016/2031 on protective measures against pests of plants',
+    url: 'https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A32016R2031',
+    accessDate: ACCESS_AUTH,
+    sourceType: 'government',
+    jurisdiction: 'European Union',
+    language: 'en',
+    notes:
+      'Official legal instrument or competent-authority guidance, loaded and verified in a real browser during the Wave 6 verification pass.',
+    reliability: 'authoritative',
+  },
+  {
+    id: 'gov-hse-pesticides',
+    organization: 'HSE — Pesticides',
+    title: 'HSE — Pesticides',
+    url: 'https://www.hse.gov.uk/pesticides/',
+    accessDate: ACCESS_AUTH,
+    sourceType: 'government',
+    jurisdiction: 'United Kingdom',
+    language: 'en',
+    notes:
+      'Official legal instrument or competent-authority guidance, loaded and verified in a real browser during the Wave 6 verification pass.',
+    reliability: 'authoritative',
+  },
+  {
+    id: 'gov-epa-pesticide-registration',
+    organization: 'US EPA — About Pesticide Registration',
+    title: 'US EPA — About Pesticide Registration',
+    url: 'https://www.epa.gov/pesticide-registration/about-pesticide-registration',
+    accessDate: ACCESS_AUTH,
+    sourceType: 'government',
+    jurisdiction: 'United States',
+    language: 'en',
+    notes:
+      'Official legal instrument or competent-authority guidance, loaded and verified in a real browser during the Wave 6 verification pass.',
+    reliability: 'authoritative',
+  },
+  {
+    id: 'gov-aphis-plant-exports',
+    organization: 'USDA APHIS — Plant and Plant Product Exports',
+    title: 'USDA APHIS — Plant and Plant Product Exports',
+    url: 'https://www.aphis.usda.gov/plant-exports',
+    accessDate: ACCESS_AUTH,
+    sourceType: 'government',
+    jurisdiction: 'United States',
+    language: 'en',
+    notes:
+      'Official legal instrument or competent-authority guidance, loaded and verified in a real browser during the Wave 6 verification pass.',
+    reliability: 'authoritative',
+  },
+  {
+    id: 'gov-ec-plant-health',
+    organization: 'European Commission — Plant health and biosecurity',
+    title: 'European Commission — Plant health and biosecurity',
+    url: 'https://food.ec.europa.eu/plants/plant-health-and-biosecurity_en',
+    accessDate: ACCESS_AUTH,
+    sourceType: 'government',
+    jurisdiction: 'European Union',
+    language: 'en',
+    notes:
+      'Official legal instrument or competent-authority guidance, loaded and verified in a real browser during the Wave 6 verification pass.',
+    reliability: 'authoritative',
+  },
 ];

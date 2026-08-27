@@ -113,6 +113,14 @@ export const EVIDENCE_TIER: Record<string, EvidenceTier> = {
   'us-co-cda': 1,
   'us-or-oda': 1,
   'us-az-azda': 1,
+  // Wave 6 — legal instruments and competent-authority guidance.
+  'law-eu-1107-2009': 1,
+  'law-eu-2018-848': 1,
+  'law-eu-2016-2031': 1,
+  'gov-hse-pesticides': 1,
+  'gov-epa-pesticide-registration': 1,
+  'gov-aphis-plant-exports': 1,
+  'gov-ec-plant-health': 1,
   // Wave 5 — official agricultural registries and databases.
   'reg-eu-pesticides-database': 1,
   'reg-eu-plant-variety-portal': 1,

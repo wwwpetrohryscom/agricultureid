@@ -52,6 +52,9 @@ jobs:
       - name: Agricultural registries validation
         run: npm run registries:validate
 
+      - name: Agricultural compliance validation
+        run: npm run regulations:validate
+
       - name: Tests
         run: npm test
 

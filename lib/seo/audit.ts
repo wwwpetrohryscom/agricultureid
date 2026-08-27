@@ -51,6 +51,11 @@ import {
   registryPath,
   REGISTRIES_HUB_PATH,
 } from '@/lib/registries/registry';
+import {
+  publishedComplianceTopics,
+  compliancePath,
+  REGULATIONS_HUB_PATH,
+} from '@/lib/compliance/registry';
 
 export interface AuditIssue {
   level: 'error' | 'warning';
@@ -192,6 +197,21 @@ export function registryNavModel(): Map<string, Set<string>> {
       if (publishedRegistries().some((x) => x.id === r.id)) {
         add(authorityPath(a.slug), registryPath(r.slug));
       }
+    }
+  }
+
+  // Compliance hub lists every published topic; each topic links back and out
+  // to its authorities and registries.
+  for (const t of publishedComplianceTopics()) {
+    add(REGULATIONS_HUB_PATH, compliancePath(t.slug));
+    add(compliancePath(t.slug), REGULATIONS_HUB_PATH);
+    for (const aid of t.responsibleAuthorityIds) {
+      const a = publishedAuthorities().find((x) => x.id === aid);
+      if (a) add(compliancePath(t.slug), authorityPath(a.slug));
+    }
+    for (const rid of t.relatedRegistryIds) {
+      const r = publishedRegistries().find((x) => x.id === rid);
+      if (r) add(compliancePath(t.slug), registryPath(r.slug));
     }
   }
 
