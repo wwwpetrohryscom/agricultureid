@@ -14,7 +14,7 @@ import { SOURCE_MAP } from '@/lib/sources/registry';
 import { allRoutes } from '@/lib/seo/routes';
 import { buildSearchDocuments } from '@/lib/search/documents';
 
-const EXPECTED_TOTAL = 26;
+const EXPECTED_TOTAL = 29;
 const EXPECTED_PUBLISHED = 23;
 const DOCS = buildSearchDocuments();
 const REG_DOCS = DOCS.filter((d) => d.type === 'agricultural-registry');
@@ -69,6 +69,9 @@ describe('registries — access claims are never guessed', () => {
   });
 
   it('records zero APIs, because none was documented on the systems read', () => {
+    // Including IP Australia, whose search is served by a public JSON endpoint
+    // the register was read through. An internal call a site makes is not an
+    // API its operator documents, and this field means the second thing.
     // An honest expectation: if a future record sets apiAvailable it must come
     // with an endpoint, which the rule above enforces.
     expect(REGISTRIES.filter((r) => r.apiAvailable)).toHaveLength(0);
@@ -91,10 +94,28 @@ describe('registries — access claims are never guessed', () => {
     }
   });
 
-  it('leaves update frequency unknown rather than inferring one', () => {
-    // Every system read documented no cadence; recording a guess would be
-    // fabrication. This asserts the honest state rather than a filled-in one.
-    expect(REGISTRIES.every((r) => r.updateFrequency === 'unknown')).toBe(true);
+  it('states a cadence only where the operator documents one', () => {
+    // For twenty-six systems the honest value was `unknown`, because none of
+    // them said how often it updates. The UK gazette does say so — gov.uk calls
+    // it "the monthly Seeds Gazette" — so the assertion is no longer "every
+    // record says unknown" but the rule underneath it: a stated cadence must be
+    // traceable to something on the record that says where it was read.
+    for (const r of REGISTRIES) {
+      if (r.updateFrequency === 'unknown') continue;
+      const evidence = [
+        r.coverageDescription ?? '',
+        ...(r.limitations ?? []),
+        ...r.verification.map((v) => v.evidenceNote),
+      ]
+        .join(' ')
+        .toLowerCase();
+      expect(evidence, r.id).toContain(r.updateFrequency.toLowerCase());
+    }
+    expect(
+      REGISTRIES.filter((r) => r.updateFrequency !== 'unknown').map(
+        (r) => r.id,
+      ),
+    ).toEqual(['uk-variety-lists']);
   });
 
   it('marks login-gated operational systems as restricted, not public', () => {

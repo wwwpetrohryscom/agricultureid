@@ -576,14 +576,14 @@ export function buildSearchDocuments(): SearchDoc[] {
     });
   }
 
-  // Variety registration. One hub document, not one per register entry: 123
+  // Variety registration. One hub document, not one per register entry: 147
   // documents each reading "<name> is listed in <country>" would swamp the
   // cultivar pages they point at without answering a question anyone asks.
   if (VARIETY_REGISTRATIONS.length > 0) {
     const denominations = [
       ...new Set(VARIETY_REGISTRATIONS.map((r) => r.denomination)),
     ];
-    const speciesNames = presentSpecies().map((s) => s.name);
+    const speciesNames = presentSpecies().map((s) => s.taxon);
     docs.push({
       id: 'variety:registration',
       type: 'variety-registration',
@@ -598,13 +598,16 @@ export function buildSearchDocuments(): SearchDoc[] {
         'plant variety catalogue',
         'plant breeders rights',
         'variety denomination',
+        'plant variety protection',
       ],
       category: 'Variety registration',
-      summary: `Official register entries recorded for ${new Set(VARIETY_REGISTRATIONS.map((r) => r.cultivarRef)).size} cultivars across ${presentJurisdictions().length} registers, ${VARIETY_REGISTRATIONS.filter(isCurrent).length} of them still current.`,
+      summary: `Official register entries recorded for ${new Set(VARIETY_REGISTRATIONS.map((r) => r.cultivarRef)).size} cultivars across ${presentJurisdictions().length} jurisdictions, ${VARIETY_REGISTRATIONS.filter(isCurrent).length} of them still current. Variety listings and plant variety protection rights are counted apart.`,
       relationLabels: [
         'registered variety',
         'national list entry',
         'plant variety right',
+        'plant breeder right grant',
+        'variety protection certificate',
         ...denominations,
         ...speciesNames,
       ],

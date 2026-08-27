@@ -2154,6 +2154,49 @@ export const SOURCES: Source[] = [
     reliability: 'authoritative',
   },
   {
+    id: 'reg-uk-seeds-gazette',
+    organization:
+      'Department for Environment, Food & Rural Affairs / Animal and Plant Health Agency',
+    title:
+      'Plant Varieties and Seeds Gazette — special edition: Great Britain and Northern Ireland Variety Lists',
+    url: 'https://www.gov.uk/government/publications/plant-varieties-and-seeds-gazette-2020',
+    publicationDate: '2026-08-01',
+    accessDate: ACCESS_VARIETY,
+    sourceType: 'registry',
+    jurisdiction: 'United Kingdom',
+    language: 'en',
+    notes:
+      'The monthly special edition publishes the awarded GB and NI variety listings and the grants of UK plant breeders’ rights on separate sheets, each with the botanical name of the species. The August 2026 edition was downloaded and read.',
+    reliability: 'authoritative',
+  },
+  {
+    id: 'reg-usda-pvpo',
+    organization:
+      'United States Department of Agriculture — Agricultural Marketing Service, Plant Variety Protection Office',
+    title: 'US PVP Application Status Report',
+    url: 'https://www.ams.usda.gov/services/plant-variety-protection/application-status',
+    accessDate: ACCESS_VARIETY,
+    sourceType: 'registry',
+    jurisdiction: 'United States',
+    language: 'en',
+    notes:
+      'Every application for plant variety protection since 1970, with the scientific name of each variety and the status of its certificate. An intellectual property register, not a variety list.',
+    reliability: 'authoritative',
+  },
+  {
+    id: 'reg-ip-australia-pbr',
+    organization: 'IP Australia',
+    title: 'Australian Plant Breeder’s Rights Register',
+    url: 'https://ipsearch.ipaustralia.gov.au/pbr/',
+    accessDate: ACCESS_VARIETY,
+    sourceType: 'registry',
+    jurisdiction: 'Australia',
+    language: 'en',
+    notes:
+      'Read through the register’s own public search endpoint. Genus and species are published as separate fields, so the register states the botanical species of an entry itself.',
+    reliability: 'authoritative',
+  },
+  {
     id: 'reg-cfia-variety-registration',
     organization: 'Variety Registration (CFIA)',
     title: 'Variety Registration (CFIA)',
