@@ -82,6 +82,9 @@ jobs:
       - name: Soil observation validation
         run: npm run soils:validate
 
+      - name: Border requirement validation
+        run: npm run trade:validate
+
       - name: Market data validation
         run: npm run markets:validate
 

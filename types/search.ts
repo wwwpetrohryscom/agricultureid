@@ -45,6 +45,7 @@ export type SearchEntityType =
   | 'change-history'
   | 'coverage'
   | 'soil-observation'
+  | 'trade-requirement'
   | 'market-data'
   | 'extension-resource'
   | 'input-authorization';

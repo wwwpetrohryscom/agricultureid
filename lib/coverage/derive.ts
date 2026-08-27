@@ -31,6 +31,7 @@ import { allMarketSeries } from '@/lib/markets/registry';
 import { EXTENSION_RESOURCES } from '@/data/extension';
 import { COUNTRY_PROFILES } from '@/lib/geo/registry';
 import { allSoilObservations } from '@/lib/soils/registry';
+import { TRADE_REQUIREMENTS } from '@/lib/trade/registry';
 
 type Counter = (iso3: string) => number;
 
@@ -68,6 +69,7 @@ export function layerCounters(): Record<CoverageLayer, Counter> {
     ),
     markets: countBy(allMarketSeries(), (s) => s.countryCode),
     soils: countBy(allSoilObservations(), (o) => o.countryCode),
+    trade: countBy(TRADE_REQUIREMENTS, (r) => r.jurisdictionCountryCode),
   };
 }
 

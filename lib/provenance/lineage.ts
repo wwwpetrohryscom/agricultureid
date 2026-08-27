@@ -24,6 +24,7 @@ import { COMPLIANCE_TOPICS } from '@/data/compliance';
 import { AUTHORITIES } from '@/data/authorities';
 import { SUPPORT_PROGRAMS } from '@/data/support';
 import { allSoilObservations } from '@/lib/soils/registry';
+import { TRADE_REQUIREMENTS } from '@/lib/trade/registry';
 import { SOIL_DATASET_CONTRACT_MAP } from '@/lib/soils/contracts';
 
 function sourcesOf(ids: readonly string[]): LineageSource[] {
@@ -313,6 +314,33 @@ export function soilObservationLineage(id: string): ClaimLineage | undefined {
   };
 }
 
+export function tradeRequirementLineage(id: string): ClaimLineage | undefined {
+  const r = TRADE_REQUIREMENTS.find((x) => x.id === id);
+  if (!r) return undefined;
+  const sources = sourcesOf(r.officialSourceIds);
+  return {
+    claimKind: 'trade-requirement',
+    claimId: r.id,
+    claimLabel: r.title,
+    statement: `Recorded as ${r.status} for ${r.direction} into ${r.jurisdictionName}.`,
+    sources,
+    locator: {
+      kind: 'page-heading',
+      value: r.title,
+      why: 'The official system decides case by case; there is no record in it to address, which is why this claim points at the system rather than a rule inside it.',
+    },
+    interpretation: { value: r.status, vocabulary: 'RequirementStatus' },
+    verifiedAt: r.lastVerifiedAt,
+    truthState: stateFrom(
+      sources.length > 0,
+      Boolean(r.lastVerifiedAt),
+      r.status === 'uncertain',
+    ),
+    conflicts: [],
+    limitations: [...r.limitations],
+  };
+}
+
 /** Every claim this layer can trace, for the gate and the report. */
 export function allLineages(): ClaimLineage[] {
   const out: ClaimLineage[] = [];
@@ -339,6 +367,10 @@ export function allLineages(): ClaimLineage[] {
   }
   for (const p of SUPPORT_PROGRAMS) {
     const l = supportProgrammeLineage(p.id);
+    if (l) out.push(l);
+  }
+  for (const r of TRADE_REQUIREMENTS) {
+    const l = tradeRequirementLineage(r.id);
     if (l) out.push(l);
   }
   // One lineage per soil observation would be 91,620 resolutions on every

@@ -408,6 +408,13 @@ export const SECTIONS: NavSection[] = [
     active: true,
   },
   {
+    label: 'Border Requirements',
+    href: '/agricultural-trade',
+    description:
+      'Which authority controls an agricultural movement across a border, and which official system decides what applies to it.',
+    active: true,
+  },
+  {
     label: 'Soil Surveys',
     href: '/soil-surveys',
     description:
@@ -622,6 +629,7 @@ export const REFERENCE_NAV = SECTIONS.filter(
       '/agricultural-changes',
       '/coverage',
       '/soil-surveys',
+      '/agricultural-trade',
       '/agricultural-markets',
       '/extension-resources',
       '/agricultural-inputs',
