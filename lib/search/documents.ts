@@ -47,6 +47,12 @@ import {
   supportPath,
   SUPPORT_HUB_PATH,
 } from '@/lib/support/registry';
+import {
+  cropsWithCalendars,
+  calendarsForCrop,
+  seasonsForCrop,
+  cropCalendarPath,
+} from '@/lib/calendars/registry';
 
 const RELATION_LABEL: Partial<Record<RelationType, string>> = {
   affects: 'affects',
@@ -429,6 +435,39 @@ export function buildSearchDocuments(): SearchDoc[] {
     });
   }
 
+  // Crop calendars. One document per CROP, not per crop×jurisdiction: 172
+  // near-identical documents would drown the index and the jurisdictions are
+  // rows on the crop's page, not destinations.
+  for (const cropSlug of cropsWithCalendars()) {
+    const entries = calendarsForCrop(cropSlug);
+    const crop = PUBLISHED_CONTENT.find(
+      (c) => c.contentType === 'crop' && c.slug === cropSlug,
+    );
+    if (!crop) continue;
+    const seasons = seasonsForCrop(cropSlug);
+    const jurisdictions = [...new Set(entries.map((e) => e.jurisdictionName))];
+    docs.push({
+      id: `calendar:${cropSlug}`,
+      type: 'crop-calendar',
+      route: cropCalendarPath(cropSlug),
+      title: `${crop.title} planting and harvest calendar`,
+      // Jurisdiction names ride at name weight so "wheat planting Kansas"
+      // reaches the calendar rather than the crop article.
+      names: [
+        `${crop.title} calendar`,
+        `${crop.title} planting`,
+        `${crop.title} harvest`,
+        ...seasons,
+        ...jurisdictions,
+      ],
+      category: 'Crop calendar',
+      parent: crop.title,
+      summary: `Usual sowing and harvest windows for ${crop.title.toLowerCase()} across ${entries.length} jurisdictions.`,
+      relationLabels: ['sowing window', 'harvest window', ...seasons],
+      facets: { entityType: ['crop-calendar'], category: ['Crop calendar'] },
+    });
+  }
+
   // Tools.
   for (const t of TOOLS) {
     docs.push({
@@ -462,6 +501,7 @@ const ENTITY_TYPE_LABEL: Record<string, string> = {
   'agricultural-registry': 'Official registry',
   'agricultural-compliance': 'Compliance topic',
   'agricultural-support': 'Support programme',
+  'crop-calendar': 'Crop calendar',
   machinery: 'Machinery',
   climate: 'Climate',
   'farming-system': 'Farming system',

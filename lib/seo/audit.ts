@@ -61,6 +61,11 @@ import {
   supportPath,
   SUPPORT_HUB_PATH,
 } from '@/lib/support/registry';
+import {
+  cropsWithCalendars,
+  cropCalendarPath,
+  CALENDARS_HUB_PATH,
+} from '@/lib/calendars/registry';
 
 export interface AuditIssue {
   level: 'error' | 'warning';
@@ -228,6 +233,21 @@ export function registryNavModel(): Map<string, Set<string>> {
     for (const aid of prog.administeringAuthorityIds) {
       const a = publishedAuthorities().find((x) => x.id === aid);
       if (a) add(supportPath(prog.slug), authorityPath(a.slug));
+    }
+  }
+
+  // Calendar hub lists every crop calendar; each links back and to its crop.
+  for (const cropSlug of cropsWithCalendars()) {
+    add(CALENDARS_HUB_PATH, cropCalendarPath(cropSlug));
+    add(cropCalendarPath(cropSlug), CALENDARS_HUB_PATH);
+    const crop = PUBLISHED_CONTENT.find(
+      (c) => c.contentType === 'crop' && c.slug === cropSlug,
+    );
+    if (crop) {
+      add(cropCalendarPath(cropSlug), contentUrlPath(crop));
+      // The crop page links to its calendar, so the calendar is reachable from
+      // the crop corpus and not only from its own hub.
+      add(contentUrlPath(crop), cropCalendarPath(cropSlug));
     }
   }
 

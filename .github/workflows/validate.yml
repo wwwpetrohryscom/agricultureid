@@ -58,6 +58,9 @@ jobs:
       - name: Agricultural support validation
         run: npm run support:validate
 
+      - name: Crop calendar validation
+        run: npm run calendars:validate
+
       - name: Tests
         run: npm test
 

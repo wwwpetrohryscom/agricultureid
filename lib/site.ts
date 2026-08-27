@@ -387,6 +387,13 @@ export const SECTIONS: NavSection[] = [
     active: true,
   },
   {
+    label: 'Crop Calendars',
+    href: '/crop-calendars',
+    description:
+      'When field crops are usually sown and harvested, by jurisdiction, transcribed from official agricultural statistics.',
+    active: true,
+  },
+  {
     label: 'Agricultural Support',
     href: '/agricultural-support',
     description:
@@ -553,6 +560,7 @@ export const REFERENCE_NAV = SECTIONS.filter(
       '/agricultural-registries',
       '/agricultural-regulations',
       '/agricultural-support',
+      '/crop-calendars',
       '/data-health',
     ].includes(s.href),
 );

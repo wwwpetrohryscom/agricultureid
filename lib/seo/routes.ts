@@ -41,6 +41,11 @@ import {
   supportPath,
   SUPPORT_HUB_PATH,
 } from '@/lib/support/registry';
+import {
+  cropsWithCalendars,
+  cropCalendarPath,
+  CALENDARS_HUB_PATH,
+} from '@/lib/calendars/registry';
 
 /** Stable last-modified date for static (non-content) routes. */
 export const SITE_LAST_UPDATED = '2026-07-12';
@@ -116,6 +121,11 @@ const STATIC_ROUTES: Omit<RouteEntry, 'lastModified'>[] = [
   },
   {
     path: SUPPORT_HUB_PATH,
+    changeFrequency: 'monthly',
+    priority: 0.6,
+  },
+  {
+    path: CALENDARS_HUB_PATH,
     changeFrequency: 'monthly',
     priority: 0.6,
   },
@@ -298,6 +308,14 @@ export function sectionedRoutes(): Record<SitemapSection, RouteEntry[]> {
       lastModified: SITE_LAST_UPDATED,
       changeFrequency: 'monthly' as const,
       priority: 0.6,
+    })),
+    // One route per crop; the 172 crop×jurisdiction records are table rows on
+    // those pages, never routes of their own.
+    ...cropsWithCalendars().map((crop) => ({
+      path: cropCalendarPath(crop),
+      lastModified: SITE_LAST_UPDATED,
+      changeFrequency: 'yearly' as const,
+      priority: 0.5,
     })),
     ...publishedSupportPrograms().map((p) => ({
       path: supportPath(p.slug),

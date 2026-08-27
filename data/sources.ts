@@ -2484,4 +2484,18 @@ export const SOURCES: Source[] = [
       'Official agency or programme page, loaded and verified in a real browser during the Wave 7 verification pass.',
     reliability: 'authoritative',
   },
+  {
+    id: 'usda-usual-planting-dates',
+    organization: 'USDA National Agricultural Statistics Service (NASS)',
+    title:
+      'USDA NASS — Usual Planting and Harvesting Dates for U.S. Field Crops (October 2010)',
+    url: 'https://usda.library.cornell.edu/concern/publications/vm40xr56k',
+    accessDate: ACCESS_AUTH,
+    sourceType: 'government',
+    jurisdiction: 'United States',
+    language: 'en',
+    notes:
+      'State-by-state usual planting and harvesting dates for US field crops. The October 2010 edition is the latest published; its plain-text release file was downloaded and parsed during the Wave 8 pass. The vintage is recorded on every entry derived from it.',
+    reliability: 'authoritative',
+  },
 ];
