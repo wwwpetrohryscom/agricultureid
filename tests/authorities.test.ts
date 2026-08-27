@@ -24,8 +24,8 @@ import { CANONICAL_JURISDICTIONS } from '@/data/jurisdictions';
  * Counts are asserted explicitly so a loop can never pass vacuously over an
  * empty registry, and so silently dropping an authority fails loudly.
  */
-const EXPECTED_TOTAL = 77;
-const EXPECTED_PUBLISHED = 45;
+const EXPECTED_TOTAL = 80;
+const EXPECTED_PUBLISHED = 48;
 
 describe('authorities registry — scale', () => {
   it('holds the expected number of verified entries', () => {
@@ -75,7 +75,7 @@ describe('authorities registry — identity', () => {
 describe('authorities registry — jurisdiction resolution', () => {
   it('resolves every countryCode against the geo layer', () => {
     const withCountry = AUTHORITIES.filter((a) => a.countryCode);
-    expect(withCountry.length).toBe(75);
+    expect(withCountry.length).toBe(78);
     for (const a of withCountry) {
       expect(getProfileByCode(a.countryCode!), a.id).toBeDefined();
     }
@@ -101,7 +101,10 @@ describe('authorities registry — jurisdiction resolution', () => {
     expect(federal).toEqual([
       'us-epa-pesticides',
       'us-usda-aphis',
+      'us-usda-fsa',
       'us-usda-nass',
+      'us-usda-nrcs',
+      'us-usda-rma',
       'usa-ers',
     ]);
 
@@ -119,7 +122,7 @@ describe('authorities registry — jurisdiction resolution', () => {
 describe('authorities registry — provenance', () => {
   it('cites a real source for every responsibility', () => {
     const all = AUTHORITIES.flatMap((a) => a.responsibilities);
-    expect(all.length).toBe(147);
+    expect(all.length).toBe(153);
     for (const r of all)
       expect(SOURCE_MAP.has(r.sourceId), r.sourceId).toBe(true);
   });

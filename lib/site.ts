@@ -387,6 +387,13 @@ export const SECTIONS: NavSection[] = [
     active: true,
   },
   {
+    label: 'Agricultural Support',
+    href: '/agricultural-support',
+    description:
+      'Official agricultural support and funding programmes — who administers them, who they are for, and where the official rules live.',
+    active: true,
+  },
+  {
     label: 'Agricultural Regulations',
     href: '/agricultural-regulations',
     description:
@@ -545,6 +552,7 @@ export const REFERENCE_NAV = SECTIONS.filter(
       '/agricultural-authorities',
       '/agricultural-registries',
       '/agricultural-regulations',
+      '/agricultural-support',
       '/data-health',
     ].includes(s.href),
 );

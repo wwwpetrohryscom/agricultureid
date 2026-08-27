@@ -41,6 +41,12 @@ import {
   compliancePath,
   REGULATIONS_HUB_PATH,
 } from '@/lib/compliance/registry';
+import {
+  listedSupportPrograms,
+  publishedSupportPrograms,
+  supportPath,
+  SUPPORT_HUB_PATH,
+} from '@/lib/support/registry';
 
 const RELATION_LABEL: Partial<Record<RelationType, string>> = {
   affects: 'affects',
@@ -382,6 +388,47 @@ export function buildSearchDocuments(): SearchDoc[] {
     });
   }
 
+  // Support programmes. Registry-driven; a new programme indexes with no
+  // switch to edit here.
+  const publishedSupportSlugs = new Set(
+    publishedSupportPrograms().map((p) => p.slug),
+  );
+  for (const prog of listedSupportPrograms()) {
+    const hasPage = publishedSupportSlugs.has(prog.slug);
+    docs.push({
+      id: `support:${prog.id}`,
+      type: 'agricultural-support',
+      route: hasPage ? supportPath(prog.slug) : SUPPORT_HUB_PATH,
+      title: prog.officialName,
+      names: [
+        ...new Set(
+          [
+            prog.officialName,
+            ...(prog.shortName ? [prog.shortName] : []),
+            ...(prog.aliases ?? []),
+            ...(prog.localNames ?? []),
+            prog.jurisdictionName,
+          ].filter(Boolean),
+        ),
+      ],
+      // Status rides in the category so a closed programme is visibly closed in
+      // results rather than looking like an open opportunity.
+      category: `Support programme · ${humanizeToken(prog.status)} · ${prog.jurisdictionName}`,
+      parent: prog.jurisdictionName,
+      summary: prog.summary,
+      ...(prog.countryCode ? { country: prog.countryCode } : {}),
+      relationLabels: [
+        humanizeToken(prog.programType),
+        ...prog.beneficiaryTypes.map((b) => humanizeToken(b)),
+      ],
+      facets: {
+        entityType: ['agricultural-support'],
+        category: [humanizeToken(prog.programType)],
+        ...(prog.countryCode ? { country: [prog.countryCode] } : {}),
+      },
+    });
+  }
+
   // Tools.
   for (const t of TOOLS) {
     docs.push({
@@ -414,6 +461,7 @@ const ENTITY_TYPE_LABEL: Record<string, string> = {
   'agricultural-authority': 'Agricultural authority',
   'agricultural-registry': 'Official registry',
   'agricultural-compliance': 'Compliance topic',
+  'agricultural-support': 'Support programme',
   machinery: 'Machinery',
   climate: 'Climate',
   'farming-system': 'Farming system',

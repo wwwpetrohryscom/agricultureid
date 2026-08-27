@@ -86,6 +86,9 @@ import { caNlFal } from './ca-nl-fal';
 import { caNsAgri } from './ca-ns-agri';
 import { caOnOmafa } from './ca-on-omafa';
 import { usEpaOpp } from './us-epa-opp';
+import { usUsdaNrcs } from './us-usda-nrcs';
+import { usUsdaFsa } from './us-usda-fsa';
+import { usUsdaRma } from './us-usda-rma';
 
 export const AUTHORITIES: AgriculturalAuthorityEntry[] = [
   ecDgAgri,
@@ -165,4 +168,7 @@ export const AUTHORITIES: AgriculturalAuthorityEntry[] = [
   caNsAgri,
   caOnOmafa,
   usEpaOpp,
+  usUsdaNrcs,
+  usUsdaFsa,
+  usUsdaRma,
 ];

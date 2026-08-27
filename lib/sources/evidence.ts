@@ -113,6 +113,18 @@ export const EVIDENCE_TIER: Record<string, EvidenceTier> = {
   'us-co-cda': 1,
   'us-or-oda': 1,
   'us-az-azda': 1,
+  // Wave 7 — support programmes and administering agencies.
+  'gov-us-usda-nrcs': 1,
+  'gov-us-usda-fsa': 1,
+  'gov-us-usda-rma': 1,
+  'prog-eu-cap-income-support': 1,
+  'prog-eu-cap-rural-development': 1,
+  'prog-us-nrcs-eqip': 1,
+  'prog-us-nrcs-csp': 1,
+  'prog-us-nrcs-acep': 1,
+  'prog-us-nrcs-rcpp': 1,
+  'prog-us-fsa-arc-plc': 1,
+  'prog-us-rma-federal-crop-insurance': 1,
   // Wave 6 — legal instruments and competent-authority guidance.
   'law-eu-1107-2009': 1,
   'law-eu-2018-848': 1,
