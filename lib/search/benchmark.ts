@@ -97,6 +97,41 @@ export interface Benchmark {
 }
 
 export const BENCHMARKS: Benchmark[] = [
+  /* ---- Global input registers (Wave 15) -----------------------------------
+   * The failure these guard is wrong-jurisdiction retrieval: a reader asking
+   * about one register must not be shown another, and a country with no
+   * ingested register must not be answered with a different country's.
+   */
+  {
+    query: 'herbicides Australia',
+    titleIncludes: ['australia'],
+    mustNotTop: ['canada', 'france'],
+    types: ['input-authorization'],
+    kind: 'multiword',
+  },
+  {
+    query: 'fungicides Canada',
+    titleIncludes: ['canada'],
+    mustNotTop: ['australia', 'france'],
+    types: ['input-authorization'],
+    kind: 'multiword',
+  },
+  {
+    query: 'insecticides France',
+    titleIncludes: ['france'],
+    mustNotTop: ['australia', 'canada'],
+    types: ['input-authorization'],
+    kind: 'multiword',
+  },
+  {
+    // Australia has a national substance decision; the EU has a supranational
+    // one. They must not be returned interchangeably.
+    query: 'Australia active constituent approvals',
+    titleIncludes: ['australia'],
+    mustNotTop: ['eu ', 'european'],
+    types: ['input-authorization'],
+    kind: 'multiword',
+  },
   /* ---- Decision tools (Wave 14) -------------------------------------------
    * Tool queries must reach tools, and — the guard that matters — a bare
    * scientific or entity query must NOT be taken over by a calculator.

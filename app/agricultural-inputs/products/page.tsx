@@ -10,9 +10,9 @@ import {
   allAuthorizations,
   allInputs,
   isCurrent,
-  productsInFamily,
-  productFamilyPath,
-  PRODUCT_FAMILIES,
+  presentListings,
+  productListingPath,
+  PRODUCT_JURISDICTIONS,
   INPUTS_HUB_PATH,
   PRODUCTS_PATH,
 } from '@/lib/inputs/registry';
@@ -98,32 +98,49 @@ export default function ProductsPage() {
         withdrawn.
       </p>
 
-      <section className="mt-8" aria-label="Product families">
-        <h2 className="font-serif text-xl text-forest-900">Browse by family</h2>
+      <section className="mt-8" aria-label="Registers">
+        <h2 className="font-serif text-xl text-forest-900">
+          Browse by jurisdiction
+        </h2>
         <p className="mt-2 max-w-2xl text-sm text-ink-700">
-          These families group the register&rsquo;s own function labels for
-          navigation. Every listing shows the register&rsquo;s function verbatim
-          on each row; nothing is reclassified.
+          Each register is listed separately, because each is a separate legal
+          decision. A product authorised in France is not authorised in Canada,
+          however similar the name; nothing here is combined across borders.
+          Families group each register&rsquo;s own function labels for
+          navigation, and every row shows that label verbatim.
         </p>
-        <ul className="mt-4 space-y-3">
-          {PRODUCT_FAMILIES.map((f) => {
-            const n = productsInFamily(f.slug).length;
-            if (!n) return null;
-            return (
-              <li key={f.slug} className="border-t border-ink-100 pt-3">
-                <Link
-                  href={productFamilyPath(f.slug)}
-                  className="font-medium text-forest-800 hover:underline"
-                >
-                  {f.label}
-                </Link>
-                <span className="ml-2 text-sm text-ink-500">
-                  {n.toLocaleString('en')} authorised products
+        {PRODUCT_JURISDICTIONS.map((j) => {
+          const listings = presentListings().filter(
+            (l) => l.jurisdiction === j.label,
+          );
+          if (!listings.length) return null;
+          const total = listings.reduce((n, l) => n + l.count, 0);
+          return (
+            <div key={j.slug} className="mt-6">
+              <h3 className="font-medium text-ink-900">
+                {j.label}
+                <span className="ml-2 text-sm font-normal text-ink-500">
+                  {total.toLocaleString('en')} currently authorised
                 </span>
-              </li>
-            );
-          })}
-        </ul>
+              </h3>
+              <ul className="mt-2 space-y-2">
+                {listings.map((l) => (
+                  <li key={l.slug} className="border-t border-ink-100 pt-2">
+                    <Link
+                      href={productListingPath(l.slug)}
+                      className="text-sm font-medium text-forest-800 hover:underline"
+                    >
+                      {l.familyLabel}
+                    </Link>
+                    <span className="ml-2 text-sm text-ink-500">
+                      {l.count.toLocaleString('en')} products
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          );
+        })}
       </section>
 
       <p className="mt-10 max-w-2xl text-sm text-ink-600">{USE_SCOPE_CAVEAT}</p>

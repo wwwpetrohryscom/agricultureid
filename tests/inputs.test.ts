@@ -9,9 +9,13 @@ import {
   isoNameOf,
   productsForCrop,
   cropsWithAuthorizedProducts,
-  PRODUCT_FAMILIES,
-  productsInFamily,
-  productFamilyPath,
+  presentListings,
+  presentListingPages,
+  presentSubstancePages,
+  productsInListing,
+  productListingPath,
+  presentSubstanceJurisdictions,
+  PRODUCT_JURISDICTIONS,
   registerAuthoritiesFor,
   INPUTS_HUB_PATH,
   ACTIVE_SUBSTANCES_PATH,
@@ -40,14 +44,17 @@ const DOSE =
   /\b\d+([.,]\d+)?\s*(l\/ha|kg\/ha|g\/ha|ml\/ha|l\/hl|g\/l|kg\/l)\b/i;
 
 describe('inputs — a substance is not a product', () => {
-  it('gives substance approvals no holder, number or use', () => {
+  it('gives substance approvals no product number and no uses', () => {
+    // Note what is NOT asserted here: that a substance approval has no country.
+    // The EU approves substances supranationally, but APVMA grants Australian
+    // active constituent approvals, so the jurisdiction LEVEL is a property of
+    // the source and is checked per source below, not assumed for the scope.
     const substanceAuths = AUTHS.filter((a) => a.scope === 'active-substance');
     expect(substanceAuths.length).toBeGreaterThan(0);
     const byId = new Map(INPUTS.map((i) => [i.id, i]));
     for (const a of substanceAuths) {
       expect(a.authorizationNumber, a.id).toBeUndefined();
       expect(a.authorizedUses, a.id).toHaveLength(0);
-      expect(a.countryCode, a.id).toBeUndefined();
       expect(byId.get(a.inputRef)?.holderName, a.id).toBeUndefined();
     }
   });
@@ -197,26 +204,53 @@ describe('inputs — no dose data anywhere', () => {
 
 describe('inputs — routes, search and query layer', () => {
   it('publishes listing routes and none per substance or product', () => {
-    // 16,623 records must not become 16,623 pages. The only sub-routes are the
-    // two listings and one page per product family, each a substantive listing
-    // of hundreds of products rather than a slice made to create URLs.
+    // 45,000 records must not become 45,000 pages. The only sub-routes are the
+    // two index pages and one listing per jurisdiction-and-family.
     const paths = allRoutes().map((r) => r.path);
     for (const p of [INPUTS_HUB_PATH, ACTIVE_SUBSTANCES_PATH, PRODUCTS_PATH])
       expect(paths).toContain(p);
-    const families = PRODUCT_FAMILIES.filter(
-      (f) => productsInFamily(f.slug).length > 0,
-    );
+    const listings = presentListings();
     const sub = paths.filter((p) => p.startsWith(`${INPUTS_HUB_PATH}/`));
-    expect(sub).toHaveLength(2 + families.length);
-    for (const f of families) expect(sub).toContain(productFamilyPath(f.slug));
-    // Every family listing is substantial; none is a thin slice.
-    for (const f of families)
-      expect(productsInFamily(f.slug).length).toBeGreaterThan(100);
+    // Two index pages, one page per listing page, and one page per substance
+    // listing page. Nothing per record.
+    expect(sub).toHaveLength(
+      2 + presentListingPages().length + presentSubstancePages().length,
+    );
+    for (const l of presentListingPages())
+      expect(sub).toContain(productListingPath(l.pageSlug));
+    for (const l of listings)
+      expect(productsInListing(l.slug).length).toBeGreaterThan(0);
   });
 
-  it('indexes three documents, not one per record', () => {
+  it('keeps every listing inside exactly one jurisdiction', () => {
+    // A listing that mixed two registers into one table would read as though a
+    // product authorised in France were authorised in Canada.
+    for (const l of presentListings()) {
+      const codes = new Set(
+        productsInListing(l.slug).map((r) => r.authorization.countryCode),
+      );
+      expect(codes.size, l.slug).toBe(1);
+      const expected = PRODUCT_JURISDICTIONS.find(
+        (j) => j.label === l.jurisdiction,
+      )!.countryCode;
+      expect([...codes][0], l.slug).toBe(expected);
+    }
+  });
+
+  it('indexes one document per listing, not one per record', () => {
+    // 43,591 records route to 18 pages; 43,591 documents would be the same
+    // handful of pages returned tens of thousands of times.
     const docs = DOCS.filter((d) => d.type === 'input-authorization');
-    expect(docs).toHaveLength(3);
+    expect(docs).toHaveLength(
+      3 + presentListings().length + presentSubstanceJurisdictions().length,
+    );
+    for (const l of presentListings()) {
+      const doc = docs.find((d) => d.route === productListingPath(l.slug))!;
+      expect(doc, l.slug).toBeDefined();
+      // The jurisdiction must be on the document, or a reader asking about one
+      // register can be shown another.
+      expect(doc.title).toContain(l.jurisdiction);
+    }
   });
 
   it('uses only the input-type vocabulary', () => {
@@ -233,5 +267,87 @@ describe('inputs — routes, search and query layer', () => {
     }
     expect(productsForCrop('not-a-crop')).toEqual([]);
     expect(cropsWithAuthorizedProducts().every((c) => CROPS.has(c))).toBe(true);
+  });
+});
+
+describe('inputs — jurisdiction isolation across registers', () => {
+  it('sources every record from the register that covers its country', () => {
+    const expected: Record<string, string | null> = {
+      'eu-pesticides-active-substances-2026-08-27': null,
+      'ephy-2026-08-25': 'FRA',
+      'pmra-products-2026-08-27': 'CAN',
+      'apvma-pubcris-2026-06-25': 'AUS',
+    };
+    for (const a of AUTHS) {
+      const want = expected[a.sourceSnapshotId];
+      expect(
+        want,
+        `unknown snapshot ${a.sourceSnapshotId}`,
+      ).not.toBeUndefined();
+      if (want === null) {
+        expect(a.countryCode, a.id).toBeUndefined();
+        expect(a.supranationalJurisdiction, a.id).toBeTruthy();
+      } else {
+        expect(a.countryCode, a.id).toBe(want);
+        expect(a.supranationalJurisdiction, a.id).toBeUndefined();
+      }
+    }
+  });
+
+  it('lets a substance approval be national where the source is national', () => {
+    // APVMA grants Australian active constituent approvals. An earlier gate
+    // asserted every substance approval was an EU decision and rejected 5,829
+    // valid records; the invariant is now pinned per source.
+    const au = AUTHS.filter(
+      (a) => a.scope === 'active-substance' && a.countryCode === 'AUS',
+    );
+    expect(au.length).toBeGreaterThan(1000);
+    for (const a of au)
+      expect(a.supranationalJurisdiction, a.id).toBeUndefined();
+    const eu = AUTHS.filter(
+      (a) => a.scope === 'active-substance' && a.supranationalJurisdiction,
+    );
+    expect(eu.length).toBeGreaterThan(1000);
+    for (const a of eu) expect(a.countryCode, a.id).toBeUndefined();
+  });
+
+  it('keeps Australian state entries as detail, never authorisations', () => {
+    const withStates = AUTHS.filter((a) => a.subNationalEntries?.length);
+    expect(withStates.length).toBeGreaterThan(1000);
+    const ids = new Set(AUTHS.map((a) => a.id));
+    for (const a of withStates) {
+      expect(a.scope, a.id).toBe('product');
+      expect(a.countryCode, a.id).toBe('AUS');
+      for (const e of a.subNationalEntries!) {
+        expect(ids.has(`${a.id}:${e.jurisdiction}`), a.id).toBe(false);
+      }
+    }
+  });
+
+  it('never derives an Australian status from a date', () => {
+    // APVMA registrations renew annually, so most current products carry an
+    // expiry already in the past. Comparing that date with today would mark
+    // thousands of live registrations as lapsed.
+    const au = AUTHS.filter(
+      (a) => a.countryCode === 'AUS' && a.scope === 'product',
+    );
+    const pastExpiry = au.filter(
+      (a) => a.validUntil && a.validUntil < '2026-08-27',
+    );
+    expect(pastExpiry.length).toBeGreaterThan(1000);
+    for (const a of pastExpiry) {
+      expect(['authorized', 'restricted'], a.id).toContain(a.status);
+      expect(
+        a.limitations.some((l) => /annual renewal cycle/i.test(l)),
+        a.id,
+      ).toBe(true);
+    }
+  });
+
+  it('carries no crop reference from a register with no concordance', () => {
+    for (const a of AUTHS) {
+      if (a.sourceSnapshotId === 'ephy-2026-08-25') continue;
+      for (const u of a.authorizedUses) expect(u.cropRef, a.id).toBeUndefined();
+    }
   });
 });

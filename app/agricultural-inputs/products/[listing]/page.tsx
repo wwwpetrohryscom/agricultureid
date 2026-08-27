@@ -7,59 +7,61 @@ import { webPageSchema, breadcrumbSchema } from '@/lib/schema/jsonld';
 import { buildMetadata } from '@/lib/seo/metadata';
 import { INPUT_CAVEAT, USE_SCOPE_CAVEAT } from '@/types/input';
 import {
-  PRODUCT_FAMILIES,
-  productsInFamily,
-  productFamilyPath,
+  presentListingPages,
+  productsInListingPage,
+  parseListingPageSlug,
+  parseListingSlug,
+  listingPageSlug,
+  listingPageCount,
+  productListingPath,
   INPUTS_HUB_PATH,
   PRODUCTS_PATH,
 } from '@/lib/inputs/registry';
-import { ephySnapshot } from '@/lib/inputs/snapshot';
 
-type Params = { params: Promise<{ family: string }> };
+type Params = { params: Promise<{ listing: string }> };
 
 export function generateStaticParams() {
-  return PRODUCT_FAMILIES.filter(
-    (f) => productsInFamily(f.slug).length > 0,
-  ).map((f) => ({ family: f.slug }));
+  return presentListingPages().map((l) => ({ listing: l.pageSlug }));
 }
 
-const familyMeta = (slug: string) =>
-  PRODUCT_FAMILIES.find((f) => f.slug === slug);
-
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
-  const { family } = await params;
-  const meta = familyMeta(family);
-  const rows = meta ? productsInFamily(family) : [];
-  if (!meta || rows.length === 0) return {};
+  const { listing } = await params;
+  const page = parseListingPageSlug(listing);
+  const parsed = page ? parseListingSlug(page.slug) : null;
+  const rows = page ? productsInListingPage(page.slug, page.page) : [];
+  if (!parsed || !page || rows.length === 0) return {};
+  const pages = listingPageCount(page.slug);
+  const suffix = pages > 1 ? ` (page ${page.page} of ${pages})` : '';
   return buildMetadata({
-    title: `${meta.label} authorised in France`,
-    description: `${rows.length} products currently authorised on the French E-Phy register, each identified by its AMM number with the holder of the authorisation.`,
-    path: productFamilyPath(family),
+    title: `${parsed.family.label} authorised in ${parsed.jurisdiction.label}${suffix}`,
+    description: `${rows.length} products currently authorised on the ${parsed.jurisdiction.label} register, each identified by its own registration number with the holder of the authorisation.`,
+    path: productListingPath(listing),
   });
 }
 
-export default async function ProductFamilyPage({ params }: Params) {
-  const { family } = await params;
-  const meta = familyMeta(family);
-  const rows = meta ? productsInFamily(family) : [];
-  if (!meta || rows.length === 0) notFound();
-  const snap = ephySnapshot();
-  const title = `${meta.label} authorised in France`;
+export default async function ProductListingPage({ params }: Params) {
+  const { listing } = await params;
+  const page = parseListingPageSlug(listing);
+  const parsed = page ? parseListingSlug(page.slug) : null;
+  const rows = page ? productsInListingPage(page.slug, page.page) : [];
+  if (!parsed || !page || rows.length === 0) notFound();
+  const pages = listingPageCount(page.slug);
+  const title = `${parsed.family.label} authorised in ${parsed.jurisdiction.label}${pages > 1 ? ` (page ${page.page} of ${pages})` : ''}`;
 
   return (
     <Container className="py-8 lg:py-10">
       <JsonLd
         data={webPageSchema({
           name: title,
-          description: `Currently authorised ${meta.label.toLowerCase()} on the French register.`,
-          path: productFamilyPath(family),
+          description: `Currently authorised products on the ${parsed.jurisdiction.label} register.`,
+          path: productListingPath(listing),
         })}
       />
       <JsonLd
         data={breadcrumbSchema([
           { name: 'Agricultural inputs', path: INPUTS_HUB_PATH },
           { name: 'Authorised products', path: PRODUCTS_PATH },
-          { name: meta.label, path: productFamilyPath(family) },
+          { name: title, path: productListingPath(listing) },
         ])}
       />
 
@@ -72,15 +74,23 @@ export default async function ProductFamilyPage({ params }: Params) {
           Authorised products
         </Link>
         <span aria-hidden="true"> / </span>
-        <span>{meta.label}</span>
+        <span>{parsed.jurisdiction.label}</span>
       </nav>
 
       <h1 className="mt-2 font-serif text-3xl text-forest-900">{title}</h1>
       <p className="mt-2 max-w-2xl text-ink-700">
-        {rows.length.toLocaleString('en')} products the French register records
-        as currently authorised. Identity is the AMM number, never the name; the
-        holder is the register&rsquo;s own field. The function shown on each row
-        is the register&rsquo;s, not a reclassification.
+        {rows.length.toLocaleString('en')} products the{' '}
+        {parsed.jurisdiction.label} register records as currently authorised.
+        This authorisation applies in {parsed.jurisdiction.label} and nowhere
+        else, and says nothing about the same product name in another country.
+        Identity is the register&rsquo;s own number, never the name.
+        {pages > 1 && (
+          <>
+            {' '}
+            The full listing runs to {pages} pages; every authorised product is
+            published, none is omitted.
+          </>
+        )}
       </p>
 
       <aside
@@ -92,16 +102,14 @@ export default async function ProductFamilyPage({ params }: Params) {
 
       <div className="mt-6 overflow-x-auto">
         <table className="w-full min-w-[40rem] border-collapse text-sm">
-          <caption className="sr-only">
-            {meta.label} currently authorised in France
-          </caption>
+          <caption className="sr-only">{title}</caption>
           <thead>
             <tr className="border-b border-ink-200 text-left text-xs uppercase tracking-wide text-ink-500">
               <th scope="col" className="py-2 pr-4 font-medium">
                 Product
               </th>
               <th scope="col" className="py-2 pr-4 font-medium">
-                AMM number
+                Registration number
               </th>
               <th scope="col" className="py-2 pr-4 font-medium">
                 Register function
@@ -149,21 +157,29 @@ export default async function ProductFamilyPage({ params }: Params) {
         </table>
       </div>
 
-      <p className="mt-8 max-w-2xl text-sm text-ink-600">{USE_SCOPE_CAVEAT}</p>
-      {snap && (
-        <p className="mt-3 max-w-2xl text-sm text-ink-600">
-          {snap.doseRule} Read from{' '}
-          <a
-            href={snap.sourceUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-forest-700 hover:underline"
-          >
-            E-Phy
-          </a>{' '}
-          open data, release {snap.datasetVersion}.
-        </p>
+      {pages > 1 && (
+        <nav
+          aria-label="Listing pages"
+          className="mt-8 flex flex-wrap gap-2 text-sm"
+        >
+          {Array.from({ length: pages }, (_, k) => k + 1).map((n) => (
+            <Link
+              key={n}
+              href={productListingPath(listingPageSlug(page.slug, n))}
+              aria-current={n === page.page ? 'page' : undefined}
+              className={
+                n === page.page
+                  ? 'rounded border border-forest-700 bg-forest-700 px-2 py-1 text-white'
+                  : 'rounded border border-ink-200 px-2 py-1 text-forest-800 hover:underline'
+              }
+            >
+              Page {n}
+            </Link>
+          ))}
+        </nav>
       )}
+
+      <p className="mt-8 max-w-2xl text-sm text-ink-600">{USE_SCOPE_CAVEAT}</p>
     </Container>
   );
 }

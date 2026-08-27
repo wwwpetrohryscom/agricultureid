@@ -89,9 +89,10 @@ import {
   INPUTS_HUB_PATH,
   ACTIVE_SUBSTANCES_PATH,
   PRODUCTS_PATH,
-  PRODUCT_FAMILIES,
-  productFamilyPath,
-  productsInFamily,
+  presentListingPages,
+  productListingPath,
+  presentSubstancePages,
+  substanceListingPath,
   cropsWithAuthorizedProducts,
 } from '@/lib/inputs/registry';
 
@@ -344,11 +345,32 @@ export function registryNavModel(): Map<string, Set<string>> {
   add(INPUTS_HUB_PATH, PRODUCTS_PATH);
   add(ACTIVE_SUBSTANCES_PATH, INPUTS_HUB_PATH);
   add(PRODUCTS_PATH, INPUTS_HUB_PATH);
-  for (const f of PRODUCT_FAMILIES) {
-    if (!productsInFamily(f.slug).length) continue;
-    add(PRODUCTS_PATH, productFamilyPath(f.slug));
-    add(productFamilyPath(f.slug), PRODUCTS_PATH);
-    add(productFamilyPath(f.slug), INPUTS_HUB_PATH);
+  for (const p of presentSubstancePages()) {
+    if (p.page === 1)
+      add(ACTIVE_SUBSTANCES_PATH, substanceListingPath(p.pageSlug));
+    add(substanceListingPath(p.pageSlug), ACTIVE_SUBSTANCES_PATH);
+    add(substanceListingPath(p.pageSlug), INPUTS_HUB_PATH);
+    for (let n = 1; n <= p.pages; n += 1) {
+      if (n === p.page) continue;
+      add(
+        substanceListingPath(p.pageSlug),
+        substanceListingPath(n === 1 ? p.slug : `${p.slug}-p${n}`),
+      );
+    }
+  }
+  for (const l of presentListingPages()) {
+    // Page 1 is linked from the index; later pages are reachable from the
+    // page navigation on their siblings, so every page has an inbound link.
+    if (l.page === 1) add(PRODUCTS_PATH, productListingPath(l.pageSlug));
+    add(productListingPath(l.pageSlug), PRODUCTS_PATH);
+    add(productListingPath(l.pageSlug), INPUTS_HUB_PATH);
+    for (let n = 1; n <= l.pages; n += 1) {
+      if (n === l.page) continue;
+      add(
+        productListingPath(l.pageSlug),
+        productListingPath(n === 1 ? l.slug : `${l.slug}-p${n}`),
+      );
+    }
   }
   for (const slug of cropsWithAuthorizedProducts()) {
     const crop = PUBLISHED_CONTENT.find(

@@ -26,6 +26,8 @@
 import {
   euPesticideSnapshot,
   ephySnapshot,
+  pmraSnapshot,
+  apvmaSnapshot,
   type EphyProduct,
   type EuSubstanceRecord,
 } from '@/lib/inputs/snapshot';
@@ -53,26 +55,26 @@ export const PRODUCTS_PATH = `${INPUTS_HUB_PATH}/products`;
 export const PRODUCT_FAMILIES = [
   {
     slug: 'fertilising-materials',
-    label: 'Fertilising materials and amendments',
+    label: 'Fertilising materials, adjuvants and growth regulators',
     match:
-      /^(Matière fertilisante|Engrais|Amendement|Additif agronomique|Support de culture)/i,
+      /(Matière fertilisante|Engrais|Amendement|Additif agronomique|Support de culture|Adjuvant|PLANT GROWTH REGULATOR|FERTILI|WETTING AGENT|SURFACTANT|SPREADER|PENETRANT|ANTITRANSPIRANT|SPROUT INHIBITOR|SOIL CONDITIONER)/i,
   },
   {
     slug: 'fungicides',
-    label: 'Fungicides',
+    label: 'Fungicides and bactericides',
     match:
-      /^(Fongicide|Préparation fongique|Adjuvant pour bouillie fongicide)/i,
+      /(Fongicide|Préparation fongique|FUNGICIDE|MICROBIOCIDE|BACTERICIDE|SEED DRESSING)/i,
   },
   {
     slug: 'herbicides',
     label: 'Herbicides',
-    match: /^(Herbicide|Adjuvant pour bouillie herbicide)/i,
+    match: /(Herbicide|HERBICIDE|DEFOLIANT|DESICCANT|ALGICIDE|MOSS)/i,
   },
   {
     slug: 'insecticides-and-acaricides',
-    label: 'Insecticides, acaricides and related',
+    label: 'Insecticides, acaricides and vertebrate control',
     match:
-      /^(Insecticide|Acaricide|Attractif|Répulsif|Nématicide|Molluscicide)/i,
+      /(Insecticide|Acaricide|Attractif|Répulsif|Nématicide|Molluscicide|INSECTICIDE|ACARICIDE|MITICIDE|NEMATICIDE|MOLLUSCICIDE|REPELLENT|RODENTICIDE|VERTEBRATE POISON|AVICIDE|LAMPRICIDE|PISCICIDE)/i,
   },
   { slug: 'other', label: 'Other authorised products', match: /.^/ },
 ] as const;
@@ -81,6 +83,42 @@ export type ProductFamily = (typeof PRODUCT_FAMILIES)[number]['slug'];
 
 export function productFamilyPath(slug: string): string {
   return `${PRODUCTS_PATH}/${slug}`;
+}
+
+/**
+ * Jurisdictions with a product register, in listing order.
+ *
+ * Listings are keyed by JURISDICTION AND FAMILY together. One page per family
+ * would mix French, Canadian and Australian authorisations into a single
+ * table — exactly the confusion this layer exists to prevent — and would run to
+ * several megabytes besides.
+ */
+export const PRODUCT_JURISDICTIONS = [
+  { slug: 'france', countryCode: 'FRA', label: 'France' },
+  { slug: 'canada', countryCode: 'CAN', label: 'Canada' },
+  { slug: 'australia', countryCode: 'AUS', label: 'Australia' },
+] as const;
+
+export function productListingSlug(
+  jurisdiction: string,
+  family: string,
+): string {
+  return `${jurisdiction}-${family}`;
+}
+
+export function productListingPath(slug: string): string {
+  return `${PRODUCTS_PATH}/${slug}`;
+}
+
+/** Parse a listing slug back into its jurisdiction and family. */
+export function parseListingSlug(slug: string) {
+  for (const j of PRODUCT_JURISDICTIONS) {
+    if (!slug.startsWith(`${j.slug}-`)) continue;
+    const rest = slug.slice(j.slug.length + 1);
+    const family = PRODUCT_FAMILIES.find((f) => f.slug === rest);
+    if (family) return { jurisdiction: j, family };
+  }
+  return null;
 }
 
 /** The family a register function belongs to. Unmatched functions go to other. */
@@ -148,6 +186,15 @@ export function euSubstanceId(name: string): string {
 }
 export function productInputId(amm: string): string {
   return `fr-amm-${amm}`;
+}
+export function pmraInputId(number: string): string {
+  return `ca-pmra-${slugify(number)}`;
+}
+export function apvmaProductInputId(code: string): string {
+  return `au-apvma-${slugify(code)}`;
+}
+export function apvmaSubstanceInputId(code: string): string {
+  return `au-apvma-tg-${slugify(code)}`;
 }
 
 let INPUTS: AgriculturalInput[] | null = null;
@@ -224,6 +271,113 @@ function build(): void {
     });
   }
 
+  // ---- Canada: PMRA product registrations -------------------------------
+  const pmra = pmraSnapshot();
+  for (const p of pmra?.products ?? []) {
+    const id = pmraInputId(p.number);
+    inputs.push({
+      id,
+      name: p.name,
+      inputType: 'plant-protection-product',
+      activeSubstanceNames: p.substances,
+      holderName: p.holder ?? undefined,
+      functions: p.functions,
+    });
+    auths.push({
+      id: `ca-${p.number}`,
+      inputRef: id,
+      scope: 'product',
+      countryCode: pmra!.countryCode,
+      jurisdictionName: 'Canada',
+      registryId: pmra!.registryId,
+      status: p.status as AuthorizationStatus,
+      publishedStatus: p.publishedStatus,
+      authorizationNumber: p.number,
+      validFrom: p.validFrom ?? undefined,
+      validUntil: p.validUntil ?? undefined,
+      marketingClass: p.marketingType ?? undefined,
+      // Use sites and target pests are register vocabulary, never mapped: PMRA
+      // terms are collective ("BERRY CROPS"), and expanding one into named
+      // crops would invent authorisations that were never granted.
+      authorizedUses: p.useSites.map((site, i) => ({
+        cropTerm: site,
+        target: p.targets[i] ?? '',
+        publishedState: p.currency ?? p.publishedStatus,
+      })),
+      sourceSnapshotId: pmra!.snapshotId,
+      sourceReferences: ['reg-health-canada-pesticide-label-search'],
+      lastVerifiedAt: pmra!.retrievedAt,
+      limitations: p.contradiction
+        ? [...pmra!.limitations, pmra!.currencyRule]
+        : pmra!.limitations,
+    });
+  }
+
+  // ---- Australia: APVMA product registrations and constituent approvals --
+  const apvma = apvmaSnapshot();
+  for (const p of apvma?.products ?? []) {
+    const id = apvmaProductInputId(p.number);
+    inputs.push({
+      id,
+      name: p.name,
+      inputType: 'plant-protection-product',
+      activeSubstanceNames: p.substances,
+      holderName: p.holder ?? undefined,
+      functions: p.functions,
+    });
+    auths.push({
+      id: `au-${p.number}`,
+      inputRef: id,
+      scope: 'product',
+      countryCode: apvma!.countryCode,
+      jurisdictionName: 'Australia',
+      registryId: apvma!.registryId,
+      status: p.status as AuthorizationStatus,
+      publishedStatus: p.publishedStatus,
+      authorizationNumber: p.number,
+      validFrom: p.validFrom ?? undefined,
+      validUntil: p.validUntil ?? undefined,
+      authorizedUses: [],
+      // State entries are register detail on ONE national decision, never
+      // eight Australian authorisations.
+      subNationalEntries: p.stateEntries.map((e) => ({
+        jurisdiction: e.state,
+        publishedCode: e.code,
+      })),
+      sourceSnapshotId: apvma!.snapshotId,
+      sourceReferences: ['reg-apvma-pubcris'],
+      lastVerifiedAt: apvma!.retrievedAt,
+      limitations: [...apvma!.limitations, apvma!.renewalRule],
+    });
+  }
+  for (const sub of apvma?.substances ?? []) {
+    const id = apvmaSubstanceInputId(sub.number);
+    inputs.push({
+      id,
+      name: sub.name,
+      inputType: 'active-substance',
+      activeSubstanceNames: [],
+      functions: [],
+    });
+    auths.push({
+      id: `au-tg-${sub.number}`,
+      inputRef: id,
+      scope: 'active-substance',
+      countryCode: apvma!.countryCode,
+      jurisdictionName: 'Australia',
+      registryId: apvma!.registryId,
+      status: sub.status as AuthorizationStatus,
+      publishedStatus: sub.publishedStatus,
+      validFrom: sub.validFrom ?? undefined,
+      validUntil: sub.validUntil ?? undefined,
+      authorizedUses: [],
+      sourceSnapshotId: apvma!.snapshotId,
+      sourceReferences: ['reg-apvma-pubcris'],
+      lastVerifiedAt: apvma!.retrievedAt,
+      limitations: [...apvma!.limitations, apvma!.renewalRule],
+    });
+  }
+
   INPUTS = inputs;
   AUTHORIZATIONS = auths;
 }
@@ -278,21 +432,229 @@ export function productsForCrop(cropSlug: string): {
   return out.sort((x, y) => x.input.name.localeCompare(y.input.name));
 }
 
-/** Currently authorised product authorisations in one navigational family. */
-export function productsInFamily(family: string): {
+/** Jurisdictions that publish a substance-level decision, in listing order. */
+export const SUBSTANCE_JURISDICTIONS = [
+  {
+    slug: 'european-union',
+    label: 'European Union',
+    countryCode: null as string | null,
+    instrument: 'EU approval of active substances',
+  },
+  {
+    slug: 'australia',
+    label: 'Australia',
+    countryCode: 'AUS' as string | null,
+    instrument: 'APVMA approval of active constituents',
+  },
+] as const;
+
+export function substanceListingPath(slug: string): string {
+  return `${ACTIVE_SUBSTANCES_PATH}/${slug}`;
+}
+
+/** Substance approvals for one jurisdiction, with their inputs. */
+export function substancesInJurisdiction(slug: string): {
   input: AgriculturalInput;
   authorization: InputAuthorization;
 }[] {
+  const j = SUBSTANCE_JURISDICTIONS.find((x) => x.slug === slug);
+  if (!j) return [];
   const byId = new Map(allInputs().map((i) => [i.id, i]));
-  const out: ReturnType<typeof productsInFamily> = [];
+  const out: { input: AgriculturalInput; authorization: InputAuthorization }[] =
+    [];
+  for (const a of allAuthorizations()) {
+    if (a.scope !== 'active-substance') continue;
+    if ((a.countryCode ?? null) !== j.countryCode) continue;
+    const input = byId.get(a.inputRef);
+    if (input) out.push({ input, authorization: a });
+  }
+  return out.sort((x, y) => x.input.name.localeCompare(y.input.name));
+}
+
+/** Rows for one page of a substance listing, 1-indexed. */
+export function substancesInJurisdictionPage(
+  slug: string,
+  page: number,
+): { input: AgriculturalInput; authorization: InputAuthorization }[] {
+  const all = substancesInJurisdiction(slug);
+  const start = (page - 1) * LISTING_PAGE_SIZE;
+  return all.slice(start, start + LISTING_PAGE_SIZE);
+}
+
+export function substancePageCount(slug: string): number {
+  return Math.max(
+    1,
+    Math.ceil(substancesInJurisdiction(slug).length / LISTING_PAGE_SIZE),
+  );
+}
+
+export function substancePageSlug(slug: string, page: number): string {
+  return page <= 1 ? slug : `${slug}-p${page}`;
+}
+
+export function parseSubstancePageSlug(
+  pageSlug: string,
+): { slug: string; page: number } | null {
+  const known = SUBSTANCE_JURISDICTIONS.map((j) => j.slug);
+  const m = pageSlug.match(/^(.*)-p(\d+)$/);
+  if (m && known.includes(m[1] as never))
+    return { slug: m[1]!, page: Number(m[2]) };
+  return known.includes(pageSlug as never) ? { slug: pageSlug, page: 1 } : null;
+}
+
+/** Every substance listing PAGE that holds rows. */
+export function presentSubstancePages(): {
+  pageSlug: string;
+  slug: string;
+  page: number;
+  pages: number;
+  label: string;
+  count: number;
+}[] {
+  const out: ReturnType<typeof presentSubstancePages> = [];
+  for (const j of SUBSTANCE_JURISDICTIONS) {
+    const pages = substancePageCount(j.slug);
+    for (let page = 1; page <= pages; page += 1) {
+      const count = substancesInJurisdictionPage(j.slug, page).length;
+      if (count > 0)
+        out.push({
+          pageSlug: substancePageSlug(j.slug, page),
+          slug: j.slug,
+          page,
+          pages,
+          label: j.label,
+          count,
+        });
+    }
+  }
+  return out;
+}
+
+/** Substance jurisdictions that actually hold records. */
+export function presentSubstanceJurisdictions() {
+  return SUBSTANCE_JURISDICTIONS.map((j) => ({
+    ...j,
+    count: substancesInJurisdiction(j.slug).length,
+  })).filter((j) => j.count > 0);
+}
+
+/** Currently authorised products in one jurisdiction and family. */
+export function productsInListing(slug: string): {
+  input: AgriculturalInput;
+  authorization: InputAuthorization;
+}[] {
+  const parsed = parseListingSlug(slug);
+  if (!parsed) return [];
+  const byId = new Map(allInputs().map((i) => [i.id, i]));
+  const out: { input: AgriculturalInput; authorization: InputAuthorization }[] =
+    [];
   for (const a of allAuthorizations()) {
     if (a.scope !== 'product' || !isCurrent(a)) continue;
+    if (a.countryCode !== parsed.jurisdiction.countryCode) continue;
     const input = byId.get(a.inputRef);
     if (!input) continue;
-    if (familyOf(input.functions[0] ?? '') !== family) continue;
+    if (familyOf(input.functions.join(' ')) !== parsed.family.slug) continue;
     out.push({ input, authorization: a });
   }
   return out.sort((x, y) => x.input.name.localeCompare(y.input.name));
+}
+
+/**
+ * Maximum rows on one listing page.
+ *
+ * Not a cap on data: every row is published, on a numbered page. A single
+ * Australian herbicide table ran to 3,803 rows and 4.27 MB, most of it React
+ * hydration payload — unusable on a phone. Splitting is disclosed on every
+ * page and nothing is dropped, which is the difference between pagination and
+ * a silent truncation.
+ */
+export const LISTING_PAGE_SIZE = 1200;
+
+export function listingPageCount(slug: string): number {
+  const n = productsInListing(slug).length;
+  return Math.max(1, Math.ceil(n / LISTING_PAGE_SIZE));
+}
+
+/** Rows for one page of a listing, 1-indexed. */
+export function productsInListingPage(
+  slug: string,
+  page: number,
+): { input: AgriculturalInput; authorization: InputAuthorization }[] {
+  const all = productsInListing(slug);
+  const start = (page - 1) * LISTING_PAGE_SIZE;
+  return all.slice(start, start + LISTING_PAGE_SIZE);
+}
+
+/** A listing page slug: the listing, plus a page number when it has several. */
+export function listingPageSlug(slug: string, page: number): string {
+  return page <= 1 ? slug : `${slug}-p${page}`;
+}
+
+/** Split a page slug back into its listing and page number. */
+export function parseListingPageSlug(
+  pageSlug: string,
+): { slug: string; page: number } | null {
+  const m = pageSlug.match(/^(.*)-p(\d+)$/);
+  if (m) {
+    const slug = m[1]!;
+    const page = Number(m[2]);
+    return parseListingSlug(slug) ? { slug, page } : null;
+  }
+  return parseListingSlug(pageSlug) ? { slug: pageSlug, page: 1 } : null;
+}
+
+/** Every listing PAGE that holds rows, so no empty page is ever built. */
+export function presentListingPages(): {
+  pageSlug: string;
+  slug: string;
+  page: number;
+  pages: number;
+  jurisdiction: string;
+  familyLabel: string;
+  count: number;
+}[] {
+  const out: ReturnType<typeof presentListingPages> = [];
+  for (const l of presentListings()) {
+    const pages = listingPageCount(l.slug);
+    for (let page = 1; page <= pages; page += 1) {
+      out.push({
+        pageSlug: listingPageSlug(l.slug, page),
+        slug: l.slug,
+        page,
+        pages,
+        jurisdiction: l.jurisdiction,
+        familyLabel: l.familyLabel,
+        count: productsInListingPage(l.slug, page).length,
+      });
+    }
+  }
+  return out;
+}
+
+/** Listing slugs that actually hold products, so no empty page is ever built. */
+export function presentListings(): {
+  slug: string;
+  jurisdiction: string;
+  familyLabel: string;
+  label: string;
+  count: number;
+}[] {
+  const out: ReturnType<typeof presentListings> = [];
+  for (const j of PRODUCT_JURISDICTIONS) {
+    for (const f of PRODUCT_FAMILIES) {
+      const slug = productListingSlug(j.slug, f.slug);
+      const count = productsInListing(slug).length;
+      if (count > 0)
+        out.push({
+          slug,
+          jurisdiction: j.label,
+          familyLabel: f.label,
+          label: `${f.label} — ${j.label}`,
+          count,
+        });
+    }
+  }
+  return out;
 }
 
 /** Crops any currently authorised product is recorded as covering. */

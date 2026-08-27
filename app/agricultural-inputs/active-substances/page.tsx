@@ -7,8 +7,8 @@ import { webPageSchema, breadcrumbSchema } from '@/lib/schema/jsonld';
 import { buildMetadata } from '@/lib/seo/metadata';
 import { INPUT_CAVEAT, SUBSTANCE_PRODUCT_CAVEAT } from '@/types/input';
 import {
-  activeSubstances,
-  authorizationsFor,
+  presentSubstanceJurisdictions,
+  substanceListingPath,
   INPUTS_HUB_PATH,
   ACTIVE_SUBSTANCES_PATH,
 } from '@/lib/inputs/registry';
@@ -23,26 +23,8 @@ export const metadata: Metadata = buildMetadata({
   path: ACTIVE_SUBSTANCES_PATH,
 });
 
-const ORDER = ['authorized', 'pending', 'not-approved'] as const;
-const HEADING: Record<string, string> = {
-  authorized: 'Approved',
-  pending: 'Pending',
-  'not-approved': 'Not approved',
-};
-const NOTE: Record<string, string> = {
-  authorized:
-    'Approved for use in plant protection products across the European Union. Approval of the substance is not authorisation of any product containing it.',
-  pending: 'Applied for and not decided. A pending substance is not approved.',
-  'not-approved':
-    'Approval refused, or never granted, or lapsed without renewal. This is not the same as a product being withdrawn.',
-};
-
 export default function ActiveSubstancesPage() {
   const snap = euPesticideSnapshot();
-  const rows = activeSubstances().map((input) => ({
-    input,
-    authorization: authorizationsFor(input.id)[0]!,
-  }));
 
   return (
     <Container className="py-8 lg:py-10">
@@ -83,63 +65,33 @@ export default function ActiveSubstancesPage() {
         {INPUT_CAVEAT}
       </aside>
 
-      {ORDER.map((status) => {
-        const group = rows
-          .filter((r) => r.authorization.status === status)
-          .sort((a, b) => a.input.name.localeCompare(b.input.name));
-        if (!group.length) return null;
-        return (
-          <section key={status} id={status} className="mt-10">
-            <h2 className="font-serif text-xl text-forest-900">
-              {HEADING[status]}
-              <span className="ml-2 text-sm font-normal text-ink-500">
-                {group.length}
+      <section className="mt-8" aria-label="Registers">
+        <h2 className="font-serif text-xl text-forest-900">
+          Browse by decision-maker
+        </h2>
+        <p className="mt-2 max-w-2xl text-sm text-ink-700">
+          Substance decisions are taken at different levels. The European Union
+          approves active substances for the whole Union; Australia approves
+          active constituents nationally. They are separate decisions by
+          separate authorities and are never combined.
+        </p>
+        <ul className="mt-4 space-y-3">
+          {presentSubstanceJurisdictions().map((j) => (
+            <li key={j.slug} className="border-t border-ink-100 pt-3">
+              <Link
+                href={substanceListingPath(j.slug)}
+                className="font-medium text-forest-800 hover:underline"
+              >
+                {j.label}
+              </Link>
+              <span className="ml-2 text-sm text-ink-500">
+                {j.count.toLocaleString('en')} substances
               </span>
-            </h2>
-            <p className="mt-1 max-w-2xl text-sm text-ink-600">
-              {NOTE[status]}
-            </p>
-            <div className="mt-3 overflow-x-auto">
-              <table className="w-full min-w-[30rem] border-collapse text-sm">
-                <caption className="sr-only">
-                  Active substances recorded as {HEADING[status]?.toLowerCase()}
-                </caption>
-                <thead>
-                  <tr className="border-b border-ink-200 text-left text-xs uppercase tracking-wide text-ink-500">
-                    <th scope="col" className="py-2 pr-4 font-medium">
-                      Substance
-                    </th>
-                    <th scope="col" className="py-2 pr-4 font-medium">
-                      Register wording
-                    </th>
-                    <th scope="col" className="py-2 font-medium">
-                      Expiry of approval
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {group.map(({ input, authorization }) => (
-                    <tr key={input.id} className="border-b border-ink-100">
-                      <th
-                        scope="row"
-                        className="py-1.5 pr-4 font-normal text-ink-900"
-                      >
-                        {input.name}
-                      </th>
-                      <td className="py-1.5 pr-4 text-ink-600">
-                        {authorization.publishedStatus}
-                      </td>
-                      <td className="py-1.5 tabular-nums text-ink-600">
-                        {authorization.validUntil ?? '—'}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </section>
-        );
-      })}
+              <span className="block text-sm text-ink-600">{j.instrument}</span>
+            </li>
+          ))}
+        </ul>
+      </section>
 
       {snap && (
         <p className="mt-10 max-w-2xl text-sm text-ink-600">
