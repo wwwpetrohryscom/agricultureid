@@ -85,6 +85,7 @@ import { usWyWda } from './us-wy-wda';
 import { caNlFal } from './ca-nl-fal';
 import { caNsAgri } from './ca-ns-agri';
 import { caOnOmafa } from './ca-on-omafa';
+import { usEpaOpp } from './us-epa-opp';
 
 export const AUTHORITIES: AgriculturalAuthorityEntry[] = [
   ecDgAgri,
@@ -163,4 +164,5 @@ export const AUTHORITIES: AgriculturalAuthorityEntry[] = [
   caNlFal,
   caNsAgri,
   caOnOmafa,
+  usEpaOpp,
 ];

@@ -31,6 +31,11 @@ import {
   registryPath,
   REGISTRIES_HUB_PATH,
 } from '@/lib/registries/registry';
+import {
+  publishedComplianceTopics,
+  compliancePath,
+  REGULATIONS_HUB_PATH,
+} from '@/lib/compliance/registry';
 
 /** Stable last-modified date for static (non-content) routes. */
 export const SITE_LAST_UPDATED = '2026-07-12';
@@ -96,6 +101,11 @@ const STATIC_ROUTES: Omit<RouteEntry, 'lastModified'>[] = [
   },
   {
     path: REGISTRIES_HUB_PATH,
+    changeFrequency: 'monthly',
+    priority: 0.6,
+  },
+  {
+    path: REGULATIONS_HUB_PATH,
     changeFrequency: 'monthly',
     priority: 0.6,
   },
@@ -276,6 +286,12 @@ export function sectionedRoutes(): Record<SitemapSection, RouteEntry[]> {
     ...AUTHORITY_VIEW_COUNTRIES.map((c) => ({
       path: countryAuthoritiesPath(c.slug),
       lastModified: SITE_LAST_UPDATED,
+      changeFrequency: 'monthly' as const,
+      priority: 0.6,
+    })),
+    ...publishedComplianceTopics().map((t) => ({
+      path: compliancePath(t.slug),
+      lastModified: t.lastVerifiedAt,
       changeFrequency: 'monthly' as const,
       priority: 0.6,
     })),

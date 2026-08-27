@@ -35,6 +35,12 @@ import {
   registryPath,
   REGISTRIES_HUB_PATH,
 } from '@/lib/registries/registry';
+import {
+  listedComplianceTopics,
+  publishedComplianceTopics,
+  compliancePath,
+  REGULATIONS_HUB_PATH,
+} from '@/lib/compliance/registry';
 
 const RELATION_LABEL: Partial<Record<RelationType, string>> = {
   affects: 'affects',
@@ -347,6 +353,35 @@ export function buildSearchDocuments(): SearchDoc[] {
     });
   }
 
+  // Compliance topics. Registry-driven like authorities and registries.
+  const publishedTopicSlugs = new Set(
+    publishedComplianceTopics().map((t) => t.slug),
+  );
+  for (const t of listedComplianceTopics()) {
+    const hasPage = publishedTopicSlugs.has(t.slug);
+    docs.push({
+      id: `compliance:${t.id}`,
+      type: 'agricultural-compliance',
+      route: hasPage ? compliancePath(t.slug) : REGULATIONS_HUB_PATH,
+      title: t.title,
+      names: [...new Set([t.title, t.jurisdictionName].filter(Boolean))],
+      category: `Compliance topic · ${t.jurisdictionName}`,
+      parent: t.jurisdictionName,
+      summary: t.summary,
+      ...(t.countryCode ? { country: t.countryCode } : {}),
+      // Requirement titles are the "what do I actually have to do" signal.
+      relationLabels: [
+        humanizeToken(t.topicType),
+        ...t.requirements.map((r) => r.title),
+      ],
+      facets: {
+        entityType: ['agricultural-compliance'],
+        category: [humanizeToken(t.topicType)],
+        ...(t.countryCode ? { country: [t.countryCode] } : {}),
+      },
+    });
+  }
+
   // Tools.
   for (const t of TOOLS) {
     docs.push({
@@ -378,6 +413,7 @@ const ENTITY_TYPE_LABEL: Record<string, string> = {
   'soil-topic': 'Soil health',
   'agricultural-authority': 'Agricultural authority',
   'agricultural-registry': 'Official registry',
+  'agricultural-compliance': 'Compliance topic',
   machinery: 'Machinery',
   climate: 'Climate',
   'farming-system': 'Farming system',

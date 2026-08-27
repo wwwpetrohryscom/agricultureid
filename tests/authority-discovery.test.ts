@@ -23,7 +23,7 @@ const find = (q: string) => search(INDEX, q, { limit: 5 }).results;
 describe('Wave 4B — authority search integration', () => {
   it('indexes every listed authority, and only listed ones', () => {
     expect(AUTH_DOCS.length).toBe(listedAuthorities().length);
-    expect(AUTH_DOCS.length).toBe(76);
+    expect(AUTH_DOCS.length).toBe(77);
   });
 
   it('never indexes an authority twice', () => {
