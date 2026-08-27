@@ -54,6 +54,14 @@ import {
   commoditiesWithMarketData,
 } from '@/lib/markets/registry';
 import { EXTENSION_HUB_PATH } from '@/lib/extension/registry';
+import {
+  INPUTS_HUB_PATH,
+  ACTIVE_SUBSTANCES_PATH,
+  PRODUCTS_PATH,
+  PRODUCT_FAMILIES,
+  productFamilyPath,
+  productsInFamily,
+} from '@/lib/inputs/registry';
 
 /** Stable last-modified date for static (non-content) routes. */
 export const SITE_LAST_UPDATED = '2026-07-12';
@@ -157,6 +165,30 @@ const STATIC_ROUTES: Omit<RouteEntry, 'lastModified'>[] = [
     changeFrequency: 'monthly',
     priority: 0.6,
   },
+  {
+    path: INPUTS_HUB_PATH,
+    changeFrequency: 'monthly',
+    priority: 0.7,
+  },
+  {
+    path: ACTIVE_SUBSTANCES_PATH,
+    changeFrequency: 'monthly',
+    priority: 0.6,
+  },
+  {
+    path: PRODUCTS_PATH,
+    changeFrequency: 'monthly',
+    priority: 0.6,
+  },
+  // One route per product family. Each is a substantive listing of hundreds of
+  // authorised products, not a slice created to make more URLs.
+  ...PRODUCT_FAMILIES.filter((f) => productsInFamily(f.slug).length > 0).map(
+    (f) => ({
+      path: productFamilyPath(f.slug),
+      changeFrequency: 'monthly' as const,
+      priority: 0.5,
+    }),
+  ),
   // Trust, editorial, legal
   { path: '/about', changeFrequency: 'yearly', priority: 0.4 },
   { path: '/editorial-policy', changeFrequency: 'yearly', priority: 0.4 },

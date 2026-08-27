@@ -41,7 +41,7 @@
     "authorities:health": "tsx -e \"import { AUTHORITIES } from './data/authorities'; for (const a of AUTHORITIES) console.log(a.id + ' ' + a.officialWebsite);\" | node scripts/authorities-health.mjs",
     "ecosystem:validate": "tsx scripts/ecosystem-validate.ts",
     "ecosystem:audit": "tsx scripts/ecosystem-audit.ts",
-    "validate": "npm run format:check && npm run typecheck && npm run lint && npm run content:validate && npm run ecosystem:validate && npm run jurisdictions:validate && npm run authorities:validate && npm run registries:validate && npm run regulations:validate && npm run support:validate && npm run calendars:validate && npm run biosecurity:validate && npm run varieties:validate && npm run markets:validate && npm run extension:validate && npm run test",
+    "validate": "npm run format:check && npm run typecheck && npm run lint && npm run content:validate && npm run ecosystem:validate && npm run jurisdictions:validate && npm run authorities:validate && npm run registries:validate && npm run regulations:validate && npm run support:validate && npm run calendars:validate && npm run biosecurity:validate && npm run varieties:validate && npm run markets:validate && npm run extension:validate && npm run inputs:validate && npm run test",
     "authorities:discover": "node scripts/authorities-discover.mjs",
     "authorities:ledger": "tsx scripts/authorities-ledger.ts",
     "authorities:coverage": "tsx scripts/authorities-coverage.ts",
@@ -60,7 +60,9 @@
     "markets:validate": "tsx scripts/markets-validate.ts",
     "markets:report": "tsx scripts/markets-report.ts",
     "extension:validate": "tsx scripts/extension-validate.ts",
-    "extension:report": "tsx scripts/extension-report.ts"
+    "extension:report": "tsx scripts/extension-report.ts",
+    "inputs:validate": "tsx scripts/inputs-validate.ts",
+    "inputs:report": "tsx scripts/inputs-report.ts"
   },
   "dependencies": {
     "next": "^15.1.6",

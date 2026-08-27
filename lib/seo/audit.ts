@@ -85,6 +85,15 @@ import {
   EXTENSION_HUB_PATH,
   entitiesWithResources,
 } from '@/lib/extension/registry';
+import {
+  INPUTS_HUB_PATH,
+  ACTIVE_SUBSTANCES_PATH,
+  PRODUCTS_PATH,
+  PRODUCT_FAMILIES,
+  productFamilyPath,
+  productsInFamily,
+  cropsWithAuthorizedProducts,
+} from '@/lib/inputs/registry';
 
 export interface AuditIssue {
   level: 'error' | 'warning';
@@ -327,6 +336,27 @@ export function registryNavModel(): Map<string, Set<string>> {
     const item = PUBLISHED_CONTENT.find((c) => c.slug === slug);
     if (!item) continue;
     add(contentUrlPath(item), EXTENSION_HUB_PATH);
+  }
+
+  // The inputs hub links its two listing pages, and each crop with authorised
+  // products links to the hub and the product listing.
+  add(INPUTS_HUB_PATH, ACTIVE_SUBSTANCES_PATH);
+  add(INPUTS_HUB_PATH, PRODUCTS_PATH);
+  add(ACTIVE_SUBSTANCES_PATH, INPUTS_HUB_PATH);
+  add(PRODUCTS_PATH, INPUTS_HUB_PATH);
+  for (const f of PRODUCT_FAMILIES) {
+    if (!productsInFamily(f.slug).length) continue;
+    add(PRODUCTS_PATH, productFamilyPath(f.slug));
+    add(productFamilyPath(f.slug), PRODUCTS_PATH);
+    add(productFamilyPath(f.slug), INPUTS_HUB_PATH);
+  }
+  for (const slug of cropsWithAuthorizedProducts()) {
+    const crop = PUBLISHED_CONTENT.find(
+      (c) => c.contentType === 'crop' && c.slug === slug,
+    );
+    if (!crop) continue;
+    add(contentUrlPath(crop), INPUTS_HUB_PATH);
+    add(contentUrlPath(crop), PRODUCTS_PATH);
   }
 
   // Data-methodology page is linked from the data overview/registry pages.

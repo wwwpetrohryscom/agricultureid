@@ -81,6 +81,17 @@ import {
   EXTENSION_INSTITUTIONS,
 } from '@/lib/extension/registry';
 import { TOPIC_LABEL } from '@/types/extension';
+import {
+  INPUTS_HUB_PATH,
+  ACTIVE_SUBSTANCES_PATH,
+  PRODUCTS_PATH,
+  activeSubstances,
+  allAuthorizations,
+  allInputs,
+  // Aliased: the varieties registry exports its own isCurrent, and the two
+  // decide entirely different things.
+  isCurrent as isCurrentAuthorization,
+} from '@/lib/inputs/registry';
 
 const RELATION_LABEL: Partial<Record<RelationType, string>> = {
   affects: 'affects',
@@ -716,6 +727,95 @@ export function buildSearchDocuments(): SearchDoc[] {
     });
   }
 
+  // Input authorisations. Three documents, not one per substance or product:
+  // 16,623 records routing to three pages would be the same page returned
+  // 16,623 times. Substance names ride at NAME weight on the substance page
+  // only, where no corpus entity competes for them.
+  const substances = activeSubstances();
+  if (substances.length > 0) {
+    const auths = allAuthorizations();
+    const currentProducts = auths.filter(
+      (a) => a.scope === 'product' && isCurrentAuthorization(a),
+    );
+    const approved = auths.filter(
+      (a) => a.scope === 'active-substance' && isCurrentAuthorization(a),
+    );
+    // The substances carried by the most authorised products — the ones a
+    // reader is most likely to type.
+    const usage = new Map<string, number>();
+    for (const i of allInputs()) {
+      for (const n of i.activeSubstanceNames)
+        usage.set(n, (usage.get(n) ?? 0) + 1);
+    }
+    const common = [...usage]
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 60)
+      .map(([n]) => n);
+    docs.push({
+      id: 'inputs:hub',
+      type: 'input-authorization',
+      route: INPUTS_HUB_PATH,
+      title: 'Agricultural input authorisations',
+      names: [
+        'input authorisation',
+        'pesticide authorisation',
+        'pesticide registration',
+        'plant protection product register',
+        'agricultural inputs',
+      ],
+      category: 'Input authorisation',
+      summary: `${auths.length.toLocaleString('en')} authorisation records for active substances and products, from the EU Pesticides Database and the French E-Phy register.`,
+      relationLabels: [
+        'pesticide register',
+        'authorisation',
+        'active substance',
+      ],
+      facets: {
+        entityType: ['input-authorization'],
+        category: ['Input authorisation'],
+      },
+    });
+    docs.push({
+      id: 'inputs:active-substances',
+      type: 'input-authorization',
+      route: ACTIVE_SUBSTANCES_PATH,
+      title: 'EU active substance approvals',
+      names: [
+        'active substance approval',
+        'EU pesticide approval',
+        'approved active substances',
+        ...substances.slice(0, 0).map((i) => i.name),
+        ...common,
+      ],
+      category: 'Input authorisation',
+      summary: `${substances.length.toLocaleString('en')} active substances with their EU approval state; ${approved.length} are approved.`,
+      relationLabels: ['active substance', 'EU approval'],
+      facets: {
+        entityType: ['input-authorization'],
+        category: ['Input authorisation'],
+      },
+    });
+    docs.push({
+      id: 'inputs:products',
+      type: 'input-authorization',
+      route: PRODUCTS_PATH,
+      title: 'Authorised plant protection products in France',
+      names: [
+        'authorised products France',
+        'plant protection products France',
+        'AMM number',
+        'E-Phy register',
+      ],
+      category: 'Input authorisation',
+      summary: `${currentProducts.length.toLocaleString('en')} products currently authorised in France, identified by AMM number with the holder of each authorisation.`,
+      relationLabels: ['authorised product', 'AMM', 'France'],
+      facets: {
+        entityType: ['input-authorization'],
+        category: ['Input authorisation'],
+      },
+    });
+  }
+
   // Tools.
   for (const t of TOOLS) {
     docs.push({
@@ -754,6 +854,7 @@ const ENTITY_TYPE_LABEL: Record<string, string> = {
   'variety-registration': 'Variety registration',
   'market-data': 'Market data',
   'extension-resource': 'Extension guidance',
+  'input-authorization': 'Input authorisation',
   machinery: 'Machinery',
   climate: 'Climate',
   'farming-system': 'Farming system',

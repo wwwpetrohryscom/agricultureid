@@ -26,6 +26,7 @@ import { OrganismBiosecurityStatus } from '@/components/biosecurity/OrganismBios
 import { CultivarRegistrations } from '@/components/varieties/CultivarRegistrations';
 import { CommodityMarketLink } from '@/components/markets/CommodityMarketLink';
 import { EntityExtensionResources } from '@/components/extension/EntityExtensionResources';
+import { CropAuthorizedInputs } from '@/components/inputs/CropAuthorizedInputs';
 
 /** Full rendering of a structured content page, shared by all content types. */
 export function ContentArticle({ item }: { item: AnyContent }) {
@@ -138,6 +139,12 @@ export function ContentArticle({ item }: { item: AnyContent }) {
           {/* Indexed extension guidance. Renders nothing when none is indexed;
               an empty list is not a claim that none exists. */}
           <EntityExtensionResources entitySlug={item.slug} />
+
+          {/* Authorised input products naming this crop on an official
+              register. A count and a link, never a product shortlist. */}
+          {item.contentType === 'crop' && (
+            <CropAuthorizedInputs cropSlug={item.slug} />
+          )}
 
           <RelationPanels item={item} />
 
