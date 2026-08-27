@@ -29,6 +29,14 @@
  * {@link AgriculturalInput.holderName} comes from the register's holder field.
  * No manufacturer is inferred from a brand, a website or a product name.
  *
+ * ## A date is not a status
+ *
+ * APVMA registrations renew annually, so most Australian products carry an
+ * expiry at the end of the current registration period. Comparing that date
+ * with today would mark nine thousand current registrations as lapsed. Status
+ * therefore always comes from the register's own code at the release date, and
+ * is never derived by arithmetic on a date.
+ *
  * ## Scope is recorded as the register writes it
  *
  * A register's use scope is often a collective label — "Fruits à pépins" covers
@@ -142,6 +150,23 @@ export interface InputAuthorization {
 
   /** Uses the register authorises. Empty when the register publishes none. */
   authorizedUses: AuthorizedUse[];
+
+  /**
+   * Sub-national entries the register records alongside a national decision.
+   *
+   * APVMA records a per-state entry for most Australian products. Those are
+   * register DETAIL on the national authorisation, never authorisations in
+   * their own right: a state entry is not an independent registration
+   * decision, and modelling it as one would create eight Australian
+   * authorisations where the register grants one.
+   */
+  subNationalEntries?: { jurisdiction: string; publishedCode: string }[];
+
+  /**
+   * Marketing class the register assigns, e.g. PMRA's COMMERCIAL or DOMESTIC.
+   * Recorded verbatim; it is not a safety or suitability claim.
+   */
+  marketingClass?: string;
 
   sourceSnapshotId: string;
   sourceReferences: string[];

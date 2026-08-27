@@ -88,6 +88,10 @@ import {
   activeSubstances,
   allAuthorizations,
   allInputs,
+  presentListings,
+  productListingPath,
+  presentSubstanceJurisdictions,
+  substanceListingPath,
   // Aliased: the varieties registry exports its own isCurrent, and the two
   // decide entirely different things.
   isCurrent as isCurrentAuthorization,
@@ -775,6 +779,30 @@ export function buildSearchDocuments(): SearchDoc[] {
         category: ['Input authorisation'],
       },
     });
+    // One document per substance decision-maker. The EU decides
+    // supranationally and Australia nationally; a reader asking about one must
+    // not be shown the other.
+    for (const j of presentSubstanceJurisdictions()) {
+      docs.push({
+        id: `inputs:substances:${j.slug}`,
+        type: 'input-authorization',
+        route: substanceListingPath(j.slug),
+        title: `${j.label} active substance decisions`,
+        names: [
+          `${j.label} active substances`,
+          `${j.label} active constituent approvals`,
+          `active substance approvals ${j.label}`,
+          `${j.label} substance approval`,
+        ],
+        category: 'Input authorisation',
+        summary: `${j.count.toLocaleString('en')} substances with the decision ${j.label} has taken on each — ${j.instrument}.`,
+        relationLabels: [j.label, 'active substance', j.instrument],
+        facets: {
+          entityType: ['input-authorization'],
+          category: ['Input authorisation'],
+        },
+      });
+    }
     docs.push({
       id: 'inputs:active-substances',
       type: 'input-authorization',
@@ -799,21 +827,45 @@ export function buildSearchDocuments(): SearchDoc[] {
       id: 'inputs:products',
       type: 'input-authorization',
       route: PRODUCTS_PATH,
-      title: 'Authorised plant protection products in France',
+      title: 'Authorised plant protection products by register',
       names: [
-        'authorised products France',
-        'plant protection products France',
-        'AMM number',
-        'E-Phy register',
+        'authorised products',
+        'plant protection product register',
+        'pesticide product register',
+        'registered pesticide products',
       ],
       category: 'Input authorisation',
-      summary: `${currentProducts.length.toLocaleString('en')} products currently authorised in France, identified by AMM number with the holder of each authorisation.`,
-      relationLabels: ['authorised product', 'AMM', 'France'],
+      summary: `${currentProducts.length.toLocaleString('en')} products currently authorised across the French, Canadian and Australian registers, each identified by its own registration number.`,
+      relationLabels: ['authorised product', 'France', 'Canada', 'Australia'],
       facets: {
         entityType: ['input-authorization'],
         category: ['Input authorisation'],
       },
     });
+    // One document per jurisdiction-and-family listing. The jurisdiction rides
+    // at NAME weight because that is the distinction a reader is asking about:
+    // "pesticide register Canada" must not return the Australian listing.
+    for (const l of presentListings()) {
+      docs.push({
+        id: `inputs:listing:${l.slug}`,
+        type: 'input-authorization',
+        route: productListingPath(l.slug),
+        title: `${l.familyLabel} authorised in ${l.jurisdiction}`,
+        names: [
+          `${l.familyLabel} ${l.jurisdiction}`,
+          `pesticide register ${l.jurisdiction}`,
+          `authorised products ${l.jurisdiction}`,
+          `${l.familyLabel.split(',')[0]} register ${l.jurisdiction}`,
+        ],
+        category: 'Input authorisation',
+        summary: `${l.count.toLocaleString('en')} products currently authorised in ${l.jurisdiction}. This authorisation applies in ${l.jurisdiction} and nowhere else.`,
+        relationLabels: [l.jurisdiction, l.familyLabel, 'authorised product'],
+        facets: {
+          entityType: ['input-authorization'],
+          category: ['Input authorisation'],
+        },
+      });
+    }
   }
 
   // Tools.

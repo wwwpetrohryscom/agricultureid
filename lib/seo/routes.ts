@@ -58,9 +58,10 @@ import {
   INPUTS_HUB_PATH,
   ACTIVE_SUBSTANCES_PATH,
   PRODUCTS_PATH,
-  PRODUCT_FAMILIES,
-  productFamilyPath,
-  productsInFamily,
+  presentListingPages,
+  productListingPath,
+  presentSubstancePages,
+  substanceListingPath,
 } from '@/lib/inputs/registry';
 
 /** Stable last-modified date for static (non-content) routes. */
@@ -180,15 +181,21 @@ const STATIC_ROUTES: Omit<RouteEntry, 'lastModified'>[] = [
     changeFrequency: 'monthly',
     priority: 0.6,
   },
-  // One route per product family. Each is a substantive listing of hundreds of
-  // authorised products, not a slice created to make more URLs.
-  ...PRODUCT_FAMILIES.filter((f) => productsInFamily(f.slug).length > 0).map(
-    (f) => ({
-      path: productFamilyPath(f.slug),
-      changeFrequency: 'monthly' as const,
-      priority: 0.5,
-    }),
-  ),
+  // One route per jurisdiction-and-family listing. Each is a substantive
+  // listing of hundreds or thousands of authorised products, not a slice
+  // created to make more URLs, and each belongs to exactly one register.
+  ...presentListingPages().map((l) => ({
+    path: productListingPath(l.pageSlug),
+    changeFrequency: 'monthly' as const,
+    priority: l.page === 1 ? 0.5 : 0.4,
+  })),
+  // One route per substance decision-maker. The EU and Australia take these
+  // decisions separately, so they are listed separately.
+  ...presentSubstancePages().map((p) => ({
+    path: substanceListingPath(p.pageSlug),
+    changeFrequency: 'monthly' as const,
+    priority: p.page === 1 ? 0.5 : 0.4,
+  })),
   // Trust, editorial, legal
   { path: '/about', changeFrequency: 'yearly', priority: 0.4 },
   { path: '/editorial-policy', changeFrequency: 'yearly', priority: 0.4 },

@@ -60,7 +60,8 @@ interface BaseSnapshot {
   license: string;
   licenseUrl: string;
   jurisdictionScope: string;
-  scopeLevel: string;
+  /** Every authorisation scope this snapshot produces. A register may hold more than one. */
+  scopeLevels: string[];
   transformationVersion: string;
   statusMapping: Record<string, string>;
   statusRule: string;
@@ -94,6 +95,78 @@ export interface EphySnapshot extends BaseSnapshot {
   substances: EphySubstance[];
 }
 
+export interface PmraProduct {
+  number: string;
+  name: string;
+  holder: string | null;
+  functions: string[];
+  substances: string[];
+  status: string;
+  publishedStatus: string;
+  currency: string | null;
+  marketingType: string | null;
+  validFrom: string | null;
+  validUntil: string | null;
+  useSites: string[];
+  targets: string[];
+  contradiction?: boolean | null;
+}
+
+export interface ApvmaProduct {
+  number: string;
+  name: string;
+  holder: string | null;
+  functions: string[];
+  formulation: string | null;
+  status: string;
+  publishedStatus: string;
+  validFrom: string | null;
+  validUntil: string | null;
+  substances: string[];
+  stateEntries: { state: string; code: string }[];
+}
+
+export interface ApvmaSubstance {
+  number: string;
+  name: string;
+  holder: string | null;
+  status: string;
+  publishedStatus: string;
+  validFrom: string | null;
+  validUntil: string | null;
+}
+
+export interface PmraSnapshot extends BaseSnapshot {
+  countryCode: string;
+  versionNote: string;
+  currencyRule: string;
+  scopeFilterRule: string;
+  agriculturalFunctions: string[];
+  holderRule: string;
+  doseRule: string;
+  useMappingRule: string;
+  truncationRule: string;
+  truncatedProductCount: number;
+  productCount: number;
+  products: PmraProduct[];
+}
+
+export interface ApvmaSnapshot extends BaseSnapshot {
+  countryCode: string;
+  renewalRule: string;
+  scopeFilterRule: string;
+  subNationalRule: string;
+  compositionRule: string;
+  useRule: string;
+  productCount: number;
+  substanceCount: number;
+  products: ApvmaProduct[];
+  substances: ApvmaSubstance[];
+}
+
+export const PMRA_SNAPSHOT_PREFIX = 'pmra__products__';
+export const APVMA_SNAPSHOT_PREFIX = 'apvma__pubcris__';
+
 export const EU_PESTICIDES_SNAPSHOT_PREFIX =
   'eu-pesticides__active-substances__';
 export const EPHY_SNAPSHOT_PREFIX = 'ephy__products__';
@@ -126,6 +199,8 @@ function loadLatest<T extends { snapshotId: string; datasetVersion: string }>(
 
 const EU = loadLatest<EuPesticideSnapshot>(EU_PESTICIDES_SNAPSHOT_PREFIX);
 const EPHY = loadLatest<EphySnapshot>(EPHY_SNAPSHOT_PREFIX);
+const PMRA = loadLatest<PmraSnapshot>(PMRA_SNAPSHOT_PREFIX);
+const APVMA = loadLatest<ApvmaSnapshot>(APVMA_SNAPSHOT_PREFIX);
 
 export function euPesticideSnapshot(): EuPesticideSnapshot | null {
   return EU;
@@ -133,9 +208,35 @@ export function euPesticideSnapshot(): EuPesticideSnapshot | null {
 export function ephySnapshot(): EphySnapshot | null {
   return EPHY;
 }
+export function pmraSnapshot(): PmraSnapshot | null {
+  return PMRA;
+}
+export function apvmaSnapshot(): ApvmaSnapshot | null {
+  return APVMA;
+}
+
+/** Every loaded input snapshot, with the jurisdiction each one belongs to. */
+export function inputSnapshots(): {
+  key: string;
+  jurisdiction: string;
+  snapshot: BaseSnapshot;
+}[] {
+  return [
+    EU && { key: 'eu', jurisdiction: 'European Union', snapshot: EU },
+    EPHY && { key: 'ephy', jurisdiction: 'France', snapshot: EPHY },
+    PMRA && { key: 'pmra', jurisdiction: 'Canada', snapshot: PMRA },
+    APVMA && { key: 'apvma', jurisdiction: 'Australia', snapshot: APVMA },
+  ].filter(Boolean) as {
+    key: string;
+    jurisdiction: string;
+    snapshot: BaseSnapshot;
+  }[];
+}
 export function inputSnapshotFiles(): string[] {
   return [
     ...filesFor(EU_PESTICIDES_SNAPSHOT_PREFIX),
     ...filesFor(EPHY_SNAPSHOT_PREFIX),
+    ...filesFor(PMRA_SNAPSHOT_PREFIX),
+    ...filesFor(APVMA_SNAPSHOT_PREFIX),
   ];
 }

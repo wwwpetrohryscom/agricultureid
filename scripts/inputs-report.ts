@@ -18,7 +18,13 @@ import {
   cropsWithAuthorizedProducts,
   productsForCrop,
 } from '../lib/inputs/registry';
-import { euPesticideSnapshot, ephySnapshot } from '../lib/inputs/snapshot';
+import {
+  euPesticideSnapshot,
+  ephySnapshot,
+  pmraSnapshot,
+  apvmaSnapshot,
+  inputSnapshots,
+} from '../lib/inputs/snapshot';
 import { AUTHORIZATION_STATUSES } from '../types/input';
 
 const eu = euPesticideSnapshot();
@@ -38,16 +44,53 @@ for (const st of AUTHORIZATION_STATUSES) {
     );
 }
 
-console.log('\n  What the EU has refused');
-const notApproved = auths.filter(
-  (a) => a.scope === 'active-substance' && a.status === 'not-approved',
-).length;
-const approved = auths.filter(
-  (a) => a.scope === 'active-substance' && isCurrent(a),
-).length;
-console.log(
-  `    ${notApproved} of ${activeSubstances().length} active substances are recorded as not approved;\n    ${approved} are approved. A substance list that showed only approvals\n    would misrepresent the register by a factor of two.`,
-);
+console.log('\n  By jurisdiction');
+{
+  const byJ = new Map<string, { total: number; current: number }>();
+  for (const a of auths) {
+    const e = byJ.get(a.jurisdictionName) ?? { total: 0, current: 0 };
+    e.total += 1;
+    if (isCurrent(a)) e.current += 1;
+    byJ.set(a.jurisdictionName, e);
+  }
+  for (const [name, e] of [...byJ].sort((a, b) => b[1].total - a[1].total)) {
+    console.log(
+      `    ${name.padEnd(18)} ${e.total.toLocaleString('en').padStart(7)} records  ${e.current.toLocaleString('en').padStart(7)} current`,
+    );
+  }
+}
+
+console.log('\n  Source releases');
+for (const { snapshot } of inputSnapshots()) {
+  console.log(
+    `    ${snapshot.snapshotId.padEnd(42)} release ${snapshot.datasetVersion}  read ${snapshot.retrievedAt}`,
+  );
+}
+
+console.log('\n  Substance decisions, by decision-maker');
+{
+  const eu = auths.filter(
+    (a) => a.scope === 'active-substance' && a.supranationalJurisdiction,
+  );
+  const au = auths.filter(
+    (a) => a.scope === 'active-substance' && a.countryCode === 'AUS',
+  );
+  const refused = eu.filter((a) => a.status === 'not-approved').length;
+  console.log(
+    `    European Union   ${eu.length} substances; ${eu.filter(isCurrent).length} approved, ${refused} not approved.`,
+  );
+  console.log(
+    '    A substance list showing only the approvals would misrepresent the EU',
+  );
+  console.log('    register by a factor of two.');
+  console.log(
+    `    Australia        ${au.length} active constituents; ${au.filter(isCurrent).length} approved.`,
+  );
+  console.log(
+    '    These are separate decisions by separate authorities and are never',
+  );
+  console.log('    combined into one approval count.');
+}
 
 console.log('\n  Substance-to-approval matching');
 const substanceStrings = new Set(
@@ -111,6 +154,28 @@ if (fr)
   console.log(
     `    ${fr.dateIncoherentCount} products carry contradictory source dates and say so.`,
   );
+
+console.log('\n  Sought and NOT ingested');
+console.log(
+  '    Germany (BVL), Poland, Netherlands (Ctgb), Spain (MAPA), the United\n' +
+    '    Kingdom (HSE) and the United States (EPA) all operate official product\n' +
+    '    registers, and all were probed. None publishes a machine-readable bulk\n' +
+    '    export or open-data resource this pass could verify, and a register read\n' +
+    '    by screen-scraping a search form is not provenance this layer accepts.\n' +
+    '    They are absent from the index, not absent as registers.',
+);
+{
+  const pmra = pmraSnapshot();
+  const apvma = apvmaSnapshot();
+  if (pmra) {
+    console.log(`\n    Canada — ${pmra.scopeFilterRule}`);
+    console.log(`    Canada — ${pmra.truncationRule}`);
+  }
+  if (apvma) {
+    console.log(`\n    Australia — ${apvma.scopeFilterRule}`);
+    console.log(`    Australia — ${apvma.useRule}`);
+  }
+}
 
 console.log('\n  Deliberately not published');
 console.log(

@@ -15,11 +15,13 @@ import {
   activeSubstances,
   products,
   isCurrent,
+  presentListings,
+  presentSubstanceJurisdictions,
   INPUTS_HUB_PATH,
   ACTIVE_SUBSTANCES_PATH,
   PRODUCTS_PATH,
 } from '@/lib/inputs/registry';
-import { euPesticideSnapshot, ephySnapshot } from '@/lib/inputs/snapshot';
+import { inputSnapshots } from '@/lib/inputs/snapshot';
 import { registryPath, publishedRegistries } from '@/lib/registries/registry';
 
 const TITLE = 'Agricultural Input Authorisations';
@@ -33,9 +35,13 @@ export const metadata: Metadata = buildMetadata({
 
 export default function InputsPage() {
   const auths = allAuthorizations();
-  const eu = euPesticideSnapshot();
-  const fr = ephySnapshot();
+  const snapshots = inputSnapshots();
   const published = new Set(publishedRegistries().map((r) => r.slug));
+  const byJurisdiction = new Map<string, number>();
+  for (const a of auths) {
+    const key = a.jurisdictionName;
+    byJurisdiction.set(key, (byJurisdiction.get(key) ?? 0) + 1);
+  }
   const byStatus = new Map<string, number>();
   for (const a of auths)
     byStatus.set(a.status, (byStatus.get(a.status) ?? 0) + 1);
@@ -155,6 +161,60 @@ export default function InputsPage() {
         </p>
       </section>
 
+      <section className="mt-10" aria-label="Jurisdictions">
+        <h2 className="font-serif text-xl text-forest-900">
+          Registers covered
+        </h2>
+        <p className="mt-2 max-w-2xl text-sm text-ink-700">
+          Each register is a separate decision-maker under separate law. Nothing
+          is combined across them: an authorisation in one country is never
+          evidence of authorisation in another, however similar the product.
+        </p>
+        <div className="mt-3 overflow-x-auto">
+          <table className="w-full min-w-[30rem] border-collapse text-sm">
+            <thead>
+              <tr className="border-b border-ink-200 text-left text-xs uppercase tracking-wide text-ink-500">
+                <th scope="col" className="py-2 pr-4 font-medium">
+                  Jurisdiction
+                </th>
+                <th scope="col" className="py-2 pr-4 font-medium">
+                  Records
+                </th>
+                <th scope="col" className="py-2 font-medium">
+                  What the register decides
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {[...byJurisdiction.entries()]
+                .sort((a, b) => b[1] - a[1])
+                .map(([name, n]) => (
+                  <tr key={name} className="border-b border-ink-100">
+                    <th scope="row" className="py-2 pr-4 font-normal">
+                      {name}
+                    </th>
+                    <td className="py-2 pr-4 tabular-nums">
+                      {n.toLocaleString('en')}
+                    </td>
+                    <td className="py-2 text-ink-700">
+                      {name === 'European Union'
+                        ? 'Approval of active substances across the Union. Not authorisation of any product.'
+                        : name === 'Australia'
+                          ? 'National product registration and active constituent approval.'
+                          : 'National product authorisation.'}
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
+        </div>
+        <p className="mt-3 text-sm text-ink-600">
+          {presentListings().length} product listings and{' '}
+          {presentSubstanceJurisdictions().length} substance listings, each
+          scoped to one register.
+        </p>
+      </section>
+
       <section className="mt-10" aria-label="Browse">
         <h2 className="font-serif text-xl text-forest-900">Browse</h2>
         <ul className="mt-3 space-y-3 text-sm">
@@ -188,18 +248,18 @@ export default function InputsPage() {
       <section className="mt-10" aria-label="Sources">
         <h2 className="font-serif text-xl text-forest-900">Sources</h2>
         <ul className="mt-3 space-y-4 text-sm">
-          {[eu, fr].filter(Boolean).map((snap) => (
-            <li key={snap!.snapshotId} className="border-t border-ink-100 pt-3">
-              <p className="font-medium text-ink-900">{snap!.source}</p>
-              <p className="mt-1 text-ink-700">{snap!.statusRule}</p>
+          {snapshots.map(({ snapshot: snap }) => (
+            <li key={snap.snapshotId} className="border-t border-ink-100 pt-3">
+              <p className="font-medium text-ink-900">{snap.source}</p>
+              <p className="mt-1 text-ink-700">{snap.statusRule}</p>
               <p className="mt-1 text-xs text-ink-500">
-                {snap!.jurisdictionScope} · release {snap!.datasetVersion} ·
-                read {snap!.retrievedAt}
-                {published.has(snap!.registryId) && (
+                {snap.jurisdictionScope} · release {snap.datasetVersion} · read{' '}
+                {snap.retrievedAt}
+                {published.has(snap.registryId) && (
                   <>
                     {' · '}
                     <Link
-                      href={registryPath(snap!.registryId)}
+                      href={registryPath(snap.registryId)}
                       className="text-forest-700 hover:underline"
                     >
                       registry record
@@ -217,7 +277,11 @@ export default function InputsPage() {
           What this layer does not publish
         </h2>
         <p className="mt-2 max-w-2xl text-sm text-ink-700">
-          {fr?.doseRule} {fr?.compositionRule}
+          Doses, application rates, treatment intervals, buffer distances and
+          mixing instructions are published by these registers and are
+          deliberately not ingested. Active substance concentrations are not
+          ingested either. A rate detached from its label, crop stage and local
+          conditions is a hazard, not information.
         </p>
       </section>
     </Container>
