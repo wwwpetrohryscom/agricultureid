@@ -2197,6 +2197,104 @@ export const SOURCES: Source[] = [
     reliability: 'authoritative',
   },
   {
+    id: 'gov-uk-plant-imports',
+    organization:
+      'Department for Environment, Food & Rural Affairs / Animal and Plant Health Agency',
+    title:
+      'Import plants and plant products from non-EU countries to Great Britain',
+    url: 'https://www.gov.uk/guidance/import-plants-and-plant-products-from-non-eu-countries-to-great-britain',
+    accessDate: ACCESS_VARIETY,
+    sourceType: 'government',
+    jurisdiction: 'Great Britain',
+    language: 'en',
+    notes:
+      'Government guidance on which plants and plant products may enter Great Britain, what documentation they need and what checks apply. Loaded in a real browser on 2026-08-27.',
+    reliability: 'authoritative',
+  },
+  {
+    id: 'gov-uk-plant-exports',
+    organization:
+      'Department for Environment, Food & Rural Affairs / Animal and Plant Health Agency',
+    title:
+      'Export or move plants and plant products from Great Britain and Northern Ireland',
+    url: 'https://www.gov.uk/guidance/export-plants-and-plant-products-from-great-britain-and-northern-ireland',
+    accessDate: ACCESS_VARIETY,
+    sourceType: 'government',
+    jurisdiction: 'Great Britain',
+    language: 'en',
+    notes:
+      'Government guidance on exporting plants, including how to apply for the phytosanitary certificate that attests the destination’s requirements are met. Loaded in a real browser on 2026-08-27.',
+    reliability: 'authoritative',
+  },
+  {
+    id: 'reg-au-bicon',
+    organization:
+      'Australian Government — Department of Agriculture, Fisheries and Forestry',
+    title: 'Biosecurity Import Conditions system (BICON)',
+    url: 'https://bicon.agriculture.gov.au/',
+    accessDate: ACCESS_VARIETY,
+    sourceType: 'registry',
+    jurisdiction: 'Australia',
+    language: 'en',
+    notes:
+      'Australia’s import conditions system. A decision tree: the conditions it returns depend on the goods, their origin, their end use and their treatment.',
+    reliability: 'authoritative',
+  },
+  {
+    id: 'reg-ca-airs',
+    organization: 'Canadian Food Inspection Agency',
+    title: 'Automated Import Reference System (AIRS)',
+    url: 'https://airs-sari.inspection.gc.ca/airs_external/english/decisions-eng.aspx',
+    accessDate: ACCESS_VARIETY,
+    sourceType: 'registry',
+    jurisdiction: 'Canada',
+    language: 'en',
+    notes:
+      'Canada’s import requirements system, keyed to the tariff classification of the goods together with origin and end use.',
+    reliability: 'authoritative',
+  },
+  {
+    id: 'reg-us-pexd',
+    organization:
+      'United States Department of Agriculture — Animal and Plant Health Inspection Service',
+    title: 'Phytosanitary Export Database (PExD)',
+    url: 'https://pcit.aphis.usda.gov/PExD/faces/ViewPExD.jsf',
+    accessDate: ACCESS_VARIETY,
+    sourceType: 'registry',
+    jurisdiction: 'United States',
+    language: 'en',
+    notes:
+      'Importing countries’ phytosanitary requirements for consignments exported from the United States. The landing page is public; the requirement search requires a logon.',
+    reliability: 'authoritative',
+  },
+  {
+    id: 'reg-jp-plant-protection',
+    organization:
+      'Ministry of Agriculture, Forestry and Fisheries — Plant Protection Station',
+    title: 'Plant Protection Station (植物防疫所)',
+    url: 'https://www.maff.go.jp/pps/index.html',
+    accessDate: ACCESS_VARIETY,
+    sourceType: 'registry',
+    jurisdiction: 'Japan',
+    language: 'en',
+    notes:
+      'Japan’s plant quarantine authority. Publishes import prohibitions and conditions by article and origin, primarily in Japanese.',
+    reliability: 'authoritative',
+  },
+  {
+    id: 'reg-kr-apqa',
+    organization: 'Animal and Plant Quarantine Agency',
+    title: 'Animal and Plant Quarantine Agency (농림축산검역본부)',
+    url: 'https://www.qia.go.kr/',
+    accessDate: ACCESS_VARIETY,
+    sourceType: 'registry',
+    jurisdiction: 'Republic of Korea',
+    language: 'en',
+    notes:
+      'Korea’s animal and plant quarantine authority. The two regimes are separate and are operated by the same agency.',
+    reliability: 'authoritative',
+  },
+  {
     id: 'reg-usda-nrcs-ssurgo',
     organization:
       'United States Department of Agriculture — Natural Resources Conservation Service',

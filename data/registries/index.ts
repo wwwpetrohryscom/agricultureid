@@ -31,6 +31,11 @@ import { ukVarietyLists } from './uk-variety-lists';
 import { usdaPvpo } from './usda-pvpo';
 import { ipAustraliaPbr } from './ip-australia-pbr';
 import { usdaNrcsSsurgo } from './usda-nrcs-ssurgo';
+import { auBicon } from './au-bicon';
+import { caAirs } from './ca-airs';
+import { usPexd } from './us-pexd';
+import { jpPlantProtection } from './jp-plant-protection';
+import { krApqa } from './kr-apqa';
 import { apvmaPubcris } from './apvma-pubcris';
 import { ansesEphy } from './anses-ephy';
 import { gevesCatalogueOfficiel } from './geves-catalogue-officiel';
@@ -63,6 +68,11 @@ export const REGISTRIES: AgriculturalRegistryEntry[] = [
   usdaPvpo,
   ipAustraliaPbr,
   usdaNrcsSsurgo,
+  auBicon,
+  caAirs,
+  usPexd,
+  jpPlantProtection,
+  krApqa,
   apvmaPubcris,
   ansesEphy,
   gevesCatalogueOfficiel,

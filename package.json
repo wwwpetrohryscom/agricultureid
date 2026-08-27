@@ -42,7 +42,7 @@
     "authorities:health": "tsx -e \"import { AUTHORITIES } from './data/authorities'; for (const a of AUTHORITIES) console.log(a.id + ' ' + a.officialWebsite);\" | node scripts/authorities-health.mjs",
     "ecosystem:validate": "tsx scripts/ecosystem-validate.ts",
     "ecosystem:audit": "tsx scripts/ecosystem-audit.ts",
-    "validate": "npm run format:check && npm run typecheck && npm run lint && npm run content:validate && npm run ecosystem:validate && npm run jurisdictions:validate && npm run authorities:validate && npm run registries:validate && npm run regulations:validate && npm run support:validate && npm run calendars:validate && npm run biosecurity:validate && npm run varieties:validate && npm run freshness:validate && npm run history:validate && npm run provenance:validate && npm run coverage:validate && npm run soils:validate && npm run markets:validate && npm run extension:validate && npm run inputs:validate && npm run tools:validate && npm run test",
+    "validate": "npm run format:check && npm run typecheck && npm run lint && npm run content:validate && npm run ecosystem:validate && npm run jurisdictions:validate && npm run authorities:validate && npm run registries:validate && npm run regulations:validate && npm run support:validate && npm run calendars:validate && npm run biosecurity:validate && npm run varieties:validate && npm run freshness:validate && npm run history:validate && npm run provenance:validate && npm run coverage:validate && npm run soils:validate && npm run trade:validate && npm run markets:validate && npm run extension:validate && npm run inputs:validate && npm run tools:validate && npm run test",
     "authorities:discover": "node scripts/authorities-discover.mjs",
     "authorities:ledger": "tsx scripts/authorities-ledger.ts",
     "authorities:coverage": "tsx scripts/authorities-coverage.ts",
@@ -74,7 +74,9 @@
     "coverage:validate": "tsx scripts/coverage-validate.ts",
     "coverage:report": "tsx scripts/coverage-report.ts",
     "soils:validate": "tsx scripts/soils-validate.ts",
-    "soils:report": "tsx scripts/soils-report.ts"
+    "soils:report": "tsx scripts/soils-report.ts",
+    "trade:validate": "tsx scripts/trade-validate.ts",
+    "trade:report": "tsx scripts/trade-report.ts"
   },
   "dependencies": {
     "next": "^15.1.6",

@@ -22,6 +22,8 @@ import type { SearchDoc, SearchEntityType } from '@/types/search';
 import { CHANGE_HUB_PATH, changeEvents } from '@/lib/history/registry';
 import { COVERAGE_PATH } from '@/lib/coverage/paths';
 import { SOIL_SURVEYS_PATH } from '@/lib/soils/paths';
+import { TRADE_HUB_PATH } from '@/lib/trade/paths';
+import { jurisdictionsWithRequirements } from '@/lib/trade/registry';
 import {
   allSoilObservations,
   jurisdictionsCovered,
@@ -728,6 +730,39 @@ export function buildSearchDocuments(): SearchDoc[] {
       facets: {
         entityType: ['soil-observation'],
         category: ['Soil surveys'],
+      },
+    });
+  }
+
+  // Border requirements. One hub document. The vocabulary here is about
+  // PERMISSION to move goods; the trade-concept and commodity pages own the
+  // vocabulary of trade itself, and carrying "export" or a commodity name at
+  // name weight would take their queries.
+  {
+    docs.push({
+      id: 'trade:requirements',
+      type: 'trade-requirement',
+      route: TRADE_HUB_PATH,
+      title: 'Agricultural border requirements',
+      names: [
+        'agricultural border requirements',
+        'phytosanitary certificate',
+        'import permit agriculture',
+        'plant import requirements',
+        'export health certificate',
+        'border control system',
+      ],
+      category: 'Border requirements',
+      summary: `The official systems that decide agricultural import and export conditions in ${jurisdictionsWithRequirements().length} jurisdictions, the authorities that operate them, and the conditions each system resolves.`,
+      relationLabels: [
+        'import conditions',
+        'quarantine requirement',
+        'official controls',
+        'competent authority',
+      ],
+      facets: {
+        entityType: ['trade-requirement'],
+        category: ['Border requirements'],
       },
     });
   }

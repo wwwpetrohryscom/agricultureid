@@ -14,7 +14,7 @@ import { SOURCE_MAP } from '@/lib/sources/registry';
 import { allRoutes } from '@/lib/seo/routes';
 import { buildSearchDocuments } from '@/lib/search/documents';
 
-const EXPECTED_TOTAL = 30;
+const EXPECTED_TOTAL = 35;
 const EXPECTED_PUBLISHED = 23;
 const DOCS = buildSearchDocuments();
 const REG_DOCS = DOCS.filter((d) => d.type === 'agricultural-registry');

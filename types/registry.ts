@@ -35,6 +35,7 @@ export const REGISTRY_TYPES = [
   'seedRegistry',
   'varietyCatalogue',
   'soilSurvey',
+  'borderControlSystem',
   'pesticideProductRegistry',
   'pesticideActiveSubstanceDatabase',
   'fertilizerRegistry',

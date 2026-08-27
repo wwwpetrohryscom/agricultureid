@@ -82,6 +82,17 @@ export const LINEAGE_CONTRACTS: readonly LineageContract[] = [
     why: 'A ministry publishes its own title on its own page. There is no record identifier and no normalisation: the official name is the official name. All eighty bodies carry a verification page, so a body without one fails the gate rather than resolving to no locator at all.',
   },
   {
+    claimKind: 'trade-requirement',
+    permittedLocators: ['page-heading'],
+    hasRelease: false,
+    // A directory record quotes nothing: it names a system, and the system's
+    // answers are not reproduced.
+    publishesWording: false,
+    hasInterpretation: true,
+    vocabulary: 'RequirementStatus',
+    why: 'A border requirement is traced to the official system or guidance page that publishes it. There is no record identifier, because the systems are decision trees rather than registers of rules.',
+  },
+  {
     claimKind: 'soil-observation',
     permittedLocators: ['dataset-series'],
     hasRelease: true,
