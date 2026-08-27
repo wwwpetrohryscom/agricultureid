@@ -15,12 +15,16 @@
  * portal, and this layer does not pretend otherwise.
  */
 import { REGISTRIES } from '@/data/registries';
+import { PUBLISHED_CONTENT } from '@/lib/content/registry';
 import { VARIETY_REGISTRATIONS } from '@/data/varieties';
 import {
   CURRENT_VARIETY_REGISTRATION_STATUSES,
+  INSTRUMENT_KIND,
+  type InstrumentKind,
   type RegistrationInstrument,
   type VarietyRegistrationEntry,
 } from '@/types/variety';
+import { REGISTER_CONTRACTS } from './registers';
 
 export { VARIETY_REGISTRATIONS };
 
@@ -36,7 +40,7 @@ const byJurisdiction = (
   b: VarietyRegistrationEntry,
 ) =>
   a.countryOrOrganisation.localeCompare(b.countryOrOrganisation) ||
-  a.registerUuid.localeCompare(b.registerUuid);
+  (a.registerEntryId ?? a.id).localeCompare(b.registerEntryId ?? b.id);
 
 /** Every recorded registration for one cultivar, current and historical. */
 export function registrationsForCultivar(
@@ -74,14 +78,61 @@ export function presentJurisdictions(): string[] {
   ].sort();
 }
 
-/** Species present in the corpus, keyed by the register's own UPOV code. */
-export function presentSpecies(): { code: string; name: string }[] {
-  const out = new Map<string, string>();
-  for (const r of VARIETY_REGISTRATIONS)
-    out.set(r.upovSpeciesCode, r.upovSpeciesName);
+/**
+ * Species present in the corpus, keyed by the CULTIVAR's botanical taxon.
+ *
+ * Grouping by what the register printed would scatter one species across
+ * several groups: the United Kingdom writes `SOLANUM LYCOPERSICUM L. VAR.
+ * LYCOPERSICUM` in capitals, the EU portal writes `Solanum lycopersicum L.`,
+ * Canada writes `Potato`, and the United States still writes `Lycopersicon
+ * esculentum Mill.` A reader looking for tomatoes wants one group, and the
+ * corpus taxon is the thing every entry has been PROVEN to match.
+ */
+export function presentSpecies(): { taxon: string; cultivars: string[] }[] {
+  const out = new Map<string, Set<string>>();
+  for (const r of VARIETY_REGISTRATIONS) {
+    const cultivar = PUBLISHED_CONTENT.find(
+      (c) => c.contentType === 'cultivar' && c.slug === r.cultivarRef,
+    ) as { botanicalTaxon?: string } | undefined;
+    const taxon = cultivar?.botanicalTaxon ?? 'Unresolved';
+    out.set(taxon, (out.get(taxon) ?? new Set()).add(r.cultivarRef));
+  }
   return [...out]
-    .map(([code, name]) => ({ code, name }))
-    .sort((a, b) => a.name.localeCompare(b.name));
+    .map(([taxon, cultivars]) => ({ taxon, cultivars: [...cultivars].sort() }))
+    .sort((a, b) => a.taxon.localeCompare(b.taxon));
+}
+
+/**
+ * Entries grouped by what an instrument fundamentally IS. Permission to market
+ * and ownership of a variety are different facts, and a page that totals them
+ * tells a reader a variety is "registered in 12 places" when four of those are
+ * patents-in-all-but-name.
+ */
+export function registrationsByKind(): Map<
+  InstrumentKind,
+  VarietyRegistrationEntry[]
+> {
+  const out = new Map<InstrumentKind, VarietyRegistrationEntry[]>();
+  for (const r of VARIETY_REGISTRATIONS) {
+    const kind = INSTRUMENT_KIND[r.instrument];
+    out.set(kind, [...(out.get(kind) ?? []), r]);
+  }
+  return out;
+}
+
+/** Registers that actually feed entries, with their counts. */
+export function presentRegisters(): {
+  id: string;
+  registerName: string;
+  countryOrOrganisation: string;
+  entries: VarietyRegistrationEntry[];
+}[] {
+  return REGISTER_CONTRACTS.map((c) => ({
+    id: c.id,
+    registerName: c.registerName,
+    countryOrOrganisation: c.countryOrOrganisation,
+    entries: VARIETY_REGISTRATIONS.filter((r) => r.registerId === c.id),
+  })).filter((r) => r.entries.length > 0);
 }
 
 /**

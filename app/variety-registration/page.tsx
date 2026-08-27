@@ -5,13 +5,17 @@ import { PageIntro } from '@/components/content/PageIntro';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { webPageSchema } from '@/lib/schema/jsonld';
 import { buildMetadata } from '@/lib/seo/metadata';
-import { VARIETY_REGISTRATION_CAVEAT } from '@/types/variety';
+import {
+  INSTRUMENT_KIND,
+  INSTRUMENT_KIND_CAVEAT,
+  VARIETY_REGISTRATION_CAVEAT,
+} from '@/types/variety';
 import {
   VARIETY_REGISTRATIONS,
   isCurrent,
   presentSpecies,
-  presentJurisdictions,
-  registrationsByInstrument,
+  presentRegisters,
+  registrationsByKind,
 } from '@/lib/varieties/registry';
 import { PUBLISHED_CONTENT, contentUrlPath } from '@/lib/content/registry';
 import { getSource } from '@/lib/sources/registry';
@@ -32,20 +36,22 @@ export default function VarietyRegistrationPage() {
       (c) => c.contentType === 'cultivar' && c.slug === slug,
     );
 
-  const species = presentSpecies();
-  const byInstrument = registrationsByInstrument();
+  const byKind = registrationsByKind();
+  const registers = presentRegisters();
   const currentCount = VARIETY_REGISTRATIONS.filter(isCurrent).length;
   const nationalSource = getSource('eu-pvp-national-lists');
+  const marketing = byKind.get('variety-registration') ?? [];
+  const ownership = byKind.get('plant-variety-protection-right') ?? [];
 
   /* Grouped by species, then by cultivar: a reader looking for apples should
      not have to scan potatoes, and species is what makes a denomination
-     unambiguous in the first place. */
-  const bySpecies = species.map((s) => {
-    const entries = VARIETY_REGISTRATIONS.filter(
-      (r) => r.upovSpeciesCode === s.code,
+     unambiguous in the first place. The grouping key is the CULTIVAR's taxon,
+     because the five registers write the same species five different ways. */
+  const bySpecies = presentSpecies().map((s) => {
+    const entries = VARIETY_REGISTRATIONS.filter((r) =>
+      s.cultivars.includes(r.cultivarRef),
     );
-    const cultivars = [...new Set(entries.map((r) => r.cultivarRef))].sort();
-    return { ...s, entries, cultivars };
+    return { ...s, entries };
   });
 
   return (
@@ -64,10 +70,21 @@ export default function VarietyRegistrationPage() {
         lead="Which cultivars appear in official variety registers — and what an entry does and does not mean."
       >
         <p>
-          A national list entry permits seed of a variety to be marketed in that
-          country. A Community plant variety right is an EU-wide intellectual
-          property grant. They are issued by different bodies under different
-          law, so they are counted separately here and never added together.
+          Two different things are called registration. A national list entry, a
+          vine catalogue listing or a registration under a seeds act is
+          PERMISSION TO MARKET the variety in a territory. A plant breeder’s
+          right, a Community plant variety right or a United States certificate
+          of plant variety protection is OWNERSHIP of it. They are issued by
+          different bodies under different law, expire on different terms, and
+          are counted separately here.
+        </p>
+        <p>
+          Two further things are often confused with both and appear nowhere on
+          this page. A recommended list or reference catalogue is a{' '}
+          <em>cultivar listing</em> and carries no legal effect. Seed
+          certification does not attach to a variety at all — it certifies a lot
+          of seed, and the same variety yields certified and uncertified lots in
+          the same season.
         </p>
         <p>
           Registration is also separate from cultivation: a variety absent from
@@ -92,7 +109,7 @@ export default function VarietyRegistrationPage() {
               'Cultivars',
               new Set(VARIETY_REGISTRATIONS.map((r) => r.cultivarRef)).size,
             ],
-            ['Registers', presentJurisdictions().length],
+            ['Registers', registers.length],
           ].map(([label, value]) => (
             <div
               key={String(label)}
@@ -108,16 +125,72 @@ export default function VarietyRegistrationPage() {
           ))}
         </dl>
         <p className="mt-3 text-sm text-ink-600">
-          {byInstrument.get('national-list')?.length ?? 0} national list entries
-          and {byInstrument.get('community-plant-variety-right')?.length ?? 0}{' '}
-          Community plant variety right
-          {(byInstrument.get('community-plant-variety-right')?.length ?? 0) ===
-          1
-            ? ''
-            : 's'}
-          . {VARIETY_REGISTRATIONS.length - currentCount} entries are recorded
-          as expired or surrendered and are shown as no longer listed.
+          {marketing.length} entries are permission to market a variety and{' '}
+          {ownership.length} are ownership of one.{' '}
+          {VARIETY_REGISTRATIONS.length - currentCount} are recorded as expired,
+          surrendered, withdrawn or cancelled and are shown as no longer
+          current. {INSTRUMENT_KIND_CAVEAT}
         </p>
+      </section>
+
+      <section className="mt-10" aria-label="Registers read">
+        <h2 className="font-serif text-xl text-forest-900">Registers read</h2>
+        <div className="mt-3 overflow-x-auto">
+          <table className="w-full min-w-[38rem] border-collapse text-sm">
+            <thead>
+              <tr className="border-b border-ink-200 text-left text-xs uppercase tracking-wide text-ink-500">
+                <th scope="col" className="py-2 pr-3 font-medium">
+                  Register
+                </th>
+                <th scope="col" className="py-2 pr-3 font-medium">
+                  Jurisdiction
+                </th>
+                <th scope="col" className="py-2 pr-3 font-medium">
+                  What an entry is
+                </th>
+                <th scope="col" className="py-2 font-medium">
+                  Entries
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {registers.map((r) => {
+                const kinds = [
+                  ...new Set(
+                    r.entries.map((e) => INSTRUMENT_KIND[e.instrument]),
+                  ),
+                ];
+                return (
+                  <tr key={r.id} className="border-b border-ink-100 align-top">
+                    <th
+                      scope="row"
+                      className="py-2 pr-3 font-normal text-ink-900"
+                    >
+                      {r.registerName}
+                    </th>
+                    <td className="py-2 pr-3 text-ink-700">
+                      {r.countryOrOrganisation === 'multiple'
+                        ? `${new Set(r.entries.map((e) => e.countryOrOrganisation)).size} jurisdictions`
+                        : r.countryOrOrganisation}
+                    </td>
+                    <td className="py-2 pr-3 text-ink-700">
+                      {kinds
+                        .map((k) =>
+                          k === 'variety-registration'
+                            ? 'Permission to market'
+                            : 'Ownership of the variety',
+                        )
+                        .join(' and ')}
+                    </td>
+                    <td className="py-2 tabular-nums text-ink-700">
+                      {r.entries.length}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
       </section>
 
       <section className="mt-10" aria-label="How entries are matched">
@@ -126,20 +199,34 @@ export default function VarietyRegistrationPage() {
         </h2>
         <p className="mt-2 text-sm text-ink-700">
           Variety denominations are unique only within a species group, so an
-          identical name proves nothing on its own. Searching these registers
-          for the bread wheat <em>Cadenza</em> returns a granted plant variety
-          right for a strawberry of the same name; the potato <em>Charlotte</em>{' '}
-          collides with a strawberry, a peach, a cucumber and an apple. Every
-          entry on this page therefore also matches the register&rsquo;s own
-          botanical species, and entries that matched only by name were
-          discarded rather than published.
+          identical name proves nothing on its own — and every register read
+          here has demonstrated it independently. The bread wheat{' '}
+          <em>Cadenza</em> returns a granted right for a strawberry in the EU
+          portal and, separately, in the United Kingdom&rsquo;s own register.
+          The apple <em>McIntosh</em> is a common wheat in the United States,
+          where the tomato <em>Roma</em> is a garden bean and the grape{' '}
+          <em>Merlot</em> is both a bean and a potato. Every entry on this page
+          therefore also matches the register&rsquo;s own botanical species, and
+          the 24 entries that matched only by name were discarded rather than
+          published.
+        </p>
+        <p className="mt-2 text-sm text-ink-700">
+          The same rule is why no grapevine appears here. Three vine registers
+          were examined — the EU Plant Variety Portal, the Commission&rsquo;s
+          Common Catalogue of Vine Varieties and the French official vine
+          catalogue — and none publishes a botanical species for its entries.
+          The Common Catalogue lists Cabernet Blanc, Cabernet Cantor and
+          Cabernet Carol, German interspecific hybrids, alongside{' '}
+          <em>Chardonnay</em> and <em>Merlot</em> with nothing to tell them
+          apart. A genus is not a species, so no vine entry could be established
+          and none is published.
         </p>
       </section>
 
       {bySpecies.map((s) => (
-        <section key={s.code} className="mt-10">
+        <section key={s.taxon} className="mt-10">
           <h2 className="font-serif text-xl italic text-forest-900">
-            {s.name}
+            {s.taxon}
             <span className="ml-2 text-sm font-normal not-italic text-ink-500">
               {s.entries.length} entries · {s.cultivars.length} cultivars
             </span>
@@ -213,7 +300,7 @@ export default function VarietyRegistrationPage() {
 
       {nationalSource && (
         <p className="mt-10 text-sm text-ink-600">
-          Entries were read from the{' '}
+          Entries were read from five registers, beginning with the{' '}
           <a
             href={nationalSource.url}
             target="_blank"
@@ -222,9 +309,12 @@ export default function VarietyRegistrationPage() {
           >
             EU Plant Variety Portal
           </a>
-          , which covers EU and cooperating-country registers for EU-regulated
-          species. Absence from this page is not evidence that a variety is
-          unregistered elsewhere.
+          . Each covers particular species in particular territories, and none
+          of them covers everything: Canada&rsquo;s register holds field crops
+          only, the United States operates no national variety list at all, and
+          Japan&rsquo;s register publishes denominations in Japanese script,
+          which no romanised name can be identical to. Absence from this page is
+          not evidence that a variety is unregistered.
         </p>
       )}
     </Container>

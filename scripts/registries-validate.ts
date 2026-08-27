@@ -188,6 +188,25 @@ if (REGISTRIES.length === 0) fail('registry corpus is empty');
 if (published.length === 0)
   fail('no publishable registry — the hub would be empty');
 
+/* -- a documented cadence must be documented ------------------------------ */
+// `updateFrequency` is `unknown` unless the OPERATOR documents a cadence, and a
+// recent timestamp is not documentation. This makes that rule checkable: a
+// registry claiming a cadence must say, in its own words, where it read it.
+for (const r of REGISTRIES) {
+  if (r.updateFrequency === 'unknown') continue;
+  const evidence = [
+    r.coverageDescription ?? '',
+    ...(r.limitations ?? []),
+    ...r.verification.map((v) => v.evidenceNote),
+  ]
+    .join(' ')
+    .toLowerCase();
+  if (!evidence.includes(r.updateFrequency.toLowerCase()))
+    fail(
+      `${r.id}: claims updateFrequency "${r.updateFrequency}" but nothing on the record says where that cadence was read`,
+    );
+}
+
 console.log('\nAgricultural registries validation\n');
 console.log(`  Registry records:         ${REGISTRIES.length}`);
 console.log(`  Publishable (pages):      ${published.length}`);

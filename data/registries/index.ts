@@ -27,6 +27,9 @@ import { usdaAphisPcit } from './usda-aphis-pcit';
 import { hsePesticidesRegister } from './hse-pesticides-register';
 import { healthCanadaPesticideLabelSearch } from './health-canada-pesticide-label-search';
 import { cfiaVarietyRegistration } from './cfia-variety-registration';
+import { ukVarietyLists } from './uk-variety-lists';
+import { usdaPvpo } from './usda-pvpo';
+import { ipAustraliaPbr } from './ip-australia-pbr';
 import { apvmaPubcris } from './apvma-pubcris';
 import { ansesEphy } from './anses-ephy';
 import { gevesCatalogueOfficiel } from './geves-catalogue-officiel';
@@ -55,6 +58,9 @@ export const REGISTRIES: AgriculturalRegistryEntry[] = [
   hsePesticidesRegister,
   healthCanadaPesticideLabelSearch,
   cfiaVarietyRegistration,
+  ukVarietyLists,
+  usdaPvpo,
+  ipAustraliaPbr,
   apvmaPubcris,
   ansesEphy,
   gevesCatalogueOfficiel,

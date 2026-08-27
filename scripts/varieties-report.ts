@@ -12,8 +12,11 @@ import { VARIETY_REGISTRATIONS } from '../data/varieties';
 import {
   isCurrent,
   presentJurisdictions,
+  presentRegisters,
   presentSpecies,
+  registrationsByKind,
 } from '../lib/varieties/registry';
+import { INSTRUMENT_KIND } from '../types/variety';
 import { PUBLISHED_CONTENT } from '../lib/content/registry';
 
 type Cultivar = {
@@ -40,17 +43,43 @@ console.log(
 );
 console.log(`  Cultivars in corpus:      ${CULTIVARS.length}`);
 console.log(`    …with an entry:         ${byCultivar.size}`);
-console.log(`  Registers:                ${presentJurisdictions().length}`);
+console.log(`  Registers:                ${presentRegisters().length}`);
+console.log(`  Jurisdictions:            ${presentJurisdictions().length}`);
 console.log(`  Species:                  ${presentSpecies().length}`);
+
+console.log('\n  What an entry actually is');
+const byKind = registrationsByKind();
+for (const [kind, rows] of [...byKind].sort()) {
+  const label =
+    kind === 'variety-registration'
+      ? 'permission to market'
+      : 'ownership of the variety';
+  console.log(
+    `    ${kind.padEnd(32)} ${String(rows.length).padStart(3)}  (${label})`,
+  );
+}
+console.log(
+  '    These are never added together: a variety listed in five countries and\n' +
+    '    owned in two is not "registered in seven places".',
+);
+
+console.log('\n  Registers read');
+for (const r of presentRegisters()) {
+  const kinds = [
+    ...new Set(r.entries.map((e) => INSTRUMENT_KIND[e.instrument])),
+  ].join(' + ');
+  console.log(
+    `    ${r.id.padEnd(30)} ${String(r.entries.length).padStart(3)} entries  ${kinds}`,
+  );
+}
 
 console.log('\n  Coverage by species');
 for (const s of presentSpecies()) {
-  const rows = VARIETY_REGISTRATIONS.filter(
-    (r) => r.upovSpeciesCode === s.code,
+  const rows = VARIETY_REGISTRATIONS.filter((r) =>
+    s.cultivars.includes(r.cultivarRef),
   );
-  const cultivars = new Set(rows.map((r) => r.cultivarRef)).size;
   console.log(
-    `    ${s.name.padEnd(34)} ${String(rows.length).padStart(3)} entries  ${cultivars} cultivars`,
+    `    ${s.taxon.padEnd(34)} ${String(rows.length).padStart(3)} entries  ${s.cultivars.length} cultivars`,
   );
 }
 
@@ -117,10 +146,12 @@ const uncovered = CULTIVARS.filter((c) => !byCultivar.has(c.slug));
 console.log(`\n  Cultivars with no register entry: ${uncovered.length}`);
 console.log(
   `    ${uncovered.map((c) => c.slug).join(', ')}\n\n` +
-    '    This is expected, not a gap to be filled by guessing. The register\n' +
-    '    covers EU-regulated species: inbred research lines, market classes,\n' +
-    '    wine grapes (a separate EU vine register) and non-EU varieties are\n' +
-    '    outside it, and absence there is not evidence of non-registration.',
+    '    This is expected, not a gap to be filled by guessing. Inbred research\n' +
+    '    lines (B73, IR8, Nipponbare) and market classes (Pinto bean, Basmati,\n' +
+    '    Pima cotton) are not varieties any register lists, and grapevines\n' +
+    '    cannot be established at all because no vine register examined\n' +
+    '    publishes a botanical species. Absence is not evidence of\n' +
+    '    non-registration.',
 );
 
 if (contradicted > 0) {

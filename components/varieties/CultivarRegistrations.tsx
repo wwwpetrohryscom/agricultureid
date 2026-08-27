@@ -6,9 +6,20 @@ import {
 } from '@/lib/varieties/registry';
 import {
   CULTIVAR_MATCH_CAVEAT,
+  INSTRUMENT_KIND,
+  INSTRUMENT_KIND_CAVEAT,
   VARIETY_REGISTRATION_CAVEAT,
   type VarietyRegistrationEntry,
 } from '@/types/variety';
+
+const INSTRUMENT_LABEL: Record<string, string> = {
+  'national-list': 'National list entry',
+  'community-plant-variety-right': 'Community plant variety right',
+  'plant-breeders-right': 'Plant breeder’s right',
+  'plant-variety-protection-certificate':
+    'Certificate of plant variety protection',
+  'variety-registration': 'Variety registration',
+};
 
 /**
  * Official register entries on a cultivar page.
@@ -23,8 +34,11 @@ import {
  * row count as "registered in 10 countries" when three of those countries
  * surrendered the listing years ago.
  *
- * National list entries and plant breeders' rights are likewise never summed:
- * they are different legal instruments, granted by different bodies.
+ * Nor are the two KINDS of instrument summed. Permission to market a variety
+ * and ownership of it are different facts, so each table names the instrument
+ * behind every row: a reader who counts eight entries should not come away
+ * believing a variety may be sold in eight places when three of those rows are
+ * ownership grants that say nothing about selling anything.
  */
 function RegistrationTable({
   caption,
@@ -62,19 +76,31 @@ function RegistrationTable({
               <th scope="row" className="py-2 pr-3 font-normal text-ink-900">
                 {e.countryOrOrganisation}
                 <span className="block text-xs text-ink-500">
-                  {e.instrument === 'community-plant-variety-right'
-                    ? 'Community plant variety right'
-                    : `National list — ${e.publishedSubTypeWording.toLowerCase()}`}
+                  {INSTRUMENT_LABEL[e.instrument] ?? e.instrument}
+                  {e.publishedSubTypeWording
+                    ? ` — ${e.publishedSubTypeWording.toLowerCase()}`
+                    : ''}
+                </span>
+                <span className="block text-xs text-ink-400">
+                  {INSTRUMENT_KIND[e.instrument] === 'variety-registration'
+                    ? 'Permission to market'
+                    : 'Ownership of the variety'}
                 </span>
               </th>
               <td className="py-2 pr-3 text-ink-700">
                 {e.publishedStatusWording}
               </td>
               <td className="py-2 pr-3 italic text-ink-700">
-                {e.upovSpeciesName}
+                {e.registerSpeciesName}
+                {e.registerSpeciesSubGroup ? (
+                  <span className="block text-xs not-italic text-ink-500">
+                    {e.registerSpeciesSubGroup} — the register publishes a crop
+                    kind, not a botanical name
+                  </span>
+                ) : null}
               </td>
               <td className="py-2 font-mono text-xs text-ink-500">
-                {e.registerUuid}
+                {e.registerEntryId ?? '—'}
               </td>
             </tr>
           ))}
@@ -115,7 +141,8 @@ export function CultivarRegistrations({
         entries={historical}
       />
 
-      <p className="mt-4 text-xs text-ink-500">{CULTIVAR_MATCH_CAVEAT}</p>
+      <p className="mt-4 text-xs text-ink-500">{INSTRUMENT_KIND_CAVEAT}</p>
+      <p className="mt-2 text-xs text-ink-500">{CULTIVAR_MATCH_CAVEAT}</p>
       <p className="mt-2 text-xs text-ink-500">
         {VARIETY_REGISTRATION_CAVEAT}{' '}
         <Link
