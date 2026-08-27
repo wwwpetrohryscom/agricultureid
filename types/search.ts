@@ -42,6 +42,7 @@ export type SearchEntityType =
   | 'crop-calendar'
   | 'biosecurity-listing'
   | 'variety-registration'
+  | 'change-history'
   | 'market-data'
   | 'extension-resource'
   | 'input-authorization';
