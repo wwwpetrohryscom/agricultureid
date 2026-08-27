@@ -13,6 +13,7 @@ import { contentPath, resolveRef } from '@/lib/content/registry';
 import { getSnapshot, latestStatistic, timeSeries } from '@/lib/geo/snapshots';
 import { deriveArableShareOfAgri } from '@/lib/geo/derived';
 import { INDICATOR_BY_ID } from '@/data/geo/indicators';
+import { CountryMarketPanel } from '@/components/markets/CountryMarketPanel';
 import { countryPath } from '@/lib/geo/paths';
 import { regionsForCountry } from '@/lib/geo/region-registry';
 import type { CountryAgricultureProfile } from '@/types/geo';
@@ -168,6 +169,10 @@ export function CountryProfileView({
           />
         </p>
       </Section>
+
+      {/* Commodity market coverage. Renders nothing when the country has no
+          ingested series, and links out rather than restating figures. */}
+      <CountryMarketPanel countryCode={profile.countryCode} />
 
       {/* 3. Time series */}
       {seriesIndicator && seriesSnap && seriesStat && (

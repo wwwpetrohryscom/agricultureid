@@ -74,6 +74,13 @@ import {
   VARIETY_REGISTRATIONS,
   VARIETY_REGISTRATION_HUB_PATH,
 } from '@/lib/varieties/registry';
+import {
+  MARKETS_HUB_PATH,
+  commodityMarketPath,
+  commoditiesWithMarketData,
+  seriesForCommodity,
+} from '@/lib/markets/registry';
+import { getProfileByCode } from '@/lib/geo/registry';
 
 export interface AuditIssue {
   level: 'error' | 'warning';
@@ -281,6 +288,32 @@ export function registryNavModel(): Map<string, Set<string>> {
     if (!cultivar) continue;
     add(VARIETY_REGISTRATION_HUB_PATH, contentUrlPath(cultivar));
     add(contentUrlPath(cultivar), VARIETY_REGISTRATION_HUB_PATH);
+  }
+
+  // The markets hub links every commodity market page; each market page links
+  // back to the hub and to the commodity, and each commodity page links to its
+  // market page. Country pages link to the market pages they have data for —
+  // that edge is what keeps commodity market pages reachable from geography
+  // without creating a country-by-commodity route.
+  for (const commodity of commoditiesWithMarketData()) {
+    const marketPath = commodityMarketPath(commodity);
+    add(MARKETS_HUB_PATH, marketPath);
+    add(marketPath, MARKETS_HUB_PATH);
+    const item = PUBLISHED_CONTENT.find(
+      (c) => c.contentType === 'commodity' && c.slug === commodity,
+    );
+    if (item) {
+      add(contentUrlPath(item), marketPath);
+      add(marketPath, contentUrlPath(item));
+    }
+    for (const countryCode of new Set(
+      seriesForCommodity(commodity).map((s) => s.countryCode),
+    )) {
+      const profile = getProfileByCode(countryCode);
+      if (!profile) continue;
+      add(`/countries/${profile.slug}`, marketPath);
+      add(marketPath, `/countries/${profile.slug}`);
+    }
   }
 
   // Data-methodology page is linked from the data overview/registry pages.

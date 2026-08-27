@@ -64,6 +64,15 @@ import {
   presentSpecies,
   presentJurisdictions,
 } from '@/lib/varieties/registry';
+import {
+  MARKETS_HUB_PATH,
+  commodityMarketPath,
+  commoditiesWithMarketData,
+  seriesForCommodity,
+  countriesWithMarketData,
+  observationCount,
+} from '@/lib/markets/registry';
+import { METRIC_LABEL } from '@/types/market';
 
 const RELATION_LABEL: Partial<Record<RelationType, string>> = {
   affects: 'affects',
@@ -135,6 +144,29 @@ function sourceOrgs(ids: string[]): string[] {
  * Build the published, indexable search-document set from every entity type.
  * Never includes unpublished content, audit notes, or full article bodies.
  */
+/**
+ * Singular forms of a commodity title, for market-document names.
+ *
+ * The engine prefix-expands only the FINAL query token, so "soybean production"
+ * gives a document named "Soybeans production" no credit for "soybean" — and
+ * every market document then ties on "production" alone, which an alphabetical
+ * tie-break resolves to whichever commodity sorts first. Emitting the singular
+ * phrase as well as the plural fixes the query without touching the engine or
+ * putting a bare commodity name at name weight.
+ */
+function titleForms(title: string): string[] {
+  const words = title.split(' ');
+  const last = words[words.length - 1] ?? '';
+  const lower = last.toLowerCase();
+  let singular: string | null = null;
+  if (/[^aeiou]ies$/.test(lower)) singular = `${last.slice(0, -3)}y`;
+  else if (/(oes|ses|xes|zes|ches|shes)$/.test(lower))
+    singular = last.slice(0, -2);
+  else if (/[^s]s$/.test(lower)) singular = last.slice(0, -1);
+  if (!singular || singular.length < 3) return [title];
+  return [title, [...words.slice(0, -1), singular].join(' ')];
+}
+
 export function buildSearchDocuments(): SearchDoc[] {
   const docs: SearchDoc[] = [];
 
@@ -558,6 +590,64 @@ export function buildSearchDocuments(): SearchDoc[] {
     });
   }
 
+  // Market data. One document per commodity market page, plus the hub — the
+  // 5,201 series and 77,801 observations behind them are table rows, not
+  // documents. Names are metric PHRASES ("wheat production"), never the bare
+  // commodity name: the commodity and crop pages must keep winning "wheat".
+  const marketCommodities = commoditiesWithMarketData();
+  for (const slug of marketCommodities) {
+    const item = PUBLISHED_CONTENT.find(
+      (c) => c.contentType === 'commodity' && c.slug === slug,
+    );
+    if (!item) continue;
+    const series = seriesForCommodity(slug);
+    const countries = new Set(series.map((s) => s.countryCode)).size;
+    const metrics = [...new Set(series.map((s) => s.metric))];
+    docs.push({
+      id: `market:${slug}`,
+      type: 'market-data',
+      route: commodityMarketPath(slug),
+      title: `${item.title} production and market data`,
+      names: [
+        ...new Set(
+          titleForms(item.title).flatMap((form) => [
+            `${form} production`,
+            `${form} production by country`,
+            `${form} market data`,
+            ...metrics.map((m) => `${form} ${METRIC_LABEL[m].toLowerCase()}`),
+          ]),
+        ),
+      ],
+      category: 'Market data',
+      summary: `Production, area, yield and supply series for ${item.title.toLowerCase()} across ${countries} countries, with the status and unit each figure carries in its source.`,
+      relationLabels: [
+        'production statistics',
+        'commodity market data',
+        ...metrics.map((m) => METRIC_LABEL[m]),
+      ],
+      facets: { entityType: ['market-data'], category: ['Market data'] },
+    });
+  }
+  if (marketCommodities.length > 0) {
+    docs.push({
+      id: 'market:hub',
+      type: 'market-data',
+      route: MARKETS_HUB_PATH,
+      title: 'Agricultural markets and commodity data',
+      names: [
+        'agricultural market data',
+        'commodity production statistics',
+        'production by country',
+        'crop production statistics',
+        'agricultural statistics',
+      ],
+      category: 'Market data',
+      summary: `${observationCount().toLocaleString('en')} official market observations for ${marketCommodities.length} commodities across ${countriesWithMarketData().length} countries, from FAOSTAT and USDA releases.`,
+      relationLabels: ['FAOSTAT', 'USDA PSD', 'production statistics'],
+      facets: { entityType: ['market-data'], category: ['Market data'] },
+    });
+  }
+
   // Tools.
   for (const t of TOOLS) {
     docs.push({
@@ -594,6 +684,7 @@ const ENTITY_TYPE_LABEL: Record<string, string> = {
   'crop-calendar': 'Crop calendar',
   'biosecurity-listing': 'Biosecurity listing',
   'variety-registration': 'Variety registration',
+  'market-data': 'Market data',
   machinery: 'Machinery',
   climate: 'Climate',
   'farming-system': 'Farming system',

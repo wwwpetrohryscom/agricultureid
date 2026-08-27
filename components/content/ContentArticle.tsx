@@ -24,6 +24,7 @@ import type { AnyContent } from '@/types/content';
 import { CropCalendarLink } from '@/components/calendars/CropCalendarLink';
 import { OrganismBiosecurityStatus } from '@/components/biosecurity/OrganismBiosecurityStatus';
 import { CultivarRegistrations } from '@/components/varieties/CultivarRegistrations';
+import { CommodityMarketLink } from '@/components/markets/CommodityMarketLink';
 
 /** Full rendering of a structured content page, shared by all content types. */
 export function ContentArticle({ item }: { item: AnyContent }) {
@@ -125,6 +126,12 @@ export function ContentArticle({ item }: { item: AnyContent }) {
               none is recorded — silence is not a claim of "unregistered". */}
           {item.contentType === 'cultivar' && (
             <CultivarRegistrations cultivarRef={item.slug} />
+          )}
+
+          {/* Market series for a commodity. Renders nothing for commodities
+              with no ingested statistics. */}
+          {item.contentType === 'commodity' && (
+            <CommodityMarketLink commoditySlug={item.slug} />
           )}
 
           <RelationPanels item={item} />
