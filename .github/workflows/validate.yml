@@ -76,6 +76,12 @@ jobs:
       - name: Agricultural input validation
         run: npm run inputs:validate
 
+      - name: Tool and formula validation
+        run: npm run tools:validate
+
+      - name: Calculator formula contract (executed, not inspected)
+        run: npm run calc:contract
+
       - name: Tests
         run: npm test
 

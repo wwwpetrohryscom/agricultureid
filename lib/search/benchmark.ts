@@ -97,6 +97,68 @@ export interface Benchmark {
 }
 
 export const BENCHMARKS: Benchmark[] = [
+  /* ---- Decision tools (Wave 14) -------------------------------------------
+   * Tool queries must reach tools, and — the guard that matters — a bare
+   * scientific or entity query must NOT be taken over by a calculator.
+   */
+  {
+    query: 'row spacing calculator',
+    titleIncludes: ['row spacing'],
+    types: ['tool'],
+    kind: 'exact',
+  },
+  {
+    query: 'nutrient rate converter',
+    titleIncludes: ['nutrient rate'],
+    types: ['tool'],
+    kind: 'exact',
+  },
+  {
+    query: 'production from area and yield',
+    titleIncludes: ['production, area and yield'],
+    types: ['tool'],
+    kind: 'multiword',
+  },
+  {
+    query: 'irrigation run time',
+    titleIncludes: ['irrigation flow and time'],
+    types: ['tool'],
+    kind: 'multiword',
+  },
+  {
+    // The general converter must win a bare unit-pair query. The nutrient rate
+    // converter mentions both units and took this query until the yield
+    // converter carried the pair as an alias.
+    query: 'kg ha to lb acre',
+    titleIncludes: ['yield converter'],
+    mustNotTop: ['nutrient rate'],
+    types: ['tool'],
+    kind: 'multiword',
+  },
+  {
+    query: 'nitrogen',
+    mustNotTopTypes: ['tool'],
+    types: ['nutrient'],
+    kind: 'exact',
+  },
+  {
+    query: 'irrigation',
+    titleIncludes: ['irrigation'],
+    mustNotTopTypes: ['tool'],
+    types: ['irrigation-method', 'soil-topic'],
+    kind: 'exact',
+  },
+  {
+    // Regression guard for a defect this wave introduced and fixed: an alias
+    // written in British spelling created the token "fertiliser" — the synonym
+    // TARGET of the query token "fertilizer" — which perturbed synonym-expansion
+    // scoring and demoted the fertilizer entity below a comparison page.
+    query: 'nutrient rate converter',
+    titleIncludes: ['nutrient rate converter'],
+    mustNotTop: ['npk', 'urea'],
+    types: ['tool'],
+    kind: 'exact',
+  },
   /* ---- Input authorisations (Wave 13) -------------------------------------
    * A substance query must reach the substance page; a corpus entity query
    * must still reach the entity. "Copper sulfate" is a fertilizer article

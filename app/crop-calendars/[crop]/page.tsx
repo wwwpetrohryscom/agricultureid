@@ -16,6 +16,7 @@ import {
   CALENDARS_HUB_PATH,
 } from '@/lib/calendars/registry';
 import { PUBLISHED_CONTENT, contentUrlPath } from '@/lib/content/registry';
+import { RelatedTools } from '@/components/tools/RelatedTools';
 
 type Params = { params: Promise<{ crop: string }> };
 
@@ -198,6 +199,7 @@ export default async function CropCalendarPage({ params }: Params) {
           ← All crop calendars
         </Link>
       </p>
+      <RelatedTools path={CALENDARS_HUB_PATH} />
     </Container>
   );
 }

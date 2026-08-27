@@ -1,6 +1,7 @@
 import type { CalcFormula } from '@/types/tools';
 import { COMMODITY_FORMULAS } from '@/lib/tools/formulas-commodity';
 import { YIELD_FORMULAS } from '@/lib/tools/formulas-yield';
+import { AGRONOMY_FORMULAS } from '@/lib/tools/formulas-agronomy';
 import {
   KG_HA_TO_LB_ACRE,
   P2O5_TO_P,
@@ -385,6 +386,7 @@ export const FORMULAS: CalcFormula[] = [
   },
   ...COMMODITY_FORMULAS,
   ...YIELD_FORMULAS,
+  ...AGRONOMY_FORMULAS,
 ];
 
 export const FORMULA_BY_ID: ReadonlyMap<string, CalcFormula> = new Map(

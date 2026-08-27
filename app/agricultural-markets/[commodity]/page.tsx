@@ -6,6 +6,7 @@ import { JsonLd } from '@/components/seo/JsonLd';
 import { webPageSchema, breadcrumbSchema } from '@/lib/schema/jsonld';
 import { buildMetadata } from '@/lib/seo/metadata';
 import { MarketSeriesChart } from '@/components/markets/MarketSeriesChart';
+import { RelatedTools } from '@/components/tools/RelatedTools';
 import {
   MARKET_CAVEAT,
   CROSS_SOURCE_CAVEAT,
@@ -236,6 +237,7 @@ export default async function CommodityMarketPage({ params }: Params) {
           </section>
         );
       })}
+      <RelatedTools path={MARKETS_HUB_PATH} />
     </Container>
   );
 }
