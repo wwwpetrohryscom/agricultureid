@@ -503,7 +503,20 @@ const yieldConverter: ToolConfig = {
     'yield-kgha-to-buacre',
     'yield-buacre-to-kgha',
   ],
-  searchAliases: ['yield conversion', 'bushels per acre', 'tonnes per hectare'],
+  searchAliases: [
+    // The bare unit pair is what people actually type. Without it the
+    // nutrient rate converter outranked this tool for "kg ha to lb acre",
+    // because it happens to mention both units — a general conversion query
+    // should reach the general converter.
+    'kg/ha to lb/acre',
+    'kg ha to lb acre',
+    'lb/acre to kg/ha',
+    'bu/acre to kg/ha',
+    'bushel acre to kg hectare',
+    'yield conversion',
+    'bushels per acre',
+    'tonnes per hectare',
+  ],
   commodityApplicability: BUSHEL_STANDARDS.map((b) => b.commoditySlug),
   fields: [
     {
@@ -2432,10 +2445,458 @@ const packagingQuantity: ToolConfig = {
   },
 };
 
+/* -------------------------------------------------------------------------- */
+/*  Wave 14 — agronomic planning tools                                        */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * Production, area and yield are one identity read three ways. A single tool
+ * with a mode select is correct here: three separate calculators would be three
+ * pages of the same arithmetic, and the reader would have to know which of the
+ * three they wanted before they could find it.
+ */
+const productionEstimator: ToolConfig = {
+  slug: 'production-area-yield-calculator',
+  title: 'Production, area and yield calculator',
+  category: 'conversion',
+  purpose:
+    'Solve any one of production, harvested area or yield from the other two.',
+  formulaIds: [
+    'production-from-area-yield',
+    'yield-from-production-area',
+    'area-from-production-yield',
+  ],
+  fields: [
+    {
+      key: 'solve',
+      label: 'Solve for',
+      type: 'select',
+      required: true,
+      options: [
+        { value: 'production', label: 'Production (t)' },
+        { value: 'yield', label: 'Yield (t/ha)' },
+        { value: 'area', label: 'Harvested area (ha)' },
+      ],
+    },
+    {
+      key: 'area',
+      label: 'Harvested area',
+      type: 'number',
+      unit: 'ha',
+      min: 0,
+      step: 0.1,
+    },
+    {
+      key: 'yield',
+      label: 'Yield',
+      type: 'number',
+      unit: 't/ha',
+      min: 0,
+      step: 0.01,
+    },
+    {
+      key: 'production',
+      label: 'Production',
+      type: 'number',
+      unit: 't',
+      min: 0,
+      step: 1,
+    },
+  ],
+  limitations: [
+    'Harvested area is not planted area. Statistics that report both routinely differ, and using planted area here overstates production by exactly the share never harvested.',
+    'An average yield applied to a whole area hides every difference between the fields inside it.',
+  ],
+  searchAliases: [
+    'harvested production',
+    'production from yield',
+    'total tonnage',
+    'implied yield',
+  ],
+  compute: (v): ToolResult => {
+    const solve = v.solve ?? 'production';
+    if (solve === 'production') {
+      const area = num(v, 'area');
+      const y = num(v, 'yield');
+      if (!finite(area, y)) return err('Enter harvested area and yield.');
+      if (area < 0 || y < 0) return err('Area and yield must be 0 or more.');
+      const t = run('production-from-area-yield', { area, yield: y });
+      return {
+        outputs: [
+          { label: 'Production', value: fmt(t), unit: 't' },
+          { label: 'Production', value: fmt(t * 1000), unit: 'kg' },
+        ],
+        formulaIds: ['production-from-area-yield'],
+      };
+    }
+    if (solve === 'yield') {
+      const p = num(v, 'production');
+      const area = num(v, 'area');
+      if (!finite(p, area)) return err('Enter production and harvested area.');
+      if (area <= 0) return err('Harvested area must be greater than 0.');
+      const y = run('yield-from-production-area', { production: p, area });
+      return {
+        outputs: [
+          { label: 'Implied yield', value: fmt(y, 5), unit: 't/ha' },
+          { label: 'Implied yield', value: fmt(y * 1000, 5), unit: 'kg/ha' },
+        ],
+        formulaIds: ['yield-from-production-area'],
+      };
+    }
+    const p = num(v, 'production');
+    const y = num(v, 'yield');
+    if (!finite(p, y)) return err('Enter production and yield.');
+    if (y <= 0) return err('Yield must be greater than 0.');
+    const area = run('area-from-production-yield', { production: p, yield: y });
+    return {
+      outputs: [
+        { label: 'Harvested area', value: fmt(area, 5), unit: 'ha' },
+        {
+          label: 'Harvested area',
+          value: fmt(convertArea(area, 'hectare', 'acre'), 5),
+          unit: 'acre',
+        },
+      ],
+      formulaIds: ['area-from-production-yield'],
+    };
+  },
+};
+
+const irrigationScheduling: ToolConfig = {
+  slug: 'irrigation-flow-time-calculator',
+  title: 'Irrigation flow and time calculator',
+  category: 'water',
+  purpose:
+    'Relate a volume of water, a steady delivery rate and a run time — solve for whichever one is unknown.',
+  formulaIds: [
+    'irrigation-time-from-volume-flow',
+    'irrigation-volume-from-flow-time',
+    'irrigation-flow-from-volume-time',
+    'flow-lps-to-m3h',
+  ],
+  fields: [
+    {
+      key: 'solve',
+      label: 'Solve for',
+      type: 'select',
+      required: true,
+      options: [
+        { value: 'time', label: 'Run time (h)' },
+        { value: 'volume', label: 'Volume delivered (m³)' },
+        { value: 'flow', label: 'Flow rate required (L/s)' },
+      ],
+    },
+    {
+      key: 'volume',
+      label: 'Volume',
+      type: 'number',
+      unit: 'm³',
+      min: 0,
+      step: 1,
+    },
+    {
+      key: 'flow',
+      label: 'Flow rate',
+      type: 'number',
+      unit: 'L/s',
+      min: 0,
+      step: 0.1,
+    },
+    {
+      key: 'hours',
+      label: 'Run time',
+      type: 'number',
+      unit: 'h',
+      min: 0,
+      step: 0.25,
+    },
+  ],
+  limitations: [
+    'This is delivery arithmetic, not scheduling. It says how long a volume takes to pass a point, not whether the crop needs it, nor whether the soil can absorb it at that rate.',
+    'Volume delivered is not volume stored in the root zone: evaporation, drift, runoff and deep drainage all sit between the two.',
+  ],
+  safetyDisclosure:
+    'This tool does not determine irrigation requirement. Deciding how much water a crop needs requires evapotranspiration, soil water holding capacity and rainfall, none of which this tool takes as input.',
+  searchAliases: [
+    'pump run time',
+    'flow rate to volume',
+    'litres per second',
+    'irrigation duration',
+  ],
+  compute: (v): ToolResult => {
+    const solve = v.solve ?? 'time';
+    if (solve === 'time') {
+      const volume = num(v, 'volume');
+      const flow = num(v, 'flow');
+      if (!finite(volume, flow)) return err('Enter volume and flow rate.');
+      if (flow <= 0) return err('Flow rate must be greater than 0.');
+      const hours = run('irrigation-time-from-volume-flow', { volume, flow });
+      const m3h = run('flow-lps-to-m3h', { flow });
+      return {
+        outputs: [
+          { label: 'Run time', value: fmt(hours, 5), unit: 'h' },
+          { label: 'Run time', value: fmt(hours * 60, 5), unit: 'min' },
+          { label: 'Delivery rate', value: fmt(m3h, 5), unit: 'm³/h' },
+        ],
+        formulaIds: ['irrigation-time-from-volume-flow', 'flow-lps-to-m3h'],
+      };
+    }
+    if (solve === 'volume') {
+      const flow = num(v, 'flow');
+      const hours = num(v, 'hours');
+      if (!finite(flow, hours)) return err('Enter flow rate and run time.');
+      if (flow < 0 || hours < 0) return err('Values must be 0 or more.');
+      const volume = run('irrigation-volume-from-flow-time', { flow, hours });
+      const m3h = run('flow-lps-to-m3h', { flow });
+      return {
+        outputs: [
+          { label: 'Volume delivered', value: fmt(volume, 5), unit: 'm³' },
+          {
+            label: 'Volume delivered',
+            value: fmt(volume * 1000, 5),
+            unit: 'L',
+          },
+          { label: 'Delivery rate', value: fmt(m3h, 5), unit: 'm³/h' },
+        ],
+        formulaIds: ['irrigation-volume-from-flow-time', 'flow-lps-to-m3h'],
+      };
+    }
+    const volume = num(v, 'volume');
+    const hours = num(v, 'hours');
+    if (!finite(volume, hours)) return err('Enter volume and available time.');
+    if (hours <= 0) return err('Available time must be greater than 0.');
+    const flow = run('irrigation-flow-from-volume-time', { volume, hours });
+    const m3h = run('flow-lps-to-m3h', { flow });
+    return {
+      outputs: [
+        { label: 'Flow rate required', value: fmt(flow, 5), unit: 'L/s' },
+        { label: 'Flow rate required', value: fmt(m3h, 5), unit: 'm³/h' },
+      ],
+      formulaIds: ['irrigation-flow-from-volume-time', 'flow-lps-to-m3h'],
+    };
+  },
+};
+
+const rowSpacing: ToolConfig = {
+  slug: 'row-spacing-calculator',
+  title: 'Row spacing calculator',
+  category: 'planting',
+  purpose:
+    'In-row spacing, plants per metre of row and row length per hectare for a target plant density.',
+  formulaIds: [
+    'in-row-spacing-for-density',
+    'plants-per-row-metre',
+    'row-length-per-hectare',
+  ],
+  fields: [
+    {
+      key: 'plants',
+      label: 'Target plant density',
+      type: 'number',
+      unit: 'plants/ha',
+      min: 0,
+      step: 100,
+      required: true,
+    },
+    {
+      key: 'row',
+      label: 'Row spacing',
+      type: 'number',
+      unit: 'm',
+      min: 0,
+      step: 0.01,
+      required: true,
+    },
+  ],
+  limitations: [
+    'Every figure here is about established PLANTS. A drill is set in seeds, and seed spacing must be closer by whatever germination and establishment losses are expected — use the seed-rate calculator for that step.',
+    'Assumes perfect rectangular geometry; headlands, point rows and gaps all reduce the real stand.',
+  ],
+  searchAliases: [
+    'in-row spacing',
+    'plants per metre of row',
+    'row length per hectare',
+    'planter spacing',
+  ],
+  compute: (v): ToolResult => {
+    const plants = num(v, 'plants');
+    const row = num(v, 'row');
+    if (!finite(plants, row)) return err();
+    if (plants <= 0 || row <= 0)
+      return err('Density and row spacing must be greater than 0.');
+    const inrow = run('in-row-spacing-for-density', { plants, row });
+    const perRowM = run('plants-per-row-metre', { plants, row });
+    const rowLength = run('row-length-per-hectare', { row });
+    return {
+      outputs: [
+        { label: 'In-row spacing', value: fmt(inrow, 4), unit: 'm' },
+        { label: 'In-row spacing', value: fmt(inrow * 100, 4), unit: 'cm' },
+        {
+          label: 'Plants per metre of row',
+          value: fmt(perRowM, 4),
+          unit: 'plants/m',
+        },
+        {
+          label: 'Row length per hectare',
+          value: fmt(rowLength, 6),
+          unit: 'm/ha',
+        },
+      ],
+      formulaIds: [
+        'in-row-spacing-for-density',
+        'plants-per-row-metre',
+        'row-length-per-hectare',
+      ],
+    };
+  },
+};
+
+const nutrientRate: ToolConfig = {
+  slug: 'nutrient-rate-converter',
+  title: 'Nutrient rate converter',
+  category: 'nutrition',
+  purpose:
+    'Convert between a product rate and the nutrient rate it supplies, and between metric and US areal units.',
+  formulaIds: [
+    'nutrient-rate-from-product-rate',
+    'product-rate-for-nutrient-rate',
+    // Areal-density conversion, shared with the yield converter rather than
+    // duplicated: kg/ha to lb/acre is the same arithmetic whatever the mass is.
+    'yield-kgha-to-lbacre',
+  ],
+  fields: [
+    {
+      key: 'mode',
+      label: 'Convert',
+      type: 'select',
+      required: true,
+      options: [
+        { value: 'to-nutrient', label: 'Product rate → nutrient supplied' },
+        { value: 'to-product', label: 'Nutrient rate → product needed' },
+      ],
+    },
+    {
+      key: 'rate',
+      label: 'Rate',
+      type: 'number',
+      unit: 'kg/ha',
+      min: 0,
+      step: 1,
+      required: true,
+    },
+    {
+      key: 'grade',
+      label: 'Nutrient grade',
+      type: 'number',
+      unit: '%',
+      min: 0,
+      max: 100,
+      step: 0.1,
+      required: true,
+    },
+  ],
+  limitations: [
+    'This converts a rate the reader supplies. It does not decide what rate is appropriate — that comes from a soil test, a nutrient plan and local regulation, none of which this tool can see.',
+    'Phosphorus and potassium grades are conventionally declared as P₂O₅ and K₂O rather than elemental P and K. Converting oxide to element is a separate step, in the fertilizer nutrient calculator.',
+    'A compound fertiliser supplies several nutrients at once; matching one of them will over- or under-supply the others.',
+  ],
+  safetyDisclosure:
+    'This is unit arithmetic on a rate you provide, not a fertiliser recommendation. Nutrient application is regulated in many jurisdictions and must follow the applicable nutrient management rules.',
+  searchAliases: [
+    'kg N per hectare',
+    'product rate to nutrient rate',
+    'fertilizer rate converter',
+    'nutrient per acre',
+  ],
+  compute: (v): ToolResult => {
+    const mode = v.mode ?? 'to-nutrient';
+    const rate = num(v, 'rate');
+    const grade = num(v, 'grade');
+    if (!finite(rate, grade)) return err();
+    if (rate < 0) return err('Rate must be 0 or more.');
+    if (grade <= 0 || grade > 100)
+      return err('Grade must be greater than 0 and at most 100.');
+    if (mode === 'to-nutrient') {
+      const nutrient = run('nutrient-rate-from-product-rate', {
+        product: rate,
+        grade,
+      });
+      const lbAcre = run('yield-kgha-to-lbacre', { value: nutrient });
+      return {
+        outputs: [
+          {
+            label: 'Nutrient supplied',
+            value: fmt(nutrient, 5),
+            unit: 'kg/ha',
+          },
+          {
+            label: 'Nutrient supplied',
+            value: fmt(lbAcre, 5),
+            unit: 'lb/acre',
+          },
+        ],
+        formulaIds: ['nutrient-rate-from-product-rate', 'yield-kgha-to-lbacre'],
+      };
+    }
+    const product = run('product-rate-for-nutrient-rate', {
+      nutrient: rate,
+      grade,
+    });
+    const lbAcre = run('yield-kgha-to-lbacre', { value: product });
+    return {
+      outputs: [
+        { label: 'Product needed', value: fmt(product, 5), unit: 'kg/ha' },
+        { label: 'Product needed', value: fmt(lbAcre, 5), unit: 'lb/acre' },
+      ],
+      formulaIds: ['product-rate-for-nutrient-rate', 'yield-kgha-to-lbacre'],
+    };
+  },
+};
+
 function err(
   message = 'Enter valid numbers in every required field.',
 ): ToolResult {
   return { outputs: [], formulaIds: [], error: message };
+}
+
+/**
+ * One guard around every tool's arithmetic.
+ *
+ * `run()` already refuses to return a non-finite value — but it does so by
+ * THROWING, and nothing was catching it. A crafted shareable URL carrying 1e308
+ * on any unbounded field therefore crashed the render of six tools instead of
+ * showing a validation message, and the converters that compute inline bypassed
+ * the check entirely and rendered the string "∞" as an answer.
+ *
+ * Both are the same bug seen from two sides: a result that is not a number must
+ * become an error, wherever it came from. Doing that per tool would mean
+ * twenty-two chances to forget, so it happens here, once, at the boundary every
+ * result crosses on its way to a page.
+ */
+const NOT_A_NUMBER = /∞|Infinity|NaN/i;
+
+function guarded(tool: ToolConfig): ToolConfig {
+  return {
+    ...tool,
+    compute: (values) => {
+      let result: ToolResult;
+      try {
+        result = tool.compute(values);
+      } catch (e) {
+        return err(
+          e instanceof Error && e.message
+            ? e.message
+            : 'These inputs are outside the range this tool can represent.',
+        );
+      }
+      if (result.outputs.some((o) => NOT_A_NUMBER.test(String(o.value)))) {
+        return err(
+          'These inputs are outside the range this tool can represent.',
+        );
+      }
+      return result;
+    },
+  };
 }
 
 export const TOOLS: ToolConfig[] = [
@@ -2458,7 +2919,12 @@ export const TOOLS: ToolConfig[] = [
   postHarvestLoss,
   tradeUnitValue,
   packagingQuantity,
-];
+  // Wave 14
+  productionEstimator,
+  irrigationScheduling,
+  rowSpacing,
+  nutrientRate,
+].map(guarded);
 
 export const TOOL_BY_SLUG: ReadonlyMap<string, ToolConfig> = new Map(
   TOOLS.map((t) => [t.slug, t]),

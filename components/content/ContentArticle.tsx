@@ -27,6 +27,7 @@ import { CultivarRegistrations } from '@/components/varieties/CultivarRegistrati
 import { CommodityMarketLink } from '@/components/markets/CommodityMarketLink';
 import { EntityExtensionResources } from '@/components/extension/EntityExtensionResources';
 import { CropAuthorizedInputs } from '@/components/inputs/CropAuthorizedInputs';
+import { RelatedTools } from '@/components/tools/RelatedTools';
 
 /** Full rendering of a structured content page, shared by all content types. */
 export function ContentArticle({ item }: { item: AnyContent }) {
@@ -145,6 +146,10 @@ export function ContentArticle({ item }: { item: AnyContent }) {
           {item.contentType === 'crop' && (
             <CropAuthorizedInputs cropSlug={item.slug} />
           )}
+
+          {/* Tools declared relevant to this kind of entity. Links only —
+              nothing is prefilled, so context cannot change the maths. */}
+          <RelatedTools contentType={item.contentType} />
 
           <RelationPanels item={item} />
 
