@@ -43,6 +43,7 @@ export type SearchEntityType =
   | 'biosecurity-listing'
   | 'variety-registration'
   | 'change-history'
+  | 'coverage'
   | 'market-data'
   | 'extension-resource'
   | 'input-authorization';

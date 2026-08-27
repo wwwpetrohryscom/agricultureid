@@ -20,6 +20,8 @@ import { countryPath, indicatorPath } from '@/lib/geo/paths';
 import type { RelationType } from '@/types/content';
 import type { SearchDoc, SearchEntityType } from '@/types/search';
 import { CHANGE_HUB_PATH, changeEvents } from '@/lib/history/registry';
+import { COVERAGE_PATH } from '@/lib/coverage/paths';
+import { allCountryCoverage } from '@/lib/coverage/derive';
 import {
   listedAuthorities,
   publishedAuthorities,
@@ -654,6 +656,36 @@ export function buildSearchDocuments(): SearchDoc[] {
         entityType: ['change-history'],
         category: ['Change history'],
       },
+    });
+  }
+
+  // Coverage. One hub document. Only COVERAGE vocabulary rides at name weight:
+  // a page about what is missing must never outrank the pages that are there,
+  // and carrying country or crop names here is exactly how that happens.
+  {
+    const cells = allCountryCoverage();
+    const covered = cells.filter((c) => c.status === 'verified').length;
+    docs.push({
+      id: 'coverage:hub',
+      type: 'coverage',
+      route: COVERAGE_PATH,
+      title: 'Coverage and gaps',
+      names: [
+        'agricultureid coverage',
+        'coverage and gaps',
+        'what is indexed',
+        'not yet indexed',
+        'data coverage map',
+      ],
+      category: 'Coverage',
+      summary: `What AgricultureID has indexed across ${new Set(cells.map((c) => c.jurisdiction)).size} countries and nine layers, ${covered} of ${cells.length} cells covered — and what it has only not looked at yet.`,
+      relationLabels: [
+        'coverage gap',
+        'source not yet indexed',
+        'official source unavailable',
+        'editorial backlog',
+      ],
+      facets: { entityType: ['coverage'], category: ['Coverage'] },
     });
   }
 

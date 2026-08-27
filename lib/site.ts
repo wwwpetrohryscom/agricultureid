@@ -408,6 +408,13 @@ export const SECTIONS: NavSection[] = [
     active: true,
   },
   {
+    label: 'Coverage & Gaps',
+    href: '/coverage',
+    description:
+      'What AgricultureID has indexed, country by country — and what it has only not looked at yet.',
+    active: true,
+  },
+  {
     label: 'Agricultural Inputs',
     href: '/agricultural-inputs',
     description:
@@ -606,6 +613,7 @@ export const REFERENCE_NAV = SECTIONS.filter(
       '/agricultural-biosecurity',
       '/variety-registration',
       '/agricultural-changes',
+      '/coverage',
       '/agricultural-markets',
       '/extension-resources',
       '/agricultural-inputs',
