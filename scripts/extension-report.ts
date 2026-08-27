@@ -13,6 +13,8 @@ import {
   isDated,
   statedDate,
   resourcesByTopic,
+  resourcesByJurisdiction,
+  jurisdictionLabel,
   entitiesWithResources,
 } from '../lib/extension/registry';
 import { TOPIC_LABEL, EXTENSION_TOPICS } from '../types/extension';
@@ -86,11 +88,35 @@ for (const [label, field] of [
 }
 
 console.log('\n  Geographic reach, stated plainly');
+{
+  const byJ = resourcesByJurisdiction();
+  for (const [key, rows] of [...byJ].sort(
+    (a, b) => b[1].length - a[1].length,
+  )) {
+    console.log(
+      `    ${jurisdictionLabel(key).padEnd(20)} ${String(rows.length).padStart(4)} resources`,
+    );
+  }
+}
 console.log(
-  '    Pennsylvania, North Carolina and Great Britain only. This index does\n' +
-    '    NOT cover most US states, Canada, Australia or the EU. A resource here\n' +
-    '    applies where it was written and nowhere else, and absence of guidance\n' +
-    '    for a place is absence from this index, not absence of guidance.',
+  '    Four US states and Great Britain. This index does NOT cover most US\n' +
+    '    states, Canada, Australia or the EU. A resource applies where it was\n' +
+    '    written and nowhere else, and absence of guidance for a place is\n' +
+    '    absence from this index, not absence of guidance.',
+);
+
+console.log('\n  Publishers verified but NOT ingested');
+console.log(
+  '    - Washington State University Extension, Purdue Extension, South Dakota\n' +
+    '      State University Extension and Illinois Extension: no land-grant or\n' +
+    '      Cooperative Extension mandate stated on the pages checked, so none\n' +
+    '      could be labelled official here.\n' +
+    '    - UGA Cooperative Extension: mandate verified, but its sitemap exposes\n' +
+    '      only administrative and county-office pages; its publications live in\n' +
+    '      a separate system this pass could not reach by compliant discovery.\n' +
+    '    - UC ANR: mandate verified, but of 34 substantive pages reachable, 28\n' +
+    '      were weekly crop water-use bulletins and the rest were programme and\n' +
+    '      event pages. Data and announcements, not guidance.',
 );
 
 console.log('\n  Found and deliberately not indexed');

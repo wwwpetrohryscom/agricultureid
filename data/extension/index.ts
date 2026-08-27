@@ -1,4 +1,5 @@
 import type { ExtensionResource } from '@/types/extension';
+import { EXTENSION_RESOURCES_WAVE_16 } from '@/data/extension/wave16';
 
 /**
  * Indexed extension resources.
@@ -3205,4 +3206,5 @@ export const EXTENSION_RESOURCES: ExtensionResource[] = [
       'Written for Pennsylvania. Timing, varieties, thresholds and regulations differ elsewhere, and this resource is not general guidance.',
     ],
   },
+  ...EXTENSION_RESOURCES_WAVE_16,
 ];

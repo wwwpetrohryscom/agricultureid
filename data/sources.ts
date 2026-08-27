@@ -20,6 +20,7 @@ const ACCESS_5E = '2026-07-16';
 const ACCESS_AUTH = '2026-08-19';
 const ACCESS_VARIETY = '2026-08-27';
 const ACCESS_EXTENSION = '2026-08-27';
+const ACCESS_EXTENSION_16 = '2026-08-27';
 
 export const SOURCES: Source[] = [
   {
@@ -2499,6 +2500,32 @@ export const SOURCES: Source[] = [
     notes:
       'State-by-state usual planting and harvesting dates for US field crops. The October 2010 edition is the latest published; its plain-text release file was downloaded and parsed during the Wave 8 pass. The vintage is recorded on every entry derived from it.',
     reliability: 'authoritative',
+  },
+  {
+    id: 'ext-osu-extension',
+    organization: 'Ohio State University Extension',
+    title: 'Ohioline',
+    url: 'https://ohioline.osu.edu/',
+    accessDate: ACCESS_EXTENSION_16,
+    sourceType: 'university-extension',
+    jurisdiction: 'Ohio, United States',
+    language: 'en',
+    notes:
+      'The factsheet library of Ohio State University Extension, which states that it fulfils the land-grant mission of The Ohio State University. Factsheets are published under coded identifiers and carry a publisher-stated date on many, but not all, pages.',
+    reliability: 'high',
+  },
+  {
+    id: 'ext-umd-extension',
+    organization: 'University of Maryland Extension',
+    title: 'University of Maryland Extension resources',
+    url: 'https://extension.umd.edu/',
+    accessDate: ACCESS_EXTENSION_16,
+    sourceType: 'university-extension',
+    jurisdiction: 'Maryland, United States',
+    language: 'en',
+    notes:
+      'Extension resources from the University of Maryland, which states its programmes are based on the research and experience of land grant universities. Nutrition-education recipes and event pages on the same host are not guidance and were excluded.',
+    reliability: 'high',
   },
   {
     id: 'ext-psu-extension',

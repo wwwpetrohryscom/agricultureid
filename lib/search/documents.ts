@@ -77,6 +77,8 @@ import {
   EXTENSION_RESOURCES,
   EXTENSION_HUB_PATH,
   resourcesByTopic,
+  resourcesByJurisdiction,
+  jurisdictionLabel,
   presentTopics,
   EXTENSION_INSTITUTIONS,
 } from '@/lib/extension/registry';
@@ -703,6 +705,34 @@ export function buildSearchDocuments(): SearchDoc[] {
             ...r.diseaseRefs,
           ]),
         ],
+        facets: {
+          entityType: ['extension-resource'],
+          category: ['Extension guidance'],
+        },
+      });
+    }
+    // One document per jurisdiction. The failure this prevents is a reader
+    // asking about one state and being shown another's guidance, which for
+    // agronomy is worse than no answer.
+    for (const [key, rows] of resourcesByJurisdiction()) {
+      const institution = EXTENSION_INSTITUTIONS.find(
+        (i) => (i.jurisdictionId ?? i.countryCode) === key,
+      );
+      if (!institution) continue;
+      const place = jurisdictionLabel(key);
+      docs.push({
+        id: `extension:jurisdiction:${key}`,
+        type: 'extension-resource',
+        route: `${EXTENSION_HUB_PATH}#${key}`,
+        title: `Extension guidance for ${place}`,
+        names: [
+          `extension ${place}`,
+          `extension guidance ${place}`,
+          `${institution.officialName}`,
+        ],
+        category: 'Extension guidance',
+        summary: `${rows.length} resources published for ${place} by ${institution.officialName}. Guidance written for ${place} applies there and is not general advice.`,
+        relationLabels: [place, institution.officialName, 'extension guidance'],
         facets: {
           entityType: ['extension-resource'],
           category: ['Extension guidance'],

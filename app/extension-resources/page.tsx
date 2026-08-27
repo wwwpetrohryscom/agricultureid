@@ -15,6 +15,8 @@ import {
   EXTENSION_INSTITUTIONS,
   EXTENSION_HUB_PATH,
   resourcesByTopic,
+  resourcesByJurisdiction,
+  jurisdictionLabel,
   presentTopics,
   institutionFor,
   isDated,
@@ -148,6 +150,56 @@ export default function ExtensionResourcesPage() {
             );
           })}
         </ul>
+      </section>
+
+      <section className="mt-10" aria-label="Jurisdictions">
+        <h2 className="font-serif text-xl text-forest-900">
+          Where each resource was written for
+        </h2>
+        <p className="mt-2 max-w-2xl text-sm text-ink-700">
+          Extension guidance is written for a place. Ohio orchard timing is for
+          Ohio; Great Britain disease thresholds are for Great Britain. Nothing
+          here is presented as applying beyond the system that issued it, and a
+          jurisdiction with no resources is a gap in this index, not evidence
+          that no guidance exists.
+        </p>
+        <div className="mt-3 overflow-x-auto">
+          <table className="w-full min-w-[30rem] border-collapse text-sm">
+            <thead>
+              <tr className="border-b border-ink-200 text-left text-xs uppercase tracking-wide text-ink-500">
+                <th scope="col" className="py-2 pr-4 font-medium">
+                  Written for
+                </th>
+                <th scope="col" className="py-2 pr-4 font-medium">
+                  Resources
+                </th>
+                <th scope="col" className="py-2 font-medium">
+                  Publisher
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {[...resourcesByJurisdiction().entries()]
+                .sort((a, b) => b[1].length - a[1].length)
+                .map(([key, rows]) => {
+                  const institution = EXTENSION_INSTITUTIONS.find(
+                    (i) => (i.jurisdictionId ?? i.countryCode) === key,
+                  );
+                  return (
+                    <tr key={key} id={key} className="border-b border-ink-100">
+                      <th scope="row" className="py-2 pr-4 font-normal">
+                        {jurisdictionLabel(key)}
+                      </th>
+                      <td className="py-2 pr-4 tabular-nums">{rows.length}</td>
+                      <td className="py-2 text-ink-700">
+                        {institution?.officialName ?? '—'}
+                      </td>
+                    </tr>
+                  );
+                })}
+            </tbody>
+          </table>
+        </div>
       </section>
 
       {topics.map((topic: ExtensionTopic) => {
