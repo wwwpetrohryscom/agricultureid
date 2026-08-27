@@ -97,6 +97,25 @@ export interface Benchmark {
 }
 
 export const BENCHMARKS: Benchmark[] = [
+  /* ---- Price and trade depth (Wave 17) ------------------------------------ */
+  {
+    query: 'wheat producer price',
+    titleIncludes: ['wheat'],
+    types: ['market-data'],
+    kind: 'multiword',
+  },
+  {
+    query: 'soybean exports',
+    titleIncludes: ['soybean'],
+    types: ['market-data'],
+    kind: 'multiword',
+  },
+  {
+    query: 'producer prices',
+    titleIncludes: ['market'],
+    types: ['market-data'],
+    kind: 'multiword',
+  },
   /* ---- Extension network (Wave 16) ----------------------------------------
    * Wrong-jurisdiction retrieval is the failure that matters: agronomic
    * guidance written for one state is wrong almost everywhere else.

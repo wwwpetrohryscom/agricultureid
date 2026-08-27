@@ -21,6 +21,8 @@ import {
   MARKET_METRICS,
   METRIC_DIMENSION,
   OBSERVATION_STATUSES,
+  CURRENCY_BASES,
+  MONETARY_METRICS,
 } from '@/types/market';
 import { getDataset } from '@/lib/data-ops/registry';
 import { PUBLISHED_CONTENT } from '@/lib/content/registry';
@@ -104,16 +106,19 @@ describe('markets — periods are not interchangeable', () => {
 
   it('never merges two datasets into one series', () => {
     const groups = seriesByDataset(SERIES);
-    expect(groups.size).toBe(2);
+    expect(groups.size).toBe(4);
     for (const [datasetId, group] of groups) {
       for (const s of group) expect(s.sourceDatasetId).toBe(datasetId);
     }
   });
 
-  it('lets no two datasets publish the same metric for one commodity and country', () => {
+  it('lets no two datasets publish one fact on the same period basis', () => {
+    // The period basis is part of the fact. USDA reports trade on a marketing
+    // year and FAOSTAT on a calendar year — different windows, not two answers
+    // to one question. Two sources on the SAME basis would be a real conflict.
     const seen = new Map<string, string>();
     for (const s of SERIES) {
-      const key = `${s.metric}|${s.commodityRef}|${s.countryCode}`;
+      const key = `${s.metric}|${s.commodityRef}|${s.countryCode}|${s.basis}`;
       const prior = seen.get(key);
       expect(prior === undefined || prior === s.sourceDatasetId, key).toBe(
         true,
@@ -121,9 +126,7 @@ describe('markets — periods are not interchangeable', () => {
       seen.set(key, s.sourceDatasetId);
     }
   });
-});
 
-describe('markets — provenance and depth', () => {
   it('traces every series to a real dataset and commodity', () => {
     for (const s of SERIES) {
       expect(getDataset(s.sourceDatasetId), s.id).toBeDefined();
@@ -212,5 +215,97 @@ describe('markets — query layer', () => {
     expect(commodityMarketPath('wheat-grain')).toBe(
       '/agricultural-markets/wheat-grain',
     );
+  });
+});
+
+describe('markets — price and trade depth (Wave 17)', () => {
+  it('names a currency and a basis on every price series, and none elsewhere', () => {
+    const prices = SERIES.filter(
+      (s) => METRIC_DIMENSION[s.metric] === 'currency-per-mass',
+    );
+    expect(prices.length).toBeGreaterThan(1000);
+    for (const s of prices) {
+      expect(s.currency, s.id).toBeTruthy();
+      expect(CURRENCY_BASES, s.id).toContain(s.currencyBasis!);
+    }
+    for (const s of SERIES) {
+      if (MONETARY_METRICS.includes(s.metric)) continue;
+      expect(s.currency, s.id).toBeUndefined();
+    }
+  });
+
+  it('never lets an index carry a currency', () => {
+    // A price index is not money. Giving it a currency turns an index number
+    // into an apparent price.
+    const idx = SERIES.filter((s) => s.metric === 'indexValue');
+    expect(idx.length).toBeGreaterThan(500);
+    for (const s of idx) {
+      expect(s.currency, s.id).toBeUndefined();
+      expect(s.unit, s.id).toMatch(/index/i);
+    }
+  });
+
+  it('keeps local-currency and US dollar prices as separate series', () => {
+    // FAOSTAT publishes both. Neither is derived from the other here, and the
+    // two must never be merged into one series with two units.
+    const lcu = SERIES.filter((s) => s.currency === 'LCU');
+    const usd = SERIES.filter(
+      (s) => s.currency === 'USD' && s.metric === 'producerPrice',
+    );
+    expect(lcu.length).toBeGreaterThan(500);
+    expect(usd.length).toBeGreaterThan(500);
+    const ids = new Set(SERIES.map((s) => s.id));
+    expect(ids.size).toBe(SERIES.length);
+    for (const s of lcu) expect(s.unit).toBe('LCU/tonne');
+    for (const s of usd) expect(s.unit).toBe('USD/tonne');
+  });
+
+  it('keeps trade value and trade quantity in different dimensions', () => {
+    const qty = SERIES.filter((s) =>
+      ['exportsQuantity', 'importsQuantity'].includes(s.metric),
+    );
+    const val = SERIES.filter((s) =>
+      ['exportsValue', 'importsValue'].includes(s.metric),
+    );
+    expect(qty.length).toBeGreaterThan(1000);
+    expect(val.length).toBeGreaterThan(1000);
+    // Units are per SOURCE: FAOSTAT reports tonnes, USDA thousand tonnes and
+    // cotton in bales. Asserting one unit across sources would be the very
+    // conflation these tests exist to prevent.
+    for (const s of qty) {
+      expect(METRIC_DIMENSION[s.metric], s.id).toBe('mass');
+      expect(s.unit, s.id).toMatch(/^(t|1000 MT|1000 480 lb\. Bales)$/);
+      if (s.sourceDatasetId === 'faostat-trade-cl') expect(s.unit).toBe('t');
+    }
+    for (const s of val) {
+      expect(METRIC_DIMENSION[s.metric], s.id).toBe('currency');
+      expect(s.unit, s.id).toBe('1000 USD');
+    }
+  });
+
+  it('lets two sources cover one fact only on different period bases', () => {
+    const byFact = new Map<string, Set<string>>();
+    const bases = new Map<string, Set<string>>();
+    for (const s of SERIES) {
+      const k = `${s.metric}|${s.commodityRef}|${s.countryCode}`;
+      byFact.set(k, (byFact.get(k) ?? new Set()).add(s.sourceDatasetId));
+      bases.set(k, (bases.get(k) ?? new Set()).add(s.basis));
+    }
+    let overlapping = 0;
+    for (const [k, datasets] of byFact) {
+      if (datasets.size < 2) continue;
+      overlapping += 1;
+      // USDA reports trade on a marketing year, FAOSTAT on a calendar year.
+      expect(bases.get(k)!.size, k).toBeGreaterThan(1);
+    }
+    expect(overlapping).toBeGreaterThan(0);
+  });
+
+  it('publishes no forecast in any of the four datasets', () => {
+    const forecasts = SERIES.flatMap((s) =>
+      s.observations.filter((o) => o.observationStatus === 'forecast'),
+    );
+    expect(forecasts).toHaveLength(0);
+    expect(marketSnapshots().size).toBe(4);
   });
 });

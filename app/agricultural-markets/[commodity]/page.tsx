@@ -11,7 +11,6 @@ import {
   MARKET_CAVEAT,
   CROSS_SOURCE_CAVEAT,
   METRIC_LABEL,
-  type MarketMetric,
 } from '@/types/market';
 import {
   commoditiesWithMarketData,
@@ -19,6 +18,7 @@ import {
   seriesForCommodity,
   seriesByDataset,
   rankedByLatest,
+  metricViewsFor,
   latestObservation,
   MARKETS_HUB_PATH,
 } from '@/lib/markets/registry';
@@ -38,8 +38,17 @@ const commodityOf = (slug: string) =>
     (c) => c.contentType === 'commodity' && c.slug === slug,
   );
 
-/** Countries whose full series is charted. The rest appear in the table. */
-const CHARTED = 5;
+/**
+ * Countries whose full series is charted, and how many metric views get charts.
+ *
+ * Every metric view keeps its complete ranking table; charts are the expensive
+ * part. With four datasets a commodity now carries a dozen views, and charting
+ * five countries in each ran the page to 2.1 MB — mostly hydration payload for
+ * SVG nobody scrolled to. The leading view of each dataset gets charts; the
+ * rest are tables, and no row is dropped from either.
+ */
+const CHARTED = 3;
+const CHARTED_VIEWS_PER_DATASET = 1;
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { commodity } = await params;
@@ -48,7 +57,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   if (!c || series.length === 0) return {};
   const countries = new Set(series.map((s) => s.countryCode)).size;
   return buildMetadata({
-    title: `${c.title} Production and Market Data`,
+    title: `${c.title} Production, Trade and Price Statistics`,
     description: `Production, area, yield, stocks and trade series for ${c.title.toLowerCase()} across ${countries} countries, from official statistical releases with the status each figure carries.`,
     path: commodityMarketPath(commodity),
   });
@@ -61,7 +70,7 @@ export default async function CommodityMarketPage({ params }: Params) {
   if (!c || series.length === 0) notFound();
 
   const byDataset = seriesByDataset(series);
-  const title = `${c.title} production and market data`;
+  const title = `${c.title} production, trade and price statistics`;
 
   return (
     <Container className="py-8 lg:py-10">
@@ -111,9 +120,9 @@ export default async function CommodityMarketPage({ params }: Params) {
       {[...byDataset.entries()].map(([datasetId, dsSeries]) => {
         const snap = marketSnapshot(datasetId);
         const dataset = getDataset(datasetId);
-        const metrics = [
-          ...new Set(dsSeries.map((s) => s.metric)),
-        ] as MarketMetric[];
+        // (metric, currency) pairs, not metrics: a price in local currency and
+        // the same price in US dollars are two series, not one.
+        const views = metricViewsFor(commodity, datasetId);
         return (
           <section key={datasetId} className="mt-10">
             <h2 className="font-serif text-xl text-forest-900">
@@ -138,20 +147,33 @@ export default async function CommodityMarketPage({ params }: Params) {
               </p>
             )}
 
-            {metrics.map((metric) => {
-              const ranked = rankedByLatest(commodity, metric, datasetId);
+            {views.map(({ metric, currency }, viewIndex) => {
+              const ranked = rankedByLatest(
+                commodity,
+                metric,
+                datasetId,
+                currency,
+              );
               if (!ranked.length) return null;
               const unit = ranked[0]!.observation.unit;
               const year = ranked[0]!.observation.period.year;
               const charted = ranked.slice(0, CHARTED);
               return (
-                <div key={metric} className="mt-8">
+                <div key={`${metric}-${currency ?? ''}`} className="mt-8">
                   <h3 className="font-medium text-ink-900">
                     {METRIC_LABEL[metric]}{' '}
                     <span className="text-sm font-normal text-ink-500">
                       {unit}
+                      {currency ? ` · ${currency}` : ''}
                     </span>
                   </h3>
+                  {currency && (
+                    <p className="mt-1 max-w-2xl text-sm text-ink-600">
+                      A producer price is what farmers receive at the farm gate.
+                      It is not a wholesale, retail or export price, and this
+                      series is never converted into another currency.
+                    </p>
+                  )}
 
                   <div className="mt-3 overflow-x-auto">
                     <table className="w-full min-w-[28rem] border-collapse text-sm">
@@ -216,21 +238,25 @@ export default async function CommodityMarketPage({ params }: Params) {
                     </table>
                   </div>
 
-                  {charted.map(({ countryCode }) => {
-                    const s = dsSeries.find(
-                      (x) =>
-                        x.countryCode === countryCode && x.metric === metric,
-                    );
-                    if (!s || !latestObservation(s)) return null;
-                    return (
-                      <div key={s.id} className="mt-6">
-                        <h4 className="text-sm font-medium text-ink-800">
-                          {countryName(countryCode) ?? countryCode}
-                        </h4>
-                        <MarketSeriesChart series={s} />
-                      </div>
-                    );
-                  })}
+                  {(viewIndex < CHARTED_VIEWS_PER_DATASET ? charted : []).map(
+                    ({ countryCode }) => {
+                      const s = dsSeries.find(
+                        (x) =>
+                          x.countryCode === countryCode &&
+                          x.metric === metric &&
+                          x.currency === currency,
+                      );
+                      if (!s || !latestObservation(s)) return null;
+                      return (
+                        <div key={s.id} className="mt-6">
+                          <h4 className="text-sm font-medium text-ink-800">
+                            {countryName(countryCode) ?? countryCode}
+                          </h4>
+                          <MarketSeriesChart series={s} />
+                        </div>
+                      );
+                    },
+                  )}
                 </div>
               );
             })}

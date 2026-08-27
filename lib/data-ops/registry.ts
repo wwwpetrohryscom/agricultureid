@@ -8,6 +8,8 @@ import {
   marketSnapshotFiles,
   FAOSTAT_PRODUCTION_DATASET_ID,
   USDA_PSD_DATASET_ID,
+  FAOSTAT_PRICES_DATASET_ID,
+  FAOSTAT_TRADE_CL_DATASET_ID,
 } from '@/lib/markets/snapshot';
 import type { DatasetRegistryEntry } from '@/types/data-ops';
 
@@ -184,6 +186,16 @@ export function buildDatasetRegistry(): DatasetRegistryEntry[] {
         description:
           'National production, area harvested and yield for agricultural commodities, read from the FAOSTAT Crops and livestock products domain. Yield is taken as FAOSTAT publishes it and is never recomputed from production over area.',
       },
+      [FAOSTAT_PRICES_DATASET_ID]: {
+        title: 'FAOSTAT producer prices',
+        description:
+          'Annual national producer prices — the price received by farmers at the farm gate — published by FAOSTAT in local currency and in US dollars as separate series, plus the producer price index. No currency conversion is performed here, and a producer price is never compared with a wholesale, retail or export price.',
+      },
+      [FAOSTAT_TRADE_CL_DATASET_ID]: {
+        title: 'FAOSTAT trade in crops and livestock products',
+        description:
+          'Annual reporter totals for import and export quantity in tonnes and value in thousands of US dollars. FAOSTAT publishes four element codes labelled "Export quantity" in four different units; only the tonne codes are ingested, because a head count cannot share a metric with a mass.',
+      },
       [USDA_PSD_DATASET_ID]: {
         title: 'USDA PSD supply and use',
         description:
@@ -236,6 +248,13 @@ export function buildDatasetRegistry(): DatasetRegistryEntry[] {
         ...snap.limitations,
         ...(snap.withheldRule ? [snap.withheldRule] : []),
         ...(snap.metricRule ? [snap.metricRule] : []),
+        ...(snap.priceBasisRule ? [snap.priceBasisRule] : []),
+        ...(snap.currencyRule ? [snap.currencyRule] : []),
+        ...(snap.excludedElementRule ? [snap.excludedElementRule] : []),
+        ...(snap.marketRule ? [snap.marketRule] : []),
+        ...(snap.unitRule ? [snap.unitRule] : []),
+        ...(snap.valueRule ? [snap.valueRule] : []),
+        ...(snap.aggregateRule ? [snap.aggregateRule] : []),
       ],
       publicationStatus: 'published',
     });

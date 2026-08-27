@@ -55,6 +55,66 @@ if (!byStatus.has('forecast'))
       '    rather than published as though they had been observed.',
   );
 
+console.log('\n  Prices and currency');
+{
+  const priceSeries = series.filter(
+    (s) => s.metric === 'producerPrice' || s.metric === 'indexValue',
+  );
+  const byCur = new Map<string, number>();
+  for (const s of priceSeries) {
+    const k = s.currency ?? '(none — index)';
+    byCur.set(k, (byCur.get(k) ?? 0) + 1);
+  }
+  for (const [c, n] of [...byCur].sort((a, b) => b[1] - a[1])) {
+    console.log(`    ${c.padEnd(20)} ${String(n).padStart(5)} series`);
+  }
+  console.log(
+    '    Every monetary series is a PRODUCER price — the price received at the\n' +
+      '    farm gate. It is not a wholesale, retail, export or futures price.\n' +
+      '    FAOSTAT publishes the local-currency and US dollar series separately\n' +
+      '    and both are ingested as published. Nothing is converted here, and the\n' +
+      '    price index is not money and carries no currency at all.',
+  );
+}
+
+console.log('\n  Trade');
+{
+  const q = series.filter((s) =>
+    ['exportsQuantity', 'importsQuantity'].includes(s.metric),
+  );
+  const v = series.filter((s) =>
+    ['exportsValue', 'importsValue'].includes(s.metric),
+  );
+  console.log(`    quantity series ${q.length} · value series ${v.length}`);
+  console.log(
+    '    FAOSTAT labels FOUR element codes "Export quantity" in four different\n' +
+      '    units — number, animals, thousand animals and tonnes. Only the tonne\n' +
+      '    and US dollar codes are ingested: a head count cannot share a metric\n' +
+      '    with a mass. Every ingested row was checked against its element\u2019s\n' +
+      '    expected unit.',
+  );
+}
+
+console.log('\n  Where two sources cover one fact');
+{
+  const byFact = new Map<string, Set<string>>();
+  const bases = new Map<string, Set<string>>();
+  for (const s of series) {
+    const k = `${s.metric}|${s.commodityRef}|${s.countryCode}`;
+    byFact.set(k, (byFact.get(k) ?? new Set()).add(s.sourceDatasetId));
+    bases.set(k, (bases.get(k) ?? new Set()).add(s.basis));
+  }
+  const overlapping = [...byFact].filter(([, d]) => d.size > 1);
+  console.log(
+    `    ${overlapping.length} commodity-country-metric facts are covered by two datasets.`,
+  );
+  console.log(
+    '    In every case the period basis differs — USDA reports a marketing year,\n' +
+      '    FAOSTAT a calendar year. Those are different windows over different\n' +
+      '    months, not two answers to one question, and they are never merged.',
+  );
+}
+
 console.log('\n  By metric');
 const byMetric = new Map<MarketMetric, { series: number; obs: number }>();
 for (const s of series) {

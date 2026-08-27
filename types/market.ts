@@ -34,6 +34,20 @@
  * meant the same thing would be wrong, so {@link MarketPeriod.basis} carries
  * the distinction and the UI never merges series across bases.
  *
+ * ## A price basis is part of what the number IS
+ *
+ * A producer price, a wholesale price and an export price are three different
+ * quantities for the same commodity in the same week, and the gap between them
+ * is the marketing chain. The metric therefore names the basis — there is no
+ * bare `price` — and a producer price is never compared with, averaged into, or
+ * charted alongside another basis.
+ *
+ * ## Currency is carried, never converted
+ *
+ * FAOSTAT publishes producer prices in local currency AND in US dollars as two
+ * separate series. Both are ingested as published; neither is derived from the
+ * other here. An index is not money at all, and shares no unit with a price.
+ *
  * ## Units travel with the value, always
  *
  * Cotton is published by USDA in 1000 480 lb. bales and by FAO in tonnes. No
@@ -179,6 +193,22 @@ export interface AgriculturalMarketObservation {
 
   observationStatus: ObservationStatus;
 
+  /**
+   * Currency the value is denominated in, where it is money. Absent for
+   * quantities, areas, yields and indices. Never converted.
+   */
+  currency?: string;
+  /**
+   * What kind of currency figure this is — a nominal local currency unit, US
+   * dollars as the source published them, or a standardised construct. Recorded
+   * so two monetary series are never merged because both look like "price".
+   */
+  currencyBasis?: CurrencyBasis;
+  /** Market or delivery point, where the source names one. Usually absent. */
+  marketLocation?: string;
+  /** Grade or commodity form, where the source names one. Usually absent. */
+  grade?: string;
+
   /** Registry id of the dataset this figure came from. */
   sourceDatasetId: string;
   /** Snapshot the figure was read from — the immutable release. */
@@ -195,12 +225,32 @@ export interface AgriculturalMarketObservation {
  * unit in which this data is actually meaningful, and the unit the depth
  * threshold applies to. One number is not a series and does not get a page.
  */
+export const CURRENCY_BASES = [
+  /** The country's own currency, nominal, as the source published it. */
+  'local-currency-unit',
+  /** US dollars as the source published them — not converted here. */
+  'united-states-dollar',
+  /** A standardised or constant-currency construct rather than money paid. */
+  'standard-local-currency',
+] as const;
+export type CurrencyBasis = (typeof CURRENCY_BASES)[number];
+
+/** Metrics that denominate money and therefore require a currency. */
+export const MONETARY_METRICS: readonly MarketMetric[] = [
+  'importsValue',
+  'exportsValue',
+  'producerPrice',
+  'wholesalePrice',
+];
+
 export interface MarketSeries {
   id: string;
   commodityRef: string;
   countryCode: string;
   metric: MarketMetric;
   unit: string;
+  currency?: string;
+  currencyBasis?: CurrencyBasis;
   basis: PeriodBasis;
   frequency: PeriodFrequency;
   sourceDatasetId: string;
