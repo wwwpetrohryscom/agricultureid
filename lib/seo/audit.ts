@@ -56,6 +56,11 @@ import {
   compliancePath,
   REGULATIONS_HUB_PATH,
 } from '@/lib/compliance/registry';
+import {
+  publishedSupportPrograms,
+  supportPath,
+  SUPPORT_HUB_PATH,
+} from '@/lib/support/registry';
 
 export interface AuditIssue {
   level: 'error' | 'warning';
@@ -212,6 +217,17 @@ export function registryNavModel(): Map<string, Set<string>> {
     for (const rid of t.relatedRegistryIds) {
       const r = publishedRegistries().find((x) => x.id === rid);
       if (r) add(compliancePath(t.slug), registryPath(r.slug));
+    }
+  }
+
+  // Support hub lists every published programme; each links back and to its
+  // administering authority.
+  for (const prog of publishedSupportPrograms()) {
+    add(SUPPORT_HUB_PATH, supportPath(prog.slug));
+    add(supportPath(prog.slug), SUPPORT_HUB_PATH);
+    for (const aid of prog.administeringAuthorityIds) {
+      const a = publishedAuthorities().find((x) => x.id === aid);
+      if (a) add(supportPath(prog.slug), authorityPath(a.slug));
     }
   }
 

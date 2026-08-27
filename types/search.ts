@@ -37,7 +37,8 @@ export type SearchEntityType =
   | 'agroecological-zone'
   | 'agricultural-authority'
   | 'agricultural-registry'
-  | 'agricultural-compliance';
+  | 'agricultural-compliance'
+  | 'agricultural-support';
 
 /**
  * A published, indexable search document. Holds only the text needed for search
