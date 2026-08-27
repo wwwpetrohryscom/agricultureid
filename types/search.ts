@@ -39,7 +39,8 @@ export type SearchEntityType =
   | 'agricultural-registry'
   | 'agricultural-compliance'
   | 'agricultural-support'
-  | 'crop-calendar';
+  | 'crop-calendar'
+  | 'biosecurity-listing';
 
 /**
  * A published, indexable search document. Holds only the text needed for search

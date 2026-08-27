@@ -387,6 +387,13 @@ export const SECTIONS: NavSection[] = [
     active: true,
   },
   {
+    label: 'Biosecurity Listings',
+    href: '/agricultural-biosecurity',
+    description:
+      'Official biosecurity listings for pests and plant pathogens, recorded verbatim and kept separate from where organisms occur.',
+    active: true,
+  },
+  {
     label: 'Crop Calendars',
     href: '/crop-calendars',
     description:
@@ -561,6 +568,7 @@ export const REFERENCE_NAV = SECTIONS.filter(
       '/agricultural-regulations',
       '/agricultural-support',
       '/crop-calendars',
+      '/agricultural-biosecurity',
       '/data-health',
     ].includes(s.href),
 );

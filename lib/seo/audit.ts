@@ -66,6 +66,10 @@ import {
   cropCalendarPath,
   CALENDARS_HUB_PATH,
 } from '@/lib/calendars/registry';
+import {
+  BIOSECURITY_STATUS,
+  BIOSECURITY_HUB_PATH,
+} from '@/lib/biosecurity/registry';
 
 export interface AuditIssue {
   level: 'error' | 'warning';
@@ -249,6 +253,19 @@ export function registryNavModel(): Map<string, Set<string>> {
       // the crop corpus and not only from its own hub.
       add(contentUrlPath(crop), cropCalendarPath(cropSlug));
     }
+  }
+
+  // The biosecurity hub links each listed organism's page, and each of those
+  // pages links back to the hub through its regulatory-status section.
+  for (const st of BIOSECURITY_STATUS) {
+    const organism = PUBLISHED_CONTENT.find(
+      (c) =>
+        (c.contentType === 'pest' || c.contentType === 'plant-disease') &&
+        c.slug === st.organismRef,
+    );
+    if (!organism) continue;
+    add(BIOSECURITY_HUB_PATH, contentUrlPath(organism));
+    add(contentUrlPath(organism), BIOSECURITY_HUB_PATH);
   }
 
   // Data-methodology page is linked from the data overview/registry pages.

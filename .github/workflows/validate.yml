@@ -61,6 +61,9 @@ jobs:
       - name: Crop calendar validation
         run: npm run calendars:validate
 
+      - name: Biosecurity status validation
+        run: npm run biosecurity:validate
+
       - name: Tests
         run: npm test
 

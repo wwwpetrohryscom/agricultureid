@@ -53,6 +53,10 @@ import {
   seasonsForCrop,
   cropCalendarPath,
 } from '@/lib/calendars/registry';
+import {
+  BIOSECURITY_STATUS,
+  BIOSECURITY_HUB_PATH,
+} from '@/lib/biosecurity/registry';
 
 const RELATION_LABEL: Partial<Record<RelationType, string>> = {
   affects: 'affects',
@@ -468,6 +472,46 @@ export function buildSearchDocuments(): SearchDoc[] {
     });
   }
 
+  // Biosecurity listings. ONE document for the hub rather than one per
+  // listing: a listing's useful destination is the organism's own page, which
+  // is already indexed, so 20 near-identical documents would only dilute it.
+  if (BIOSECURITY_STATUS.length > 0) {
+    const lists = [
+      ...new Set(BIOSECURITY_STATUS.map((s) => s.officialListName)),
+    ];
+    const organisms = [
+      ...new Set(
+        BIOSECURITY_STATUS.map((s) => {
+          const o = PUBLISHED_CONTENT.find(
+            (c) =>
+              (c.contentType === 'pest' || c.contentType === 'plant-disease') &&
+              c.slug === s.organismRef,
+          );
+          return o?.title ?? s.organismRef;
+        }),
+      ),
+    ];
+    docs.push({
+      id: 'biosecurity:listings',
+      type: 'biosecurity-listing',
+      route: BIOSECURITY_HUB_PATH,
+      title: 'Agricultural biosecurity listings',
+      names: [
+        'biosecurity listings',
+        'quarantine pests',
+        ...lists,
+        ...organisms,
+      ],
+      category: 'Biosecurity',
+      summary: `Official biosecurity listings recorded for ${new Set(BIOSECURITY_STATUS.map((s) => s.organismRef)).size} pests and plant pathogens across ${lists.length} official lists.`,
+      relationLabels: ['regulated pest', 'quarantine listing', ...lists],
+      facets: {
+        entityType: ['biosecurity-listing'],
+        category: ['Biosecurity'],
+      },
+    });
+  }
+
   // Tools.
   for (const t of TOOLS) {
     docs.push({
@@ -502,6 +546,7 @@ const ENTITY_TYPE_LABEL: Record<string, string> = {
   'agricultural-compliance': 'Compliance topic',
   'agricultural-support': 'Support programme',
   'crop-calendar': 'Crop calendar',
+  'biosecurity-listing': 'Biosecurity listing',
   machinery: 'Machinery',
   climate: 'Climate',
   'farming-system': 'Farming system',

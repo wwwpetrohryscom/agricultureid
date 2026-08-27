@@ -46,6 +46,7 @@ import {
   cropCalendarPath,
   CALENDARS_HUB_PATH,
 } from '@/lib/calendars/registry';
+import { BIOSECURITY_HUB_PATH } from '@/lib/biosecurity/registry';
 
 /** Stable last-modified date for static (non-content) routes. */
 export const SITE_LAST_UPDATED = '2026-07-12';
@@ -126,6 +127,11 @@ const STATIC_ROUTES: Omit<RouteEntry, 'lastModified'>[] = [
   },
   {
     path: CALENDARS_HUB_PATH,
+    changeFrequency: 'monthly',
+    priority: 0.6,
+  },
+  {
+    path: BIOSECURITY_HUB_PATH,
     changeFrequency: 'monthly',
     priority: 0.6,
   },
