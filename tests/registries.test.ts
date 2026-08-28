@@ -14,8 +14,8 @@ import { SOURCE_MAP } from '@/lib/sources/registry';
 import { allRoutes } from '@/lib/seo/routes';
 import { buildSearchDocuments } from '@/lib/search/documents';
 
-const EXPECTED_TOTAL = 35;
-const EXPECTED_PUBLISHED = 23;
+const EXPECTED_TOTAL = 37;
+const EXPECTED_PUBLISHED = 25;
 const DOCS = buildSearchDocuments();
 const REG_DOCS = DOCS.filter((d) => d.type === 'agricultural-registry');
 
@@ -81,8 +81,14 @@ describe('registries — access claims are never guessed', () => {
       expect(r.apiUrl, r.id).toBeTruthy();
       expect(r.documentationUrl, r.id).toBeTruthy();
     }
-    expect(REGISTRIES.filter((r) => r.apiAvailable).map((r) => r.id)).toEqual([
+    expect(
+      REGISTRIES.filter((r) => r.apiAvailable)
+        .map((r) => r.id)
+        .sort(),
+    ).toEqual([
+      'noaa-ncei-climate-normals',
       'usda-nrcs-ssurgo',
+      'usdm-drought-monitor',
     ]);
   });
 

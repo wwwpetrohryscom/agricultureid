@@ -61,6 +61,8 @@ export const REGISTRY_TYPES = [
   'farmRegistry',
   'agriculturalLandRegistry',
   'germplasmDatabase',
+  'climateDataService',
+  'droughtAssessmentService',
   'otherOfficialAgriculturalRegistry',
 ] as const;
 export type RegistryType = (typeof REGISTRY_TYPES)[number];

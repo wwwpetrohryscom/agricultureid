@@ -21,6 +21,7 @@ const ACCESS_AUTH = '2026-08-19';
 const ACCESS_VARIETY = '2026-08-27';
 const ACCESS_EXTENSION = '2026-08-27';
 const ACCESS_EXTENSION_16 = '2026-08-27';
+const ACCESS_CLIMATE = '2026-08-27';
 
 export const SOURCES: Source[] = [
   {
@@ -2776,6 +2777,47 @@ export const SOURCES: Source[] = [
     language: 'en',
     notes:
       'Pests EPPO recommends its member countries regulate as quarantine pests, and which EPPO records as present but locally distributed in the EPPO region. A recommendation to members, not statutory status in any country. Version 2025-09.',
+    reliability: 'authoritative',
+  },
+  {
+    id: 'reg-noaa-ncei-normals',
+    organization:
+      'National Oceanic and Atmospheric Administration — National Centers for Environmental Information',
+    title: 'U.S. Climate Normals, 1991–2020',
+    url: 'https://www.ncei.noaa.gov/products/land-based-station/us-climate-normals',
+    accessDate: ACCESS_CLIMATE,
+    sourceType: 'government',
+    jurisdiction: 'United States',
+    language: 'en',
+    notes:
+      'Thirty-year averages of temperature, precipitation and derived agricultural quantities at United States weather stations. A normal describes the 1991–2020 period; it is not a measurement of any single year and not a forecast of any year to come.',
+    reliability: 'authoritative',
+  },
+  {
+    id: 'reg-usdm',
+    organization:
+      'National Drought Mitigation Center, United States Department of Agriculture and National Oceanic and Atmospheric Administration',
+    title: 'U.S. Drought Monitor',
+    url: 'https://droughtmonitor.unl.edu/',
+    accessDate: ACCESS_CLIMATE,
+    sourceType: 'government',
+    jurisdiction: 'United States',
+    language: 'en',
+    notes:
+      'A weekly map of drought conditions, drawn by a rotating author who combines several indicators with reports from local observers. It is an assessment rather than an instrument reading, and each map states the week it is valid for.',
+    reliability: 'authoritative',
+  },
+  {
+    id: 'reg-faostat-land-use',
+    organization: 'Food and Agriculture Organization of the United Nations',
+    title: 'FAOSTAT — Land, Inputs and Sustainability: Land Use',
+    url: 'https://www.fao.org/faostat/en/#data/RL',
+    accessDate: ACCESS_CLIMATE,
+    sourceType: 'intergovernmental',
+    jurisdiction: 'Global',
+    language: 'en',
+    notes:
+      'Land use by country, including area equipped for irrigation and area actually irrigated. Each value carries a flag saying whether the country reported it officially or FAO estimated or imputed it.',
     reliability: 'authoritative',
   },
 ];

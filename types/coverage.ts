@@ -119,6 +119,7 @@ export const COVERAGE_LAYERS = [
   'soils',
   'trade',
   'economics',
+  'climate',
 ] as const;
 export type CoverageLayer = (typeof COVERAGE_LAYERS)[number];
 
@@ -135,6 +136,7 @@ export const COVERAGE_LAYER_LABEL: Record<CoverageLayer, string> = {
   soils: 'Soil survey observations',
   trade: 'Border requirements',
   economics: 'Farm economics figures',
+  climate: 'Climate, drought and water values',
 };
 
 /** One cell of the coverage matrix. */

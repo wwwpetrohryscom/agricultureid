@@ -33,6 +33,7 @@ import { COUNTRY_PROFILES } from '@/lib/geo/registry';
 import { allSoilObservations } from '@/lib/soils/registry';
 import { TRADE_REQUIREMENTS } from '@/lib/trade/registry';
 import { allEconomicObservations } from '@/lib/economics/registry';
+import { allClimateObservations } from '@/lib/climate/registry';
 
 type Counter = (iso3: string) => number;
 
@@ -76,6 +77,10 @@ export function layerCounters(): Record<CoverageLayer, Counter> {
     economics: countBy(allEconomicObservations(), (o) =>
       o.geographyLevel === 'union' ? undefined : o.countryCode,
     ),
+    // FAOSTAT names countries; the country code is resolved by name against
+    // the corpus, and a name that does not resolve counts toward nothing
+    // rather than toward a guess.
+    climate: countBy(allClimateObservations(), (o) => o.countryCode),
   };
 }
 

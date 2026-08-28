@@ -97,6 +97,36 @@ export interface Benchmark {
 }
 
 export const BENCHMARKS: Benchmark[] = [
+  /* ---- Climate, drought and water (Wave 26) -------------------------------
+   * The hub must win queries about the RECORD, and must not win queries about
+   * the concepts: 20 climate reference pages own "drought", "frost" and
+   * "evapotranspiration", and a hub that took them would send a reader looking
+   * for what drought IS to a page of state percentages.
+   */
+  {
+    query: 'climate normals',
+    titleIncludes: ['climate normals'],
+    types: ['climate-water'],
+    kind: 'multiword',
+  },
+  {
+    query: 'area equipped for irrigation',
+    titleIncludes: ['climate normals'],
+    types: ['climate-water'],
+    kind: 'multiword',
+  },
+  {
+    query: 'drought',
+    titleIncludes: ['drought'],
+    types: ['climate'],
+    kind: 'exact',
+  },
+  {
+    query: 'evapotranspiration',
+    titleIncludes: ['evapotranspiration'],
+    types: ['climate'],
+    kind: 'exact',
+  },
   /* ---- Farm economics (Wave 25) -------------------------------------------
    * Two failures matter here. The hub must win queries about what farming
    * COSTS, and it must not win queries about a crop: the cost figures live in
