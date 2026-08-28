@@ -25,6 +25,8 @@ import { AUTHORITIES } from '@/data/authorities';
 import { SUPPORT_PROGRAMS } from '@/data/support';
 import { allSoilObservations } from '@/lib/soils/registry';
 import { TRADE_REQUIREMENTS } from '@/lib/trade/registry';
+import { allEconomicObservations } from '@/lib/economics/registry';
+import { ECONOMICS_CONTRACT_MAP } from '@/lib/economics/contracts';
 import { SOIL_DATASET_CONTRACT_MAP } from '@/lib/soils/contracts';
 
 function sourcesOf(ids: readonly string[]): LineageSource[] {
@@ -314,6 +316,51 @@ export function soilObservationLineage(id: string): ClaimLineage | undefined {
   };
 }
 
+/**
+ * Where one farm economic figure came from.
+ *
+ * The statement is written so the figure cannot be read as something it is
+ * not: a forecast says it is a forecast, an average says what it averages over,
+ * and an index says what its base is instead of carrying a currency.
+ */
+export function farmEconomicLineage(id: string): ClaimLineage | undefined {
+  const o = allEconomicObservations().find((x) => x.id === id);
+  if (!o) return undefined;
+  const sources = sourcesOf(o.sourceReferenceIds);
+  const contract = ECONOMICS_CONTRACT_MAP.get(o.sourceDatasetId);
+  const amount = o.currency
+    ? `${o.value} ${o.currency}`
+    : `${o.value} (index, ${o.indexBase})`;
+  return {
+    claimKind: 'farm-economic-figure',
+    claimId: o.id,
+    claimLabel: `${o.publishedSubject} — ${o.metric}`,
+    statement: `${contract?.label ?? o.sourceDatasetId} publishes ${amount} ${o.unitBasis} for ${o.publishedSubject} in ${o.jurisdictionName}, ${o.period}, as a ${o.evidenceType}.`,
+    sources,
+    release: releaseOf(
+      SOURCE_SNAPSHOTS.find((s) => s.payloadPath === contract?.snapshotPath)
+        ?.id,
+    ),
+    locator: {
+      kind: 'dataset-series',
+      value: `${o.sourceDatasetId} · ${o.jurisdictionName} · ${o.metric} · ${o.period}`,
+    },
+    sourceWording: { text: o.publishedSubject, field: 'item as published' },
+    interpretation: { value: o.evidenceType, vocabulary: 'EvidenceType' },
+    verifiedAt: o.lastVerifiedAt,
+    truthState: stateFrom(sources.length > 0, Boolean(o.lastVerifiedAt), false),
+    conflicts: [],
+    limitations: [
+      ...(contract?.assumptions ?? []),
+      o.geographyLevel === 'subnational'
+        ? 'This figure is for a region inside a country, not for the country.'
+        : o.geographyLevel === 'union'
+          ? 'This is the source’s own aggregate for the union, not a figure for any member state.'
+          : 'This is a national figure. It is not a figure for any particular farm.',
+    ],
+  };
+}
+
 export function tradeRequirementLineage(id: string): ClaimLineage | undefined {
   const r = TRADE_REQUIREMENTS.find((x) => x.id === id);
   if (!r) return undefined;
@@ -383,6 +430,18 @@ export function allLineages(): ClaimLineage[] {
     if (seen.has(key)) continue;
     seen.add(key);
     const l = soilObservationLineage(o.id);
+    if (l) out.push(l);
+  }
+  // Same reasoning for the 24,916 economic figures: one per dataset, metric
+  // and geography level covers every path — an index without a currency, a
+  // forecast with its assumptions, a union aggregate and a regional figure —
+  // without resolving the whole corpus on every read.
+  const economicsSeen = new Set<string>();
+  for (const o of allEconomicObservations()) {
+    const key = `${o.sourceDatasetId}|${o.metric}|${o.geographyLevel}`;
+    if (economicsSeen.has(key)) continue;
+    economicsSeen.add(key);
+    const l = farmEconomicLineage(o.id);
     if (l) out.push(l);
   }
   return out;

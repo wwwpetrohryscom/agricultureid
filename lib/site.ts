@@ -415,6 +415,13 @@ export const SECTIONS: NavSection[] = [
     active: true,
   },
   {
+    label: 'Farm Economics',
+    href: '/farm-economics',
+    description:
+      'What official statistics say it costs to grow a crop, what farm inputs cost and what farmland rents for — each figure kept as the kind of statement its source made.',
+    active: true,
+  },
+  {
     label: 'Soil Surveys',
     href: '/soil-surveys',
     description:
@@ -630,6 +637,7 @@ export const REFERENCE_NAV = SECTIONS.filter(
       '/coverage',
       '/soil-surveys',
       '/agricultural-trade',
+      '/farm-economics',
       '/agricultural-markets',
       '/extension-resources',
       '/agricultural-inputs',

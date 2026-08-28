@@ -25,6 +25,7 @@ import { CropCalendarLink } from '@/components/calendars/CropCalendarLink';
 import { OrganismBiosecurityStatus } from '@/components/biosecurity/OrganismBiosecurityStatus';
 import { CultivarRegistrations } from '@/components/varieties/CultivarRegistrations';
 import { CommodityMarketLink } from '@/components/markets/CommodityMarketLink';
+import { CropCostSummary } from '@/components/economics/CropCostSummary';
 import { EntityExtensionResources } from '@/components/extension/EntityExtensionResources';
 import { CropAuthorizedInputs } from '@/components/inputs/CropAuthorizedInputs';
 import { RelatedTools } from '@/components/tools/RelatedTools';
@@ -123,6 +124,13 @@ export function ContentArticle({ item }: { item: AnyContent }) {
               component renders nothing for crops that have none. */}
           {item.contentType === 'crop' && (
             <CropCalendarLink cropSlug={item.slug} />
+          )}
+
+          {/* Cost-of-production figures, where a source publishes them for
+              this crop. Renders nothing otherwise; costs only, never a
+              margin. */}
+          {item.contentType === 'crop' && (
+            <CropCostSummary cropSlug={item.slug} />
           )}
 
           {/* Official register entries for a cultivar. Renders nothing when

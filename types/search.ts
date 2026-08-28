@@ -46,6 +46,7 @@ export type SearchEntityType =
   | 'coverage'
   | 'soil-observation'
   | 'trade-requirement'
+  | 'farm-economics'
   | 'market-data'
   | 'extension-resource'
   | 'input-authorization';

@@ -93,6 +93,19 @@ export const LINEAGE_CONTRACTS: readonly LineageContract[] = [
     why: 'A border requirement is traced to the official system or guidance page that publishes it. There is no record identifier, because the systems are decision trees rather than registers of rules.',
   },
   {
+    claimKind: 'farm-economic-figure',
+    permittedLocators: ['dataset-series'],
+    hasRelease: true,
+    // The source publishes a number and the words naming what it is — the
+    // metric, its unit basis and, for an index, its base year. That naming is
+    // the source's wording, and stripping it leaves a bare number that could
+    // be read as any of several different quantities.
+    publishesWording: true,
+    hasInterpretation: true,
+    vocabulary: 'EvidenceType',
+    why: 'A farm economic figure is addressed by its dataset, geography, metric and period, and by the capture it was read from. Its evidence type — forecast, survey average or index — is decided by the dataset it came from, never by the record, because a forecast that could relabel itself an observation is the single most damaging error this layer could make.',
+  },
+  {
     claimKind: 'soil-observation',
     permittedLocators: ['dataset-series'],
     hasRelease: true,

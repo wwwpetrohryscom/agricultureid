@@ -32,6 +32,7 @@ import { EXTENSION_RESOURCES } from '@/data/extension';
 import { COUNTRY_PROFILES } from '@/lib/geo/registry';
 import { allSoilObservations } from '@/lib/soils/registry';
 import { TRADE_REQUIREMENTS } from '@/lib/trade/registry';
+import { allEconomicObservations } from '@/lib/economics/registry';
 
 type Counter = (iso3: string) => number;
 
@@ -70,6 +71,11 @@ export function layerCounters(): Record<CoverageLayer, Counter> {
     markets: countBy(allMarketSeries(), (s) => s.countryCode),
     soils: countBy(allSoilObservations(), (o) => o.countryCode),
     trade: countBy(TRADE_REQUIREMENTS, (r) => r.jurisdictionCountryCode),
+    // A union aggregate belongs to no country, and counting it toward one
+    // would show a member state as covered by a figure that is not about it.
+    economics: countBy(allEconomicObservations(), (o) =>
+      o.geographyLevel === 'union' ? undefined : o.countryCode,
+    ),
   };
 }
 

@@ -28,6 +28,38 @@ import type { SourceSnapshotDescriptor } from '@/types/freshness';
  */
 export const SOURCE_SNAPSHOTS: SourceSnapshotDescriptor[] = [
   {
+    id: 'ers-cost-of-production-forecasts-2026-08-27',
+    releaseLineId: 'ers:cost-of-production-forecasts',
+    sourceId: 'reg-usda-ers-data-products',
+    snapshotKind: 'api-response',
+    retrievedAt: '2026-08-27',
+    sourceReleaseId: '2026f-2027f',
+    checksum:
+      '1aeb312a3f724ecc416295906e69dac04fcc60678a122e57f8793b421a597310',
+    byteLength: 88433,
+    parserVersion: 'ers-cop@1',
+    normalizationVersion: 'ers-cop@1',
+    status: 'success',
+    payloadPath:
+      'data/snapshots/ers__cost-of-production-forecasts__2026-08-27.json',
+  },
+  {
+    id: 'eurostat-agricultural-economics-2026-08-27',
+    releaseLineId: 'eurostat:agricultural-economics',
+    sourceId: 'reg-eurostat-agriculture',
+    snapshotKind: 'api-response',
+    retrievedAt: '2026-08-27',
+    sourceReleaseId: '2026-08-11',
+    checksum:
+      '5c5e495337d91d3dc4a616d0dc2f7d580fe99d064c68cc1fbc73f4f558b80155',
+    byteLength: 4458202,
+    parserVersion: 'eurostat-jsonstat@1',
+    normalizationVersion: 'eurostat-jsonstat@1',
+    status: 'success',
+    payloadPath:
+      'data/snapshots/eurostat__agricultural-economics__2026-08-27.json',
+  },
+  {
     id: 'ssurgo-component-surface-horizons-2026-08-27',
     releaseLineId: 'ssurgo:component-surface-horizons',
     sourceId: 'reg-usda-nrcs-ssurgo',
