@@ -57,6 +57,7 @@ export function validateDescriptors(
   report: (m: string) => void,
 ): void {
   const seen = new Set<string>();
+  const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
   const latestByLine = new Map<string, { at: string; release: string }>();
 
   for (const d of [...descriptors].sort((a, b) =>
@@ -113,9 +114,16 @@ export function validateDescriptors(
           report(
             `${at}: the descriptor was retrieved ${d.retrievedAt} and the payload says ${payload.retrievedAt}`,
           );
+        // A release id can only be compared with a retrieval date when it IS
+        // a date. ERS versions its forecast series "2026f-2027f", and comparing
+        // that string against an ISO date reported a capture from the future:
+        // the rule was checking a value's SHAPE while reasoning about its
+        // meaning. Non-date release ids are handled below, on the release
+        // line, rather than waved through here.
         if (
           payload.datasetVersion &&
           payload.retrievedAt &&
+          ISO_DATE.test(payload.datasetVersion) &&
           payload.datasetVersion > payload.retrievedAt
         )
           report(
@@ -133,7 +141,18 @@ export function validateDescriptors(
     if (!d.releaseLineId?.trim()) report(`${at}: no releaseLineId`);
     if (d.sourceReleaseId && d.releaseLineId) {
       const prev = latestByLine.get(d.releaseLineId);
-      if (prev && d.sourceReleaseId < prev.release)
+      // Ordering is only meaningful between release ids of the same shape. A
+      // line that publishes ISO dates in one capture and a source-labelled
+      // version in the next cannot be ordered at all, and the honest response
+      // is to fail rather than to compare the two lexically.
+      if (
+        prev &&
+        ISO_DATE.test(prev.release) !== ISO_DATE.test(d.sourceReleaseId)
+      )
+        report(
+          `${at}: release "${d.sourceReleaseId}" and the earlier "${prev.release}" on release line "${d.releaseLineId}" are different kinds of identifier, so neither can be said to come after the other`,
+        );
+      else if (prev && d.sourceReleaseId < prev.release)
         report(
           `${at}: retrieved ${d.retrievedAt} but carries an earlier release (${d.sourceReleaseId}) than the capture of ${prev.at} (${prev.release}) on the same release line`,
         );

@@ -23,6 +23,11 @@ import { CHANGE_HUB_PATH, changeEvents } from '@/lib/history/registry';
 import { COVERAGE_PATH } from '@/lib/coverage/paths';
 import { SOIL_SURVEYS_PATH } from '@/lib/soils/paths';
 import { TRADE_HUB_PATH } from '@/lib/trade/paths';
+import { ECONOMICS_PATH } from '@/lib/economics/paths';
+import {
+  cropsWithCosts,
+  economicsJurisdictions,
+} from '@/lib/economics/registry';
 import { jurisdictionsWithRequirements } from '@/lib/trade/registry';
 import {
   allSoilObservations,
@@ -763,6 +768,41 @@ export function buildSearchDocuments(): SearchDoc[] {
       facets: {
         entityType: ['trade-requirement'],
         category: ['Border requirements'],
+      },
+    });
+  }
+
+  // Farm economics. One hub document, and nothing per crop: the cost figures
+  // live in a section of the crop page, so a second document would compete
+  // with the crop page for its own name. Names are phrases about the COST of
+  // farming; a bare crop name here would take that crop's query, and
+  // "gross margin" is deliberately absent because nothing here publishes one.
+  {
+    docs.push({
+      id: 'economics:farm',
+      type: 'farm-economics',
+      route: ECONOMICS_PATH,
+      title: 'Farm economics: production costs, input prices and land rents',
+      names: [
+        'cost of production',
+        'farm production costs',
+        'agricultural input prices',
+        'farm input price index',
+        'agricultural land rent',
+        'farmland rental prices',
+      ],
+      category: 'Farm economics',
+      summary: `Cost-of-production forecasts for ${cropsWithCosts().length} crops, farm input price indices, input purchase prices and agricultural land rents across ${economicsJurisdictions().length} jurisdictions — each figure kept as the kind of statement its source made.`,
+      relationLabels: [
+        'operating costs',
+        'cost per acre',
+        'input costs',
+        'land rent',
+        'price index',
+      ],
+      facets: {
+        entityType: ['farm-economics'],
+        category: ['Farm economics'],
       },
     });
   }

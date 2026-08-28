@@ -97,6 +97,36 @@ export interface Benchmark {
 }
 
 export const BENCHMARKS: Benchmark[] = [
+  /* ---- Farm economics (Wave 25) -------------------------------------------
+   * Two failures matter here. The hub must win queries about what farming
+   * COSTS, and it must not win queries about a crop: the cost figures live in
+   * a section of the crop page, so a hub that took "maize" would send a reader
+   * away from the page that actually carries the number.
+   */
+  {
+    query: 'cost of production',
+    titleIncludes: ['farm economics'],
+    types: ['farm-economics'],
+    kind: 'multiword',
+  },
+  {
+    query: 'agricultural land rent',
+    titleIncludes: ['farm economics'],
+    types: ['farm-economics'],
+    kind: 'multiword',
+  },
+  {
+    query: 'farm input price index',
+    titleIncludes: ['farm economics'],
+    types: ['farm-economics'],
+    kind: 'multiword',
+  },
+  {
+    query: 'maize',
+    titleIncludes: ['maize'],
+    types: ['crop'],
+    kind: 'exact',
+  },
   /* ---- Price and trade depth (Wave 17) ------------------------------------ */
   {
     query: 'wheat producer price',
