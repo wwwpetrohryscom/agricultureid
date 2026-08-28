@@ -28,6 +28,52 @@ import type { SourceSnapshotDescriptor } from '@/types/freshness';
  */
 export const SOURCE_SNAPSHOTS: SourceSnapshotDescriptor[] = [
   {
+    id: 'ncei-us-climate-normals-2026-08-27',
+    releaseLineId: 'ncei:us-climate-normals',
+    sourceId: 'reg-noaa-ncei-normals',
+    snapshotKind: 'api-response',
+    retrievedAt: '2026-08-27',
+    sourceReleaseId: 'v1.0.1_c20230404',
+    checksum:
+      '1e4eb0667a21ef2cd843484796c1e91c34ad475b77005c42797ceb79db9dfb77',
+    byteLength: 2065144,
+    parserVersion: 'ncei-normals@1',
+    normalizationVersion: 'ncei-normals@1',
+    status: 'success',
+    payloadPath:
+      'data/snapshots/ncei__us-climate-normals-1991-2020__2026-08-27.json',
+  },
+  {
+    id: 'usdm-state-drought-area-2026-08-27',
+    releaseLineId: 'usdm:state-drought-area',
+    sourceId: 'reg-usdm',
+    snapshotKind: 'api-response',
+    retrievedAt: '2026-08-27',
+    sourceReleaseId: '2026-08-25',
+    checksum:
+      'ea4c20bf45b2ab2e2cf4e16bf30d7de618b82cf70a518b2b7deba9f8f655e383',
+    byteLength: 1301917,
+    parserVersion: 'usdm-state@1',
+    normalizationVersion: 'usdm-state@1',
+    status: 'success',
+    payloadPath: 'data/snapshots/usdm__state-drought-area__2026-08-27.json',
+  },
+  {
+    id: 'faostat-land-use-irrigation-2026-08-27',
+    releaseLineId: 'faostat:land-use',
+    sourceId: 'reg-faostat-land-use',
+    snapshotKind: 'api-response',
+    retrievedAt: '2026-08-27',
+    sourceReleaseId: 'Inputs_LandUse_E_All_Data_(Normalized)',
+    checksum:
+      '46e7f41dae422ea5f352cc2f130ed5dec2f3baa82af8d704f23e7f7be3c3f794',
+    byteLength: 1736778,
+    parserVersion: 'faostat-rl@1',
+    normalizationVersion: 'faostat-rl@1',
+    status: 'success',
+    payloadPath: 'data/snapshots/faostat__land-use-irrigation__2026-08-27.json',
+  },
+  {
     id: 'ers-cost-of-production-forecasts-2026-08-27',
     releaseLineId: 'ers:cost-of-production-forecasts',
     sourceId: 'reg-usda-ers-data-products',

@@ -24,6 +24,11 @@ import { COVERAGE_PATH } from '@/lib/coverage/paths';
 import { SOIL_SURVEYS_PATH } from '@/lib/soils/paths';
 import { TRADE_HUB_PATH } from '@/lib/trade/paths';
 import { ECONOMICS_PATH } from '@/lib/economics/paths';
+import { CLIMATE_RISK_PATH } from '@/lib/climate/paths';
+import {
+  countriesWithWaterData,
+  statesWithNormals,
+} from '@/lib/climate/registry';
 import {
   cropsWithCosts,
   economicsJurisdictions,
@@ -768,6 +773,41 @@ export function buildSearchDocuments(): SearchDoc[] {
       facets: {
         entityType: ['trade-requirement'],
         category: ['Border requirements'],
+      },
+    });
+  }
+
+  // Climate, drought and water. One hub document. The 20 climate reference
+  // pages own the vocabulary of climate ITSELF — "evapotranspiration",
+  // "drought" as a concept — so this document carries phrases about the
+  // RECORD: normals, assessments, irrigation statistics. Carrying "drought"
+  // at name weight would take the concept page's own query.
+  {
+    docs.push({
+      id: 'climate:water',
+      type: 'climate-water',
+      route: CLIMATE_RISK_PATH,
+      title: 'Climate normals, drought assessments and agricultural water',
+      names: [
+        'climate normals',
+        'drought monitor',
+        'growing degree days normal',
+        'area equipped for irrigation',
+        'agricultural water statistics',
+        'frost days normal',
+      ],
+      category: 'Climate and water',
+      summary: `Station climate normals for ${statesWithNormals().length} states, weekly drought assessments, and irrigation statistics for ${countriesWithWaterData().length} countries — each value kept as the kind of statement its source made, and none of them a forecast.`,
+      relationLabels: [
+        'climate normal',
+        'drought assessment',
+        'irrigation area',
+        'precipitation normal',
+        'abnormally dry',
+      ],
+      facets: {
+        entityType: ['climate-water'],
+        category: ['Climate and water'],
       },
     });
   }

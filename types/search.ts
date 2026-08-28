@@ -47,6 +47,7 @@ export type SearchEntityType =
   | 'soil-observation'
   | 'trade-requirement'
   | 'farm-economics'
+  | 'climate-water'
   | 'market-data'
   | 'extension-resource'
   | 'input-authorization';

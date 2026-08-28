@@ -153,6 +153,14 @@ export const EVIDENCE_TIER: Record<string, EvidenceTier> = {
   'reg-eu-plant-variety-portal': 1,
   'reg-cpvo-variety-finder': 1,
   'reg-eurostat-agriculture': 1,
+  // NOAA's own climate normals, published by the agency that computes them.
+  'reg-noaa-ncei-normals': 1,
+  // The Drought Monitor is produced jointly by a federal agency, a federal
+  // department and a university centre, and is the official weekly account of
+  // drought in the United States — but it is an assessment, and the layer
+  // built on it says so on every value rather than relying on the tier.
+  'reg-usdm': 1,
+  'reg-faostat-land-use': 1,
   'reg-eu-traces-nt': 1,
   'reg-eppo-global-database': 1,
   'reg-ippc-pest-reports': 1,

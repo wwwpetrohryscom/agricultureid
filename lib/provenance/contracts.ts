@@ -93,6 +93,18 @@ export const LINEAGE_CONTRACTS: readonly LineageContract[] = [
     why: 'A border requirement is traced to the official system or guidance page that publishes it. There is no record identifier, because the systems are decision trees rather than registers of rules.',
   },
   {
+    claimKind: 'climate-observation',
+    permittedLocators: ['dataset-series'],
+    hasRelease: true,
+    // The source names the quantity in its own words — the element, the
+    // category, the item — and that naming is what tells a normal from an
+    // assessment from a reported statistic when the numbers look alike.
+    publishesWording: true,
+    hasInterpretation: true,
+    vocabulary: 'ClimateEvidenceClass',
+    why: 'A climate, drought or water value is addressed by its dataset, its place, its quantity and its period, and by the capture it was read from. Its evidence class comes from the dataset or from the source’s own flag on the value, never from the record — a normal that could relabel itself a measurement, or an agency estimate that could relabel itself a country’s statistic, is the failure this contract exists to prevent.',
+  },
+  {
     claimKind: 'farm-economic-figure',
     permittedLocators: ['dataset-series'],
     hasRelease: true,

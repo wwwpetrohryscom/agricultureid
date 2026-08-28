@@ -13,6 +13,7 @@ import { getProfile } from '@/lib/geo/registry';
 import { countryPath } from '@/lib/geo/paths';
 import { contentPath, resolveRef } from '@/lib/content/registry';
 import { RegionSoils } from '@/components/soils/RegionSoils';
+import { RegionClimate } from '@/components/climate/RegionClimate';
 import {
   allRegions,
   getRegion,
@@ -206,6 +207,11 @@ export default async function RegionPage({ params }: Params) {
           nothing where no survey is ingested: an empty table would read as an
           absence of soil data in the world rather than in this corpus. */}
       <RegionSoils jurisdictionId={r.officialCode} regionName={r.name} />
+
+      {/* Climate normals and the drought assessment in force. Renders nothing
+          where neither is held, and never shows an expired weekly map as the
+          current state of a drought. */}
+      <RegionClimate jurisdictionId={r.officialCode} regionName={r.name} />
 
       <SourceList references={r.sourceReferences} />
     </Container>

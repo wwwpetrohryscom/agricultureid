@@ -415,6 +415,13 @@ export const SECTIONS: NavSection[] = [
     active: true,
   },
   {
+    label: 'Climate & Water',
+    href: '/climate-and-water',
+    description:
+      'Climate normals, weekly drought assessments and agricultural irrigation statistics — each kept as the kind of statement it is, and none of it turned into a prediction.',
+    active: true,
+  },
+  {
     label: 'Farm Economics',
     href: '/farm-economics',
     description:
@@ -638,6 +645,7 @@ export const REFERENCE_NAV = SECTIONS.filter(
       '/soil-surveys',
       '/agricultural-trade',
       '/farm-economics',
+      '/climate-and-water',
       '/agricultural-markets',
       '/extension-resources',
       '/agricultural-inputs',

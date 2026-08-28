@@ -34,6 +34,8 @@ import { usdaNrcsSsurgo } from './usda-nrcs-ssurgo';
 import { auBicon } from './au-bicon';
 import { caAirs } from './ca-airs';
 import { usPexd } from './us-pexd';
+import { noaaNceiClimateNormals } from './noaa-ncei-climate-normals';
+import { usdmDroughtMonitor } from './usdm-drought-monitor';
 import { jpPlantProtection } from './jp-plant-protection';
 import { krApqa } from './kr-apqa';
 import { apvmaPubcris } from './apvma-pubcris';
@@ -71,6 +73,8 @@ export const REGISTRIES: AgriculturalRegistryEntry[] = [
   auBicon,
   caAirs,
   usPexd,
+  noaaNceiClimateNormals,
+  usdmDroughtMonitor,
   jpPlantProtection,
   krApqa,
   apvmaPubcris,

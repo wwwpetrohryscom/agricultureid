@@ -26,6 +26,8 @@ import { SUPPORT_PROGRAMS } from '@/data/support';
 import { allSoilObservations } from '@/lib/soils/registry';
 import { TRADE_REQUIREMENTS } from '@/lib/trade/registry';
 import { allEconomicObservations } from '@/lib/economics/registry';
+import { allClimateObservations } from '@/lib/climate/registry';
+import { CLIMATE_CONTRACT_MAP } from '@/lib/climate/contracts';
 import { ECONOMICS_CONTRACT_MAP } from '@/lib/economics/contracts';
 import { SOIL_DATASET_CONTRACT_MAP } from '@/lib/soils/contracts';
 
@@ -323,6 +325,53 @@ export function soilObservationLineage(id: string): ClaimLineage | undefined {
  * not: a forecast says it is a forecast, an average says what it averages over,
  * and an index says what its base is instead of carrying a currency.
  */
+/**
+ * Where one climate, drought or water value came from.
+ *
+ * The statement is written so the value cannot be read as something it is not:
+ * a normal says it averages a period, an assessment says it was drawn for a
+ * week, and a water figure says whether the country reported it or the agency
+ * worked it out.
+ */
+export function climateObservationLineage(
+  id: string,
+): ClaimLineage | undefined {
+  const o = allClimateObservations().find((x) => x.id === id);
+  if (!o) return undefined;
+  const sources = sourcesOf(o.sourceReferenceIds);
+  const contract = CLIMATE_CONTRACT_MAP.get(o.sourceDatasetId);
+  const statement =
+    o.evidenceClass === 'climate-normal'
+      ? `${o.publishedItem} at ${o.jurisdictionName} averaged ${o.value} ${o.unit} over ${o.period}, from ${o.yearsUsed} of the thirty years.`
+      : o.evidenceClass === 'assessment'
+        ? `${o.jurisdictionName} was assessed as ${o.value}% of its area in ${o.droughtCategory} for the week of ${o.validFrom} to ${o.validTo}.`
+        : `${o.jurisdictionName} is recorded at ${o.value} ${o.unit} for ${o.publishedItem} in ${o.period}, ${o.sourceFlagMeaning?.toLowerCase() ?? 'as published'}.`;
+  return {
+    claimKind: 'climate-observation',
+    claimId: o.id,
+    claimLabel: `${o.jurisdictionName} — ${o.publishedItem}`,
+    statement,
+    sources,
+    release: releaseOf(
+      SOURCE_SNAPSHOTS.find((s) => s.payloadPath === contract?.snapshotPath)
+        ?.id,
+    ),
+    locator: {
+      kind: 'dataset-series',
+      value: `${o.sourceDatasetId} · ${o.jurisdictionName} · ${o.metric} · ${o.period}`,
+    },
+    sourceWording: { text: o.publishedItem, field: 'quantity as published' },
+    interpretation: {
+      value: o.evidenceClass,
+      vocabulary: 'ClimateEvidenceClass',
+    },
+    verifiedAt: o.lastVerifiedAt,
+    truthState: stateFrom(sources.length > 0, Boolean(o.lastVerifiedAt), false),
+    conflicts: [],
+    limitations: [...(o.limitations ?? [])],
+  };
+}
+
 export function farmEconomicLineage(id: string): ClaimLineage | undefined {
   const o = allEconomicObservations().find((x) => x.id === id);
   if (!o) return undefined;
@@ -436,6 +485,16 @@ export function allLineages(): ClaimLineage[] {
   // and geography level covers every path — an index without a currency, a
   // forecast with its assumptions, a union aggregate and a regional figure —
   // without resolving the whole corpus on every read.
+  // One per dataset, evidence class and spatial basis: enough to exercise
+  // every path the contract permits without resolving 56,000 values on read.
+  const climateSeen = new Set<string>();
+  for (const o of allClimateObservations()) {
+    const key = `${o.sourceDatasetId}|${o.evidenceClass}|${o.metric}`;
+    if (climateSeen.has(key)) continue;
+    climateSeen.add(key);
+    const l = climateObservationLineage(o.id);
+    if (l) out.push(l);
+  }
   const economicsSeen = new Set<string>();
   for (const o of allEconomicObservations()) {
     const key = `${o.sourceDatasetId}|${o.metric}|${o.geographyLevel}`;
