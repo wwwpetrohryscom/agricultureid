@@ -366,6 +366,74 @@ describe('crops — hybrids and complexes keep their shape (Wave 29)', () => {
   });
 });
 
+describe('crops — multi-species crops are not one species (Wave 30)', () => {
+  it('holds coffee, cotton and jute as genus concepts with their species verified', () => {
+    for (const [slug, gen, species] of [
+      [
+        'coffee',
+        'Coffea',
+        ['Coffea arabica', 'Coffea canephora', 'Coffea liberica'],
+      ],
+      [
+        'cotton',
+        'Gossypium',
+        [
+          'Gossypium hirsutum',
+          'Gossypium barbadense',
+          'Gossypium arboreum',
+          'Gossypium herbaceum',
+        ],
+      ],
+      ['jute', 'Corchorus', ['Corchorus olitorius', 'Corchorus capsularis']],
+    ] as const) {
+      const c = CROP_IDENTITIES.find((x) => x.slug === slug)!;
+      expect(c, slug).toBeDefined();
+      expect(c.taxonRank, slug).toBe('genus');
+      expect(c.genus, slug).toBe(gen);
+      expect(c.limitations?.length, slug).toBeGreaterThan(0);
+      for (const s of species)
+        expect(
+          CROP_IDENTITIES.some((x) => x.acceptedScientificName === s),
+          `${slug} → ${s}`,
+        ).toBe(true);
+    }
+  });
+
+  it('does not publish a forage use as a separate taxon', () => {
+    // Italian ryegrass is a forage grass AND a cover crop; hairy vetch is a
+    // cover crop AND a forage. Each is one identity carrying several uses.
+    const rye = CROP_IDENTITIES.find((c) => c.slug === 'italian-ryegrass')!;
+    expect(rye.agriculturalUses).toContain('forage');
+    expect(rye.agriculturalUses).toContain('cover-crop');
+    const dupes = CROP_IDENTITIES.filter(
+      (c) => c.acceptedScientificName === rye.acceptedScientificName,
+    );
+    expect(dupes).toHaveLength(1);
+  });
+
+  it('records the Festuca to Lolium transfer both authorities made', () => {
+    const tf = CROP_IDENTITIES.find((c) => c.slug === 'tall-fescue')!;
+    expect(tf.acceptedScientificName).toBe('Lolium arundinaceum');
+    expect(tf.genus).toBe('Lolium');
+  });
+});
+
+describe('crops — every crop page has a verified identity', () => {
+  it('leaves no published crop without one', () => {
+    const pages = PUBLISHED_CONTENT.filter((c) => c.contentType === 'crop');
+    const covered = new Set(
+      CROP_IDENTITIES.filter((c) => c.profileDepth === 'full-profile').map(
+        (c) => c.cropPageSlug,
+      ),
+    );
+    const missing = pages
+      .filter((p) => !covered.has(p.slug))
+      .map((p) => p.slug);
+    expect(missing).toEqual([]);
+    expect(pages.length).toBeGreaterThan(150);
+  });
+});
+
 describe('crops — vocabularies are controlled and live', () => {
   it('uses only vocabulary values', () => {
     for (const c of CROP_IDENTITIES) {

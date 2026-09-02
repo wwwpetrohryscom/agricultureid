@@ -1,0 +1,592 @@
+{
+  "wave": 30,
+  "generatedAt": "2026-09-02",
+  "counts": {
+    "ACCEPT_FULL_PROFILE": 22,
+    "ACCEPT_DATA_ONLY": 55,
+    "SYNONYM_OF_EXISTING": 6,
+    "CULTIVAR_NOT_CROP": 3,
+    "CROP_GROUP_NOT_SINGLE_TAXON": 3,
+    "AGRICULTURAL_FORM_OF_EXISTING_TAXON": 5,
+    "TAXONOMY_UNCERTAIN": 1,
+    "MARKET_CLASS_NOT_CROP": 1
+  },
+  "entries": [
+    {
+      "candidate": "Medicago sativa",
+      "slug": "alfalfa",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "cotton",
+      "slug": "cotton",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Linum usitatissimum",
+      "slug": "flax",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Cannabis sativa",
+      "slug": "hemp",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "jute",
+      "slug": "jute",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "coffee",
+      "slug": "coffee",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Camellia sinensis",
+      "slug": "tea",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Theobroma cacao",
+      "slug": "cocoa",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Piper nigrum",
+      "slug": "black-pepper",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Vanilla planifolia",
+      "slug": "vanilla",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Cinnamomum verum",
+      "slug": "cinnamon",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Syzygium aromaticum",
+      "slug": "clove",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Myristica fragrans",
+      "slug": "nutmeg",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Zingiber officinale",
+      "slug": "ginger",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Curcuma longa",
+      "slug": "turmeric",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Elettaria cardamomum",
+      "slug": "cardamom",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Crocus sativus",
+      "slug": "saffron",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Cuminum cyminum",
+      "slug": "cumin",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Hevea brasiliensis",
+      "slug": "rubber",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Nicotiana tabacum",
+      "slug": "tobacco",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Aloe vera",
+      "slug": "aloe-vera",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Lavandula angustifolia",
+      "slug": "lavender",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Trifolium pratense",
+      "slug": "red-clover",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Trifolium repens",
+      "slug": "white-clover",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Trifolium incarnatum",
+      "slug": "crimson-clover",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Trifolium alexandrinum",
+      "slug": "berseem-clover",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Lolium perenne",
+      "slug": "perennial-ryegrass",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Lolium multiflorum",
+      "slug": "italian-ryegrass",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Phleum pratense",
+      "slug": "timothy",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Dactylis glomerata",
+      "slug": "cocksfoot",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Lolium arundinaceum",
+      "slug": "tall-fescue",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Schedonorus pratensis",
+      "slug": "meadow-fescue",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Poa pratensis",
+      "slug": "kentucky-bluegrass",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Bromus inermis",
+      "slug": "smooth-brome",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Agropyron cristatum",
+      "slug": "crested-wheatgrass",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Onobrychis viciifolia",
+      "slug": "sainfoin",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Vicia sativa",
+      "slug": "common-vetch",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Vicia villosa",
+      "slug": "hairy-vetch",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Melilotus officinalis",
+      "slug": "sweet-clover",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Lotus corniculatus",
+      "slug": "birdsfoot-trefoil",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Cenchrus purpureus",
+      "slug": "napier-grass",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Urochloa brizantha",
+      "slug": "signal-grass",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Chloris gayana",
+      "slug": "rhodes-grass",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Megathyrsus maximus",
+      "slug": "guinea-grass",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Stylosanthes guianensis",
+      "slug": "stylo",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Desmodium intortum",
+      "slug": "greenleaf-desmodium",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Arachis pintoi",
+      "slug": "forage-peanut",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Phacelia tanacetifolia",
+      "slug": "phacelia",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Gossypium hirsutum",
+      "slug": "upland-cotton",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Gossypium barbadense",
+      "slug": "barbadense-cotton",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Gossypium arboreum",
+      "slug": "tree-cotton",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Gossypium herbaceum",
+      "slug": "levant-cotton",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Corchorus capsularis",
+      "slug": "white-jute",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Hibiscus cannabinus",
+      "slug": "kenaf",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Agave sisalana",
+      "slug": "sisal",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Boehmeria nivea",
+      "slug": "ramie",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Musa textilis",
+      "slug": "abaca",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Ceiba pentandra",
+      "slug": "kapok",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Coffea arabica",
+      "slug": "arabica-coffee",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Coffea canephora",
+      "slug": "robusta-coffee",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Coffea liberica",
+      "slug": "liberica-coffee",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Humulus lupulus",
+      "slug": "hops",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Ilex paraguariensis",
+      "slug": "yerba-mate",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Cola nitida",
+      "slug": "kola-nut",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Cinnamomum aromaticum",
+      "slug": "cassia-cinnamon",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Pimpinella anisum",
+      "slug": "anise",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Trigonella foenum-graecum",
+      "slug": "fenugreek",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Capparis spinosa",
+      "slug": "caper",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Laurus nobilis",
+      "slug": "bay-laurel",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Illicium verum",
+      "slug": "star-anise",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Nigella sativa",
+      "slug": "black-cumin",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Carum carvi",
+      "slug": "caraway",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Miscanthus giganteus",
+      "slug": "miscanthus",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Panicum virgatum",
+      "slug": "switchgrass",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Arundo donax",
+      "slug": "giant-reed",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Stevia rebaudiana",
+      "slug": "stevia",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "daikon",
+      "slug": "daikon",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Festuca arundinacea",
+      "slug": "tall-fescue",
+      "status": "SYNONYM_OF_EXISTING",
+      "note": "Neither authority resolves it. Both accept Lolium arundinaceum after the Festuca\u2013Lolium transfer."
+    },
+    {
+      "candidate": "Schedonorus arundinaceus",
+      "slug": "tall-fescue",
+      "status": "SYNONYM_OF_EXISTING",
+      "note": "Not resolved by either authority; Lolium arundinaceum is accepted."
+    },
+    {
+      "candidate": "Pennisetum purpureum",
+      "slug": "napier-grass",
+      "status": "SYNONYM_OF_EXISTING",
+      "note": "Both authorities accept Cenchrus purpureus."
+    },
+    {
+      "candidate": "Brachiaria brizantha",
+      "slug": "signal-grass",
+      "status": "SYNONYM_OF_EXISTING",
+      "note": "Both authorities accept Urochloa brizantha."
+    },
+    {
+      "candidate": "Panicum maximum",
+      "slug": "guinea-grass",
+      "status": "SYNONYM_OF_EXISTING",
+      "note": "Both authorities accept Megathyrsus maximus."
+    },
+    {
+      "candidate": "Cinnamomum cassia",
+      "slug": "cassia-cinnamon",
+      "status": "SYNONYM_OF_EXISTING",
+      "note": "Not resolved by either authority; both accept Cinnamomum aromaticum."
+    },
+    {
+      "candidate": "Pima cotton",
+      "slug": "barbadense-cotton",
+      "status": "CULTIVAR_NOT_CROP",
+      "note": "\"Pima cotton\" is a published CULTIVAR in this corpus. The gate refused a crop identity carrying a cultivar name; the species is Gossypium barbadense and Pima is a cultivar group within it."
+    },
+    {
+      "candidate": "coffee",
+      "slug": "coffee",
+      "status": "CROP_GROUP_NOT_SINGLE_TAXON",
+      "note": "Two commercial species, arabica and robusta, differing in ploidy, caffeine, disease resistance and altitude. Held as a genus concept with three species verified."
+    },
+    {
+      "candidate": "cotton",
+      "slug": "cotton",
+      "status": "CROP_GROUP_NOT_SINGLE_TAXON",
+      "note": "Four domesticated Gossypium species. Held as a genus concept with all four verified; the page previously named only G. hirsutum."
+    },
+    {
+      "candidate": "jute",
+      "slug": "jute",
+      "status": "CROP_GROUP_NOT_SINGLE_TAXON",
+      "note": "Two cultivated Corchorus species, both verified."
+    },
+    {
+      "candidate": "forage maize",
+      "slug": null,
+      "status": "AGRICULTURAL_FORM_OF_EXISTING_TAXON",
+      "note": "A use of Zea mays, not a taxon. Recorded as an agricultural use on maize."
+    },
+    {
+      "candidate": "forage sorghum",
+      "slug": null,
+      "status": "AGRICULTURAL_FORM_OF_EXISTING_TAXON",
+      "note": "A use of Sorghum bicolor, not a taxon."
+    },
+    {
+      "candidate": "tillage radish",
+      "slug": "daikon",
+      "status": "AGRICULTURAL_FORM_OF_EXISTING_TAXON",
+      "note": "A cover-crop use of daikon. One identity carrying both uses rather than two records for one plant."
+    },
+    {
+      "candidate": "buckwheat as a cover crop",
+      "slug": "buckwheat",
+      "status": "AGRICULTURAL_FORM_OF_EXISTING_TAXON",
+      "note": "Fagopyrum esculentum is already held; the cover-crop use is a use, not a second entity."
+    },
+    {
+      "candidate": "camelina as a cover crop",
+      "slug": "camelina",
+      "status": "AGRICULTURAL_FORM_OF_EXISTING_TAXON",
+      "note": "Already held from Wave 27 with the cover-crop use recorded."
+    },
+    {
+      "candidate": "Cannabis indica",
+      "slug": null,
+      "status": "TAXONOMY_UNCERTAIN",
+      "note": "Treatment as a species separate from Cannabis sativa is contested and not settled by the consulted authorities. Not published."
+    },
+    {
+      "candidate": "CBD hemp",
+      "slug": null,
+      "status": "MARKET_CLASS_NOT_CROP",
+      "note": "A regulatory and end-use class of Cannabis sativa defined by THC threshold, not a taxon."
+    },
+    {
+      "candidate": "Arabica",
+      "slug": null,
+      "status": "CULTIVAR_NOT_CROP",
+      "note": "A species name used as a trade term; held as the species Coffea arabica."
+    },
+    {
+      "candidate": "Robusta",
+      "slug": null,
+      "status": "CULTIVAR_NOT_CROP",
+      "note": "A trade term for Coffea canephora."
+    }
+  ]
+}
