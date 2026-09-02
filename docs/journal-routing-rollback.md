@@ -83,6 +83,20 @@ After a Level 1 rollback all three should be 200.
 | Journal origin     | `https://agricultureid-journal.netlify.app`                      |
 | Team               | `hello13hub`                                                     |
 
+## Independent deployment, as measured
+
+Verified 2026-09-02 by pushing a one-word change to a single publication and
+watching both projects:
+
+```
+                    before                              after
+MAIN     6a9775fd7d09fa00082dd7b8 01:03:57Z   6a9775fd7d09fa00082dd7b8 01:03:57Z
+JOURNAL  6a97775720d6b20008ff255a 01:09:43Z   6a9777afadd84a0008d74477 01:11:11Z
+```
+
+The Journal built one second after the push. The knowledge platform's newest
+deploy did not change.
+
 ## Two failure modes that are not rollback candidates
 
 **The Journal's own deploy is green but every route 404s.** The Next.js adapter
