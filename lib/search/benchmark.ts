@@ -1571,6 +1571,177 @@ export const BENCHMARKS: Benchmark[] = [
     kind: 'typo',
     note: 'fuzzy-only match — no exact term hit anywhere in this query',
   },
+
+  /* ---- Selective promotion (Wave 32) --------------------------------------
+   * Seven species pages were promoted out of the taxon table. The risk they
+   * create is cannibalisation: a page named "Durum Wheat" competing with the
+   * wheat article for "wheat", or "Arabica Coffee" taking "coffee". Every
+   * umbrella query below therefore asserts that the GENUS-OR-CONCEPT page still
+   * wins its own term, and every species query asserts the new page wins its
+   * own name and its own binomial.
+   *
+   * The last two are the rank rule that promotion exposed: a published article
+   * must outrank a row in the taxon table when both match a bare common name.
+   */
+  {
+    query: 'durum wheat',
+    titleIncludes: ['durum wheat'],
+    types: ['crop'],
+    kind: 'exact',
+  },
+  {
+    query: 'triticum turgidum',
+    titleIncludes: ['durum wheat'],
+    types: ['crop'],
+    kind: 'scientific',
+  },
+  {
+    query: 'semolina wheat',
+    titleIncludes: ['durum wheat'],
+    top3Includes: ['semolina'],
+    kind: 'multiword',
+  },
+  {
+    query: 'wheat',
+    titleIncludes: ['wheat'],
+    mustNotTop: ['durum'],
+    types: ['crop'],
+    kind: 'exact',
+    note: 'The wheat article must keep its own term after durum was promoted.',
+  },
+
+  {
+    query: 'arabica coffee',
+    titleIncludes: ['arabica coffee'],
+    types: ['crop'],
+    kind: 'exact',
+  },
+  {
+    query: 'coffea arabica',
+    titleIncludes: ['arabica coffee'],
+    types: ['crop'],
+    kind: 'scientific',
+  },
+  {
+    query: 'robusta coffee',
+    titleIncludes: ['robusta coffee'],
+    types: ['crop'],
+    kind: 'exact',
+  },
+  {
+    query: 'coffea canephora',
+    titleIncludes: ['robusta coffee'],
+    types: ['crop'],
+    kind: 'scientific',
+  },
+  {
+    query: 'conilon',
+    titleIncludes: ['robusta coffee'],
+    types: ['crop'],
+    kind: 'synonym',
+  },
+  {
+    query: 'coffee',
+    titleIncludes: ['coffee'],
+    mustNotTop: ['arabica', 'robusta'],
+    types: ['crop'],
+    kind: 'exact',
+    note: 'The genus-level coffee article must keep its own term after both species were promoted.',
+  },
+
+  {
+    query: 'upland cotton',
+    titleIncludes: ['upland cotton'],
+    types: ['crop'],
+    kind: 'exact',
+  },
+  {
+    query: 'gossypium hirsutum',
+    titleIncludes: ['upland cotton'],
+    types: ['crop'],
+    kind: 'scientific',
+  },
+  {
+    query: 'cotton',
+    titleIncludes: ['cotton'],
+    mustNotTop: ['upland'],
+    types: ['crop'],
+    kind: 'exact',
+    note: 'The cotton article covers four species and must keep its own term.',
+  },
+
+  {
+    query: 'finger millet',
+    titleIncludes: ['finger millet'],
+    types: ['crop'],
+    kind: 'exact',
+  },
+  {
+    query: 'eleusine coracana',
+    titleIncludes: ['finger millet'],
+    types: ['crop'],
+    kind: 'scientific',
+  },
+  {
+    query: 'ragi',
+    titleIncludes: ['finger millet'],
+    types: ['crop'],
+    kind: 'synonym',
+  },
+  {
+    query: 'millet',
+    titleIncludes: ['millet'],
+    mustNotTop: ['finger'],
+    types: ['crop'],
+    kind: 'exact',
+    note: '"Millet" spans four genera; promoting finger millet must not make it the answer.',
+  },
+
+  {
+    query: 'perennial ryegrass',
+    titleIncludes: ['perennial ryegrass'],
+    types: ['crop'],
+    kind: 'exact',
+  },
+  {
+    query: 'lolium perenne',
+    titleIncludes: ['perennial ryegrass'],
+    types: ['crop'],
+    kind: 'scientific',
+  },
+  {
+    query: 'red clover',
+    titleIncludes: ['red clover'],
+    types: ['crop'],
+    kind: 'exact',
+  },
+  {
+    query: 'trifolium pratense',
+    titleIncludes: ['red clover'],
+    types: ['crop'],
+    kind: 'scientific',
+  },
+
+  {
+    query: 'ryegrass',
+    titleIncludes: ['perennial ryegrass'],
+    mustNotTopTypes: ['crop-taxon'],
+    kind: 'exact',
+    note: 'A published article must outrank a row in the taxon table for a bare common name they share.',
+  },
+  {
+    query: 'clover',
+    types: ['crop'],
+    mustNotTopTypes: ['crop-taxon'],
+    kind: 'exact',
+    note: '"Clover" spans several Trifolium species and Melilotus, so no SPECIES is asserted — only that the answer is a crop article a reader can open, not a row in the taxon table.',
+  },
+  {
+    query: 'annual ryegrass',
+    titleIncludes: ['italian ryegrass'],
+    kind: 'synonym',
+    note: 'Moving taxon synonyms out of relationLabels must not cost their discoverability.',
+  },
 ];
 
 export function benchmarkIndex(): SearchIndex {

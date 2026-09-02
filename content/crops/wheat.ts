@@ -219,6 +219,7 @@ export const wheat: CropContent = {
     { type: 'soil', slug: 'clay-soil' },
   ],
   relatedTopics: [
+    { type: 'crop', slug: 'durum-wheat' },
     { type: 'crop', slug: 'barley' },
     { type: 'crop', slug: 'rice' },
   ],

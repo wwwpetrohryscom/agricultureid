@@ -233,6 +233,7 @@ export const millet: CropContent = {
     { type: 'irrigation-method', slug: 'deficit-irrigation' },
   ],
   relatedTopics: [
+    { type: 'crop', slug: 'finger-millet' },
     { type: 'crop', slug: 'sorghum' },
     { type: 'crop', slug: 'oats' },
     { type: 'crop', slug: 'quinoa' },

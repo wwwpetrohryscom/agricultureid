@@ -799,7 +799,8 @@ export const WAVE_30_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'red-clover',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -931,7 +932,8 @@ export const WAVE_30_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'perennial-ryegrass',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -1651,7 +1653,8 @@ export const WAVE_30_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'upland-cotton',
     limitations: [
       'The name Gossypium hirsutum is a homonym: more than one published name matches it exactly, and they resolve to different taxa. The accepted one was selected; Gossypium hirsutum Cav..',
     ],
@@ -1977,7 +1980,8 @@ export const WAVE_30_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'arabica-coffee',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -2010,7 +2014,8 @@ export const WAVE_30_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'robusta-coffee',
     lastVerifiedAt: '2026-09-02',
   },
   {

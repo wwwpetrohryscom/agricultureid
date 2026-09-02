@@ -239,6 +239,7 @@ export const cotton: CropContent = {
     { type: 'farming-system', slug: 'conservation-agriculture' },
   ],
   relatedTopics: [
+    { type: 'crop', slug: 'upland-cotton' },
     { type: 'crop', slug: 'sorghum' },
     { type: 'crop', slug: 'alfalfa' },
   ],

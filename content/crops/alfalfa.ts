@@ -235,6 +235,8 @@ export const alfalfa: CropContent = {
     { type: 'farming-system', slug: 'integrated-crop-livestock' },
   ],
   relatedTopics: [
+    { type: 'crop', slug: 'red-clover' },
+    { type: 'crop', slug: 'perennial-ryegrass' },
     { type: 'crop', slug: 'soybean' },
     { type: 'crop', slug: 'sorghum' },
   ],
