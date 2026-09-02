@@ -14,6 +14,7 @@
 import { describe, expect, it } from 'vitest';
 import { CROP_PUBLICATION_REVIEWS } from '@/data/crop-publication';
 import { CROP_RESEARCH } from '@/data/crop-research';
+import { CROP_EXPANSION_CANDIDATES } from '@/data/crop-expansion';
 import { IDENTITY_BY_SLUG } from '@/lib/crops/identity';
 import { PUBLISHED_CONTENT } from '@/lib/content/registry';
 import { articleText } from '@/lib/crops/content-depth';
@@ -60,9 +61,15 @@ describe('published means published', () => {
   });
 
   it('accounts for the corpus growth it claims', () => {
-    // 165 crop articles before the wave. Recomputed from the corpus rather
-    // than asserted, so the number cannot be right for the wrong reason.
-    expect(crops.length - PUBLISHED.length).toBe(165);
+    // 165 crop articles before Wave 39. Recomputed from the corpus rather than
+    // asserted: subtract what each subsequent campaign says it published, and
+    // what remains must be the pre-wave corpus. Later waves have to be
+    // subtracted too, which is the point — an article nobody's campaign
+    // accounts for would leave this number wrong.
+    const later = CROP_EXPANSION_CANDIDATES.filter(
+      (c) => c.recommendation === 'PUBLISH',
+    ).length;
+    expect(crops.length - PUBLISHED.length - later).toBe(165);
   });
 });
 

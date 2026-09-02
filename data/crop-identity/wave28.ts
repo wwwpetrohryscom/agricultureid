@@ -1993,7 +1993,8 @@ export const WAVE_28_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'cape-gooseberry',
     limitations: [
       'The name Physalis peruviana is a homonym: more than one published name matches it exactly, and they resolve to different taxa. The accepted one was selected; Physalis peruviana Mill..',
     ],
@@ -2062,7 +2063,8 @@ export const WAVE_28_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'scarlet-eggplant',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -2095,7 +2097,8 @@ export const WAVE_28_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'gboma-eggplant',
     limitations: [
       'The name Solanum macrocarpon is a homonym: more than one published name matches it exactly, and they resolve to different taxa. The accepted one was selected; Solanum macrocarpon Molina.',
     ],
@@ -2798,7 +2801,8 @@ export const WAVE_28_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'waterleaf',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -2866,7 +2870,8 @@ export const WAVE_28_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'yardlong-bean',
     lastVerifiedAt: '2026-09-02',
   },
   {

@@ -201,7 +201,7 @@ export const CROP_PUBLICATION_REVIEWS: readonly CropPublicationReview[] = [
     outcome: 'PUBLISHED',
     differentiator: {
       claim:
-        'Foxtail millet is the fastest of the cultivated cereals to maturity, which makes it the crop sown when something else has failed and the season is already half gone.',
+        'Foxtail millet is among the shortest-season cultivated cereals, which makes it the crop sown when something else has failed and the season is already half gone — though barnyard millet, whose reported maturity is shorter still, is the faster of the two.',
       falseFor: 'proso-millet',
     },
     scope: {

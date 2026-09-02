@@ -294,6 +294,69 @@ console.log(
   );
   console.log(`    longest identical run: ${before}w before, ${now}w now`);
 }
+/* -- alternative names may not claim another crop's title ------------------
+ *
+ * An alternative name is a claim that this crop is also called that. When the
+ * name is another published crop's title, the claim is that the two are the
+ * same crop, and for two pages that exist separately it is false by
+ * construction.
+ *
+ * Wave 40 found five of these, all created the same way: a parent page listed
+ * a name, and a later wave published the crop that name belongs to. Cherry
+ * claimed "Sour cherry" while the sour cherry page opens by explaining that
+ * they are different species. Nothing noticed, because until the child existed
+ * the alias was harmless.
+ *
+ * A concept page is the exception, and only where the concept record says so:
+ * "Arabica coffee" on the Coffee page is a statement about what that page
+ * covers, and `CROP_CONCEPTS` is what makes it checkable rather than asserted.
+ */
+{
+  const cropTitles = new Map(
+    PUBLISHED_CONTENT.filter((c) => c.contentType === 'crop').map((c) => [
+      c.title.toLowerCase(),
+      c.slug,
+    ]),
+  );
+  const linked = new Set<string>();
+  for (const k of CROP_CONCEPTS)
+    for (const t of k.constituents) {
+      if (!t.identitySlug) continue;
+      linked.add(`${k.slug}|${t.identitySlug}`);
+      linked.add(`${t.identitySlug}|${k.slug}`);
+    }
+  for (const c of PUBLISHED_CONTENT) {
+    if (c.contentType !== 'crop') continue;
+    const names =
+      (c as unknown as { alternativeNames?: string[] }).alternativeNames ?? [];
+    /**
+     * The same name listed twice.
+     *
+     * Found on the arabica coffee page, which carried "Coffee", "coffee" and
+     * "Coffee crop" — three entries for one claim, which is what repeatedly
+     * asserting a name to a search engine looks like rather than what naming
+     * a crop looks like.
+     */
+    const seenNames = new Set<string>();
+    for (const n of names) {
+      const key = String(n).toLowerCase().trim();
+      if (seenNames.has(key))
+        fail(
+          `crop "${c.slug}" lists the alternative name "${n}" more than once`,
+        );
+      seenNames.add(key);
+    }
+    for (const n of names) {
+      const owner = cropTitles.get(String(n).toLowerCase());
+      if (!owner || owner === c.slug) continue;
+      if (linked.has(`${c.slug}|${owner}`)) continue;
+      fail(
+        `crop "${c.slug}" lists "${n}" as an alternative name, which is the title of crop "${owner}" — two published crops are not the same crop, and no concept record links them`,
+      );
+    }
+  }
+}
+
 console.log(`\n  Scope decisions recorded:     ${SCOPE_DECISIONS.length}`);
 for (const d of SCOPE_DECISIONS)
   console.log(`    ${d.slug.padEnd(14)}${d.outcome}`);

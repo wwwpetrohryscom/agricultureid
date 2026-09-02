@@ -7,7 +7,7 @@ export const blueberry: CropContent = {
   title: 'Blueberry',
   scientificName:
     'Vaccinium corymbosum (northern highbush blueberry); other cultivated Vaccinium species and hybrids are grown regionally',
-  alternativeNames: ['Highbush blueberry', 'Lowbush blueberry'],
+  alternativeNames: ['Highbush blueberry'],
   category: 'Fruit crop',
   subcategory: 'Perennial berry shrub',
   botanicalFamily: 'Ericaceae (heath family)',

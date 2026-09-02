@@ -228,6 +228,8 @@ export const cumin: CropContent = {
   relatedTopics: [
     { type: 'crop', slug: 'coriander' },
     { type: 'crop', slug: 'fennel' },
+
+    { type: 'crop', slug: 'black-cumin' },
   ],
   glossaryTerms: ['annual-crop', 'crop-rotation', 'yield'],
   geographicScope:

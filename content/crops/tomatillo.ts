@@ -182,6 +182,8 @@ export const tomatillo: CropContent = {
     { type: 'crop', slug: 'tomato' },
     { type: 'crop', slug: 'sweet-pepper' },
     { type: 'crop', slug: 'eggplant' },
+
+    { type: 'crop', slug: 'cape-gooseberry' },
   ],
   glossaryTerms: ['annual-crop', 'crop-rotation'],
   geographicScope:

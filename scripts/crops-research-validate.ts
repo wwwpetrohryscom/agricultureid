@@ -27,6 +27,7 @@ import { CROP_CONCEPTS } from '../data/crop-identity/concepts';
 import { SOURCE_MAP } from '../lib/sources/registry';
 import { PUBLISHED_CONTENT } from '../lib/content/registry';
 import { PUBLICATION_BY_SLUG } from '../data/crop-publication';
+import { CROP_EXPANSION_CANDIDATES } from '../data/crop-expansion';
 import { allRoutes } from '../lib/seo/routes';
 
 const errors: string[] = [];
@@ -39,6 +40,25 @@ const publishedCrops = new Set(
   PUBLISHED_CONTENT.filter((c) => c.contentType === 'crop').map((c) => c.slug),
 );
 const noted = new Set(PROMOTION_NOTES.map((n) => n.slug));
+
+/**
+ * Crops a later wave published and accounts for, in checkable form.
+ *
+ * Two campaigns now write articles for crops this campaign answered: Wave 39's
+ * publication reviews took up its deferrals, and Wave 40's expansion candidates
+ * took up crops it had judged sufficient as taxon records. Neither contradicts
+ * it — both outcomes were about editorial capacity and reader need, not about
+ * evidence — but a page that NO layer accounts for still has to fail, so this
+ * set is built from those layers rather than from "has a page".
+ */
+const accountedForByLaterWave = new Set([
+  ...[...PUBLICATION_BY_SLUG.values()]
+    .filter((r) => r.outcome === 'PUBLISHED')
+    .map((r) => r.slug),
+  ...CROP_EXPANSION_CANDIDATES.filter(
+    (c) => c.recommendation === 'PUBLISH',
+  ).map((c) => c.slug),
+]);
 const conceptConstituents = new Set(
   CROP_CONCEPTS.flatMap((k) =>
     k.constituents.map((t) => t.identitySlug),
@@ -70,7 +90,7 @@ const queue = new Set(
     if (publishedCrops.has(c.slug))
       return (
         (!!r && PROMOTING_OUTCOMES.includes(r.outcome)) ||
-        PUBLICATION_BY_SLUG.get(c.slug)?.outcome === 'PUBLISHED'
+        accountedForByLaterWave.has(c.slug)
       );
     return true;
   }).map((c) => c.slug),
@@ -166,7 +186,7 @@ for (const r of CROP_RESEARCH) {
       fail(`${at}: promoted and the identity still says data-only`);
   } else if (
     publishedCrops.has(r.slug) &&
-    PUBLICATION_BY_SLUG.get(r.slug)?.outcome !== 'PUBLISHED'
+    !accountedForByLaterWave.has(r.slug)
   ) {
     // A non-promoting research outcome with a page is a contradiction unless a
     // later wave's publication campaign accounts for the page. Wave 39 wrote 49

@@ -7,7 +7,7 @@ export const cherry: CropContent = {
   title: 'Cherry',
   scientificName:
     'Prunus avium (sweet cherry); Prunus cerasus (sour/tart cherry)',
-  alternativeNames: ['Sweet cherry', 'Sour cherry', 'Tart cherry'],
+  alternativeNames: ['Sweet cherry'],
   category: 'Tree fruit crop',
   subcategory: 'Temperate stone fruit',
   botanicalFamily: 'Rosaceae (rose family)',

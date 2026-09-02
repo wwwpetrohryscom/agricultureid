@@ -199,6 +199,8 @@ export const fingerMillet: CropContent = {
   relatedTopics: [
     { type: 'crop', slug: 'millet' },
     { type: 'crop', slug: 'sorghum' },
+
+    { type: 'crop', slug: 'jobs-tears' },
   ],
   glossaryTerms: ['crop-rotation'],
   geographicScope:

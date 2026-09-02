@@ -230,6 +230,8 @@ export const taro: CropContent = {
   relatedTopics: [
     { type: 'crop', slug: 'yam' },
     { type: 'crop', slug: 'cassava' },
+
+    { type: 'crop', slug: 'tannia' },
   ],
   connections: [
     { type: 'nutrient', slug: 'nitrogen' },
