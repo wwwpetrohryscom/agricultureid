@@ -190,6 +190,8 @@ export const durian: CropContent = {
     { type: 'crop', slug: 'jackfruit' },
     { type: 'crop', slug: 'mango' },
     { type: 'crop', slug: 'breadfruit' },
+
+    { type: 'crop', slug: 'mangosteen' },
   ],
   glossaryTerms: ['perennial-crop'],
   geographicScope:

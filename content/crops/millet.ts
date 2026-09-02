@@ -7,7 +7,7 @@ export const millet: CropContent = {
   title: 'Millet',
   scientificName:
     'Pennisetum glaucum (pearl millet); also cultivated as Panicum miliaceum (proso millet), Eleusine coracana (finger millet), and Setaria italica (foxtail millet)',
-  alternativeNames: ['Pearl millet', 'Proso millet', 'Finger millet'],
+  alternativeNames: ['Pearl millet'],
   category: 'Cereal crop',
   subcategory: 'Warm-season small-grain cereal',
   botanicalFamily: 'Poaceae (grasses)',
@@ -239,6 +239,9 @@ export const millet: CropContent = {
     { type: 'crop', slug: 'quinoa' },
 
     { type: 'crop', slug: 'proso-millet' },
+
+    { type: 'crop', slug: 'barnyard-millet' },
+    { type: 'crop', slug: 'kodo-millet' },
   ],
   glossaryTerms: ['annual-crop', 'crop-rotation', 'forage', 'yield'],
   geographicScope:

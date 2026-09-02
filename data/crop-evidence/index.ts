@@ -40,7 +40,7 @@ export const LAYER_ASSESSMENTS: readonly LayerEvidenceAssessment[] = [
     reachesAtAssessment: 8,
     reason: 'SOURCE_EXISTS_NOT_MAPPED',
     finding:
-      'Registrations reach crops only through published cultivars, and the corpus holds 77 cultivars against 214 crops. The registers themselves cover far more species than that. The constraint is deliberate: Waves 7 to 10 established that 51 per cent of exact name matches between a register and a cultivar were cross-species homonyms — a wheat denomination matching a strawberry PBR — so matching is fail-closed on name AND species together.',
+      'Registrations reach crops only through published cultivars, and the corpus holds 77 cultivars against 243 crops. The registers themselves cover far more species than that. The constraint is deliberate: Waves 7 to 10 established that 51 per cent of exact name matches between a register and a cultivar were cross-species homonyms — a wheat denomination matching a strawberry PBR — so matching is fail-closed on name AND species together.',
     wouldRaiseCoverageBy:
       'Publishing more cultivars, each with a verified parent crop. Matching registrations directly to crops would mean relaxing the species check, which is the failure this corpus has already found once.',
     sourceIds: ['ec-agri', 'usda-nass'],
@@ -102,7 +102,7 @@ export const LAYER_ASSESSMENTS: readonly LayerEvidenceAssessment[] = [
   },
   {
     layer: 'soils',
-    reachesAtAssessment: 214,
+    reachesAtAssessment: 243,
     reason: 'NOT_APPLICABLE',
     finding:
       'Every published crop names at least one suitable soil, so there is no gap. Reported here so that a full row of the matrix is accounted for rather than only the empty ones.',
@@ -112,17 +112,17 @@ export const LAYER_ASSESSMENTS: readonly LayerEvidenceAssessment[] = [
   },
   {
     layer: 'climate',
-    reachesAtAssessment: 205,
+    reachesAtAssessment: 234,
     reason: 'NOT_RESEARCHED',
     finding:
-      'Nine published crops name no climate reference. Wave 39 added 49 crops, every one of which names at least one, so the shortfall did not grow: it is the same nine pages, which is a slightly stronger reason to think it is an omission in those pages rather than a property of the layer. Whether those nine are genuinely unrelated to any of the 20 climate concept pages, or simply have not had the reference added, still has not been examined.',
+      'Nine published crops name no climate reference. Waves 39 and 40 added 78 crops between them, every one of which names at least one, so the shortfall has not grown across two waves and 78 opportunities: it is the same nine pages. That is a strong reason to think it is an omission in those nine rather than a property of the layer. Whether those nine are genuinely unrelated to any of the 20 climate concept pages, or simply have not had the reference added, still has not been examined.',
     wouldRaiseCoverageBy:
       'Reviewing those nine crops individually. It is a small enough number that a per-crop answer is achievable, which is why this is NOT_RESEARCHED rather than a source problem.',
     assessedAt: '2026-09-02',
   },
   {
     layer: 'relatedCrops',
-    reachesAtAssessment: 103,
+    reachesAtAssessment: 110,
     reason: 'NOT_APPLICABLE',
     finding:
       'Derived rather than sourced: a crop has related crops when it shares a genus, a concept scope, or enough pest and disease hosts with another published crop. A crop with none is a crop with no close relative published, which is a fact about the corpus rather than a gap in it.',

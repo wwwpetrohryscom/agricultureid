@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { PUBLICATION_BY_SLUG } from '@/data/crop-publication';
+import { CROP_EXPANSION_CANDIDATES } from '@/data/crop-expansion';
 import { CROP_RESEARCH, RESEARCH_BY_SLUG } from '@/data/crop-research';
 import {
   EVIDENCE_SUFFICIENT_OUTCOMES,
@@ -83,10 +84,17 @@ describe('promotion required a source, not a queue position', () => {
     // for, so the assertion is not relaxed — it now requires that every
     // published crop is claimed either by this campaign or, in checkable form,
     // by a later one.
+    const laterWaves = new Set([
+      ...[...PUBLICATION_BY_SLUG.values()]
+        .filter((r) => r.outcome === 'PUBLISHED')
+        .map((r) => r.slug),
+      ...CROP_EXPANSION_CANDIDATES.filter(
+        (c) => c.recommendation === 'PUBLISH',
+      ).map((c) => c.slug),
+    ]);
     for (const r of CROP_RESEARCH)
       expect(published.has(r.slug), r.slug).toBe(
-        PROMOTING_OUTCOMES.includes(r.outcome) ||
-          PUBLICATION_BY_SLUG.get(r.slug)?.outcome === 'PUBLISHED',
+        PROMOTING_OUTCOMES.includes(r.outcome) || laterWaves.has(r.slug),
       );
   });
 

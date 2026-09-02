@@ -240,6 +240,9 @@ export const lablab: CropContent = {
   relatedTopics: [
     { type: 'crop', slug: 'cowpea' },
     { type: 'crop', slug: 'common-bean' },
+
+    { type: 'crop', slug: 'jack-bean' },
+    { type: 'crop', slug: 'rice-bean' },
   ],
   connections: [
     { type: 'nutrient', slug: 'nitrogen' },

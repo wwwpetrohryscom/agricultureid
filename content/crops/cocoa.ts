@@ -235,6 +235,8 @@ export const cocoa: CropContent = {
   relatedTopics: [
     { type: 'crop', slug: 'coffee' },
     { type: 'crop', slug: 'tea' },
+
+    { type: 'crop', slug: 'kola-nut' },
   ],
   glossaryTerms: ['perennial-crop', 'cultivar', 'yield'],
   geographicScope:

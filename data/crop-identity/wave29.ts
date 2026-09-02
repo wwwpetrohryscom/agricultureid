@@ -2500,7 +2500,8 @@ export const WAVE_29_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'mangosteen',
     lastVerifiedAt: '2026-09-02',
   },
   {

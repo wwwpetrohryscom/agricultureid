@@ -1678,7 +1678,8 @@ export const WAVE_27_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'barnyard-millet',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -1710,7 +1711,8 @@ export const WAVE_27_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'kodo-millet',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -1743,7 +1745,8 @@ export const WAVE_27_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'jobs-tears',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -2010,7 +2013,8 @@ export const WAVE_27_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'rice-bean',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -2042,7 +2046,8 @@ export const WAVE_27_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'moth-bean',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -2207,7 +2212,8 @@ export const WAVE_27_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'horse-gram',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -2272,7 +2278,8 @@ export const WAVE_27_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'jack-bean',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -2305,7 +2312,8 @@ export const WAVE_27_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'velvet-bean',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -2716,7 +2724,8 @@ export const WAVE_27_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'tannia',
     limitations: [
       'The name Xanthosoma sagittifolium is a homonym: more than one published name matches it exactly, and they resolve to different taxa. The accepted one was selected; Xanthosoma sagittifolium K.Koch; Xanthosoma sagittifolium Liebm..',
     ],
@@ -2949,7 +2958,8 @@ export const WAVE_27_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'hausa-potato',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -3018,7 +3028,8 @@ export const WAVE_27_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'jicama',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -3050,7 +3061,8 @@ export const WAVE_27_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'ulluco',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -3117,7 +3129,8 @@ export const WAVE_27_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'mashua',
     lastVerifiedAt: '2026-09-02',
   },
   {

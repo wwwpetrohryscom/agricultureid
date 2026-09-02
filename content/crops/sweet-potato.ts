@@ -240,6 +240,9 @@ export const sweetPotato: CropContent = {
     { type: 'crop', slug: 'potato' },
     { type: 'crop', slug: 'cassava' },
     { type: 'crop', slug: 'yam' },
+
+    { type: 'crop', slug: 'hausa-potato' },
+    { type: 'crop', slug: 'jicama' },
   ],
   glossaryTerms: ['perennial-crop', 'crop-rotation', 'host-plant', 'yield'],
   geographicScope:

@@ -1434,7 +1434,8 @@ export const WAVE_30_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'signal-grass',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -1466,7 +1467,8 @@ export const WAVE_30_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'rhodes-grass',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -1498,7 +1500,8 @@ export const WAVE_30_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'guinea-grass',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -1530,7 +1533,8 @@ export const WAVE_30_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'stylo',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -1562,7 +1566,8 @@ export const WAVE_30_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'greenleaf-desmodium',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -1827,7 +1832,8 @@ export const WAVE_30_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'kenaf',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -1893,7 +1899,8 @@ export const WAVE_30_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'ramie',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -1959,7 +1966,8 @@ export const WAVE_30_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'kapok',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -2156,7 +2164,8 @@ export const WAVE_30_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'kola-nut',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -2391,7 +2400,8 @@ export const WAVE_30_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'black-cumin',
     lastVerifiedAt: '2026-09-02',
   },
   {

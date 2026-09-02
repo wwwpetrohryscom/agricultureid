@@ -233,6 +233,9 @@ export const blackGram: CropContent = {
   relatedTopics: [
     { type: 'crop', slug: 'rice' },
     { type: 'crop', slug: 'lentil' },
+
+    { type: 'crop', slug: 'horse-gram' },
+    { type: 'crop', slug: 'moth-bean' },
   ],
   connections: [
     { type: 'nutrient', slug: 'nitrogen' },

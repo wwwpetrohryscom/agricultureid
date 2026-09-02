@@ -16,11 +16,13 @@ import { avocado } from './avocado';
 import { bambaraGroundnut } from './bambara-groundnut';
 import { banana } from './banana';
 import { barley } from './barley';
+import { barnyardMillet } from './barnyard-millet';
 import { basil } from './basil';
 import { beetroot } from './beetroot';
 import { berseemClover } from './berseem-clover';
 import { birdsfootTrefoil } from './birdsfoot-trefoil';
 import { bitterGourd } from './bitter-gourd';
+import { blackCumin } from './black-cumin';
 import { blackGram } from './black-gram';
 import { blackPepper } from './black-pepper';
 import { blackberry } from './blackberry';
@@ -33,6 +35,7 @@ import { brusselsSprouts } from './brussels-sprouts';
 import { buckwheat } from './buckwheat';
 import { cabbage } from './cabbage';
 import { camelina } from './camelina';
+import { capeGooseberry } from './cape-gooseberry';
 import { cardamom } from './cardamom';
 import { carrot } from './carrot';
 import { cashew } from './cashew';
@@ -80,25 +83,37 @@ import { flax } from './flax';
 import { fonio } from './fonio';
 import { foxtailMillet } from './foxtail-millet';
 import { garlic } from './garlic';
+import { gbomaEggplant } from './gboma-eggplant';
 import { ginger } from './ginger';
 import { grape } from './grape';
 import { grapefruit } from './grapefruit';
 import { grassPea } from './grass-pea';
+import { greenleafDesmodium } from './greenleaf-desmodium';
 import { groundnut } from './groundnut';
 import { guar } from './guar';
 import { guava } from './guava';
+import { guineaGrass } from './guinea-grass';
+import { hausaPotato } from './hausa-potato';
 import { hazelnut } from './hazelnut';
 import { hemp } from './hemp';
 import { hops } from './hops';
+import { horseGram } from './horse-gram';
 import { italianRyegrass } from './italian-ryegrass';
+import { jackBean } from './jack-bean';
 import { jackfruit } from './jackfruit';
 import { jatropha } from './jatropha';
 import { jerusalemArtichoke } from './jerusalem-artichoke';
+import { jicama } from './jicama';
+import { jobsTears } from './jobs-tears';
 import { jojoba } from './jojoba';
 import { jute } from './jute';
 import { kale } from './kale';
+import { kapok } from './kapok';
+import { kenaf } from './kenaf';
 import { kiwifruit } from './kiwifruit';
+import { kodoMillet } from './kodo-millet';
 import { kohlrabi } from './kohlrabi';
+import { kolaNut } from './kola-nut';
 import { lablab } from './lablab';
 import { lavender } from './lavender';
 import { leek } from './leek';
@@ -114,9 +129,12 @@ import { lychee } from './lychee';
 import { macadamia } from './macadamia';
 import { maize } from './maize';
 import { mango } from './mango';
+import { mangosteen } from './mangosteen';
+import { mashua } from './mashua';
 import { melon } from './melon';
 import { millet } from './millet';
 import { mint } from './mint';
+import { mothBean } from './moth-bean';
 import { mulberry } from './mulberry';
 import { mungBean } from './mung-bean';
 import { mustard } from './mustard';
@@ -156,9 +174,12 @@ import { pumpkin } from './pumpkin';
 import { quince } from './quince';
 import { quinoa } from './quinoa';
 import { radish } from './radish';
+import { ramie } from './ramie';
 import { raspberry } from './raspberry';
 import { redClover } from './red-clover';
+import { rhodesGrass } from './rhodes-grass';
 import { rice } from './rice';
+import { riceBean } from './rice-bean';
 import { robustaCoffee } from './robusta-coffee';
 import { rocket } from './rocket';
 import { rosemary } from './rosemary';
@@ -168,8 +189,10 @@ import { safflower } from './safflower';
 import { saffron } from './saffron';
 import { sage } from './sage';
 import { sainfoin } from './sainfoin';
+import { scarletEggplant } from './scarlet-eggplant';
 import { seaBuckthorn } from './sea-buckthorn';
 import { sesame } from './sesame';
+import { signalGrass } from './signal-grass';
 import { sisal } from './sisal';
 import { sorghum } from './sorghum';
 import { sourCherry } from './sour-cherry';
@@ -179,6 +202,7 @@ import { spinach } from './spinach';
 import { starAnise } from './star-anise';
 import { stevia } from './stevia';
 import { strawberry } from './strawberry';
+import { stylo } from './stylo';
 import { sugarBeet } from './sugar-beet';
 import { sugarcane } from './sugarcane';
 import { sunflower } from './sunflower';
@@ -189,6 +213,7 @@ import { swissChard } from './swiss-chard';
 import { switchgrass } from './switchgrass';
 import { tallFescue } from './tall-fescue';
 import { tamarind } from './tamarind';
+import { tannia } from './tannia';
 import { taro } from './taro';
 import { tea } from './tea';
 import { teff } from './teff';
@@ -199,18 +224,22 @@ import { tomatillo } from './tomatillo';
 import { tomato } from './tomato';
 import { triticale } from './triticale';
 import { turmeric } from './turmeric';
+import { ulluco } from './ulluco';
 import { uplandCotton } from './upland-cotton';
 import { vanilla } from './vanilla';
+import { velvetBean } from './velvet-bean';
 import { walnut } from './walnut';
 import { wasabi } from './wasabi';
 import { waterSpinach } from './water-spinach';
 import { watercress } from './watercress';
+import { waterleaf } from './waterleaf';
 import { watermelon } from './watermelon';
 import { wheat } from './wheat';
 import { whiteClover } from './white-clover';
 import { wildRice } from './wild-rice';
 import { wingedBean } from './winged-bean';
 import { yam } from './yam';
+import { yardlongBean } from './yardlong-bean';
 import { yerbaMate } from './yerba-mate';
 import { zucchini } from './zucchini';
 
@@ -232,11 +261,13 @@ export const crops: CropContent[] = [
   bambaraGroundnut,
   banana,
   barley,
+  barnyardMillet,
   basil,
   beetroot,
   berseemClover,
   birdsfootTrefoil,
   bitterGourd,
+  blackCumin,
   blackGram,
   blackPepper,
   blackberry,
@@ -249,6 +280,7 @@ export const crops: CropContent[] = [
   buckwheat,
   cabbage,
   camelina,
+  capeGooseberry,
   cardamom,
   carrot,
   cashew,
@@ -296,25 +328,37 @@ export const crops: CropContent[] = [
   fonio,
   foxtailMillet,
   garlic,
+  gbomaEggplant,
   ginger,
   grape,
   grapefruit,
   grassPea,
+  greenleafDesmodium,
   groundnut,
   guar,
   guava,
+  guineaGrass,
+  hausaPotato,
   hazelnut,
   hemp,
   hops,
+  horseGram,
   italianRyegrass,
+  jackBean,
   jackfruit,
   jatropha,
   jerusalemArtichoke,
+  jicama,
+  jobsTears,
   jojoba,
   jute,
   kale,
+  kapok,
+  kenaf,
   kiwifruit,
+  kodoMillet,
   kohlrabi,
+  kolaNut,
   lablab,
   lavender,
   leek,
@@ -330,9 +374,12 @@ export const crops: CropContent[] = [
   macadamia,
   maize,
   mango,
+  mangosteen,
+  mashua,
   melon,
   millet,
   mint,
+  mothBean,
   mulberry,
   mungBean,
   mustard,
@@ -372,9 +419,12 @@ export const crops: CropContent[] = [
   quince,
   quinoa,
   radish,
+  ramie,
   raspberry,
   redClover,
+  rhodesGrass,
   rice,
+  riceBean,
   robustaCoffee,
   rocket,
   rosemary,
@@ -384,8 +434,10 @@ export const crops: CropContent[] = [
   saffron,
   sage,
   sainfoin,
+  scarletEggplant,
   seaBuckthorn,
   sesame,
+  signalGrass,
   sisal,
   sorghum,
   sourCherry,
@@ -395,6 +447,7 @@ export const crops: CropContent[] = [
   starAnise,
   stevia,
   strawberry,
+  stylo,
   sugarBeet,
   sugarcane,
   sunflower,
@@ -405,6 +458,7 @@ export const crops: CropContent[] = [
   switchgrass,
   tallFescue,
   tamarind,
+  tannia,
   taro,
   tea,
   teff,
@@ -415,18 +469,22 @@ export const crops: CropContent[] = [
   tomato,
   triticale,
   turmeric,
+  ulluco,
   uplandCotton,
   vanilla,
+  velvetBean,
   walnut,
   wasabi,
   waterSpinach,
   watercress,
+  waterleaf,
   watermelon,
   wheat,
   whiteClover,
   wildRice,
   wingedBean,
   yam,
+  yardlongBean,
   yerbaMate,
   zucchini,
 ];

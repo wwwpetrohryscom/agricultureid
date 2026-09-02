@@ -240,6 +240,9 @@ export const jute: CropContent = {
 
     { type: 'crop', slug: 'abaca' },
     { type: 'crop', slug: 'sisal' },
+
+    { type: 'crop', slug: 'ramie' },
+    { type: 'crop', slug: 'kapok' },
   ],
   glossaryTerms: ['annual-crop', 'yield', 'crop-rotation'],
   geographicScope:

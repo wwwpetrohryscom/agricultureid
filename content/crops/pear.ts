@@ -7,7 +7,7 @@ export const pear: CropContent = {
   title: 'Pear',
   scientificName:
     'Pyrus communis (European pear); Pyrus pyrifolia (Asian pear)',
-  alternativeNames: ['European pear', 'Asian pear', 'Nashi pear'],
+  alternativeNames: ['European pear'],
   category: 'Tree fruit crop',
   subcategory: 'Temperate pome fruit',
   botanicalFamily: 'Rosaceae (rose family)',

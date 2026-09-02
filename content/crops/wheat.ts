@@ -7,7 +7,7 @@ export const wheat: CropContent = {
   title: 'Wheat',
   scientificName:
     'Triticum aestivum (bread wheat); Triticum durum (durum wheat)',
-  alternativeNames: ['Bread wheat', 'Common wheat', 'Durum wheat'],
+  alternativeNames: ['Bread wheat', 'Common wheat'],
   category: 'Cereal crop',
   subcategory: 'Temperate cereal',
   botanicalFamily: 'Poaceae (grasses)',

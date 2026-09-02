@@ -12,7 +12,7 @@ export const foxtailMillet: CropContent = {
   botanicalFamily: 'Poaceae (grass family)',
   lifecycle: 'Annual',
   summary:
-    'Foxtail millet is the fastest of the cultivated cereals to maturity, which makes it the crop sown when something else has failed and the season is already half gone.',
+    'Foxtail millet is among the shortest-season cultivated cereals, which makes it the crop sown when something else has failed and the season is already half gone — though barnyard millet, whose reported maturity is shorter still, is the faster of the two.',
   introduction: [
     {
       type: 'paragraph',
@@ -28,7 +28,8 @@ export const foxtailMillet: CropContent = {
     { label: 'Photosynthetic pathway', value: 'C4' },
     {
       label: 'Distinguishing trait',
-      value: 'Among the shortest seasons of any cultivated cereal',
+      value:
+        'Among the shortest seasons of any cultivated cereal, though barnyard millet is shorter',
     },
     {
       label: 'Principal regions',
@@ -205,7 +206,7 @@ export const foxtailMillet: CropContent = {
   seo: {
     title: 'Foxtail Millet',
     description:
-      'Setaria italica as a crop: the shortest-season cultivated cereal, a staple in China and India, drought escape, and the birdseed market that dominates trade.',
+      'Setaria italica as a crop: a very short season, a staple in China and India, drought escape by earliness, and the birdseed market that dominates trade.',
     keywords: [
       'foxtail millet',
       'Setaria italica',
