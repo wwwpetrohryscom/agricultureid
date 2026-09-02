@@ -10,6 +10,11 @@ import {
   relatedCrops,
 } from '../lib/crops/integration';
 import { PUBLISHED_CONTENT } from '../lib/content/registry';
+import {
+  CONCORDANCE,
+  LAYER_ASSESSMENTS,
+  TRADE_MAPPING,
+} from '../data/crop-evidence';
 
 const I = allIntegrations();
 const title = (slug: string) =>
@@ -90,4 +95,37 @@ console.log('\n  Related-crop relations by basis');
       `    why this is ${total} and not ${I.length * (I.length - 1)}.`,
   );
 }
+
+console.log('  Why each layer covers what it covers');
+for (const a of LAYER_ASSESSMENTS) {
+  const now = I.filter(
+    (x) => x.coverage.find((c) => c.layer === a.layer)!.refs.length > 0,
+  ).length;
+  console.log(`\n    ${a.layer}  —  ${now}/${I.length}  ·  ${a.reason}`);
+  console.log(`      ${a.finding.slice(0, 210)}…`);
+  console.log(`      would raise it: ${a.wouldRaiseCoverageBy.slice(0, 150)}…`);
+}
+
+console.log('\n  Crop↔commodity concordance, classified');
+{
+  const by = new Map<string, number>();
+  for (const c of CONCORDANCE) by.set(c.kind, (by.get(c.kind) ?? 0) + 1);
+  const exact =
+    PUBLISHED_CONTENT.filter((c) => c.contentType === 'commodity').length -
+    CONCORDANCE.length;
+  console.log(
+    `    EXACT_CROP (unclassified by exception)  ${String(exact).padStart(4)}`,
+  );
+  for (const [k, v] of by)
+    console.log(`    ${k.padEnd(38)}${String(v).padStart(4)}`);
+  console.log(
+    '\n    A series reached through a BROADER_CROP_CONCEPT is about the concept.\n' +
+      '    Green coffee is not arabica, and the arabica page correctly shows no\n' +
+      '    market data despite coffee having 535 series.',
+  );
+}
+
+console.log('\n  Trade');
+console.log(`    outcome: ${TRADE_MAPPING.outcome}`);
+console.log(`    ${TRADE_MAPPING.finding.slice(0, 400)}…`);
 console.log();
