@@ -59,7 +59,13 @@ describe('robots.txt by hosting context', () => {
     const result = robots();
 
     expect(result.rules).toEqual({ userAgent: '*', allow: '/' });
-    expect(result.sitemap).toBe('https://agricultureid.com/sitemap.xml');
+    // Two sitemaps, because two deployments serve this hostname. The Journal
+    // generates its own at /journal/sitemap.xml, so publishing an article
+    // updates it without this project rebuilding.
+    expect(result.sitemap).toEqual([
+      'https://agricultureid.com/sitemap.xml',
+      'https://agricultureid.com/journal/sitemap.xml',
+    ]);
     expect(result.host).toBe('https://agricultureid.com');
   });
 
@@ -68,7 +74,10 @@ describe('robots.txt by hosting context', () => {
     const result = robots();
 
     expect(result.rules).toEqual({ userAgent: '*', allow: '/' });
-    expect(result.sitemap).toBe(`${SITE.url}/sitemap.xml`);
+    expect(result.sitemap).toEqual([
+      `${SITE.url}/sitemap.xml`,
+      `${SITE.url}/journal/sitemap.xml`,
+    ]);
   });
 
   it('deploy previews and branch deploys are disallowed', () => {
