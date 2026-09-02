@@ -9,6 +9,7 @@
  * volume.
  */
 import type { AnyContent } from '@/types/content';
+import { stripStandingPhrases } from '@/lib/crops/editorial-boilerplate';
 
 export interface DepthMeasures {
   words: number;
@@ -125,10 +126,12 @@ function comparableText(item: AnyContent): string {
 
   let t = articleText(item).toLowerCase();
   for (const n of new Set(names)) t = t.split(n).join(' ');
-  return t
-    .replace(/[^a-z ]+/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim();
+  return stripStandingPhrases(
+    t
+      .replace(/[^a-z ]+/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim(),
+  );
 }
 
 function shingles(t: string, k = 5): Set<string> {

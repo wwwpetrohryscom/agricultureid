@@ -182,7 +182,7 @@ export const turmeric: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'Management relies on clean, disease-free planting material, well-drained sites, monitoring, and — where justified — locally authorized control products applied according to their labels.',
+          text: 'Turmeric is grown for its curcuminoid content, and that content is what the crop is bought on rather than raw rhizome weight. It also carries a post-harvest step ginger does not: rhizomes are boiled or steamed and then dried before polishing, which gelatinises the starch, fixes the colour through the rhizome and is what distinguishes cured turmeric from simply dried rhizome.',
         },
       ],
     },

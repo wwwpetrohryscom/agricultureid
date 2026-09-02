@@ -95,7 +95,7 @@ export const pomegranate: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'It is now grown commercially across many semi-arid and Mediterranean-type climate regions worldwide. Production, trade, and cultivar-popularity figures shift over time and are best obtained from primary sources such as FAOSTAT rather than assumed.',
+          text: 'It is now grown commercially across many semi-arid and Mediterranean-type climate regions worldwide. Production, trade, and cultivar-popularity figures shift over time and are best obtained from primary sources such as FAOSTAT and national agricultural statistics services rather than assumed.',
         },
       ],
     },

@@ -98,7 +98,7 @@ export const sweetPotato: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'It is now grown across the tropics and warm-temperate zones worldwide; production and trade figures change over time and are best obtained from primary sources such as FAOSTAT.',
+          text: 'It is now grown across the tropics and warm-temperate zones worldwide; production and trade figures change over time and are best obtained from primary sources such as FAOSTAT and national agricultural statistics services rather than assumed.',
         },
       ],
     },

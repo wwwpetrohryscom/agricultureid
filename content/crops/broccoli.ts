@@ -88,7 +88,7 @@ export const broccoli: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'Current area, production, and trade figures change over time and by region; they are best obtained from primary sources such as FAOSTAT rather than assumed.',
+          text: 'Current area, production, and trade figures change over time and by region; they are best obtained from primary sources such as FAOSTAT and national agricultural statistics services rather than assumed.',
         },
       ],
     },
@@ -117,7 +117,7 @@ export const broccoli: CropContent = {
         {
           type: 'callout',
           tone: 'note',
-          text: 'Maintaining soil pH toward the higher end of the range tolerated by the crop is a widely used cultural tool against clubroot. Soil suitability should be assessed with local soil survey information and, where available, testing.',
+          text: 'Broccoli heads are an arrested flower-bud cluster, cut while the buds are still tight. That leaves a narrow harvest window: a few warm days move a marketable head past the point where the buds begin to loosen and open.',
         },
       ],
     },

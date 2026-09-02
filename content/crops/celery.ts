@@ -96,7 +96,7 @@ export const celery: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'Production and trade figures change over time and by region; current data are best obtained from primary sources such as FAOSTAT.',
+          text: 'Production and trade figures change over time and by region; current data are best obtained from primary sources such as FAOSTAT and national agricultural statistics services rather than assumed.',
         },
       ],
     },

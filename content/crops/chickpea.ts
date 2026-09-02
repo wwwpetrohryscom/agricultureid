@@ -182,7 +182,7 @@ export const chickpea: CropContent = {
       body: [
         {
           type: 'paragraph',
-          text: 'Chickpea is grown largely under rain-fed conditions in traditional production regions, with terminal drought and heat at pod fill representing key, often unavoidable, yield constraints. Supplemental irrigation is used in some production systems.',
+          text: 'Chickpea roots deeply and is grown largely on stored soil moisture, which is why it occupies the drier end of the pulse rotation. Ascochyta blight is the constraint that most often decides the crop: it is seed-borne and splashed through the canopy by rain, so a wet season in a susceptible variety can take a crop that had adequate water and nutrition.',
         },
         {
           type: 'paragraph',

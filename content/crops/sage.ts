@@ -47,7 +47,7 @@ export const sage: CropContent = {
       body: [
         {
           type: 'paragraph',
-          text: 'Sage is grown in home gardens, herb nurseries, and, in some regions, commercial fields for dried herb and essential oil production, often alongside other Mediterranean herbs suited to similar conditions.',
+          text: 'Sage leaves are thick and hold moisture, so they dry slowly and are the part of the crop most often lost to poor post-harvest handling. Drying too fast browns the leaf and drives off volatile oil; drying too slowly allows mould in the stacked leaf.',
         },
         {
           type: 'paragraph',

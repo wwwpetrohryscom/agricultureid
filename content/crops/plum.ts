@@ -96,7 +96,7 @@ export const plum: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'Commercial production of both species groups is now established across temperate regions on multiple continents. Production statistics and leading cultivars change over time and should be obtained from primary sources such as FAOSTAT rather than assumed.',
+          text: 'Commercial production of both species groups is now established across temperate regions on multiple continents. Production statistics and leading cultivars change over time and should be obtained from primary sources such as FAOSTAT and national agricultural statistics services rather than assumed.',
         },
       ],
     },
@@ -120,7 +120,7 @@ export const plum: CropContent = {
       body: [
         {
           type: 'paragraph',
-          text: 'Plum performs best on deep, well-drained soils with good structure. Loams and sandy loams are generally favored, and the crop is intolerant of prolonged waterlogging, which restricts rooting and increases the risk of root diseases.',
+          text: 'Plum tolerates heavier ground than peach or cherry, and Prunus domestica in particular is grown on clay loams where a cherry planting would fail. It is still intolerant of standing water: the limit is duration rather than texture, and a site that drains slowly after winter rain is the one that loses trees.',
         },
         {
           type: 'callout',
@@ -170,7 +170,7 @@ export const plum: CropContent = {
       body: [
         {
           type: 'paragraph',
-          text: 'Plum is grown both rain-fed and under irrigation, with water demand highest during fruit development. Drip irrigation is widely used in modern orchards to apply water precisely to the root zone while avoiding the waterlogging plum tolerates poorly.',
+          text: 'Plum carries a heavy crop load relative to leaf area and drops fruit when stressed, so the water-sensitive period runs from shortly after set through stone hardening. European plums destined for drying are an exception worth noting: a controlled late-season deficit concentrates sugars and is applied deliberately.',
         },
         {
           type: 'paragraph',
@@ -184,7 +184,7 @@ export const plum: CropContent = {
       body: [
         {
           type: 'paragraph',
-          text: 'Gray mold can affect blossoms and ripening fruit, particularly under humid conditions, while powdery mildew affects shoots and leaves. Bacterial leaf spot can cause lesions on leaves and fruit in susceptible cultivars. Insect pests include aphids, which distort growth and can transmit viruses, fruit flies, which infest ripening fruit, and scale insects, which affect vigor.',
+          text: 'Plum pox virus, also called sharka, is the most serious viral disease of stone fruit and the reason aphids matter more on plum than their direct feeding damage would suggest. It is spread by aphids locally and by the movement of infected nursery stock over long distances, and it is regulated: detection triggers quarantine, stop-sale and destruction rather than treatment. There is no cure for an infected tree, so the whole management effort sits in certified planting material and surveillance.',
         },
         {
           type: 'paragraph',

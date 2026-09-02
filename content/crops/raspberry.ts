@@ -93,7 +93,7 @@ export const raspberry: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'Production and trade statistics vary by year and region and are best obtained from primary sources such as FAOSTAT rather than assumed.',
+          text: 'Production and trade statistics vary by year and region and are best obtained from primary sources such as FAOSTAT and national agricultural statistics services rather than assumed.',
         },
       ],
     },
@@ -167,7 +167,7 @@ export const raspberry: CropContent = {
       body: [
         {
           type: 'paragraph',
-          text: 'Raspberry has a relatively shallow, fibrous root system with limited drought tolerance, and water demand is highest during fruit development. Drip irrigation is widely used to supply consistent moisture while avoiding the waterlogging the crop tolerates poorly.',
+          text: 'Raspberry is the more drought-sensitive of the caneberries, and the reason is structural: the root system that produces its suckers sits shallow and wide, so the plant is exploring the layer that dries first. Primocane-fruiting types carry the additional difficulty of needing water in late summer, when supply is usually least reliable.',
         },
       ],
     },
@@ -191,7 +191,7 @@ export const raspberry: CropContent = {
       body: [
         {
           type: 'paragraph',
-          text: 'Raspberry is harvested by hand for fresh-market fruit, picked frequently as berries ripen, since the delicate fruit does not store well once picked. Mechanical harvesting is used mainly for processing fruit destined for freezing or manufacturing.',
+          text: 'Red raspberry differs structurally from blackberry in a way that governs how a planting behaves: it produces new canes from buds on the roots as well as the crown, so it spreads outward from where it was planted and the row has to be managed to a width rather than merely supported. Suckering between rows is routine work, not a sign of anything wrong.',
         },
       ],
     },

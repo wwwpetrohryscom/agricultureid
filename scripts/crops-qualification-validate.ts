@@ -33,9 +33,12 @@ import {
   flaggedPairs,
 } from '../lib/crops/content-depth';
 import {
+  DEBT_VERDICTS,
+  RESOLVED_SIMILAR_PAIRS,
   REVIEWED_PAIRS,
   REVIEWED_PAIR_KEY,
   REVIEWED_SIMILAR_PAIRS,
+  SIMILARITY_VERDICTS,
 } from '../data/crop-identity/similar-pairs';
 import { calendarsForCrop } from '../lib/calendars/registry';
 import { costsForCrop } from '../lib/economics/registry';
@@ -273,12 +276,18 @@ for (const q of Q)
       fail(
         `${p.a}/${p.b}: identical run has grown from ${rec.longestRun} to ${p.longestRun} words since review — reuse may be paid down, never added to`,
       );
+    // Debt verdicts must not survive a wave: a pair reviewed as copied
+    // crop-specific prose is a thing to fix, not a thing to record.
+    if (DEBT_VERDICTS.includes(rec.verdict))
+      fail(
+        `${p.a}/${p.b}: reviewed as ${rec.verdict} and still flagged — copied crop-specific prose is debt to be rewritten, not a verdict to keep`,
+      );
     if (
-      rec.verdict === 'domain-vocabulary' &&
-      p.longestRun >= SHARED_RUN_IS_PROSE
+      rec.verdict === 'SHARED_DEFINITION' &&
+      p.longestRun >= SHARED_RUN_IS_PROSE * 3
     )
       fail(
-        `${p.a}/${p.b}: reviewed as shared vocabulary, but ${p.longestRun} identical words in a row is a copied passage`,
+        `${p.a}/${p.b}: reviewed as a shared definition, but ${p.longestRun} identical words in a row is a passage, not a definition`,
       );
   }
   for (const r of REVIEWED_SIMILAR_PAIRS) {
@@ -294,6 +303,23 @@ for (const q of Q)
       fail(`reviewed pair ${r.a}/${r.b} gives no substantive reason`);
     if (!ISO.test(r.reviewedAt))
       fail(`reviewed pair ${r.a}/${r.b} has no ISO review date`);
+    if (!SIMILARITY_VERDICTS.includes(r.verdict))
+      fail(`reviewed pair ${r.a}/${r.b} has a verdict outside the vocabulary`);
+  }
+  // A rewrite that comes undone must name itself rather than arriving as a
+  // brand-new pair for someone to review from scratch.
+  for (const r of RESOLVED_SIMILAR_PAIRS) {
+    const key = REVIEWED_PAIR_KEY(r.a, r.b);
+    if (seen.has(key) && !REVIEWED_PAIRS.has(key))
+      fail(
+        `${r.a}/${r.b} was rewritten on ${r.resolvedAt} and is flagged again — the rewrite has regressed`,
+      );
+    if (!articles.has(r.a) || !articles.has(r.b))
+      fail(
+        `resolved pair ${r.a}/${r.b} names a crop with no published article`,
+      );
+    if (!r.wasSharing?.trim() || r.wasSharing.length < 40)
+      fail(`resolved pair ${r.a}/${r.b} does not say what was shared`);
   }
 }
 

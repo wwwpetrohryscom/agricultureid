@@ -97,7 +97,7 @@ export const cherry: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'Commercial production of both species is now established across temperate regions on multiple continents. Production statistics and leading cultivars change over time and are best obtained from primary sources such as FAOSTAT rather than assumed.',
+          text: 'Commercial production of both species is now established across temperate regions on multiple continents. Production statistics and leading cultivars change over time and are best obtained from primary sources such as FAOSTAT and national agricultural statistics services rather than assumed.',
         },
       ],
     },
@@ -121,7 +121,7 @@ export const cherry: CropContent = {
       body: [
         {
           type: 'paragraph',
-          text: 'Cherry performs best on deep, well-drained soils with good structure. Loams and sandy loams are generally favored, and the crop is intolerant of prolonged waterlogging, which restricts rooting and increases the risk of root diseases.',
+          text: 'Cherry is the least tolerant of wet ground of the common stone fruits, and the tolerance that exists is supplied by the rootstock rather than the cultivar. Mazzard, a Prunus avium seedling, is compatible with every sweet cherry scion and offers no protection against a high water table; Colt tolerates periodic waterlogging and is less susceptible to Phytophthora. On any site where drainage is uncertain, that choice is made before the cultivar is.',
         },
         {
           type: 'callout',
@@ -171,7 +171,7 @@ export const cherry: CropContent = {
       body: [
         {
           type: 'paragraph',
-          text: 'Cherry is grown both rain-fed and under irrigation, with water demand highest during fruit development. Drip irrigation is widely used in modern orchards to apply water precisely to the root zone while avoiding the waterlogging cherry tolerates poorly.',
+          text: 'Cherry is unusual among orchard fruit in being damaged by water arriving from above rather than below. Rain on ripening fruit is absorbed through the skin and splits it, and a single event close to harvest can render a block unmarketable, which is why orchards in wet climates are covered and why harvest date is often set by the forecast rather than by maturity alone.',
         },
         {
           type: 'paragraph',
@@ -185,7 +185,7 @@ export const cherry: CropContent = {
       body: [
         {
           type: 'paragraph',
-          text: 'Gray mold can affect blossoms and ripening fruit, particularly in humid or wet conditions, while powdery mildew affects shoots and leaves. Bacterial leaf spot can cause lesions on leaves and fruit in some regions. Insect pests include aphids, which distort growth and can transmit viruses, fruit flies, which infest ripening fruit, and scale insects, which affect vigor.',
+          text: 'Spotted wing drosophila changed cherry management wherever it arrived. Unlike the fruit flies that infest damaged or overripe fruit, it has a serrated ovipositor and lays into sound ripening fruit, so the crop is vulnerable through the whole colouring period rather than only at the end of it. Bacterial canker is the other characteristic problem, and it is one of the factors implicated in the sudden death of established trees.',
         },
         {
           type: 'paragraph',
@@ -251,8 +251,8 @@ export const cherry: CropContent = {
     { type: 'plant-disease', slug: 'bacterial-leaf-spot' },
   ],
   commonPests: [
+    { type: 'pest', slug: 'spotted-wing-drosophila' },
     { type: 'pest', slug: 'aphids' },
-    { type: 'pest', slug: 'fruit-flies' },
     { type: 'pest', slug: 'scale-insects' },
   ],
   suitableSoils: [

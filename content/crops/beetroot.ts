@@ -100,7 +100,7 @@ export const beetroot: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'It is now grown widely in temperate regions worldwide; production and trade figures change over time and are best obtained from primary sources such as FAOSTAT.',
+          text: 'It is now grown widely in temperate regions worldwide; production and trade figures change over time and are best obtained from primary sources such as FAOSTAT and national agricultural statistics services rather than assumed.',
         },
       ],
     },

@@ -95,7 +95,7 @@ export const peach: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'It is now grown commercially across temperate and subtropical regions on multiple continents. Production statistics and leading cultivars change over time and should be obtained from primary sources such as FAOSTAT rather than assumed.',
+          text: 'It is now grown commercially across temperate and subtropical regions on multiple continents. Production statistics and leading cultivars change over time and should be obtained from primary sources such as FAOSTAT and national agricultural statistics services rather than assumed.',
         },
       ],
     },
@@ -119,12 +119,12 @@ export const peach: CropContent = {
       body: [
         {
           type: 'paragraph',
-          text: 'Peach performs best on deep, well-drained soils with good structure. Loams and sandy loams are generally favored, and the crop is intolerant of prolonged waterlogging, which restricts rooting and increases the risk of root diseases.',
+          text: 'Peach is grown on light-textured soils more often than the other stone fruits, and the reason is a disorder rather than a preference. Peach tree short life kills established trees outright, usually in the third to sixth year, and the recognised predisposing factors are a cluster: ring nematode populations, bacterial canker, winter injury to the bark, pruning too late in the dormant season, and soils below about pH 6.',
         },
         {
           type: 'callout',
           tone: 'note',
-          text: 'Rootstock selection interacts with soil conditions, including drainage, depth, and replant history. Site assessment should draw on local soil survey information where available.',
+          text: 'Because the disorder is a cluster rather than a single pathogen, management is a cluster too: rootstock choice, correcting soil pH before planting, delaying pruning until late winter, and pre-plant nematode assessment on replant ground. Rootstock susceptibility to ring nematode differs enough to matter, and local trial data should be preferred to a general recommendation.',
         },
       ],
     },
@@ -169,7 +169,7 @@ export const peach: CropContent = {
       body: [
         {
           type: 'paragraph',
-          text: 'Peach is grown both rain-fed and under irrigation, with water demand highest during fruit development. Drip irrigation is widely used in modern orchards to apply water precisely to the root zone while avoiding the waterlogging peach tolerates poorly.',
+          text: 'Peach fruit sizes in a short final swell, and water stress in the three to four weeks before harvest costs size that cannot be recovered afterwards. The opposite error is as costly: heavy irrigation close to harvest dilutes soluble solids and softens fruit, so the schedule is usually eased back as maturity approaches rather than sustained.',
         },
         {
           type: 'paragraph',
@@ -183,7 +183,7 @@ export const peach: CropContent = {
       body: [
         {
           type: 'paragraph',
-          text: 'Gray mold can affect blossoms and ripening fruit, particularly under humid conditions, while powdery mildew affects shoots, leaves, and fruit finish. Bacterial leaf spot can cause lesions on leaves, twigs, and fruit in susceptible cultivars. Insect pests include aphids, which distort growth and can transmit viruses, fruit flies, which infest ripening fruit, and scale insects, which affect vigor.',
+          text: "Brown rot is the disease that decides whether a peach crop reaches market. It infects blossoms in spring, survives in mummified fruit and cankers through the season, and then moves through ripening fruit quickly enough that a warm wet week before harvest can take a block that looked clean. Peach leaf curl is the other characteristic disease, and it is unusual in being controllable only before bud swell — once symptoms appear the season's treatment window has already closed.",
         },
         {
           type: 'paragraph',
@@ -244,6 +244,7 @@ export const peach: CropContent = {
     { type: 'pest', slug: 'aphids' },
     { type: 'pest', slug: 'fruit-flies' },
     { type: 'pest', slug: 'scale-insects' },
+    { type: 'pest', slug: 'root-knot-nematode' },
   ],
   suitableSoils: [
     { type: 'soil', slug: 'loam-soil' },

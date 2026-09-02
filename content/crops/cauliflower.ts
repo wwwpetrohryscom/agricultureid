@@ -92,7 +92,7 @@ export const cauliflower: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'Current area, production, and trade figures change over time and by region; they are best obtained from primary sources such as FAOSTAT rather than assumed.',
+          text: 'Current area, production, and trade figures change over time and by region; they are best obtained from primary sources such as FAOSTAT and national agricultural statistics services rather than assumed.',
         },
       ],
     },
@@ -121,7 +121,7 @@ export const cauliflower: CropContent = {
         {
           type: 'callout',
           tone: 'note',
-          text: 'Maintaining soil pH toward the higher end of the range tolerated by the crop is a widely used cultural tool against clubroot. Soil suitability should be assessed with local soil survey information and, where available, testing.',
+          text: 'Cauliflower is more exacting in its climatic requirements than the other brassicas, because curd initiation is temperature-dependent and its characteristic disorders follow directly from that. Stress at the wrong moment — temperature at either extreme, drought, or a poor transplant — produces buttoning, a premature undersized curd, while high temperature during curd development produces the loose, granular surface known as riciness.',
         },
       ],
     },
