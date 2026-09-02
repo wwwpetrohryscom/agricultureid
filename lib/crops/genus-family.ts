@@ -6,18 +6,16 @@
  * rather than a pass — so a new crop cannot arrive with an unchecked family.
  *
  * The check exists because a wrong family is invisible without one. Changing a
- * cereal's family from Poaceae to Fabaceae leaves a record that is
- * well-formed, plausibly spelled and completely wrong, and every structural
- * rule in the gate passed it.
+ * cereal's family from Poaceae to Fabaceae leaves a record that is well-formed,
+ * plausibly spelled and completely wrong, and every structural rule in the gate
+ * passed it.
  *
  * Regenerated from the verification runs; each value is the family the
- * authority returned alongside the accepted name.
+ * authority returned alongside the accepted name. `Triticosecale` is written
+ * without its hybrid sign because the validator strips the sign before the
+ * lookup: the sign says the genus is a cross, not which family it is in.
  */
 export const GENUS_FAMILY: Record<string, string> = {
-  // A nothogenus. Written without the hybrid sign because the validator strips
-  // it before the lookup: the sign says the genus is a cross, not which family
-  // it belongs to.
-  Triticosecale: 'Poaceae',
   Abelmoschus: 'Malvaceae',
   Actinidia: 'Actinidiaceae',
   Allium: 'Amaryllidaceae',
@@ -28,9 +26,12 @@ export const GENUS_FAMILY: Record<string, string> = {
   Anethum: 'Apiaceae',
   Apium: 'Apiaceae',
   Arachis: 'Fabaceae',
+  Armoracia: 'Brassicaceae',
   Artocarpus: 'Moraceae',
   Asparagus: 'Asparagaceae',
   Avena: 'Poaceae',
+  Basella: 'Basellaceae',
+  Benincasa: 'Cucurbitaceae',
   Beta: 'Amaranthaceae',
   Brassica: 'Brassicaceae',
   Cajanus: 'Fabaceae',
@@ -77,6 +78,7 @@ export const GENUS_FAMILY: Record<string, string> = {
   Eragrostis: 'Poaceae',
   Eriobotrya: 'Rosaceae',
   Eruca: 'Brassicaceae',
+  Eutrema: 'Brassicaceae',
   Fagopyrum: 'Polygonaceae',
   Ficus: 'Moraceae',
   Foeniculum: 'Apiaceae',
@@ -92,10 +94,13 @@ export const GENUS_FAMILY: Record<string, string> = {
   Juglans: 'Juglandaceae',
   Lablab: 'Fabaceae',
   Lactuca: 'Asteraceae',
+  Lagenaria: 'Cucurbitaceae',
   Lathyrus: 'Fabaceae',
   Lavandula: 'Lamiaceae',
+  Lepidium: 'Brassicaceae',
   Linum: 'Linaceae',
   Litchi: 'Sapindaceae',
+  Luffa: 'Cucurbitaceae',
   Lupinus: 'Fabaceae',
   Macadamia: 'Proteaceae',
   Macrotyloma: 'Fabaceae',
@@ -106,6 +111,7 @@ export const GENUS_FAMILY: Record<string, string> = {
   Matricaria: 'Asteraceae',
   Medicago: 'Fabaceae',
   Mentha: 'Lamiaceae',
+  Momordica: 'Cucurbitaceae',
   Mucuna: 'Fabaceae',
   Musa: 'Musaceae',
   Mutarda: 'Brassicaceae',
@@ -121,19 +127,23 @@ export const GENUS_FAMILY: Record<string, string> = {
   Panicum: 'Poaceae',
   Paspalum: 'Poaceae',
   Passiflora: 'Passifloraceae',
+  Pastinaca: 'Apiaceae',
   Perilla: 'Lamiaceae',
   Persea: 'Lauraceae',
   Petroselinum: 'Apiaceae',
   Phaseolus: 'Fabaceae',
   Phoenix: 'Arecaceae',
+  Physalis: 'Solanaceae',
   Piper: 'Piperaceae',
   Pistacia: 'Anacardiaceae',
+  Portulaca: 'Portulacaceae',
   Prunus: 'Rosaceae',
   Psidium: 'Myrtaceae',
   Psophocarpus: 'Fabaceae',
   Punica: 'Lythraceae',
   Pyrus: 'Rosaceae',
   Raphanus: 'Brassicaceae',
+  Rheum: 'Polygonaceae',
   Ribes: 'Grossulariaceae',
   Ricinus: 'Euphorbiaceae',
   Rubus: 'Rosaceae',
@@ -143,19 +153,24 @@ export const GENUS_FAMILY: Record<string, string> = {
   Selenicereus: 'Cactaceae',
   Sesamum: 'Pedaliaceae',
   Setaria: 'Poaceae',
+  Sicyos: 'Cucurbitaceae',
   Simmondsia: 'Simmondsiaceae',
   Sinapis: 'Brassicaceae',
   Solanum: 'Solanaceae',
   Sorghum: 'Poaceae',
   Spinacia: 'Amaranthaceae',
   Syzygium: 'Myrtaceae',
+  Talinum: 'Talinaceae',
   Tamarindus: 'Fabaceae',
   Theobroma: 'Malvaceae',
   Thymus: 'Lamiaceae',
+  Trichosanthes: 'Cucurbitaceae',
+  Triticosecale: 'Poaceae',
   Triticum: 'Poaceae',
   Tropaeolum: 'Tropaeolaceae',
   Ullucus: 'Basellaceae',
   Vaccinium: 'Ericaceae',
+  Valeriana: 'Caprifoliaceae',
   Vanilla: 'Orchidaceae',
   Vicia: 'Fabaceae',
   Vigna: 'Fabaceae',
@@ -180,7 +195,7 @@ export const GENUS_FAMILY: Record<string, string> = {
  * name against — which is why they are pinned here. The list is not exhaustive
  * and does not need to be: it closes the named cases, and the duplicate-taxon
  * rule closes the rest, because a market class has no botanical name of its own
- * and can only enter by borrowing one that another identity already holds.
+ * and can only enter by borrowing one another identity already holds.
  */
 export const MARKET_CLASS_NAMES: readonly string[] = [
   'hard red winter',

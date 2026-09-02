@@ -89,6 +89,20 @@ function taxonKey(n: string): string {
     .trim();
 }
 
+/**
+ * Species any authority named in this corpus.
+ *
+ * A cultivar group's parent must be one of these. Taking the parent on trust
+ * would let a group hang under a species nobody ever checked.
+ */
+const verifiedParents = new Set<string>();
+for (const c of CROP_IDENTITIES) {
+  verifiedParents.add(taxonKey(c.acceptedScientificName));
+  if (c.parentSpecies) verifiedParents.add(taxonKey(c.parentSpecies));
+  for (const a of c.authorities ?? [])
+    verifiedParents.add(taxonKey(a.acceptedName));
+}
+
 const ids = new Set<string>();
 const slugs = new Set<string>();
 const byTaxon = new Map<string, string[]>();
@@ -163,6 +177,29 @@ for (const c of CROP_IDENTITIES) {
       fail(
         `${at}: rank "${c.taxonRank}" but "${c.acceptedScientificName}" is a binomial`,
       );
+  }
+  // An infraspecific taxon must name the species it sits under, and that
+  // species must itself be a name an authority gave — a cultivar group whose
+  // parent nobody verified is a group of nothing.
+  if (INFRASPECIFIC_RANKS.includes(c.taxonRank)) {
+    if (!c.parentSpecies?.trim())
+      fail(`${at}: rank "${c.taxonRank}" but no parent species is named`);
+    else {
+      if (!c.acceptedScientificName.startsWith(c.parentSpecies))
+        fail(
+          `${at}: "${c.acceptedScientificName}" is not a form of its stated parent "${c.parentSpecies}"`,
+        );
+      const parentWords = c.parentSpecies
+        .trim()
+        .split(/\s+/)
+        .filter((w) => w !== '×');
+      if (parentWords.length !== 2)
+        fail(`${at}: parent species "${c.parentSpecies}" is not a binomial`);
+      if (!verifiedParents.has(taxonKey(c.parentSpecies)))
+        fail(
+          `${at}: parent species "${c.parentSpecies}" is not a name any authority recorded in this corpus`,
+        );
+    }
   }
   if (MULTI_TAXON_RANKS.includes(c.taxonRank)) {
     if (!c.limitations?.length)
