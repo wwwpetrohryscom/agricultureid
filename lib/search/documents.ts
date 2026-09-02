@@ -25,6 +25,7 @@ import { SOIL_SURVEYS_PATH } from '@/lib/soils/paths';
 import { TRADE_HUB_PATH } from '@/lib/trade/paths';
 import { ECONOMICS_PATH } from '@/lib/economics/paths';
 import { CLIMATE_RISK_PATH } from '@/lib/climate/paths';
+import { NAME_CROSSWALK } from '@/data/crop-identity/name-crosswalk';
 import { CROP_TAXA_PATH } from '@/lib/crops/paths';
 import {
   CROP_IDENTITIES,
@@ -1260,6 +1261,36 @@ export function buildSearchDocuments(): SearchDoc[] {
       summary: t.purpose,
       facets: { entityType: ['tool'], category: [t.category] },
     });
+  }
+
+  /**
+   * Names a reader may type that are not entities, attached to the entity that
+   * answers them.
+   *
+   * Waves 27–30 refused 83 candidate crop names, each for a good reason, into a
+   * research ledger. "Canola", "nectarine", "Pisum sativum" and "Cavendish
+   * banana" are all names people search for, none of them is a crop identity,
+   * and until now none of them reached anything. The crosswalk records where
+   * each one's answer is; this attaches it.
+   *
+   * They ride at NAME weight because that is what they are — other names for
+   * the same thing, or the name of the thing a reader was really looking for.
+   * A crosswalk entry that deliberately resolves nowhere (a homonym, an
+   * unsettled taxon) attaches to nothing, which is the point of recording it.
+   */
+  {
+    const byKey = new Map(docs.map((d) => [d.id, d]));
+    for (const x of NAME_CROSSWALK) {
+      if (!x.resolvesTo) continue;
+      const key =
+        x.resolvesTo.type === 'crop-taxon'
+          ? `crop-taxon:${x.resolvesTo.slug}`
+          : `${x.resolvesTo.type}:${x.resolvesTo.slug}`;
+      const doc = byKey.get(key);
+      if (!doc) continue;
+      const names = new Set([...(doc.names ?? []), x.name]);
+      doc.names = [...names];
+    }
   }
 
   return docs;

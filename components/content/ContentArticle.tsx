@@ -27,6 +27,10 @@ import { CultivarRegistrations } from '@/components/varieties/CultivarRegistrati
 import { CommodityMarketLink } from '@/components/markets/CommodityMarketLink';
 import { CropCostSummary } from '@/components/economics/CropCostSummary';
 import { CropIdentityPanel } from '@/components/crops/CropIdentityPanel';
+import {
+  CropConceptScope,
+  CropHomonymNote,
+} from '@/components/crops/CropConceptScope';
 import { identityForCrop } from '@/lib/crops/identity';
 import { EntityExtensionResources } from '@/components/extension/EntityExtensionResources';
 import { CropAuthorizedInputs } from '@/components/inputs/CropAuthorizedInputs';
@@ -126,7 +130,16 @@ export function ContentArticle({ item }: { item: AnyContent }) {
               against two authorities. Renders nothing otherwise — the backfill
               runs wave by wave and a gap is not a claim. */}
           {item.contentType === 'crop' && (
-            <CropIdentityPanel identity={identityForCrop(item.slug)} />
+            <>
+              <CropConceptScope slug={item.slug} />
+              <CropIdentityPanel identity={identityForCrop(item.slug)} />
+              <CropHomonymNote
+                slug={item.slug}
+                scientificName={
+                  identityForCrop(item.slug)?.acceptedScientificName ?? ''
+                }
+              />
+            </>
           )}
 
           {/* Crops with transcribed timing data link to their calendar; the
