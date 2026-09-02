@@ -22,6 +22,7 @@ const ACCESS_VARIETY = '2026-08-27';
 const ACCESS_EXTENSION = '2026-08-27';
 const ACCESS_EXTENSION_16 = '2026-08-27';
 const ACCESS_CLIMATE = '2026-08-27';
+const ACCESS_CROPS = '2026-09-02';
 
 export const SOURCES: Source[] = [
   {
@@ -2818,6 +2819,32 @@ export const SOURCES: Source[] = [
     language: 'en',
     notes:
       'Land use by country, including area equipped for irrigation and area actually irrigated. Each value carries a flag saying whether the country reported it officially or FAO estimated or imputed it.',
+    reliability: 'authoritative',
+  },
+  {
+    id: 'wfo-world-flora-online',
+    organization: 'World Flora Online Consortium',
+    title: 'World Flora Online — Taxonomic Backbone',
+    url: 'https://www.worldfloraonline.org/',
+    accessDate: ACCESS_CROPS,
+    sourceType: 'intergovernmental',
+    jurisdiction: 'Global',
+    language: 'en',
+    notes:
+      'A consortium taxonomic backbone for the world flora, queried through its name-matching service. Returns a placement in the classification, from which the accepted name and family are read; a name it has not placed carries no accepted name and is not treated as evidence.',
+    reliability: 'authoritative',
+  },
+  {
+    id: 'powo-plants-of-the-world-online',
+    organization: 'Royal Botanic Gardens, Kew',
+    title: 'Plants of the World Online',
+    url: 'https://powo.science.kew.org/',
+    accessDate: ACCESS_CROPS,
+    sourceType: 'research-institute',
+    jurisdiction: 'Global',
+    language: 'en',
+    notes:
+      'Kew’s global taxonomic resource for vascular plants, read through the checklist it publishes as a GBIF dataset because the direct API refuses automated requests. Gives an explicit accepted/synonym status and the accepted name.',
     reliability: 'authoritative',
   },
 ];

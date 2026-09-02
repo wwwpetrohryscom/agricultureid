@@ -14,6 +14,8 @@ interface HubIndexProps {
   items: AnyContent[];
   /** Optional longer editorial note under the intro. */
   note?: string;
+  /** Optional block rendered between the note and the grid. */
+  aside?: React.ReactNode;
 }
 
 /** Category hub: intro, ItemList schema, and a responsive grid of entries. */
@@ -23,6 +25,7 @@ export function HubIndex({
   description,
   items,
   note,
+  aside,
 }: HubIndexProps) {
   return (
     <Container className="py-10 lg:py-12">
@@ -54,6 +57,8 @@ export function HubIndex({
       {note && (
         <p className="mt-6 max-w-3xl text-sm leading-7 text-ink-600">{note}</p>
       )}
+
+      {aside}
 
       {items.length > 0 ? (
         <ul className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">

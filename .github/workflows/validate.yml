@@ -85,6 +85,9 @@ jobs:
       - name: Border requirement validation
         run: npm run trade:validate
 
+      - name: Crop identity validation
+        run: npm run crops:validate
+
       - name: Climate, drought and water validation
         run: npm run climate:validate
 

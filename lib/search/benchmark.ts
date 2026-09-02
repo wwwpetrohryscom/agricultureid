@@ -97,6 +97,63 @@ export interface Benchmark {
 }
 
 export const BENCHMARKS: Benchmark[] = [
+  /* ---- Crop identity (Wave 27) --------------------------------------------
+   * Two failures matter. A crop must win its own accepted binomial — and an
+   * ambiguous common name must NOT resolve to a species with false certainty.
+   * "Yam" is several Dioscorea species; "millet" is grasses from four genera;
+   * "lupin" is a genus. Those queries should land on the concept the corpus
+   * actually holds, not on one arbitrary species of it.
+   */
+  {
+    query: 'manihot esculenta',
+    titleIncludes: ['cassava'],
+    types: ['crop'],
+    kind: 'scientific',
+  },
+  {
+    query: 'cicer arietinum',
+    titleIncludes: ['chickpea'],
+    types: ['crop'],
+    kind: 'scientific',
+  },
+  {
+    query: 'ipomoea batatas',
+    titleIncludes: ['sweet potato'],
+    types: ['crop'],
+    kind: 'scientific',
+  },
+  {
+    query: 'sorghum bicolor',
+    titleIncludes: ['sorghum'],
+    types: ['crop'],
+    kind: 'scientific',
+  },
+  {
+    query: 'adzuki bean',
+    titleIncludes: ['adzuki'],
+    types: ['crop-taxon'],
+    kind: 'exact',
+  },
+  {
+    query: 'vigna angularis',
+    titleIncludes: ['adzuki'],
+    types: ['crop-taxon'],
+    kind: 'scientific',
+  },
+  // Ambiguous common names. Each is a crop concept in this corpus, and the
+  // concept — not a single species — is the honest answer.
+  {
+    query: 'yam',
+    titleIncludes: ['yam'],
+    types: ['crop'],
+    kind: 'exact',
+  },
+  {
+    query: 'lupin',
+    titleIncludes: ['lupin'],
+    types: ['crop'],
+    kind: 'exact',
+  },
   /* ---- Climate, drought and water (Wave 26) -------------------------------
    * The hub must win queries about the RECORD, and must not win queries about
    * the concepts: 20 climate reference pages own "drought", "frost" and
