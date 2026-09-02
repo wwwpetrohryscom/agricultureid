@@ -35,6 +35,7 @@ import {
   CropMarketLink,
   RelatedCropList,
 } from '@/components/crops/CropMarketLink';
+import { CropHubLinks } from '@/components/crops/CropHubLinks';
 import { identityForCrop } from '@/lib/crops/identity';
 import { EntityExtensionResources } from '@/components/extension/EntityExtensionResources';
 import { CropAuthorizedInputs } from '@/components/inputs/CropAuthorizedInputs';
@@ -144,6 +145,7 @@ export function ContentArticle({ item }: { item: AnyContent }) {
                 }
               />
               <CropMarketLink slug={item.slug} />
+              <CropHubLinks slug={item.slug} />
               <RelatedCropList slug={item.slug} />
             </>
           )}

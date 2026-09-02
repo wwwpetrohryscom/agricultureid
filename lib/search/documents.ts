@@ -26,6 +26,8 @@ import { TRADE_HUB_PATH } from '@/lib/trade/paths';
 import { ECONOMICS_PATH } from '@/lib/economics/paths';
 import { CLIMATE_RISK_PATH } from '@/lib/climate/paths';
 import { NAME_CROSSWALK } from '@/data/crop-identity/name-crosswalk';
+import { CROP_HUBS } from '@/data/crop-hubs';
+import { hubPath, membershipOf } from '@/lib/crops/hubs';
 import { CROP_TAXA_PATH } from '@/lib/crops/paths';
 import {
   CROP_IDENTITIES,
@@ -1260,6 +1262,40 @@ export function buildSearchDocuments(): SearchDoc[] {
       category: `Calculator · ${t.category}`,
       summary: t.purpose,
       facets: { entityType: ['tool'], category: [t.category] },
+    });
+  }
+
+  /**
+   * Crop hubs.
+   *
+   * A hub answers a group-shaped query — "cereals", "legume family", "brassica
+   * crops" — which the corpus previously answered with whichever individual
+   * crop happened to score highest. The names below are deliberately the group
+   * vocabulary and NOT the members: a hub carrying "wheat" at name weight would
+   * compete with the wheat article for wheat's own query, which is the entity-
+   * synonym misuse Waves 27 and 32 both had to remove.
+   */
+  for (const h of CROP_HUBS) {
+    const m = membershipOf(h);
+    const names = [h.title, h.memberKey];
+    if (h.kind === 'BOTANICAL_FAMILY_HUB')
+      names.push(`${h.memberKey} family`, `${h.memberKey} crops`);
+    if (h.kind === 'BOTANICAL_GENUS_HUB')
+      names.push(`${h.memberKey} crops`, `${h.memberKey} genus`);
+    if (h.kind === 'AGRICULTURAL_CROP_GROUP_HUB')
+      names.push(`${h.title} crops`, `${h.title} group`);
+    docs.push({
+      id: `crop-hub:${h.slug}`,
+      type: 'crop-hub',
+      route: hubPath(h),
+      title: h.title,
+      names: [...new Set(names)],
+      category: 'Crop groups',
+      summary: `${h.definition} Covers ${m.published.length} published crops and ${m.taxaOnly.length} taxa held without an article.`,
+      facets: {
+        entityType: ['crop-hub'],
+        category: ['Crop groups'],
+      },
     });
   }
 
