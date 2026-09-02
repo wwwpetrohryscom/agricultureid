@@ -197,6 +197,105 @@ describe('crops — data-only taxa get no page', () => {
   });
 });
 
+describe('crops — cultivated forms are groups, not species (Wave 28)', () => {
+  it('gives every cultivar group a verified parent species', () => {
+    const groups = CROP_IDENTITIES.filter(
+      (c) => c.taxonRank === 'cultivar-group',
+    );
+    expect(groups.length).toBeGreaterThan(10);
+    const known = new Set(
+      CROP_IDENTITIES.map((c) => key(c.acceptedScientificName)),
+    );
+    for (const c of groups) {
+      expect(c.parentSpecies, c.slug).toBeTruthy();
+      expect(
+        c.acceptedScientificName.startsWith(c.parentSpecies!),
+        c.slug,
+      ).toBe(true);
+      // the parent is a real binomial, and an authority named it
+      expect(c.parentSpecies!.split(/\s+/).length, c.slug).toBe(2);
+      expect(
+        c.authorities.some(
+          (a) => key(a.acceptedName) === key(c.parentSpecies!),
+        ),
+        c.slug,
+      ).toBe(true);
+      void known;
+    }
+  });
+
+  it('keeps the Brassica oleracea forms apart without inventing species', () => {
+    const forms = [
+      'broccoli',
+      'cabbage',
+      'cauliflower',
+      'kale',
+      'kohlrabi',
+      'brussels-sprouts',
+    ];
+    for (const slug of forms) {
+      const c = CROP_IDENTITIES.find((x) => x.slug === slug)!;
+      expect(c, slug).toBeDefined();
+      expect(c.taxonRank, slug).toBe('cultivar-group');
+      expect(c.parentSpecies, slug).toBe('Brassica oleracea');
+    }
+    // six crops, six distinct group names, one species
+    const names = new Set(
+      forms.map(
+        (s) =>
+          CROP_IDENTITIES.find((x) => x.slug === s)!.acceptedScientificName,
+      ),
+    );
+    expect(names.size).toBe(forms.length);
+  });
+
+  it('keeps sweet and chilli pepper as one species in two groups', () => {
+    const sweet = CROP_IDENTITIES.find((c) => c.slug === 'sweet-pepper')!;
+    const chilli = CROP_IDENTITIES.find((c) => c.slug === 'chili-pepper')!;
+    expect(sweet.parentSpecies).toBe('Capsicum annuum');
+    expect(chilli.parentSpecies).toBe('Capsicum annuum');
+    expect(sweet.acceptedScientificName).not.toBe(
+      chilli.acceptedScientificName,
+    );
+    // and the four genuinely separate Capsicum species are held as species
+    for (const s of [
+      'habanero-pepper',
+      'tabasco-pepper',
+      'aji-pepper',
+      'rocoto-pepper',
+    ])
+      expect(CROP_IDENTITIES.find((c) => c.slug === s)?.taxonRank, s).toBe(
+        'species',
+      );
+  });
+
+  it('holds beet as one species in three groups, not three species', () => {
+    for (const s of ['beetroot', 'swiss-chard', 'sugar-beet']) {
+      const c = CROP_IDENTITIES.find((x) => x.slug === s)!;
+      expect(c.taxonRank, s).toBe('cultivar-group');
+      expect(c.parentSpecies, s).toBe('Beta vulgaris');
+    }
+  });
+
+  it('holds pumpkin as a genus concept, not one arbitrary species', () => {
+    const p = CROP_IDENTITIES.find((c) => c.slug === 'pumpkin')!;
+    expect(p.taxonRank).toBe('genus');
+    expect(p.genus).toBe('Cucurbita');
+    expect(p.limitations?.length).toBeGreaterThan(0);
+    // and the four cultivated Cucurbita species are held separately
+    for (const s of [
+      'winter-squash-maxima',
+      'butternut-squash',
+      'cushaw-squash',
+      'fig-leaf-gourd',
+    ])
+      expect(
+        CROP_IDENTITIES.some((c) => c.slug === s),
+        s,
+      ).toBe(true);
+  });
+});
+
 describe('crops — vocabularies are controlled and live', () => {
   it('uses only vocabulary values', () => {
     for (const c of CROP_IDENTITIES) {

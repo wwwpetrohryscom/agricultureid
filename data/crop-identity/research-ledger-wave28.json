@@ -1,0 +1,687 @@
+{
+  "wave": 28,
+  "generatedAt": "2026-09-02",
+  "counts": {
+    "ACCEPT_FULL_PROFILE": 42,
+    "ACCEPT_DATA_ONLY": 44,
+    "SYNONYM_OF_EXISTING": 5,
+    "AGRICULTURAL_FORM_OF_EXISTING_TAXON": 17,
+    "CROP_GROUP_NOT_SINGLE_TAXON": 1,
+    "MARKET_CLASS_NOT_CROP": 1,
+    "CULTIVAR_NOT_CROP": 2
+  },
+  "entries": [
+    {
+      "candidate": "Solanum lycopersicum",
+      "slug": "tomato",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Solanum melongena",
+      "slug": "eggplant",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Cucumis sativus",
+      "slug": "cucumber",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Lactuca sativa",
+      "slug": "lettuce",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Spinacia oleracea",
+      "slug": "spinach",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Daucus carota subsp. sativus",
+      "slug": "carrot",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Allium cepa",
+      "slug": "onion",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Allium sativum",
+      "slug": "garlic",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Asparagus officinalis",
+      "slug": "asparagus",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Abelmoschus esculentus",
+      "slug": "okra",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Cichorium intybus",
+      "slug": "chicory",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Nasturtium officinale",
+      "slug": "watercress",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Eruca vesicaria",
+      "slug": "rocket",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Ocimum basilicum",
+      "slug": "basil",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Petroselinum crispum",
+      "slug": "parsley",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Coriandrum sativum",
+      "slug": "coriander",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Anethum graveolens",
+      "slug": "dill",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Foeniculum vulgare",
+      "slug": "fennel",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Origanum vulgare",
+      "slug": "oregano",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Thymus vulgaris",
+      "slug": "thyme",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Salvia officinalis",
+      "slug": "sage",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Salvia rosmarinus",
+      "slug": "rosemary",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Matricaria chamomilla",
+      "slug": "chamomile",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Cynara cardunculus",
+      "slug": "artichoke",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Apium graveolens",
+      "slug": "celery",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Raphanus raphanistrum subsp. sativus",
+      "slug": "radish",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Allium ampeloprasum",
+      "slug": "leek",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "kohlrabi",
+      "slug": "kohlrabi",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "broccoli",
+      "slug": "broccoli",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "cabbage",
+      "slug": "cabbage",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "cauliflower",
+      "slug": "cauliflower",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "kale",
+      "slug": "kale",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "sweet-pepper",
+      "slug": "sweet-pepper",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "chili-pepper",
+      "slug": "chili-pepper",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "beetroot",
+      "slug": "beetroot",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "swiss-chard",
+      "slug": "swiss-chard",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "zucchini",
+      "slug": "zucchini",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "pumpkin",
+      "slug": "pumpkin",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "sweetcorn",
+      "slug": "sweetcorn",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "mint",
+      "slug": "mint",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Cucurbita maxima",
+      "slug": "winter-squash-maxima",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Cucurbita moschata",
+      "slug": "butternut-squash",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Cucurbita argyrosperma",
+      "slug": "cushaw-squash",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Cucurbita ficifolia",
+      "slug": "fig-leaf-gourd",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Cucumis melo",
+      "slug": "melon",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Citrullus lanatus",
+      "slug": "watermelon",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Lagenaria siceraria",
+      "slug": "bottle-gourd",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Luffa acutangula",
+      "slug": "ridge-gourd",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Momordica charantia",
+      "slug": "bitter-gourd",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Benincasa hispida",
+      "slug": "wax-gourd",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Sechium edule",
+      "slug": "chayote",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Trichosanthes cucumerina",
+      "slug": "snake-gourd",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Capsicum chinense",
+      "slug": "habanero-pepper",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Capsicum frutescens",
+      "slug": "tabasco-pepper",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Capsicum baccatum",
+      "slug": "aji-pepper",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Capsicum pubescens",
+      "slug": "rocoto-pepper",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Physalis philadelphica",
+      "slug": "tomatillo",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Physalis peruviana",
+      "slug": "cape-gooseberry",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Solanum betaceum",
+      "slug": "tamarillo",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Solanum aethiopicum",
+      "slug": "scarlet-eggplant",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Solanum macrocarpon",
+      "slug": "gboma-eggplant",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "brussels-sprouts",
+      "slug": "brussels-sprouts",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "chinese-cabbage",
+      "slug": "chinese-cabbage",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "pak-choi",
+      "slug": "pak-choi",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "turnip",
+      "slug": "turnip",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "swede",
+      "slug": "swede",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Lepidium sativum",
+      "slug": "garden-cress",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Armoracia rusticana",
+      "slug": "horseradish",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Eutrema japonicum",
+      "slug": "wasabi",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Allium fistulosum",
+      "slug": "welsh-onion",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Allium schoenoprasum",
+      "slug": "chives",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Allium chinense",
+      "slug": "rakkyo",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Allium tuberosum",
+      "slug": "garlic-chives",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Pastinaca sativa",
+      "slug": "parsnip",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Cichorium endivia",
+      "slug": "endive",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Valerianella locusta",
+      "slug": "corn-salad",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Portulaca oleracea",
+      "slug": "purslane",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Rheum rhabarbarum",
+      "slug": "rhubarb",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Basella alba",
+      "slug": "malabar-spinach",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Corchorus olitorius",
+      "slug": "jute-mallow",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Amaranthus dubius",
+      "slug": "spleen-amaranth",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Talinum fruticosum",
+      "slug": "waterleaf",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Ipomoea aquatica",
+      "slug": "water-spinach",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Vigna unguiculata subsp. sesquipedalis",
+      "slug": "yardlong-bean",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Momordica dioica",
+      "slug": "spine-gourd",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "celeriac",
+      "slug": "celeriac",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Sechium edule",
+      "slug": "chayote",
+      "status": "SYNONYM_OF_EXISTING",
+      "note": "Both authorities accept Sicyos edulis."
+    },
+    {
+      "candidate": "Cyphomandra betacea",
+      "slug": "tamarillo",
+      "status": "SYNONYM_OF_EXISTING",
+      "note": "Both authorities accept Solanum betaceum."
+    },
+    {
+      "candidate": "Wasabia japonica",
+      "slug": "wasabi",
+      "status": "SYNONYM_OF_EXISTING",
+      "note": "Both authorities accept Eutrema japonicum."
+    },
+    {
+      "candidate": "Valerianella locusta",
+      "slug": "corn-salad",
+      "status": "SYNONYM_OF_EXISTING",
+      "note": "Plants of the World Online accepts Valeriana locusta; World Flora Online did not resolve the name."
+    },
+    {
+      "candidate": "Brassica oleracea var. italica",
+      "slug": "broccoli",
+      "status": "AGRICULTURAL_FORM_OF_EXISTING_TAXON",
+      "note": "A cultivated form of Brassica oleracea. Published as the Italica Group, not as a species."
+    },
+    {
+      "candidate": "Brassica oleracea var. capitata",
+      "slug": "cabbage",
+      "status": "AGRICULTURAL_FORM_OF_EXISTING_TAXON",
+      "note": "Capitata Group of Brassica oleracea."
+    },
+    {
+      "candidate": "Brassica oleracea var. botrytis",
+      "slug": "cauliflower",
+      "status": "AGRICULTURAL_FORM_OF_EXISTING_TAXON",
+      "note": "Botrytis Group of Brassica oleracea. POWO resolves the name to Brassica cretica subsp. cretica."
+    },
+    {
+      "candidate": "Brassica oleracea var. acephala",
+      "slug": "kale",
+      "status": "AGRICULTURAL_FORM_OF_EXISTING_TAXON",
+      "note": "Acephala Group of Brassica oleracea."
+    },
+    {
+      "candidate": "Brassica oleracea var. gongylodes",
+      "slug": "kohlrabi",
+      "status": "AGRICULTURAL_FORM_OF_EXISTING_TAXON",
+      "note": "Gongylodes Group of Brassica oleracea."
+    },
+    {
+      "candidate": "Brassica oleracea var. gemmifera",
+      "slug": "brussels-sprouts",
+      "status": "AGRICULTURAL_FORM_OF_EXISTING_TAXON",
+      "note": "Gemmifera Group of Brassica oleracea."
+    },
+    {
+      "candidate": "Brassica rapa subsp. pekinensis",
+      "slug": "chinese-cabbage",
+      "status": "AGRICULTURAL_FORM_OF_EXISTING_TAXON",
+      "note": "Pekinensis Group of Brassica rapa."
+    },
+    {
+      "candidate": "Brassica rapa subsp. chinensis",
+      "slug": "pak-choi",
+      "status": "AGRICULTURAL_FORM_OF_EXISTING_TAXON",
+      "note": "Chinensis Group of Brassica rapa."
+    },
+    {
+      "candidate": "Brassica rapa subsp. rapa",
+      "slug": "turnip",
+      "status": "AGRICULTURAL_FORM_OF_EXISTING_TAXON",
+      "note": "Rapifera Group of Brassica rapa."
+    },
+    {
+      "candidate": "Brassica napus var. napobrassica",
+      "slug": "swede",
+      "status": "AGRICULTURAL_FORM_OF_EXISTING_TAXON",
+      "note": "Napobrassica Group of Brassica napus \u2014 the same species as oilseed rape."
+    },
+    {
+      "candidate": "Zea mays var. saccharata",
+      "slug": "sweetcorn",
+      "status": "AGRICULTURAL_FORM_OF_EXISTING_TAXON",
+      "note": "Saccharata Group of Zea mays. POWO resolves the name to Zea mays subsp. mays."
+    },
+    {
+      "candidate": "Apium graveolens var. rapaceum",
+      "slug": "celeriac",
+      "status": "AGRICULTURAL_FORM_OF_EXISTING_TAXON",
+      "note": "Rapaceum Group of Apium graveolens."
+    },
+    {
+      "candidate": "Capsicum annuum (sweet)",
+      "slug": "sweet-pepper",
+      "status": "AGRICULTURAL_FORM_OF_EXISTING_TAXON",
+      "note": "Grossum Group. Sweet and chilli peppers are the same species."
+    },
+    {
+      "candidate": "Capsicum annuum (hot)",
+      "slug": "chili-pepper",
+      "status": "AGRICULTURAL_FORM_OF_EXISTING_TAXON",
+      "note": "Longum Group."
+    },
+    {
+      "candidate": "Beta vulgaris (table)",
+      "slug": "beetroot",
+      "status": "AGRICULTURAL_FORM_OF_EXISTING_TAXON",
+      "note": "Conditiva Group."
+    },
+    {
+      "candidate": "Beta vulgaris (leaf)",
+      "slug": "swiss-chard",
+      "status": "AGRICULTURAL_FORM_OF_EXISTING_TAXON",
+      "note": "Cicla Group."
+    },
+    {
+      "candidate": "Cucurbita pepo (courgette)",
+      "slug": "zucchini",
+      "status": "AGRICULTURAL_FORM_OF_EXISTING_TAXON",
+      "note": "Zucchini Group of Cucurbita pepo, the same species as many pumpkins."
+    },
+    {
+      "candidate": "pumpkin",
+      "slug": "pumpkin",
+      "status": "CROP_GROUP_NOT_SINGLE_TAXON",
+      "note": "Four cultivated Cucurbita species. Held as a genus concept with all four verified separately."
+    },
+    {
+      "candidate": "greenhouse tomato",
+      "slug": null,
+      "status": "MARKET_CLASS_NOT_CROP",
+      "note": "Protected cultivation is a production context, not a taxon. Recorded as context, never as a separate crop."
+    },
+    {
+      "candidate": "cherry tomato",
+      "slug": null,
+      "status": "CULTIVAR_NOT_CROP",
+      "note": "A fruit-size class within Solanum lycopersicum."
+    },
+    {
+      "candidate": "romaine lettuce",
+      "slug": null,
+      "status": "CULTIVAR_NOT_CROP",
+      "note": "A cultivar group of Lactuca sativa; not modelled as a crop."
+    },
+    {
+      "candidate": "spring onion",
+      "slug": "welsh-onion",
+      "status": "SYNONYM_OF_EXISTING",
+      "note": "An ambiguous common name applied both to Allium fistulosum and to immature Allium cepa. Kept as an alternative name on Welsh onion only."
+    }
+  ]
+}

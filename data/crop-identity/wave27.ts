@@ -1,7 +1,7 @@
 import type { CropIdentity } from '@/types/crop-identity';
 
 /**
- * Wave 27 — staple, field and commodity crops.
+ * Wave 27.
  *
  * Every accepted name here was resolved against two independent authorities —
  * World Flora Online and Plants of the World Online — on 2026-09-02. Where they
@@ -1346,16 +1346,17 @@ export const WAVE_27_IDENTITIES: readonly CropIdentity[] = [
     id: 'crop-identity-sugar-beet',
     slug: 'sugar-beet',
     primaryCommonName: 'Sugar beet',
-    acceptedScientificName: 'Beta vulgaris subsp. vulgaris',
-    taxonRank: 'subspecies',
+    acceptedScientificName: 'Beta vulgaris Altissima Group',
+    taxonRank: 'cultivar-group',
     genus: 'Beta',
     family: 'Amaranthaceae',
+    parentSpecies: 'Beta vulgaris',
     cropGroups: ['sugar-crops', 'roots-and-tubers'],
     harvestedParts: ['root'],
     agriculturalUses: ['sugar', 'animal-feed', 'bioenergy'],
     lifeCycle: 'biennial',
     growthHabit: 'herb',
-    agreement: 'disagreed',
+    agreement: 'agreed',
     authorities: [
       {
         sourceId: 'wfo-world-flora-online',
@@ -1363,12 +1364,11 @@ export const WAVE_27_IDENTITIES: readonly CropIdentity[] = [
       },
       {
         sourceId: 'powo-plants-of-the-world-online',
-        acceptedName: 'Beta vulgaris subsp. vulgaris',
-        recordId: '206484785',
+        acceptedName: 'Beta vulgaris',
       },
     ],
     agreementNote:
-      'World Flora Online resolves the name to the species Beta vulgaris; Plants of the World Online keeps the cultivated subspecies, Beta vulgaris subsp. vulgaris. AgricultureID publishes the subspecies, because the distinction between cultivated beet and the wild sea beet is exactly what a crop record is about.',
+      'Beetroot, Swiss chard and sugar beet are the same species, Beta vulgaris, bred for storage root, leaf and stalk, and sugar content respectively. They are cultivar groups of one plant, not three species.',
     taxonomySourceIds: [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
@@ -1419,6 +1419,7 @@ export const WAVE_27_IDENTITIES: readonly CropIdentity[] = [
     taxonRank: 'subspecies',
     genus: 'Triticum',
     family: 'Poaceae',
+    parentSpecies: 'Triticum turgidum',
     cropGroups: ['cereals'],
     harvestedParts: ['grain'],
     agriculturalUses: ['human-food'],
@@ -1452,6 +1453,7 @@ export const WAVE_27_IDENTITIES: readonly CropIdentity[] = [
     taxonRank: 'subspecies',
     genus: 'Triticum',
     family: 'Poaceae',
+    parentSpecies: 'Triticum aestivum',
     cropGroups: ['cereals'],
     harvestedParts: ['grain'],
     agriculturalUses: ['human-food'],
@@ -1517,6 +1519,7 @@ export const WAVE_27_IDENTITIES: readonly CropIdentity[] = [
     taxonRank: 'subspecies',
     genus: 'Triticum',
     family: 'Poaceae',
+    parentSpecies: 'Triticum turgidum',
     cropGroups: ['cereals'],
     harvestedParts: ['grain'],
     agriculturalUses: ['human-food'],
@@ -1646,6 +1649,7 @@ export const WAVE_27_IDENTITIES: readonly CropIdentity[] = [
     taxonRank: 'subspecies',
     genus: 'Echinochloa',
     family: 'Poaceae',
+    parentSpecies: 'Echinochloa colona',
     cropGroups: ['cereals'],
     harvestedParts: ['grain', 'forage-biomass'],
     agriculturalUses: ['human-food', 'animal-feed', 'forage'],
@@ -2403,6 +2407,7 @@ export const WAVE_27_IDENTITIES: readonly CropIdentity[] = [
     taxonRank: 'subspecies',
     genus: 'Brassica',
     family: 'Brassicaceae',
+    parentSpecies: 'Brassica rapa',
     cropGroups: ['oilseeds'],
     harvestedParts: ['oilseed'],
     agriculturalUses: ['oilseed', 'animal-feed'],
@@ -2706,6 +2711,7 @@ export const WAVE_27_IDENTITIES: readonly CropIdentity[] = [
     taxonRank: 'subspecies',
     genus: 'Dioscorea',
     family: 'Dioscoreaceae',
+    parentSpecies: 'Dioscorea cayenensis',
     cropGroups: ['roots-and-tubers'],
     harvestedParts: ['tuber'],
     agriculturalUses: ['human-food'],
