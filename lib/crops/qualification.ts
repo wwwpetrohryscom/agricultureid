@@ -16,6 +16,8 @@ import { allRoutes } from '@/lib/seo/routes';
 import { calendarsForCrop } from '@/lib/calendars/registry';
 import { costsForCrop } from '@/lib/economics/registry';
 import { EXTENSION_RESOURCES } from '@/lib/extension/registry';
+import { COMMODITIES_BY_CROP } from '@/lib/crops/integration';
+import { seriesForCommodity } from '@/lib/markets/registry';
 import { VARIETY_REGISTRATIONS } from '@/lib/varieties/registry';
 import {
   DEPTH_REQUIREMENTS,
@@ -293,19 +295,21 @@ function enrichmentFor(slug: string): CropProfileQualification['enrichment'] {
     .map((r) => r.slug)
     .filter((s): s is string => !!s && CLIMATE_SLUGS.has(s));
   return {
-    // The market layer is keyed to COMMODITY slugs — the commodity of wheat is
-    // "wheat-grain", not "wheat" — and no verified crop↔commodity concordance
-    // exists in the corpus. Sixty-two commodities carry ingested series and
-    // none of them resolves to a crop. That is a missing LINK, not missing
-    // data, and reporting it as missing coverage would put a false gap on
-    // every crop in the corpus. Building the concordance is Wave 34's work.
-    markets: {
-      result: 'not-modelled',
-      count: 0,
-      refs: [],
-      derivedFrom:
-        'the market layer is keyed to commodity slugs and no verified crop↔commodity concordance exists yet',
-    },
+    // Reached through the commodity that names the crop.
+    //
+    // Wave 31 reported this dimension as not-modelled, on the reasoning that
+    // the market layer is keyed to commodity slugs and no crop↔commodity
+    // concordance existed. The first half was right and the second was wrong:
+    // every commodity carries a `sourceCrop`, and Wave 34 reversed it into an
+    // index. 57 published crops reach price series through it. The claim
+    // survived because nothing checked it — see crops-integration-validate.
+    markets: coverage(
+      (COMMODITIES_BY_CROP.get(slug) ?? []).flatMap((c) =>
+        seriesForCommodity(c).map((x) => `${c}:${x.id}`),
+      ),
+      'market series on the commodities whose sourceCrop is this crop',
+      2,
+    ),
     calendars: coverage(
       calendarsForCrop(slug).map((c) => c.id),
       'crop calendar entries naming this crop',
