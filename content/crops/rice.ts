@@ -253,7 +253,10 @@ export const rice: CropContent = {
     { type: 'soil', slug: 'loam-soil' },
     { type: 'soil', slug: 'clay-soil' },
   ],
-  relatedTopics: [{ type: 'crop', slug: 'wheat' }],
+  relatedTopics: [
+    { type: 'crop', slug: 'wheat' },
+    { type: 'crop', slug: 'african-rice' },
+  ],
   glossaryTerms: ['annual-crop', 'soil-texture', 'yield', 'evapotranspiration'],
   geographicScope:
     'Global overview. Rice is grown under widely differing systems (irrigated, rainfed, upland, and deepwater), so establishment method and water management are highly region- and system-specific.',

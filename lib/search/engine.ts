@@ -319,6 +319,12 @@ export function search(
   // commodity, products, diseases, and grading standards). Without this, a bare
   // shared plant name degenerates into a term-frequency contest between
   // entities that all legitimately carry the name.
+  // Term coverage is weighted heavily, and deliberately so. A document that
+  // matches every word of the query is answering it; one that matches a single
+  // word twice as strongly is answering a different question. At the previous
+  // weighting "cluster bean" — guar's principal name in India, held in its
+  // names field — lost to bean cultivars matching only "bean", because "bean"
+  // in a title plus a name outweighed both query terms in one field.
   const nQ = Math.max(qTokens.length, 1);
   const expandedQueries = queryTitleForms(qTokens, index.synonymMap);
   const scored: SearchResult[] = [];
@@ -330,7 +336,7 @@ export function search(
     scored.push({
       doc,
       score:
-        score * (0.5 + 0.5 * termCoverage) * typePrior(doc.type) + titleExact,
+        score * (0.1 + 0.9 * termCoverage) * typePrior(doc.type) + titleExact,
       matchedVia: [...(matchedVia.get(docIdx) ?? [])],
     });
   }

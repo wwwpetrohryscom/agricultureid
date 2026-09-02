@@ -227,6 +227,7 @@ export const fonio: CropContent = {
     { type: 'soil', slug: 'laterite-soil' },
   ],
   relatedTopics: [
+    { type: 'crop', slug: 'african-rice' },
     { type: 'crop', slug: 'millet' },
     { type: 'crop', slug: 'sorghum' },
   ],

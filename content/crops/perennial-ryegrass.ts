@@ -202,6 +202,7 @@ export const perennialRyegrass: CropContent = {
     { type: 'farming-system', slug: 'silvopasture' },
   ],
   relatedTopics: [
+    { type: 'crop', slug: 'white-clover' },
     { type: 'crop', slug: 'alfalfa' },
     { type: 'crop', slug: 'red-clover' },
   ],

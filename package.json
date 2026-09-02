@@ -42,7 +42,7 @@
     "authorities:health": "tsx -e \"import { AUTHORITIES } from './data/authorities'; for (const a of AUTHORITIES) console.log(a.id + ' ' + a.officialWebsite);\" | node scripts/authorities-health.mjs",
     "ecosystem:validate": "tsx scripts/ecosystem-validate.ts",
     "ecosystem:audit": "tsx scripts/ecosystem-audit.ts",
-    "validate": "npm run format:check && npm run typecheck && npm run lint && npm run content:validate && npm run ecosystem:validate && npm run jurisdictions:validate && npm run authorities:validate && npm run registries:validate && npm run regulations:validate && npm run support:validate && npm run calendars:validate && npm run biosecurity:validate && npm run varieties:validate && npm run freshness:validate && npm run history:validate && npm run provenance:validate && npm run coverage:validate && npm run soils:validate && npm run trade:validate && npm run crops:validate && npm run crops:integrity:validate && npm run crops:qualification:validate && npm run crops:concepts:validate && npm run crops:integration:validate && npm run climate:validate && npm run economics:validate && npm run markets:validate && npm run extension:validate && npm run inputs:validate && npm run tools:validate && npm run test",
+    "validate": "npm run format:check && npm run typecheck && npm run lint && npm run content:validate && npm run ecosystem:validate && npm run jurisdictions:validate && npm run authorities:validate && npm run registries:validate && npm run regulations:validate && npm run support:validate && npm run calendars:validate && npm run biosecurity:validate && npm run varieties:validate && npm run freshness:validate && npm run history:validate && npm run provenance:validate && npm run coverage:validate && npm run soils:validate && npm run trade:validate && npm run crops:validate && npm run crops:integrity:validate && npm run crops:research:validate && npm run crops:qualification:validate && npm run crops:concepts:validate && npm run crops:integration:validate && npm run climate:validate && npm run economics:validate && npm run markets:validate && npm run extension:validate && npm run inputs:validate && npm run tools:validate && npm run test",
     "authorities:discover": "node scripts/authorities-discover.mjs",
     "authorities:ledger": "tsx scripts/authorities-ledger.ts",
     "authorities:coverage": "tsx scripts/authorities-coverage.ts",
@@ -87,6 +87,8 @@
     "crops:concepts:validate": "tsx scripts/crops-concepts-validate.ts",
     "crops:integrity:validate": "tsx scripts/crops-integrity-validate.ts",
     "crops:integrity:report": "tsx scripts/crops-integrity-report.ts",
+    "crops:research:validate": "tsx scripts/crops-research-validate.ts",
+    "crops:research:report": "tsx scripts/crops-research-report.ts",
     "crops:integration:validate": "tsx scripts/crops-integration-validate.ts",
     "crops:integration:report": "tsx scripts/crops-integration-report.ts",
     "crops:qualification:report": "tsx scripts/crops-qualification-report.ts"

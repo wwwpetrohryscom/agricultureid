@@ -236,7 +236,10 @@ export const barley: CropContent = {
     { type: 'soil', slug: 'loam-soil' },
     { type: 'soil', slug: 'clay-soil' },
   ],
-  relatedTopics: [{ type: 'crop', slug: 'wheat' }],
+  relatedTopics: [
+    { type: 'crop', slug: 'wheat' },
+    { type: 'crop', slug: 'hops' },
+  ],
   glossaryTerms: ['annual-crop', 'crop-rotation', 'cultivar', 'yield'],
   geographicScope:
     'Global overview. Variety type (two-row or six-row, winter or spring, malting or feed) and management practices are region-specific and vary by climate and market.',

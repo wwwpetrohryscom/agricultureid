@@ -832,7 +832,8 @@ export const WAVE_30_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'white-clover',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -2079,7 +2080,8 @@ export const WAVE_30_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'hops',
     lastVerifiedAt: '2026-09-02',
   },
   {
