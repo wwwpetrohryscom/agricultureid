@@ -271,6 +271,8 @@ export const grapefruit: CropContent = {
     { type: 'crop', slug: 'orange' },
     { type: 'crop', slug: 'lemon' },
     { type: 'crop', slug: 'lime' },
+
+    { type: 'crop', slug: 'pomelo' },
   ],
   glossaryTerms: [
     'perennial-crop',

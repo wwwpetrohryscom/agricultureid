@@ -239,6 +239,8 @@ export const alfalfa: CropContent = {
     { type: 'crop', slug: 'perennial-ryegrass' },
     { type: 'crop', slug: 'soybean' },
     { type: 'crop', slug: 'sorghum' },
+
+    { type: 'crop', slug: 'berseem-clover' },
   ],
   glossaryTerms: ['perennial-crop', 'forage', 'crop-rotation', 'ruminant'],
   geographicScope:

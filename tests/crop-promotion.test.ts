@@ -182,6 +182,9 @@ describe('promotion — the umbrella pages keep their own terms', () => {
 
   it('keeps a taxon reachable by its own synonym', () => {
     // Moving synonyms out of relationLabels must not cost discoverability.
-    expect(top('annual ryegrass')?.title).toBe('Italian ryegrass');
+    // Wave 39 published the article, so the answer is now the page rather than
+    // the taxon row — which is the direction this corpus wants: a row in a
+    // table is what a reader gets when there is nothing better to give them.
+    expect(top('annual ryegrass')?.title).toBe('Italian Ryegrass');
   });
 });

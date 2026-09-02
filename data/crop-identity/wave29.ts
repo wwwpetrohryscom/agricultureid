@@ -1668,7 +1668,8 @@ export const WAVE_29_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'sour-cherry',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -1732,7 +1733,8 @@ export const WAVE_29_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'quince',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -1797,7 +1799,8 @@ export const WAVE_29_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'asian-pear',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -1865,7 +1868,8 @@ export const WAVE_29_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'lowbush-blueberry',
     limitations: [
       'The name Vaccinium angustifolium is a homonym: more than one published name matches it exactly, and they resolve to different taxa. The accepted one was selected; Vaccinium angustifolium Komatsu; Vaccinium angustifolium Benth..',
     ],
@@ -2099,7 +2103,8 @@ export const WAVE_29_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'sea-buckthorn',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -2170,7 +2175,8 @@ export const WAVE_29_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'pomelo',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -2526,7 +2532,8 @@ export const WAVE_29_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'durian',
     limitations: [
       'The name Durio zibethinus is a homonym: more than one published name matches it exactly, and they resolve to different taxa. The accepted one was selected; Durio zibethinus Moon.',
     ],
@@ -2724,7 +2731,8 @@ export const WAVE_29_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'brazil-nut',
     lastVerifiedAt: '2026-09-02',
   },
   {

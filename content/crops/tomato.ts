@@ -239,7 +239,10 @@ export const tomato: CropContent = {
     { type: 'pest', slug: 'thrips' },
   ],
   suitableSoils: [{ type: 'soil', slug: 'loam-soil' }],
-  relatedTopics: [{ type: 'crop', slug: 'potato' }],
+  relatedTopics: [
+    { type: 'crop', slug: 'potato' },
+    { type: 'crop', slug: 'tomatillo' },
+  ],
   glossaryTerms: [
     'annual-crop',
     'cultivar',

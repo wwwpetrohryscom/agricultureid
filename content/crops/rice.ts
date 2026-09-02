@@ -256,6 +256,8 @@ export const rice: CropContent = {
   relatedTopics: [
     { type: 'crop', slug: 'wheat' },
     { type: 'crop', slug: 'african-rice' },
+
+    { type: 'crop', slug: 'wild-rice' },
   ],
   glossaryTerms: ['annual-crop', 'soil-texture', 'yield', 'evapotranspiration'],
   geographicScope:

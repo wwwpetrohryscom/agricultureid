@@ -1692,7 +1692,8 @@ export const WAVE_28_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'bitter-gourd',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -1758,7 +1759,8 @@ export const WAVE_28_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'chayote',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -1957,7 +1959,8 @@ export const WAVE_28_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'tomatillo',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -2129,7 +2132,8 @@ export const WAVE_28_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'brussels-sprouts',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -2164,7 +2168,8 @@ export const WAVE_28_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'chinese-cabbage',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -2199,7 +2204,8 @@ export const WAVE_28_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'pak-choi',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -2365,7 +2371,8 @@ export const WAVE_28_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'wasabi',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -2824,7 +2831,8 @@ export const WAVE_28_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'water-spinach',
     lastVerifiedAt: '2026-09-02',
   },
   {

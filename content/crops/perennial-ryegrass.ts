@@ -205,6 +205,10 @@ export const perennialRyegrass: CropContent = {
     { type: 'crop', slug: 'white-clover' },
     { type: 'crop', slug: 'alfalfa' },
     { type: 'crop', slug: 'red-clover' },
+
+    { type: 'crop', slug: 'italian-ryegrass' },
+    { type: 'crop', slug: 'tall-fescue' },
+    { type: 'crop', slug: 'cocksfoot' },
   ],
   glossaryTerms: ['forage', 'perennial-crop', 'ruminant'],
   geographicScope:

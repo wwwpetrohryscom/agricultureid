@@ -236,6 +236,8 @@ export const chicory: CropContent = {
   relatedTopics: [
     { type: 'crop', slug: 'lettuce' },
     { type: 'crop', slug: 'artichoke' },
+
+    { type: 'crop', slug: 'stevia' },
   ],
   connections: [
     { type: 'nutrient', slug: 'nitrogen' },

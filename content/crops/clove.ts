@@ -226,6 +226,8 @@ export const clove: CropContent = {
     { type: 'crop', slug: 'nutmeg' },
     { type: 'crop', slug: 'cinnamon' },
     { type: 'crop', slug: 'black-pepper' },
+
+    { type: 'crop', slug: 'star-anise' },
   ],
   glossaryTerms: ['perennial-crop', 'cultivar', 'yield'],
   geographicScope:

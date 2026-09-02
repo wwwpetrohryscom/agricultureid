@@ -230,6 +230,8 @@ export const radish: CropContent = {
     { type: 'crop', slug: 'cabbage' },
     { type: 'crop', slug: 'beetroot' },
     { type: 'crop', slug: 'carrot' },
+
+    { type: 'crop', slug: 'wasabi' },
   ],
   glossaryTerms: ['annual-crop', 'soil-texture', 'crop-rotation', 'yield'],
   geographicScope:

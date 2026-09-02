@@ -236,6 +236,8 @@ export const spinach: CropContent = {
   relatedTopics: [
     { type: 'crop', slug: 'lettuce' },
     { type: 'crop', slug: 'cabbage' },
+
+    { type: 'crop', slug: 'water-spinach' },
   ],
   connections: [
     { type: 'nutrient', slug: 'nitrogen' },

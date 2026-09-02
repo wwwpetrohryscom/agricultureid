@@ -77,6 +77,15 @@ export interface SearchDoc {
   relationLabels?: string[];
   /** Source organizations cited. */
   sources?: string[];
+  /**
+   * How many other published entities reference this one.
+   *
+   * Used only to break an exact score tie. It is not a quality score and it
+   * never moves a document past one that scored higher; it decides which of
+   * two equally relevant answers the corpus itself treats as the more central,
+   * instead of leaving that to the alphabet.
+   */
+  inboundRefs?: number;
   /** Facet values (denormalized for counting). */
   facets: Partial<Record<SearchFacet, string[]>>;
 }

@@ -207,6 +207,8 @@ export const redClover: CropContent = {
   relatedTopics: [
     { type: 'crop', slug: 'alfalfa' },
     { type: 'crop', slug: 'perennial-ryegrass' },
+
+    { type: 'crop', slug: 'berseem-clover' },
   ],
   glossaryTerms: ['forage', 'crop-rotation', 'ruminant'],
   geographicScope:

@@ -233,6 +233,8 @@ export const jackfruit: CropContent = {
   relatedTopics: [
     { type: 'crop', slug: 'mango' },
     { type: 'crop', slug: 'banana' },
+
+    { type: 'crop', slug: 'durian' },
   ],
   connections: [
     { type: 'nutrient', slug: 'nitrogen' },
