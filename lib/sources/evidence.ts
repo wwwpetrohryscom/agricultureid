@@ -154,6 +154,10 @@ export const EVIDENCE_TIER: Record<string, EvidenceTier> = {
   'reg-cpvo-variety-finder': 1,
   'reg-eurostat-agriculture': 1,
   // NOAA's own climate normals, published by the agency that computes them.
+  // The two taxonomic authorities. Tier 1 because each is the primary
+  // publisher of its own classification, not a report of somebody else's.
+  'wfo-world-flora-online': 1,
+  'powo-plants-of-the-world-online': 1,
   'reg-noaa-ncei-normals': 1,
   // The Drought Monitor is produced jointly by a federal agency, a federal
   // department and a university centre, and is the official weekly account of

@@ -95,6 +95,7 @@ import {
   substanceListingPath,
   cropsWithAuthorizedProducts,
 } from '@/lib/inputs/registry';
+import { CROP_TAXA_PATH } from '@/lib/crops/paths';
 
 export interface AuditIssue {
   level: 'error' | 'warning';
@@ -163,6 +164,12 @@ export function registryNavModel(): Map<string, Set<string>> {
   ]) {
     add('/', hub);
   }
+
+  // The crops hub also links the verified-taxa directory, which is a sibling
+  // of the crop pages rather than one of them: it lists every taxon the corpus
+  // has a checked botanical identity for, including the ones held without an
+  // article. Modelled here because the hub renders the link.
+  add('/crops', CROP_TAXA_PATH);
 
   // Content hubs list every published item of their type (EntryGrid).
   for (const s of SECTIONS) {

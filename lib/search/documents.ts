@@ -25,6 +25,14 @@ import { SOIL_SURVEYS_PATH } from '@/lib/soils/paths';
 import { TRADE_HUB_PATH } from '@/lib/trade/paths';
 import { ECONOMICS_PATH } from '@/lib/economics/paths';
 import { CLIMATE_RISK_PATH } from '@/lib/climate/paths';
+import { CROP_TAXA_PATH } from '@/lib/crops/paths';
+import {
+  CROP_IDENTITIES,
+  dataOnlyIdentities,
+  identityForCrop,
+  familyCounts,
+  genusCount,
+} from '@/lib/crops/identity';
 import {
   countriesWithWaterData,
   statesWithNormals,
@@ -226,6 +234,18 @@ export function buildSearchDocuments(): SearchDoc[] {
     ];
     const sources = sourceOrgs(item.sourceReferences.map((r) => r.sourceId));
     const names = [item.title, ...(item.alternativeNames ?? [])];
+    // A crop with a verified identity carries its accepted scientific name at
+    // NAME weight, not only in the scientificName field.
+    //
+    // Without this, "triticum aestivum" returned Spelt: the spelt taxon record
+    // holds "Triticum aestivum subsp. spelta" at name weight, and the wheat
+    // page's own binomial sat only in the lower-weighted scientificName field,
+    // buried inside the free-text string "Triticum aestivum, Triticum durum".
+    // A crop must win its own accepted name.
+    if (item.contentType === 'crop') {
+      const id = identityForCrop(item.slug);
+      if (id) names.push(id.acceptedScientificName);
+    }
     let parent: string | undefined;
     if (item.contentType === 'cultivar')
       parent = resolveRef(item.parentCrop)?.title;
@@ -775,6 +795,75 @@ export function buildSearchDocuments(): SearchDoc[] {
         category: ['Border requirements'],
       },
     });
+  }
+
+  // Verified crop taxa.
+  //
+  // One hub document, plus one per DATA-ONLY taxon. The data-only documents
+  // exist because a verified taxon a reader can search for is the whole reason
+  // to hold it without a page — but they route to the directory, not to a URL
+  // of their own, and they carry the SCIENTIFIC name at name weight rather
+  // than the common name. A data-only document holding "wheat" or "maize" at
+  // name weight would take a crop page's own query, and the crop page is where
+  // the article is.
+  {
+    docs.push({
+      id: 'crops:taxa',
+      type: 'crop-taxon',
+      route: CROP_TAXA_PATH,
+      title: 'Verified crop taxa',
+      names: [
+        'crop taxonomy',
+        'botanical name of crops',
+        'accepted scientific name crop',
+        'crop botanical family',
+      ],
+      category: 'Crop taxonomy',
+      summary: `Verified botanical identities for ${CROP_IDENTITIES.length} cultivated crops across ${familyCounts().length} families and ${genusCount()} genera, each resolved against two independent taxonomic authorities.`,
+      relationLabels: [
+        'accepted name',
+        'botanical family',
+        'genus',
+        'taxonomic synonym',
+      ],
+      facets: {
+        entityType: ['crop-taxon'],
+        category: ['Crop taxonomy'],
+      },
+    });
+
+    for (const c of dataOnlyIdentities()) {
+      docs.push({
+        id: `crop-taxon:${c.slug}`,
+        type: 'crop-taxon',
+        route: `${CROP_TAXA_PATH}#${c.cropGroups[0]}`,
+        title: c.primaryCommonName,
+        // The COMMON name only, at name weight. The scientific name sits in
+        // `scientificName`, which the engine weights lower.
+        //
+        // The reason is a real collision: spelt's accepted name is "Triticum
+        // aestivum subsp. spelta", which contains wheat's binomial exactly. With
+        // the scientific name at name weight, a search for "triticum aestivum"
+        // returned the page-less spelt taxon ahead of the wheat article. A taxon
+        // held without an article must never outrank an article for a name the
+        // two share — the article is where the answer is.
+        names: [c.primaryCommonName],
+        scientificName: c.acceptedScientificName,
+        category: 'Crop taxonomy',
+        summary: `${c.primaryCommonName} (${c.acceptedScientificName}), ${c.family}. Harvested for ${c.harvestedParts.join(', ').replace(/-/g, ' ')}. A verified taxon held without an encyclopedia article.`,
+        // Alternative COMMON names only. The family and the genus were here,
+        // and the genus token at relation weight was enough to lift the spelt
+        // taxon above the wheat page for "triticum aestivum" — the
+        // over-weighted relation vocabulary behind every previous search
+        // regression in this corpus. Family and genus are metadata; they are
+        // in the facets and on the page.
+        relationLabels: [...(c.alternativeCommonNames ?? [])],
+        facets: {
+          entityType: ['crop-taxon'],
+          category: ['Crop taxonomy'],
+        },
+      });
+    }
   }
 
   // Climate, drought and water. One hub document. The 20 climate reference

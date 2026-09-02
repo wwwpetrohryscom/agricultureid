@@ -26,6 +26,8 @@ import { OrganismBiosecurityStatus } from '@/components/biosecurity/OrganismBios
 import { CultivarRegistrations } from '@/components/varieties/CultivarRegistrations';
 import { CommodityMarketLink } from '@/components/markets/CommodityMarketLink';
 import { CropCostSummary } from '@/components/economics/CropCostSummary';
+import { CropIdentityPanel } from '@/components/crops/CropIdentityPanel';
+import { identityForCrop } from '@/lib/crops/identity';
 import { EntityExtensionResources } from '@/components/extension/EntityExtensionResources';
 import { CropAuthorizedInputs } from '@/components/inputs/CropAuthorizedInputs';
 import { RelatedTools } from '@/components/tools/RelatedTools';
@@ -118,6 +120,13 @@ export function ContentArticle({ item }: { item: AnyContent }) {
           {(item.contentType === 'pest' ||
             item.contentType === 'plant-disease') && (
             <OrganismBiosecurityStatus organismRef={item.slug} />
+          )}
+
+          {/* Verified botanical identity, where the taxonomy has been checked
+              against two authorities. Renders nothing otherwise — the backfill
+              runs wave by wave and a gap is not a claim. */}
+          {item.contentType === 'crop' && (
+            <CropIdentityPanel identity={identityForCrop(item.slug)} />
           )}
 
           {/* Crops with transcribed timing data link to their calendar; the

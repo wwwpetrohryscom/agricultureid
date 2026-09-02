@@ -54,6 +54,7 @@ import { SOIL_SURVEYS_PATH } from '@/lib/soils/paths';
 import { TRADE_HUB_PATH } from '@/lib/trade/paths';
 import { ECONOMICS_PATH } from '@/lib/economics/paths';
 import { CLIMATE_RISK_PATH } from '@/lib/climate/paths';
+import { CROP_TAXA_PATH } from '@/lib/crops/paths';
 import {
   MARKETS_HUB_PATH,
   commodityMarketPath,
@@ -189,6 +190,11 @@ const STATIC_ROUTES: Omit<RouteEntry, 'lastModified'>[] = [
   },
   {
     path: CLIMATE_RISK_PATH,
+    changeFrequency: 'monthly',
+    priority: 0.6,
+  },
+  {
+    path: CROP_TAXA_PATH,
     changeFrequency: 'monthly',
     priority: 0.6,
   },

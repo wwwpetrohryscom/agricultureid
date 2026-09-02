@@ -1,0 +1,710 @@
+{
+  "wave": 27,
+  "generatedAt": "2026-09-02",
+  "counts": {
+    "ACCEPT_FULL_PROFILE": 41,
+    "ACCEPT_DATA_ONLY": 56,
+    "SYNONYM_OF_EXISTING": 11,
+    "MARKET_CLASS_NOT_CROP": 3,
+    "CROP_GROUP_NOT_SINGLE_TAXON": 2,
+    "TAXONOMY_UNCERTAIN": 3
+  },
+  "entries": [
+    {
+      "candidate": "Triticum aestivum",
+      "slug": "wheat",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Zea mays",
+      "slug": "maize",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Oryza sativa",
+      "slug": "rice",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Hordeum vulgare",
+      "slug": "barley",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Secale cereale",
+      "slug": "rye",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Avena sativa",
+      "slug": "oats",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Sorghum bicolor",
+      "slug": "sorghum",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Eragrostis tef",
+      "slug": "teff",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Digitaria exilis",
+      "slug": "fonio",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "triticale",
+      "slug": "triticale",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Cenchrus americanus",
+      "slug": "millet",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Fagopyrum esculentum",
+      "slug": "buckwheat",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Chenopodium quinoa",
+      "slug": "quinoa",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Amaranthus cruentus",
+      "slug": "amaranth",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Glycine max",
+      "slug": "soybean",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Phaseolus vulgaris",
+      "slug": "common-bean",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Vigna unguiculata",
+      "slug": "cowpea",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Cicer arietinum",
+      "slug": "chickpea",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Lens culinaris",
+      "slug": "lentil",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Pisum sativum",
+      "slug": "pea",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Cajanus cajan",
+      "slug": "pigeon-pea",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Vigna radiata",
+      "slug": "mung-bean",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Vigna mungo",
+      "slug": "black-gram",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Vicia faba",
+      "slug": "faba-bean",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "lupin",
+      "slug": "lupin",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Lathyrus sativus",
+      "slug": "grass-pea",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Vigna subterranea",
+      "slug": "bambara-groundnut",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Lablab purpureus",
+      "slug": "lablab",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Arachis hypogaea",
+      "slug": "groundnut",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Brassica napus",
+      "slug": "oilseed-rape",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Helianthus annuus",
+      "slug": "sunflower",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Sesamum indicum",
+      "slug": "sesame",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Carthamus tinctorius",
+      "slug": "safflower",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Brassica juncea",
+      "slug": "mustard",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Solanum tuberosum",
+      "slug": "potato",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Ipomoea batatas",
+      "slug": "sweet-potato",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Manihot esculenta",
+      "slug": "cassava",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "yam",
+      "slug": "yam",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Colocasia esculenta",
+      "slug": "taro",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Beta vulgaris subsp. vulgaris",
+      "slug": "sugar-beet",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Saccharum officinarum",
+      "slug": "sugarcane",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Triticum turgidum subsp. durum",
+      "slug": "durum-wheat",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Triticum spelta",
+      "slug": "spelt",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Triticum monococcum",
+      "slug": "einkorn",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Triticum dicoccum",
+      "slug": "emmer",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Eleusine coracana",
+      "slug": "finger-millet",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Setaria italica",
+      "slug": "foxtail-millet",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Panicum miliaceum",
+      "slug": "proso-millet",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Echinochloa frumentacea",
+      "slug": "barnyard-millet",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Paspalum scrobiculatum",
+      "slug": "kodo-millet",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Coix lacryma-jobi",
+      "slug": "jobs-tears",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Avena strigosa",
+      "slug": "black-oat",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Oryza glaberrima",
+      "slug": "african-rice",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Zizania palustris",
+      "slug": "wild-rice",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Phaseolus lunatus",
+      "slug": "lima-bean",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Phaseolus acutifolius",
+      "slug": "tepary-bean",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Phaseolus coccineus",
+      "slug": "runner-bean",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Vigna angularis",
+      "slug": "adzuki-bean",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Vigna umbellata",
+      "slug": "rice-bean",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Vigna aconitifolia",
+      "slug": "moth-bean",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Lupinus albus",
+      "slug": "white-lupin",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Lupinus angustifolius",
+      "slug": "narrow-leafed-lupin",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Lupinus luteus",
+      "slug": "yellow-lupin",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Lupinus mutabilis",
+      "slug": "andean-lupin",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Macrotyloma uniflorum",
+      "slug": "horse-gram",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Psophocarpus tetragonolobus",
+      "slug": "winged-bean",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Canavalia ensiformis",
+      "slug": "jack-bean",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Mucuna pruriens",
+      "slug": "velvet-bean",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Cyamopsis tetragonoloba",
+      "slug": "guar",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Camelina sativa",
+      "slug": "camelina",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Ricinus communis",
+      "slug": "castor-bean",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Brassica rapa subsp. oleifera",
+      "slug": "turnip-rape",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Brassica carinata",
+      "slug": "ethiopian-mustard",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Sinapis alba",
+      "slug": "white-mustard",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Guizotia abyssinica",
+      "slug": "niger-seed",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Perilla frutescens",
+      "slug": "perilla",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Salvia hispanica",
+      "slug": "chia",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Jatropha curcas",
+      "slug": "jatropha",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Simmondsia chinensis",
+      "slug": "jojoba",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Xanthosoma sagittifolium",
+      "slug": "tannia",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Dioscorea rotundata",
+      "slug": "white-yam",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Dioscorea alata",
+      "slug": "water-yam",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Dioscorea cayenensis",
+      "slug": "yellow-yam",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Dioscorea esculenta",
+      "slug": "lesser-yam",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Dioscorea bulbifera",
+      "slug": "aerial-yam",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Helianthus tuberosus",
+      "slug": "jerusalem-artichoke",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Plectranthus rotundifolius",
+      "slug": "hausa-potato",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Maranta arundinacea",
+      "slug": "arrowroot",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Pachyrhizus erosus",
+      "slug": "jicama",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Ullucus tuberosus",
+      "slug": "ulluco",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Oxalis tuberosa",
+      "slug": "oca",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Tropaeolum tuberosum",
+      "slug": "mashua",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Canna indica",
+      "slug": "edible-canna",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Fagopyrum tataricum",
+      "slug": "tartary-buckwheat",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Amaranthus hypochondriacus",
+      "slug": "prince-feather",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Amaranthus caudatus",
+      "slug": "love-lies-bleeding",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Triticum durum",
+      "slug": "durum-wheat",
+      "status": "SYNONYM_OF_EXISTING",
+      "note": "Both authorities treat Triticum durum Desf. as a synonym of Triticum turgidum subsp. durum. Published under the accepted name."
+    },
+    {
+      "candidate": "Pennisetum glaucum",
+      "slug": "millet",
+      "status": "SYNONYM_OF_EXISTING",
+      "note": "Both authorities accept Cenchrus americanus. The existing \"millet\" crop is pearl millet and now carries the accepted name."
+    },
+    {
+      "candidate": "Pisum sativum",
+      "slug": "pea",
+      "status": "SYNONYM_OF_EXISTING",
+      "note": "Both authorities accept Lathyrus oleraceus."
+    },
+    {
+      "candidate": "Lens culinaris",
+      "slug": "lentil",
+      "status": "SYNONYM_OF_EXISTING",
+      "note": "Both authorities accept Vicia lens."
+    },
+    {
+      "candidate": "Plectranthus rotundifolius",
+      "slug": "hausa-potato",
+      "status": "SYNONYM_OF_EXISTING",
+      "note": "Both authorities accept Coleus rotundifolius."
+    },
+    {
+      "candidate": "Brassica carinata",
+      "slug": "ethiopian-mustard",
+      "status": "SYNONYM_OF_EXISTING",
+      "note": "Both authorities accept Mutarda carinata after the Brassiceae recircumscription."
+    },
+    {
+      "candidate": "Echinochloa frumentacea",
+      "slug": "barnyard-millet",
+      "status": "SYNONYM_OF_EXISTING",
+      "note": "Both authorities accept Echinochloa colona subsp. edulis."
+    },
+    {
+      "candidate": "Triticum spelta",
+      "slug": "spelt",
+      "status": "SYNONYM_OF_EXISTING",
+      "note": "Both authorities accept Triticum aestivum subsp. spelta."
+    },
+    {
+      "candidate": "canola",
+      "slug": null,
+      "status": "MARKET_CLASS_NOT_CROP",
+      "note": "A low-erucic-acid, low-glucosinolate quality specification for oilseed rape and turnip rape, not a taxon. Kept as an alternative name."
+    },
+    {
+      "candidate": "peanut",
+      "slug": null,
+      "status": "SYNONYM_OF_EXISTING",
+      "note": "An alternative common name for groundnut, Arachis hypogaea."
+    },
+    {
+      "candidate": "linseed",
+      "slug": null,
+      "status": "SYNONYM_OF_EXISTING",
+      "note": "The oilseed use of flax, Linum usitatissimum. Use, not taxon."
+    },
+    {
+      "candidate": "rapeseed",
+      "slug": null,
+      "status": "SYNONYM_OF_EXISTING",
+      "note": "An alternative common name for oilseed rape."
+    },
+    {
+      "candidate": "starch potato",
+      "slug": null,
+      "status": "MARKET_CLASS_NOT_CROP",
+      "note": "An end-use class of Solanum tuberosum, not a separate crop."
+    },
+    {
+      "candidate": "industrial cassava",
+      "slug": null,
+      "status": "MARKET_CLASS_NOT_CROP",
+      "note": "An end-use context for Manihot esculenta."
+    },
+    {
+      "candidate": "cocoyam",
+      "slug": "tannia",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "Ambiguous common name applied to both Colocasia esculenta and Xanthosoma sagittifolium. Published as tannia; \"cocoyam\" kept as an alternative name only."
+    },
+    {
+      "candidate": "Dioscorea spp.",
+      "slug": "yam",
+      "status": "CROP_GROUP_NOT_SINGLE_TAXON",
+      "note": "Several cultivated Dioscorea species; held as a species complex with five constituents verified separately."
+    },
+    {
+      "candidate": "Lupinus spp.",
+      "slug": "lupin",
+      "status": "CROP_GROUP_NOT_SINGLE_TAXON",
+      "note": "A genus-level concept; four cultivated species held separately."
+    },
+    {
+      "candidate": "Sorghum bicolor Kuntze",
+      "slug": null,
+      "status": "TAXONOMY_UNCERTAIN",
+      "note": "A homonym resolving to Hyparrhenia dichroa, a different grass. Discarded."
+    },
+    {
+      "candidate": "Solanum tuberosum Poepp. ex Walp.",
+      "slug": null,
+      "status": "TAXONOMY_UNCERTAIN",
+      "note": "A homonym resolving to Solanum maglia. Discarded."
+    },
+    {
+      "candidate": "Solanum tuberosum Bertero ex Walp.",
+      "slug": null,
+      "status": "TAXONOMY_UNCERTAIN",
+      "note": "A homonym resolving to Solanum etuberosum. Discarded."
+    }
+  ]
+}
