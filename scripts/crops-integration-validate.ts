@@ -32,9 +32,23 @@ import {
 } from '../lib/markets/registry';
 import { IDENTITY_BY_SLUG } from '../lib/crops/identity';
 import { allRoutes } from '../lib/seo/routes';
-import { readFileSync, readdirSync } from 'node:fs';
+import {
+  CONCORDANCE,
+  LAYER_ASSESSMENTS,
+  TRADE_MAPPING,
+} from '../data/crop-evidence';
+import {
+  CONCORDANCE_KINDS,
+  GAP_REASONS,
+  RESEARCHED_GAP_REASONS,
+  TRADE_MAPPING_OUTCOMES,
+} from '../types/crop-evidence';
+import { CROP_CONCEPTS } from '../data/crop-identity/concepts';
+import { SOURCE_MAP } from '../lib/sources/registry';
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 
+const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
 const errors: string[] = [];
 const fail = (m: string) => errors.push(m);
 
@@ -360,6 +374,199 @@ for (const x of I) {
           `client component ${f} imports ${m} — the data layer would be bundled into the browser`,
         );
   }
+}
+
+/* -- 9. every layer's coverage is accounted for, and the count is live ----- */
+/**
+ * Principle A, applied to the matrix itself.
+ *
+ * A coverage figure with no explanation is a number nobody has to stand behind.
+ * Every layer must carry an assessment, the assessment must use a reason from
+ * the vocabulary rather than the word "missing", and — the part that makes it
+ * more than prose — the reach it records is recomputed here and compared. An
+ * assessment written against a coverage of 6 and left behind while coverage
+ * moved to 40 is a stale claim, and stale claims are the thing this program
+ * keeps finding.
+ */
+{
+  const reach = new Map<string, number>();
+  for (const l of INTEGRATION_LAYERS)
+    reach.set(
+      l,
+      I.filter((x) => x.coverage.find((c) => c.layer === l)!.refs.length > 0)
+        .length,
+    );
+
+  const assessed = new Set(LAYER_ASSESSMENTS.map((a) => a.layer));
+  for (const l of INTEGRATION_LAYERS)
+    if (!assessed.has(l))
+      fail(
+        `layer "${l}" reaches ${reach.get(l)} crops and carries no assessment — a coverage figure with no explanation is a number nobody has to stand behind`,
+      );
+
+  for (const a of LAYER_ASSESSMENTS) {
+    const at = `assessment "${a.layer}"`;
+    if (
+      !INTEGRATION_LAYERS.includes(
+        a.layer as (typeof INTEGRATION_LAYERS)[number],
+      )
+    )
+      fail(`${at}: names a layer the matrix does not report`);
+    if (!GAP_REASONS.includes(a.reason))
+      fail(`${at}: reason "${a.reason}" is not in the vocabulary`);
+    if (!ISO_DATE.test(a.assessedAt))
+      fail(`${at}: assessedAt is not an ISO date`);
+    if (!a.finding?.trim() || a.finding.length < 120)
+      fail(`${at}: gives no substantive finding`);
+    if (!a.wouldRaiseCoverageBy?.trim() || a.wouldRaiseCoverageBy.length < 40)
+      fail(`${at}: does not say what would raise coverage`);
+    // The live comparison.
+    const now = reach.get(a.layer);
+    if (now !== undefined && now !== a.reachesAtAssessment)
+      fail(
+        `${at}: recorded reach of ${a.reachesAtAssessment} and the matrix now says ${now} — the assessment is stale`,
+      );
+    // A reason that asserts somebody looked has to name what they looked at.
+    if (RESEARCHED_GAP_REASONS.includes(a.reason) && !a.sourceIds?.length)
+      fail(
+        `${at}: reason "${a.reason}" asserts a source was examined and names none`,
+      );
+    for (const sid of a.sourceIds ?? [])
+      if (!SOURCE_MAP.has(sid)) fail(`${at}: names unknown source "${sid}"`);
+    // A layer at full coverage is not a gap.
+    if (now === I.length && a.reason !== 'NOT_APPLICABLE')
+      fail(`${at}: every crop is covered and a gap reason is recorded`);
+    // And the reverse, which is the one that lets a real gap disappear.
+    // NOT_APPLICABLE means the layer does not apply — which is true when every
+    // crop is covered, or when the layer is derived from the corpus rather than
+    // ingested from a source. A layer that is neither has a real gap, and
+    // filing it as not-applicable makes that gap invisible.
+    if (a.reason === 'NOT_APPLICABLE' && now !== undefined && now < I.length) {
+      const linkage = coverageFor([...cropSlugs][0]!).find(
+        (c) => c.layer === a.layer,
+      )?.linkage;
+      const derived =
+        linkage?.via === 'unkeyed' ||
+        (linkage?.via === 'direct' && linkage.field === 'derived');
+      if (!derived)
+        fail(
+          `${at}: reaches ${now} of ${I.length} and is filed as not applicable — a layer that is ingested from a source and does not cover every crop has a gap`,
+        );
+    }
+    // A claim that no source exists cannot stand while the corpus is already
+    // holding records from one for that very layer.
+    if (a.reason === 'NO_VERIFIED_SOURCE_FOUND' && (now ?? 0) > 0)
+      fail(
+        `${at}: claims no verified source was found and the layer already holds records for ${now} crop(s) — a source plainly exists`,
+      );
+  }
+}
+
+/* -- 9b. a rendered coverage count must be computed ------------------------ */
+/**
+ * The corpus may state what it holds — "58 crop calendar records" — because
+ * that number is counted when the page is built. The moment it is typed instead
+ * it becomes the class of claim this program has now found false three times:
+ * true on the day it was written and silently wrong afterwards.
+ *
+ * So the components that render coverage may not contain a numeric literal in a
+ * text position. This is narrow on purpose: it applies to the components whose
+ * job is to state counts, not to the corpus at large.
+ */
+{
+  const COVERAGE_COMPONENTS = [
+    'components/crops/CropEvidenceSummary.tsx',
+    'components/crops/CropMarketLink.tsx',
+  ];
+  for (const f of COVERAGE_COMPONENTS) {
+    if (!existsSync(f)) continue;
+    const src = readFileSync(f, 'utf8');
+    // A digit sitting between JSX tags, or inside a JSX expression as a bare
+    // literal, is a count somebody typed.
+    for (const m of src.matchAll(/>\s*\{?\s*(\d+)\s*\}?\s*</g))
+      fail(
+        `${f} renders the literal ${m[1]} as text — a coverage count must be computed from the corpus, never written down`,
+      );
+  }
+}
+
+/* -- 10. the concordance is classified, not assumed ------------------------ */
+{
+  const commodities = PUBLISHED_CONTENT.filter(
+    (c) => c.contentType === 'commodity',
+  ) as unknown as { slug: string; sourceCrop?: { slug?: string } }[];
+  const byCommodity = new Map(CONCORDANCE.map((c) => [c.commoditySlug, c]));
+  const conceptSlugs = new Set(CROP_CONCEPTS.map((k) => k.slug));
+
+  for (const c of CONCORDANCE) {
+    const at = `concordance "${c.commoditySlug}"`;
+    if (!CONCORDANCE_KINDS.includes(c.kind))
+      fail(`${at}: kind "${c.kind}" is not in the vocabulary`);
+    if (!commodities.some((x) => x.slug === c.commoditySlug))
+      fail(`${at}: names a commodity that is not published`);
+    if (!c.note?.trim() || c.note.length < 20) fail(`${at}: gives no note`);
+    const named = commodities.find((x) => x.slug === c.commoditySlug)
+      ?.sourceCrop?.slug;
+    if (c.kind === 'ANIMAL_PRODUCT') {
+      if (named)
+        fail(`${at}: classified as an animal product and names a source crop`);
+      if (c.cropSlug)
+        fail(`${at}: classified as an animal product and records a crop`);
+    } else {
+      if (c.cropSlug !== named)
+        fail(
+          `${at}: classified against "${c.cropSlug}" and the commodity names "${named}"`,
+        );
+      // The distinction this classification exists to make.
+      const isConcept = !!named && conceptSlugs.has(named);
+      if (c.kind === 'BROADER_CROP_CONCEPT' && !isConcept)
+        fail(
+          `${at}: classified as a broader concept and "${named}" is not a declared crop concept`,
+        );
+      if (c.kind === 'EXACT_CROP' && isConcept)
+        fail(
+          `${at}: classified as an exact crop and "${named}" is a multi-taxon concept — a series reached through it is about the concept`,
+        );
+    }
+  }
+  // And in the other direction: every commodity that is not an exact mapping
+  // must be classified, so a new concept-level commodity cannot slip through.
+  for (const x of commodities) {
+    const named = x.sourceCrop?.slug;
+    const needs = !named || conceptSlugs.has(named);
+    if (needs && !byCommodity.has(x.slug))
+      fail(
+        `commodity "${x.slug}" ${named ? `names the concept "${named}"` : 'names no source crop'} and is not classified in the concordance`,
+      );
+  }
+}
+
+/* -- 11. the trade assessment says what was examined ----------------------- */
+{
+  const t = TRADE_MAPPING;
+  if (!TRADE_MAPPING_OUTCOMES.includes(t.outcome))
+    fail(`trade mapping: outcome "${t.outcome}" is not in the vocabulary`);
+  if (!ISO_DATE.test(t.assessedAt))
+    fail('trade mapping: assessedAt is not an ISO date');
+  if (t.examined.length < 2)
+    fail('trade mapping: records fewer than two things examined');
+  if (!t.finding?.trim() || t.finding.length < 200)
+    fail('trade mapping: gives no substantive finding');
+  if (!t.wouldChangeIf?.trim())
+    fail('trade mapping: does not say what would change it');
+  // An outcome asserting a usable key must be matched by actual coverage, or it
+  // is a claim that a mapping exists in a corpus that has none.
+  const tradeReach = I.filter(
+    (x) => x.coverage.find((c) => c.layer === 'trade')!.refs.length > 0,
+  ).length;
+  if (
+    (t.outcome === 'CROP_KEY_AVAILABLE' ||
+      t.outcome === 'COMMODITY_KEY_AVAILABLE') &&
+    tradeReach === 0
+  )
+    fail(
+      `trade mapping: outcome "${t.outcome}" asserts a usable key and no crop reaches the trade layer`,
+    );
 }
 
 /* -- report ---------------------------------------------------------------- */
