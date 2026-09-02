@@ -31,6 +31,10 @@ import {
   CropConceptScope,
   CropHomonymNote,
 } from '@/components/crops/CropConceptScope';
+import {
+  CropMarketLink,
+  RelatedCropList,
+} from '@/components/crops/CropMarketLink';
 import { identityForCrop } from '@/lib/crops/identity';
 import { EntityExtensionResources } from '@/components/extension/EntityExtensionResources';
 import { CropAuthorizedInputs } from '@/components/inputs/CropAuthorizedInputs';
@@ -139,6 +143,8 @@ export function ContentArticle({ item }: { item: AnyContent }) {
                   identityForCrop(item.slug)?.acceptedScientificName ?? ''
                 }
               />
+              <CropMarketLink slug={item.slug} />
+              <RelatedCropList slug={item.slug} />
             </>
           )}
 

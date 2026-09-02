@@ -41,6 +41,7 @@ import { calendarsForCrop } from '../lib/calendars/registry';
 import { costsForCrop } from '../lib/economics/registry';
 import { EXTENSION_RESOURCES } from '../lib/extension/registry';
 import { VARIETY_REGISTRATIONS } from '../lib/varieties/registry';
+import { seriesForCommodity } from '../lib/markets/registry';
 
 const errors: string[] = [];
 const fail = (m: string) => errors.push(m);
@@ -83,6 +84,14 @@ const ENRICHMENT_UNIVERSE: Record<string, Set<string>> = {
   climate: slugsOf('climate'),
   economics: new Set(
     [...articles].flatMap((s) => costsForCrop(s).map((o) => o.id)),
+  ),
+  // Added in Wave 34, when markets stopped being reported as not-modelled.
+  // Built from the commodity side so it is independent of the concordance the
+  // qualification module reads.
+  markets: new Set(
+    PUBLISHED_CONTENT.filter((c) => c.contentType === 'commodity').flatMap(
+      (c) => seriesForCommodity(c.slug).map((s) => `${c.slug}:${s.id}`),
+    ),
   ),
 };
 
