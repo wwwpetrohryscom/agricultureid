@@ -71,7 +71,15 @@ describe('crops — a name is not an identity', () => {
         'intergeneric-hybrid',
         'nothosubspecies',
       ].includes(c.taxonRank);
-      expect(marked, `${c.slug} ${c.acceptedScientificName}`).toBe(hybrid);
+      // A cultivar group of a hybrid species inherits the parent's mark:
+      // "Citrus × aurantium Sweet Orange Group" is a selection FROM a hybrid,
+      // not a new cross of its own.
+      const inherited =
+        c.taxonRank === 'cultivar-group' &&
+        Boolean(c.parentSpecies?.includes('×'));
+      expect(marked, `${c.slug} ${c.acceptedScientificName}`).toBe(
+        hybrid || inherited,
+      );
     }
   });
 
@@ -213,7 +221,10 @@ describe('crops — cultivated forms are groups, not species (Wave 28)', () => {
         c.slug,
       ).toBe(true);
       // the parent is a real binomial, and an authority named it
-      expect(c.parentSpecies!.split(/\s+/).length, c.slug).toBe(2);
+      expect(
+        c.parentSpecies!.split(/\s+/).filter((w) => w !== '×').length,
+        c.slug,
+      ).toBe(2);
       expect(
         c.authorities.some(
           (a) => key(a.acceptedName) === key(c.parentSpecies!),
@@ -293,6 +304,65 @@ describe('crops — cultivated forms are groups, not species (Wave 28)', () => {
         CROP_IDENTITIES.some((c) => c.slug === s),
         s,
       ).toBe(true);
+  });
+});
+
+describe('crops — hybrids and complexes keep their shape (Wave 29)', () => {
+  it('never puts two citrus crops on one taxon', () => {
+    const orange = CROP_IDENTITIES.find((c) => c.slug === 'orange')!;
+    const grapefruit = CROP_IDENTITIES.find((c) => c.slug === 'grapefruit')!;
+    // Both authorities resolve sweet orange AND grapefruit to Citrus ×
+    // aurantium f. aurantium. Published at that rank they would be one plant.
+    expect(orange.acceptedScientificName).not.toBe(
+      grapefruit.acceptedScientificName,
+    );
+    expect(orange.taxonRank).toBe('cultivar-group');
+    expect(orange.parentSpecies).toBe('Citrus × aurantium');
+    expect(grapefruit.parentSpecies).toBe('Citrus × aurantium');
+  });
+
+  it('keeps the hybrid mark on a cultivar group of a hybrid species', () => {
+    for (const c of CROP_IDENTITIES.filter(
+      (x) => x.taxonRank === 'cultivar-group' && x.parentSpecies?.includes('×'),
+    )) {
+      expect(c.acceptedScientificName, c.slug).toContain('×');
+    }
+  });
+
+  it('keeps lemon and lime as their own hybrids, not sunk into the complex', () => {
+    const lemon = CROP_IDENTITIES.find((c) => c.slug === 'lemon')!;
+    const lime = CROP_IDENTITIES.find((c) => c.slug === 'lime')!;
+    expect(lemon.taxonRank).toBe('hybrid');
+    expect(lemon.acceptedScientificName).toBe('Citrus × limon');
+    expect(lime.acceptedScientificName).toBe('Citrus × aurantiifolia');
+  });
+
+  it('does not claim a wild species for commercial banana', () => {
+    const b = CROP_IDENTITIES.find((c) => c.slug === 'banana')!;
+    expect(b.taxonRank).toBe('genus');
+    expect(b.limitations?.join(' ')).toMatch(/genome group|clone/i);
+    // both parent species held separately
+    for (const n of ['Musa acuminata', 'Musa balbisiana'])
+      expect(
+        CROP_IDENTITIES.some((c) => c.acceptedScientificName === n),
+        n,
+      ).toBe(true);
+    // and plantain keeps the hybrid mark
+    const p = CROP_IDENTITIES.find((c) => c.slug === 'plantain')!;
+    expect(p.taxonRank).toBe('hybrid');
+    expect(p.acceptedScientificName).toContain('×');
+  });
+
+  it('holds blackberry as a complex rather than an unsupported species', () => {
+    const b = CROP_IDENTITIES.find((c) => c.slug === 'blackberry')!;
+    expect(b.taxonRank).toBe('species-complex');
+    expect(b.agreement).toBe('single-source');
+    expect(b.limitations?.length).toBeGreaterThan(0);
+  });
+
+  it('corrects almond to the name both authorities accept', () => {
+    const a = CROP_IDENTITIES.find((c) => c.slug === 'almond')!;
+    expect(a.acceptedScientificName).toBe('Prunus amygdalus');
   });
 });
 

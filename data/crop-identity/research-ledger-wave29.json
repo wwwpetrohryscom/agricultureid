@@ -1,0 +1,664 @@
+{
+  "wave": 29,
+  "generatedAt": "2026-09-02",
+  "counts": {
+    "ACCEPT_FULL_PROFILE": 48,
+    "ACCEPT_DATA_ONLY": 41,
+    "SYNONYM_OF_EXISTING": 6,
+    "AGRICULTURAL_FORM_OF_EXISTING_TAXON": 3,
+    "TAXONOMY_UNCERTAIN": 1,
+    "CROP_GROUP_NOT_SINGLE_TAXON": 4,
+    "CULTIVAR_NOT_CROP": 3,
+    "COMMODITY_NOT_CROP": 2
+  },
+  "entries": [
+    {
+      "candidate": "Malus domestica",
+      "slug": "apple",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Pyrus communis",
+      "slug": "pear",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Prunus persica",
+      "slug": "peach",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Prunus domestica",
+      "slug": "plum",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Prunus armeniaca",
+      "slug": "apricot",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Prunus avium",
+      "slug": "cherry",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Prunus amygdalus",
+      "slug": "almond",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Juglans regia",
+      "slug": "walnut",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Pistacia vera",
+      "slug": "pistachio",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Corylus avellana",
+      "slug": "hazelnut",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Carya illinoinensis",
+      "slug": "pecan",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Anacardium occidentale",
+      "slug": "cashew",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Castanea sativa",
+      "slug": "chestnut",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Fragaria vesca",
+      "slug": "strawberry",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Rubus idaeus",
+      "slug": "raspberry",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Vaccinium corymbosum",
+      "slug": "blueberry",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Vaccinium macrocarpon",
+      "slug": "cranberry",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Ribes nigrum",
+      "slug": "blackcurrant",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Vitis vinifera",
+      "slug": "grape",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Olea europaea",
+      "slug": "olive",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Mangifera indica",
+      "slug": "mango",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Persea americana",
+      "slug": "avocado",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Ananas comosus",
+      "slug": "pineapple",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Carica papaya",
+      "slug": "papaya",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Psidium guajava",
+      "slug": "guava",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Passiflora edulis",
+      "slug": "passion-fruit",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Litchi chinensis",
+      "slug": "lychee",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Selenicereus undatus",
+      "slug": "dragon-fruit",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Phoenix dactylifera",
+      "slug": "date-palm",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Ficus carica",
+      "slug": "fig",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Punica granatum",
+      "slug": "pomegranate",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Diospyros kaki",
+      "slug": "persimmon",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Eriobotrya japonica",
+      "slug": "loquat",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Artocarpus altilis",
+      "slug": "breadfruit",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Artocarpus heterophyllus",
+      "slug": "jackfruit",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Tamarindus indica",
+      "slug": "tamarind",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Cocos nucifera",
+      "slug": "coconut",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Elaeis guineensis",
+      "slug": "oil-palm",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Actinidia deliciosa",
+      "slug": "kiwifruit",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "orange",
+      "slug": "orange",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "grapefruit",
+      "slug": "grapefruit",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "lemon",
+      "slug": "lemon",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "lime",
+      "slug": "lime",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "banana",
+      "slug": "banana",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "plantain",
+      "slug": "plantain",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "blackberry",
+      "slug": "blackberry",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "macadamia",
+      "slug": "macadamia",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "mulberry",
+      "slug": "mulberry",
+      "status": "ACCEPT_FULL_PROFILE",
+      "note": "existing crop page; identity verified and attached"
+    },
+    {
+      "candidate": "Prunus cerasus",
+      "slug": "sour-cherry",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Prunus salicina",
+      "slug": "japanese-plum",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Cydonia oblonga",
+      "slug": "quince",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Mespilus germanica",
+      "slug": "medlar",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Pyrus pyrifolia",
+      "slug": "asian-pear",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Rubus occidentalis",
+      "slug": "black-raspberry",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Vaccinium angustifolium",
+      "slug": "lowbush-blueberry",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Vaccinium virgatum",
+      "slug": "rabbiteye-blueberry",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Vaccinium myrtillus",
+      "slug": "bilberry",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Ribes rubrum",
+      "slug": "redcurrant",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Ribes uva-crispa",
+      "slug": "gooseberry",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Sambucus nigra",
+      "slug": "elderberry",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Aronia melanocarpa",
+      "slug": "aronia",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Hippophae rhamnoides",
+      "slug": "sea-buckthorn",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "mandarin",
+      "slug": "mandarin",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Citrus maxima",
+      "slug": "pomelo",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Citrus medica",
+      "slug": "citron",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Citrus japonica",
+      "slug": "kumquat",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Citrus australasica",
+      "slug": "finger-lime",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Citrus hystrix",
+      "slug": "kaffir-lime",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Dimocarpus longan",
+      "slug": "longan",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Nephelium lappaceum",
+      "slug": "rambutan",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Annona muricata",
+      "slug": "soursop",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Annona cherimola",
+      "slug": "cherimoya",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Averrhoa carambola",
+      "slug": "carambola",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Garcinia mangostana",
+      "slug": "mangosteen",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Durio zibethinus",
+      "slug": "durian",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Manilkara zapota",
+      "slug": "sapodilla",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Pouteria sapota",
+      "slug": "mamey-sapote",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Syzygium malaccense",
+      "slug": "malay-apple",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Spondias mombin",
+      "slug": "hog-plum",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Juglans nigra",
+      "slug": "black-walnut",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Bertholletia excelsa",
+      "slug": "brazil-nut",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Pinus pinea",
+      "slug": "stone-pine",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Vitis labrusca",
+      "slug": "fox-grape",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Actinidia chinensis",
+      "slug": "golden-kiwifruit",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Actinidia arguta",
+      "slug": "hardy-kiwi",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Musa acuminata",
+      "slug": "wild-banana-acuminata",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Musa balbisiana",
+      "slug": "wild-banana-balbisiana",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Morus alba",
+      "slug": "white-mulberry",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Morus nigra",
+      "slug": "black-mulberry",
+      "status": "ACCEPT_DATA_ONLY",
+      "note": "verified taxon, no article yet"
+    },
+    {
+      "candidate": "Prunus dulcis",
+      "slug": "almond",
+      "status": "SYNONYM_OF_EXISTING",
+      "note": "Neither authority resolves Prunus dulcis; both accept Prunus amygdalus. The corpus name was corrected."
+    },
+    {
+      "candidate": "Malus pumila",
+      "slug": "apple",
+      "status": "SYNONYM_OF_EXISTING",
+      "note": "Both authorities accept Malus domestica."
+    },
+    {
+      "candidate": "Fortunella japonica",
+      "slug": "kumquat",
+      "status": "SYNONYM_OF_EXISTING",
+      "note": "Both authorities accept Citrus japonica; Fortunella is sunk into Citrus."
+    },
+    {
+      "candidate": "Actinidia deliciosa",
+      "slug": "kiwifruit",
+      "status": "SYNONYM_OF_EXISTING",
+      "note": "Both authorities accept Actinidia chinensis var. deliciosa."
+    },
+    {
+      "candidate": "Citrus sinensis",
+      "slug": "orange",
+      "status": "AGRICULTURAL_FORM_OF_EXISTING_TAXON",
+      "note": "Both authorities resolve sweet orange to Citrus \u00d7 aurantium f. aurantium \u2014 the same name as grapefruit. Published as the Sweet Orange Group of the hybrid species."
+    },
+    {
+      "candidate": "Citrus paradisi",
+      "slug": "grapefruit",
+      "status": "AGRICULTURAL_FORM_OF_EXISTING_TAXON",
+      "note": "Resolves to the same Citrus \u00d7 aurantium f. aurantium as sweet orange. Published as the Grapefruit Group."
+    },
+    {
+      "candidate": "Citrus deliciosa",
+      "slug": "mandarin",
+      "status": "AGRICULTURAL_FORM_OF_EXISTING_TAXON",
+      "note": "Both authorities resolve mandarin and clementine to Citrus \u00d7 aurantium f. deliciosa. Published as the Mandarin Group."
+    },
+    {
+      "candidate": "Citrus clementina",
+      "slug": "mandarin",
+      "status": "SYNONYM_OF_EXISTING",
+      "note": "Resolves to the same taxon as Citrus deliciosa; not a separate crop."
+    },
+    {
+      "candidate": "Citrus latifolia",
+      "slug": "lime",
+      "status": "TAXONOMY_UNCERTAIN",
+      "note": "Persian lime. Only Plants of the World Online resolved it; not published as a separate crop in this wave."
+    },
+    {
+      "candidate": "banana",
+      "slug": "banana",
+      "status": "CROP_GROUP_NOT_SINGLE_TAXON",
+      "note": "Commercial bananas are sterile clones of Musa acuminata \u00d7 M. balbisiana parentage described by genome group. Held as a genus concept with both parents verified separately."
+    },
+    {
+      "candidate": "macadamia",
+      "slug": "macadamia",
+      "status": "CROP_GROUP_NOT_SINGLE_TAXON",
+      "note": "Two cultivated species and their hybrids. Held as a genus concept with both species verified."
+    },
+    {
+      "candidate": "Rubus fruticosus",
+      "slug": "blackberry",
+      "status": "CROP_GROUP_NOT_SINGLE_TAXON",
+      "note": "An aggregate, not a species; Rubus is apomictic and its microspecies contested. Held as a complex on a single authority."
+    },
+    {
+      "candidate": "Morus spp.",
+      "slug": "mulberry",
+      "status": "CROP_GROUP_NOT_SINGLE_TAXON",
+      "note": "Grown as several species with different end uses; held as a genus concept with M. alba and M. nigra verified separately."
+    },
+    {
+      "candidate": "nectarine",
+      "slug": null,
+      "status": "CULTIVAR_NOT_CROP",
+      "note": "A glabrous-skinned form of Prunus persica, not a separate taxon. Kept as an alternative name on peach."
+    },
+    {
+      "candidate": "tangerine",
+      "slug": "mandarin",
+      "status": "SYNONYM_OF_EXISTING",
+      "note": "A market name within the mandarin group."
+    },
+    {
+      "candidate": "satsuma",
+      "slug": null,
+      "status": "CULTIVAR_NOT_CROP",
+      "note": "A cultivar group within mandarin."
+    },
+    {
+      "candidate": "Cavendish banana",
+      "slug": null,
+      "status": "CULTIVAR_NOT_CROP",
+      "note": "An AAA genome-group clone, not a taxon."
+    },
+    {
+      "candidate": "cashew nut",
+      "slug": null,
+      "status": "COMMODITY_NOT_CROP",
+      "note": "The traded kernel of Anacardium occidentale. The crop is the tree."
+    },
+    {
+      "candidate": "peanut (as a nut)",
+      "slug": null,
+      "status": "COMMODITY_NOT_CROP",
+      "note": "Groundnut is a legume held in Wave 27; its culinary classification as a nut is not a botanical identity."
+    }
+  ]
+}

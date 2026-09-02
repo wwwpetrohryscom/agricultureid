@@ -163,9 +163,19 @@ for (const c of CROP_IDENTITIES) {
     c.taxonRank === 'hybrid' ||
     c.taxonRank === 'intergeneric-hybrid' ||
     c.taxonRank === 'nothosubspecies';
-  if (marked !== hybridRank)
+  // A cultivar group of a hybrid species inherits the parent's mark: "Citrus ×
+  // aurantium Sweet Orange Group" is a selection FROM a hybrid, not itself a
+  // new cross. The mark must then be the parent's, not one the group invented.
+  const inheritedMark =
+    c.taxonRank === 'cultivar-group' &&
+    Boolean(c.parentSpecies && /×/.test(c.parentSpecies));
+  if (marked !== hybridRank && !inheritedMark)
     fail(
       `${at}: "${c.acceptedScientificName}" ${marked ? 'carries a hybrid mark' : 'carries no hybrid mark'} but its rank is "${c.taxonRank}"`,
+    );
+  if (inheritedMark && !marked)
+    fail(
+      `${at}: a cultivar group of the hybrid "${c.parentSpecies}" has lost the hybrid mark`,
     );
 
   // An infraspecific name sits under a species, and the species must be named.
