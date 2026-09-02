@@ -850,14 +850,20 @@ export function buildSearchDocuments(): SearchDoc[] {
         names: [c.primaryCommonName],
         scientificName: c.acceptedScientificName,
         category: 'Crop taxonomy',
-        summary: `${c.primaryCommonName} (${c.acceptedScientificName}), ${c.family}. Harvested for ${c.harvestedParts.join(', ').replace(/-/g, ' ')}. A verified taxon held without an encyclopedia article.`,
-        // Alternative COMMON names only. The family and the genus were here,
-        // and the genus token at relation weight was enough to lift the spelt
-        // taxon above the wheat page for "triticum aestivum" — the
-        // over-weighted relation vocabulary behind every previous search
-        // regression in this corpus. Family and genus are metadata; they are
-        // in the facets and on the page.
-        relationLabels: [...(c.alternativeCommonNames ?? [])],
+        summary: `${c.primaryCommonName} (${c.acceptedScientificName}), ${c.family}. Harvested for ${c.harvestedParts.join(', ').replace(/-/g, ' ')}.${(c.alternativeCommonNames ?? []).length ? ` Also called ${(c.alternativeCommonNames ?? []).join(', ')}.` : ''} A verified taxon held without an encyclopedia article.`,
+        // NOTHING here. This field held the family and the genus, and the genus
+        // token at relation weight lifted the spelt taxon above the wheat page
+        // for "triticum aestivum"; those were removed in Wave 27. The taxon's
+        // own ALTERNATIVE COMMON NAMES stayed, and they are the same defect one
+        // step further along: a synonym of the entity is not relation
+        // vocabulary, and at relation weight it was worth exactly enough to
+        // lift the page-less "Italian ryegrass" above the published perennial
+        // ryegrass article for the bare query "ryegrass".
+        //
+        // They now sit in the summary, at the lowest weight in the index, so
+        // the taxon is still reachable by a synonym without that synonym
+        // outscoring an article that shares the token.
+        relationLabels: [],
         facets: {
           entityType: ['crop-taxon'],
           category: ['Crop taxonomy'],

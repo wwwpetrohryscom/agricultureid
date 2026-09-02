@@ -5,6 +5,7 @@ import { aloeVera } from './aloe-vera';
 import { amaranth } from './amaranth';
 import { apple } from './apple';
 import { apricot } from './apricot';
+import { arabicaCoffee } from './arabica-coffee';
 import { artichoke } from './artichoke';
 import { asparagus } from './asparagus';
 import { avocado } from './avocado';
@@ -49,10 +50,12 @@ import { cumin } from './cumin';
 import { datePalm } from './date-palm';
 import { dill } from './dill';
 import { dragonFruit } from './dragon-fruit';
+import { durumWheat } from './durum-wheat';
 import { eggplant } from './eggplant';
 import { fabaBean } from './faba-bean';
 import { fennel } from './fennel';
 import { fig } from './fig';
+import { fingerMillet } from './finger-millet';
 import { flax } from './flax';
 import { fonio } from './fonio';
 import { garlic } from './garlic';
@@ -104,6 +107,7 @@ import { pea } from './pea';
 import { peach } from './peach';
 import { pear } from './pear';
 import { pecan } from './pecan';
+import { perennialRyegrass } from './perennial-ryegrass';
 import { persimmon } from './persimmon';
 import { pigeonPea } from './pigeon-pea';
 import { pineapple } from './pineapple';
@@ -116,7 +120,9 @@ import { pumpkin } from './pumpkin';
 import { quinoa } from './quinoa';
 import { radish } from './radish';
 import { raspberry } from './raspberry';
+import { redClover } from './red-clover';
 import { rice } from './rice';
+import { robustaCoffee } from './robusta-coffee';
 import { rocket } from './rocket';
 import { rosemary } from './rosemary';
 import { rubber } from './rubber';
@@ -145,6 +151,7 @@ import { tobacco } from './tobacco';
 import { tomato } from './tomato';
 import { triticale } from './triticale';
 import { turmeric } from './turmeric';
+import { uplandCotton } from './upland-cotton';
 import { vanilla } from './vanilla';
 import { walnut } from './walnut';
 import { watercress } from './watercress';
@@ -160,6 +167,7 @@ export const crops: CropContent[] = [
   amaranth,
   apple,
   apricot,
+  arabicaCoffee,
   artichoke,
   asparagus,
   avocado,
@@ -204,10 +212,12 @@ export const crops: CropContent[] = [
   datePalm,
   dill,
   dragonFruit,
+  durumWheat,
   eggplant,
   fabaBean,
   fennel,
   fig,
+  fingerMillet,
   flax,
   fonio,
   garlic,
@@ -259,6 +269,7 @@ export const crops: CropContent[] = [
   peach,
   pear,
   pecan,
+  perennialRyegrass,
   persimmon,
   pigeonPea,
   pineapple,
@@ -271,7 +282,9 @@ export const crops: CropContent[] = [
   quinoa,
   radish,
   raspberry,
+  redClover,
   rice,
+  robustaCoffee,
   rocket,
   rosemary,
   rubber,
@@ -300,6 +313,7 @@ export const crops: CropContent[] = [
   tomato,
   triticale,
   turmeric,
+  uplandCotton,
   vanilla,
   walnut,
   watercress,

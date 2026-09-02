@@ -236,6 +236,8 @@ export const coffee: CropContent = {
     { type: 'farming-system', slug: 'agroforestry' },
   ],
   relatedTopics: [
+    { type: 'crop', slug: 'arabica-coffee' },
+    { type: 'crop', slug: 'robusta-coffee' },
     { type: 'crop', slug: 'tea' },
     { type: 'crop', slug: 'cocoa' },
   ],

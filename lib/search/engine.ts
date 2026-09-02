@@ -346,8 +346,25 @@ export function search(
     }
   }
 
+  /**
+   * A result the reader can open outranks an anchor into a list.
+   *
+   * Some documents describe an entity that has its own page; others point at a
+   * row inside a shared table, and their route carries a fragment. When two
+   * documents are equally relevant, the page is the better answer — following
+   * the other one lands the reader in a table to find their own line. Without
+   * this the tie broke alphabetically, which put "Italian ryegrass" (a row on
+   * /crops/taxa) above the perennial ryegrass article for the query
+   * "ryegrass" for no reason connected to relevance.
+   */
+  const isAnchor = (r: (typeof filtered)[number]) =>
+    r.doc.route.includes('#') ? 1 : 0;
+
   filtered.sort(
-    (a, b) => b.score - a.score || a.doc.title.localeCompare(b.doc.title),
+    (a, b) =>
+      b.score - a.score ||
+      isAnchor(a) - isAnchor(b) ||
+      a.doc.title.localeCompare(b.doc.title),
   );
 
   // Facet counts from the filtered set (non-empty only).

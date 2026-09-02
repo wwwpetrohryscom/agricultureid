@@ -299,10 +299,69 @@ for (const n of PROMOTION_NOTES) {
   if (!ISO.test(n.notedAt))
     fail(`promotion note for "${n.slug}" has no ISO date`);
   const q = Q.find((x) => x.slug === n.slug);
-  if (q && q.status === 'FULL_PROFILE_ELIGIBLE')
+  // Both directions. A note that has not been acted on must name a candidate;
+  // a note that HAS been acted on must name a page that exists. Checking only
+  // the first would let a promotion be recorded that never happened.
+  if (!n.promotedAt && q?.hasPublishedRoute)
     fail(
-      `promotion note for "${n.slug}" names a crop that already has a profile`,
+      `promotion note for "${n.slug}" names a crop that already has a page and records no promotion date`,
     );
+  if (n.promotedAt) {
+    if (!ISO.test(n.promotedAt))
+      fail(`promotion note for "${n.slug}" has a non-ISO promotion date`);
+    if (!q?.hasPublishedRoute)
+      fail(
+        `promotion note for "${n.slug}" records a promotion on ${n.promotedAt} and no page is published`,
+      );
+    if (q && q.status !== 'FULL_PROFILE_ELIGIBLE')
+      fail(
+        `promotion note for "${n.slug}" records a promotion and the crop qualifies only as "${q.status}"`,
+      );
+    const r = n.promotionReview;
+    if (!r)
+      fail(
+        `promotion note for "${n.slug}" records a promotion with no per-crop review behind it`,
+      );
+    else {
+      if (!r.materialSufficient)
+        fail(
+          `promotion note for "${n.slug}" was promoted although the review found the material insufficient`,
+        );
+      if (!r.distinctFrom?.trim())
+        fail(
+          `promotion note for "${n.slug}" does not say what the new page is distinct from`,
+        );
+      if (!r.finding?.trim() || r.finding.length < 80)
+        fail(
+          `promotion note for "${n.slug}" gives no substantive review finding`,
+        );
+      // A promoted species must be reachable from the page it was split out
+      // of, and must point back. A page nothing links to is not published in
+      // any sense that matters to a reader.
+      if (r.distinctFromSlug) {
+        const parent = PUBLISHED_CONTENT.find(
+          (c) => c.contentType === 'crop' && c.slug === r.distinctFromSlug,
+        ) as { relatedTopics?: { slug?: string }[] } | undefined;
+        const child = PUBLISHED_CONTENT.find(
+          (c) => c.contentType === 'crop' && c.slug === n.slug,
+        ) as { relatedTopics?: { slug?: string }[] } | undefined;
+        if (!parent)
+          fail(
+            `promotion note for "${n.slug}" names distinctFromSlug "${r.distinctFromSlug}", which is not a published crop`,
+          );
+        else if (!(parent.relatedTopics ?? []).some((t) => t.slug === n.slug))
+          fail(
+            `"${r.distinctFromSlug}" does not link to "${n.slug}", which was split out of it — a reader on the umbrella page cannot reach the species`,
+          );
+        else if (
+          !(child?.relatedTopics ?? []).some(
+            (t) => t.slug === r.distinctFromSlug,
+          )
+        )
+          fail(`"${n.slug}" does not link back to "${r.distinctFromSlug}"`);
+      }
+    }
+  }
 }
 
 /* -- report ---------------------------------------------------------------- */

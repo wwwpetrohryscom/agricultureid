@@ -1441,7 +1441,8 @@ export const WAVE_27_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'durum-wheat',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -1569,7 +1570,8 @@ export const WAVE_27_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'finger-millet',
     lastVerifiedAt: '2026-09-02',
   },
   {
