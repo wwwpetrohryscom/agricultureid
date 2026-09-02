@@ -2,6 +2,7 @@ import type { CropIdentity } from '@/types/crop-identity';
 import { WAVE_27_IDENTITIES } from './wave27';
 import { WAVE_28_IDENTITIES } from './wave28';
 import { WAVE_29_IDENTITIES } from './wave29';
+import { WAVE_30_IDENTITIES } from './wave30';
 
 /**
  * Every verified crop identity in the corpus.
@@ -13,4 +14,5 @@ export const CROP_IDENTITIES: readonly CropIdentity[] = [
   ...WAVE_27_IDENTITIES,
   ...WAVE_28_IDENTITIES,
   ...WAVE_29_IDENTITIES,
+  ...WAVE_30_IDENTITIES,
 ];

@@ -371,12 +371,13 @@ for (const [taxon, holders] of byTaxon)
     ),
   );
   const uncovered = cropPages.filter((c) => !covered.has(c.slug));
-  // Not yet an error: identity is being backfilled wave by wave, and a page
-  // without one is a known gap rather than a defect. The count is reported so
-  // the gap cannot quietly stop shrinking.
-  if (uncovered.length)
-    console.log(
-      `\n  Crop pages awaiting a verified identity: ${uncovered.length} of ${cropPages.length}`,
+  // Every crop page now has a verified identity, so the backfill allowance is
+  // spent and this is an error. A new crop article without a checked botanical
+  // identity would reintroduce exactly the free-text scientificName the layer
+  // exists to replace.
+  for (const c of uncovered)
+    fail(
+      `crop page "${c.slug}" has no verified botanical identity. Every published crop must have one.`,
     );
 }
 
