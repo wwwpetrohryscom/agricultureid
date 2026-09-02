@@ -49,6 +49,7 @@ export type SearchEntityType =
   | 'farm-economics'
   | 'climate-water'
   | 'crop-taxon'
+  | 'crop-hub'
   | 'market-data'
   | 'extension-resource'
   | 'input-authorization';

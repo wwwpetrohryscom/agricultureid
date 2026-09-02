@@ -55,6 +55,8 @@ import { TRADE_HUB_PATH } from '@/lib/trade/paths';
 import { ECONOMICS_PATH } from '@/lib/economics/paths';
 import { CLIMATE_RISK_PATH } from '@/lib/climate/paths';
 import { CROP_TAXA_PATH } from '@/lib/crops/paths';
+import { CROP_HUBS } from '@/data/crop-hubs';
+import { hubPath } from '@/lib/crops/hubs';
 import {
   MARKETS_HUB_PATH,
   commodityMarketPath,
@@ -198,6 +200,13 @@ const STATIC_ROUTES: Omit<RouteEntry, 'lastModified'>[] = [
     changeFrequency: 'monthly',
     priority: 0.6,
   },
+  // Crop hubs. Derived from the published hub set rather than from the taxonomy,
+  // because 74 families and 213 genera are slugs and ten of them are pages.
+  ...CROP_HUBS.map((h) => ({
+    path: hubPath(h),
+    changeFrequency: 'monthly' as const,
+    priority: 0.6,
+  })),
   {
     path: MARKETS_HUB_PATH,
     changeFrequency: 'monthly',

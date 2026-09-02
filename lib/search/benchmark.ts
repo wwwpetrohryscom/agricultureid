@@ -1839,6 +1839,122 @@ export const BENCHMARKS: Benchmark[] = [
     knownIssue:
       'NERICA is named only in the African rice article body, which is summary weight, so the query reaches the crop-calendar and rice pages first. Indexing article-body terms is a search-model change, not a content fix.',
   },
+
+  /* ---- Knowledge hubs (Wave 37) -------------------------------------------
+   * A group-shaped query should reach a group. An entity-shaped query must not:
+   * the guards below are the ones the hubs put at risk, because a hub carrying
+   * its members' names at name weight would compete with them for their own
+   * queries — the entity-synonym misuse Waves 27 and 32 both had to remove.
+   */
+  {
+    query: 'cereals',
+    titleIncludes: ['cereals'],
+    types: ['crop-hub'],
+    kind: 'exact',
+  },
+  {
+    query: 'pulses',
+    titleIncludes: ['pulses'],
+    types: ['crop-hub'],
+    kind: 'exact',
+  },
+  {
+    query: 'oilseeds',
+    titleIncludes: ['oilseeds'],
+    types: ['crop-hub'],
+    kind: 'exact',
+  },
+  {
+    query: 'roots and tubers',
+    titleIncludes: ['roots and tubers'],
+    types: ['crop-hub'],
+    kind: 'multiword',
+  },
+  {
+    query: 'forage crops',
+    titleIncludes: ['forage'],
+    types: ['crop-hub'],
+    kind: 'multiword',
+  },
+  {
+    query: 'fruit crops',
+    titleIncludes: ['fruit crops'],
+    types: ['crop-hub'],
+    kind: 'multiword',
+  },
+  {
+    query: 'poaceae',
+    titleIncludes: ['poaceae'],
+    types: ['crop-hub'],
+    kind: 'scientific',
+  },
+  {
+    query: 'fabaceae',
+    titleIncludes: ['fabaceae'],
+    types: ['crop-hub'],
+    kind: 'scientific',
+  },
+  {
+    query: 'solanaceae',
+    titleIncludes: ['solanaceae'],
+    types: ['crop-hub'],
+    kind: 'scientific',
+  },
+  {
+    query: 'brassicaceae',
+    titleIncludes: ['brassicaceae'],
+    types: ['crop-hub'],
+    kind: 'scientific',
+  },
+  {
+    query: 'grass family',
+    titleIncludes: ['poaceae'],
+    types: ['crop-hub'],
+    kind: 'multiword',
+  },
+  {
+    query: 'legume family',
+    titleIncludes: ['fabaceae'],
+    types: ['crop-hub'],
+    kind: 'multiword',
+  },
+  {
+    query: 'brassica crops',
+    titleIncludes: ['brassica'],
+    types: ['crop-hub'],
+    kind: 'multiword',
+  },
+
+  {
+    query: 'wheat',
+    titleIncludes: ['wheat'],
+    mustNotTopTypes: ['crop-hub'],
+    types: ['crop'],
+    kind: 'exact',
+    note: 'A hub must never take an exact crop name. Wheat is in two published hubs.',
+  },
+  {
+    query: 'cabbage',
+    titleIncludes: ['cabbage'],
+    mustNotTopTypes: ['crop-hub'],
+    types: ['crop'],
+    kind: 'exact',
+    note: 'Cabbage sits in the Brassicaceae family hub, the Brassica genus hub and the vegetables group hub — three chances for a hub to take its query.',
+  },
+  {
+    query: 'maize',
+    titleIncludes: ['maize'],
+    mustNotTopTypes: ['crop-hub'],
+    types: ['crop'],
+    kind: 'exact',
+  },
+  {
+    query: 'potato',
+    titleIncludes: ['potato'],
+    mustNotTopTypes: ['crop-hub'],
+    types: ['crop'],
+    kind: 'exact',
+  },
 ];
 
 export function benchmarkIndex(): SearchIndex {

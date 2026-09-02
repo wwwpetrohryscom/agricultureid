@@ -96,6 +96,8 @@ import {
   cropsWithAuthorizedProducts,
 } from '@/lib/inputs/registry';
 import { CROP_TAXA_PATH } from '@/lib/crops/paths';
+import { CROP_HUBS } from '@/data/crop-hubs';
+import { hubPath, membershipOf } from '@/lib/crops/hubs';
 
 export interface AuditIssue {
   level: 'error' | 'warning';
@@ -170,6 +172,13 @@ export function registryNavModel(): Map<string, Set<string>> {
   // has a checked botanical identity for, including the ones held without an
   // article. Modelled here because the hub renders the link.
   add('/crops', CROP_TAXA_PATH);
+  // Crop hubs. Listed on /crops, and each hub lists its own published members,
+  // so a crop in a hub gains a second modelled route to it.
+  for (const h of CROP_HUBS) {
+    add('/crops', hubPath(h));
+    for (const c of membershipOf(h).published)
+      add(hubPath(h), `/crops/${c.cropPageSlug ?? c.slug}`);
+  }
 
   // Content hubs list every published item of their type (EntryGrid).
   for (const s of SECTIONS) {
