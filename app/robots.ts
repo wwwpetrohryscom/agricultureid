@@ -25,7 +25,11 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: '*',
       allow: '/',
     },
-    sitemap: `${SITE.url}/sitemap.xml`,
+    // Two sitemaps, because there are two deployments behind this hostname.
+    // The Journal generates and serves its own at /journal/sitemap.xml, so
+    // publishing an article updates it without this project rebuilding. Naming
+    // it here is a one-time change, not a per-publication one.
+    sitemap: [`${SITE.url}/sitemap.xml`, `${SITE.url}/journal/sitemap.xml`],
     host: SITE.url,
   };
 }

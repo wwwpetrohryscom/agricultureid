@@ -16,6 +16,17 @@ import { join, relative, sep } from 'node:path';
 import { SITE, SECTIONS } from '../lib/site';
 import { PUBLISHED_CONTENT, contentUrlPath } from '../lib/content/registry';
 import { sitemapPaths } from '../lib/seo/routes';
+
+/**
+ * Paths this project forwards to a different Netlify project.
+ *
+ * `/journal/*` is served by the AgricultureID Journal deployment through a
+ * proxy rewrite in netlify.toml. Those URLs are live and correct; they are
+ * simply not emitted by this build, so the link audit must not report them as
+ * broken. Everything not listed here that is missing from the build output is a
+ * real defect.
+ */
+const PROXIED_PREFIXES = ['/journal'];
 import {
   extractLinks,
   extractCanonical,
@@ -169,6 +180,7 @@ function main(): void {
   const inbound = new Map<string, Set<string>>();
   for (const p of indexable) inbound.set(p.path, new Set());
   const brokenLinks: { from: string; to: string }[] = [];
+  const proxiedLinks: { from: string; to: string }[] = [];
   const dynamicRouteLinks: { from: string; to: string }[] = [];
   const redirectLinks: { from: string; to: string; raw: string }[] = [];
 
@@ -179,7 +191,18 @@ function main(): void {
         redirectLinks.push({ from: p.path, to: l.path, raw: l.raw });
       }
       if (!emittedSet.has(l.path)) {
-        if (dynamicRoutes.has(l.path))
+        // A path this project forwards to another deployment is not broken. It
+        // is not emitted here because it is not served here: netlify.toml
+        // proxies it, and the receiving project answers. Counting it as a
+        // broken link would make the audit permanently wrong about a URL that
+        // works, and the noise would hide a link that genuinely is broken.
+        if (
+          PROXIED_PREFIXES.some(
+            (x) => l.path === x || l.path!.startsWith(`${x}/`),
+          )
+        )
+          proxiedLinks.push({ from: p.path, to: l.path });
+        else if (dynamicRoutes.has(l.path))
           dynamicRouteLinks.push({ from: p.path, to: l.path });
         else brokenLinks.push({ from: p.path, to: l.path });
         continue;
@@ -360,6 +383,11 @@ function main(): void {
   for (const p of searchOnly.slice(0, 10)) say(`     - ${p}`);
 
   say('\n--- Link integrity ---');
+  say(
+    `  Links to another deployment (proxied, served elsewhere): ${proxiedLinks.length}`,
+  );
+  for (const t of [...new Set(proxiedLinks.map((b) => b.to))].slice(0, 10))
+    say(`     - ${t}`);
   say(
     `  Broken internal links (href → no emitted page): ${brokenLinks.length}`,
   );

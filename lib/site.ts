@@ -415,6 +415,13 @@ export const SECTIONS: NavSection[] = [
     active: true,
   },
   {
+    label: 'Journal',
+    href: '/journal',
+    description:
+      'AgricultureID Journal — evidence-based reporting, research, data, markets and agricultural intelligence.',
+    active: true,
+  },
+  {
     label: 'Climate & Water',
     href: '/climate-and-water',
     description:
@@ -565,6 +572,12 @@ const HEADER_HREFS = new Set([
   '/pests',
   '/livestock',
   '/farm-systems',
+  // The Journal is not a content-type hub like the others; it is the editorial
+  // layer of the platform, served by a different deployment on this hostname.
+  // It sits in the global header because a reader should be able to reach the
+  // reporting from anywhere, and because a publication nobody can find from the
+  // knowledge base is a publication with no audience.
+  '/journal',
 ]);
 export const HEADER_NAV = SECTIONS.filter(
   (s) => s.active && HEADER_HREFS.has(s.href),
@@ -646,6 +659,7 @@ export const REFERENCE_NAV = SECTIONS.filter(
       '/agricultural-trade',
       '/farm-economics',
       '/climate-and-water',
+      '/journal',
       '/agricultural-markets',
       '/extension-resources',
       '/agricultural-inputs',

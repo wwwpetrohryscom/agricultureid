@@ -59,3 +59,90 @@
   for = "/*"
   [context.branch-deploy.headers.values]
     X-Robots-Tag = "noindex, nofollow"
+
+# ---------------------------------------------------------------------------
+# /journal — proxied to the independent AgricultureID Journal project
+# ---------------------------------------------------------------------------
+# One public hostname, two deployment units. `agricultureid.com/journal/*` is
+# served by a SEPARATE Netlify project (`agricultureid-journal`, same team) with
+# its own repository, its own build and its own deploy history — so publishing
+# an article does not rebuild this 1,571-route knowledge platform, and a change
+# to the climate or economics layer does not rebuild the publication.
+#
+# More importantly than build time: a corpus gate failing here must never be
+# able to block a correction to a published article. Corrections have a clock on
+# them and do not queue behind data.
+#
+# `status = 200` makes this a REWRITE, not a redirect. Netlify fetches the
+# response and returns it under the original URL, so the address bar keeps
+# saying agricultureid.com/journal/… and the Journal project's *.netlify.app
+# hostname — which appears here, and only here, in the whole architecture — is
+# never shown to a browser or a crawler.
+#
+# WHY THIS IS SAFE, from Netlify's documented behaviour rather than assumption
+# (all checked 2026-09-01):
+#
+#   · Order of evaluation is `_redirects`, then THIS FILE, then static files,
+#     then the Next.js server function. "Any Netlify redirects or rewrites that
+#     you create take precedence over those created by Next.js Runtime." This
+#     repository has no `_redirects`, so these rules are consulted first and the
+#     application never sees a /journal request.
+#   · It is not the forbidden case. The documentation carries a danger notice
+#     against rewriting from the site root, which "would take precedence over
+#     Next.js Runtime's generated rewrites and break routing on your site". This
+#     is a prefix, and /journal was measurably unclaimed — 404 in production
+#     before these rules existed.
+#   · Cross-project rewrites are permitted within a team and forbidden across
+#     teams: "rewrites between Netlify sites belonging to different teams are not
+#     allowed". Both projects are on the same team.
+#   · The .netlify.app target is the recommended form: "we recommend using the
+#     site's .netlify.app subdomain instead of the custom domain".
+#   · Internal rewrites are limited to one hop. The Journal serves its own
+#     responses and proxies nothing, so the budget is spent once.
+#
+# The Journal sets `basePath: "/journal"`, so its own asset URLs are already
+# /journal/_next/static/… and match the splat rule. Nothing of the
+# publication's can fall through to this platform and 404.
+#
+# `force = true` because force means "override any existing content in the
+# path". Nothing occupies /journal today; the rules should not silently stop
+# working if something ever does.
+#
+# CONSEQUENCE WORTH KNOWING: because these rules run before the Next.js runtime,
+# the `headers()` block in next.config.mjs does NOT apply to /journal responses.
+# The Journal declares its own security headers, and its routing validator
+# checks that it does.
+#
+# FAILURE MODE: if the Journal project is down, /journal/* fails and NOTHING
+# ELSE DOES. Crops, countries, authorities, registries, regulations, markets,
+# inputs, tools, calculators, search, the sitemap and robots.txt are served by
+# this platform's own function and never touch the proxy.
+#
+# ROLLBACK: delete these two blocks and redeploy. /journal returns to 404 and
+# this site is unchanged. Full procedure in docs/journal-routing-rollback.md.
+
+# There is deliberately NO trailing-slash normalisation rule for /journal/.
+#
+# Netlify's matcher folds the two slash forms onto each other, which is why the
+# first rule below also serves /journal/. The folding is symmetric: a rule
+# written from = "/journal/" matches the bare /journal too, so a normalising
+# redirect sends /journal to itself and the publication's homepage answers an
+# infinite loop while every child path keeps working. That reached production on
+# a sibling project before its routing gate next ran.
+#
+# The consequence of not normalising is that the homepage answers 200 at both
+# forms. That is a duplicate URL, not a broken one, and it is resolved the way
+# duplicate URLs are meant to be: every Journal page carries a canonical tag
+# naming the no-slash form, and only that form appears in the Journal sitemap.
+
+[[redirects]]
+  from = "/journal"
+  to = "https://agricultureid-journal.netlify.app/journal"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/journal/*"
+  to = "https://agricultureid-journal.netlify.app/journal/:splat"
+  status = 200
+  force = true

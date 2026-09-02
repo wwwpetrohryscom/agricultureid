@@ -358,7 +358,7 @@ export default function ClimateAndWaterPage() {
           Drought assessments and climate normals for individual states appear
           on their{' '}
           <Link
-            href="/countries/us"
+            href="/countries/united-states"
             className="text-forest-700 hover:underline"
           >
             state pages
