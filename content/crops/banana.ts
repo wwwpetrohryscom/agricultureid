@@ -234,6 +234,7 @@ export const banana: CropContent = {
     { type: 'farming-system', slug: 'agroforestry' },
   ],
   relatedTopics: [
+    { type: 'crop', slug: 'plantain' },
     { type: 'crop', slug: 'mango' },
     { type: 'crop', slug: 'orange' },
   ],
