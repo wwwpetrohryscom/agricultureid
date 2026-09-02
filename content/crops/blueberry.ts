@@ -94,7 +94,7 @@ export const blueberry: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'Production and trade statistics are compiled by national and international bodies and change over time with new plantings and market demand; current figures are best obtained from primary sources such as FAOSTAT.',
+          text: 'Production and trade statistics are compiled by national and international bodies and change over time with new plantings and market demand; current figures are best obtained from primary sources such as FAOSTAT and national agricultural statistics services rather than assumed.',
         },
       ],
     },

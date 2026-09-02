@@ -184,7 +184,7 @@ export const ginger: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'Management relies on clean, disease-free planting material, well-drained sites, monitoring, and — where justified — locally authorized control products applied according to their labels.',
+          text: 'Ginger is prone to soil-borne rhizome rots that arrive with the planting material, so seed rhizome selection is the main control point and there is no effective treatment once a crop is infected. Raised beds and a rotation away from other host crops are the standard cultural measures, and land with a history of the disease is usually avoided rather than treated.',
         },
       ],
     },

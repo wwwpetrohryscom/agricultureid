@@ -145,12 +145,12 @@ export const pear: CropContent = {
       body: [
         {
           type: 'paragraph',
-          text: 'Pear performs best on deep, well-drained soils with good structure and moisture-holding capacity. Loams and sandy loams are generally favored. Pear is intolerant of prolonged waterlogging, which restricts rooting and increases the risk of root diseases.',
+          text: 'Pear is more forgiving of heavy, moisture-retentive ground than apple, and quince rootstocks — used for size control — are shallower-rooted and less drought-tolerant than pear seedling, which shifts the irrigation requirement rather than removing it. Compatibility between quince rootstock and some pear cultivars requires an interstem, which is a planting decision made years before it shows.',
         },
         {
           type: 'callout',
           tone: 'note',
-          text: 'Rootstock selection interacts strongly with soil conditions, including drainage, depth, and replant history. Site assessment should draw on local soil survey information and, where available, testing for orchard replant issues.',
+          text: 'Soil pH matters more here than for most orchard fruit because quince is sensitive to lime-induced chlorosis on calcareous sites. Where pH is high, the rootstock choice is constrained before the cultivar is considered.',
         },
       ],
     },

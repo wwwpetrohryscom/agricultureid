@@ -172,7 +172,7 @@ export const blackberry: CropContent = {
       body: [
         {
           type: 'paragraph',
-          text: 'Blackberry has a relatively shallow, fibrous root system with limited drought tolerance, and water demand is highest during fruit development. Drip irrigation is widely used to supply consistent moisture while avoiding the waterlogging the crop tolerates poorly.',
+          text: 'Blackberry roots are shallow and fibrous, so the plant draws on a small volume of soil and shows stress quickly in dry weather. Trailing types on a trellis carry a larger evaporating canopy than erect types and are correspondingly less forgiving of an interrupted supply.',
         },
       ],
     },
@@ -196,7 +196,7 @@ export const blackberry: CropContent = {
       body: [
         {
           type: 'paragraph',
-          text: 'Blackberry is harvested by hand for fresh-market fruit, picked frequently at full color and flavor development since ripening does not continue meaningfully after picking. Mechanical harvesting is used mainly for processing fruit destined for freezing or manufacturing.',
+          text: 'Blackberry canes arise from the crown, so a planting stays where it is put and is trained on a trellis that separates the fruiting floricanes from the primocanes growing for next season. That separation is the central management task, and it is what makes trellis design a decision about labour rather than about support.',
         },
       ],
     },

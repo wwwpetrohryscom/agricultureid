@@ -94,7 +94,7 @@ export const millet: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'Because "millet" covers several distinct species, production and trade statistics are typically reported by individual species; current figures are best obtained from primary sources such as FAOSTAT.',
+          text: 'Because "millet" covers several distinct species, production and trade statistics are typically reported by individual species; current figures are best obtained from primary sources such as FAOSTAT and national agricultural statistics services rather than assumed.',
         },
       ],
     },

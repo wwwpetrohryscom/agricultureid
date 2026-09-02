@@ -95,7 +95,7 @@ export const rosemary: CropContent = {
       body: [
         {
           type: 'paragraph',
-          text: 'Rosemary is well adapted to hot, dry summers and mild winters and tolerates drought well once established. Cold hardiness varies by cultivar, with some tolerating moderate frost and others requiring protection in colder climates.',
+          text: "Rosemary is woody and long-lived where winters allow, and a planting is expected to crop for several years rather than being resown. That changes the establishment decision: spacing, drainage and cultivar hardiness are settled once, and a stand lost to a wet winter or a hard frost is a multi-year loss rather than a season's.",
         },
         {
           type: 'paragraph',

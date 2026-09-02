@@ -6,9 +6,12 @@
  * survive that check, and the corrections are recorded here rather than in the
  * prose that got them wrong:
  *
- *   macadamia  said "Both species are verified separately". The corpus holds
- *              NEITHER Macadamia integrifolia nor M. tetraphylla — only the
- *              genus concept. Both are recorded here as not-held.
+ *   macadamia  said "Both species are verified separately". When Wave 33
+ *              checked, the corpus held NEITHER. Wave 35 did the research the
+ *              sentence presupposed: both were verified against WFO and POWO,
+ *              which agree on both names and on Proteaceae, and both are now
+ *              held as taxa. The sentence is true because the work was done,
+ *              not because the claim was restored.
  *   pumpkin    said "All four are held separately with verified identities".
  *              Cucurbita pepo is held only as the Zucchini Group, a cultivar
  *              group, not as the species. It also omitted C. ficifolia, which
@@ -190,24 +193,25 @@ export const CROP_CONCEPTS: readonly CropConcept[] = [
     slug: 'macadamia',
     kind: 'genus-concept',
     scopeStatement:
-      'This page covers macadamia as a crop. Commercial orchards are planted with two species and hybrids between them; the corpus holds neither species as its own taxon, so the genus concept is all there is here.',
+      'This page covers macadamia as a crop. Only two of the genus are grown for nuts — Macadamia integrifolia and M. tetraphylla — together with hybrids between them, and a large share of commercial plantings are those hybrids rather than either species.',
     constituents: [
       {
         scientificName: 'Macadamia integrifolia',
         commonName: 'Smooth-shell macadamia',
-        // The correction. The note claimed both were verified; neither is held.
-        heldAs: 'not-held',
-        role: 'The smooth-shelled species and the basis of most commercial cultivars.',
+        heldAs: 'own-identity',
+        identitySlug: 'smooth-shell-macadamia',
+        role: 'The smooth-shelled species. The Hawaiian cultivars developed from it account for most of world production and are the founders of current breeding programmes.',
       },
       {
         scientificName: 'Macadamia tetraphylla',
         commonName: 'Rough-shell macadamia',
-        heldAs: 'not-held',
-        role: 'The rough-shelled species, used in its own right and in hybrids with M. integrifolia.',
+        heldAs: 'own-identity',
+        identitySlug: 'rough-shell-macadamia',
+        role: 'The rough-shelled species. A few pure cultivars are grown commercially, mainly in South Africa; most of its commercial contribution is through hybrids with M. integrifolia.',
       },
     ],
     splitCriterion:
-      'Neither species can be promoted until it is first held as a verified identity. That is a research task, not a writing one, and it is the honest state of this concept.',
+      'Both species were verified against both authorities in Wave 35 and are now held as taxa. Promotion is a separate question and the answer is currently no: most commercial material is interspecific hybrid, so a page for either species alone would describe a minority of the crop while the genus page describes the rest. That would have to change before a split made sense.',
     sourceIds: ['fao', 'cabi'],
     reviewedAt: '2026-09-02',
   },
@@ -316,7 +320,7 @@ export const CROP_CONCEPTS: readonly CropConcept[] = [
     slug: 'blackberry',
     kind: 'species-complex',
     scopeStatement:
-      'This page covers cultivated blackberries, which are complex hybrids drawn from many Rubus microspecies. Rubus is apomictic and its species boundaries are contested by the authorities themselves, so no accepted binomial can carry the page.',
+      'This page covers cultivated blackberries, which are complex hybrids drawn from many Rubus microspecies. Rubus is apomictic and its species boundaries are contested by the authorities themselves, so no accepted binomial can carry the page and the corpus holds none of the underlying taxa as a verified identity.',
     constituents: [
       {
         scientificName: 'Rubus fruticosus agg.',

@@ -113,12 +113,12 @@ export const apple: CropContent = {
       body: [
         {
           type: 'paragraph',
-          text: 'Apple performs best on deep, well-drained soils with good structure and moisture-holding capacity. Loams and sandy loams are generally favored, and the crop is intolerant of prolonged waterlogging, which restricts rooting and increases the risk of root diseases.',
+          text: 'Apple carries its own replant problem, and it is a different organism from the peach one. Apple replant disease is a complex — root lesion nematodes together with Rhizoctonia, Ilyonectria, Pythium and Phytophthora — and it stunts replanted trees rather than killing them, so an affected block underperforms for years without an obvious cause.',
         },
         {
           type: 'callout',
           tone: 'note',
-          text: 'Rootstock selection interacts strongly with soil conditions, including drainage, depth, and replant history. Site assessment should draw on local soil survey information and, where available, testing for orchard replant issues.',
+          text: 'That makes replant history a site assessment in its own right on any ground that has grown apples before. Rootstocks differ in tolerance, and pre-plant testing is worth more here than on new ground because the symptom is slow growth rather than tree death.',
         },
       ],
     },

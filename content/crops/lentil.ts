@@ -166,7 +166,7 @@ export const lentil: CropContent = {
       body: [
         {
           type: 'paragraph',
-          text: 'Lentil is grown predominantly under rain-fed conditions in traditional production regions, with terminal drought at flowering and pod fill representing a major, often unavoidable, yield constraint. Supplemental irrigation is used in some production systems.',
+          text: 'Lentil is short, and that single fact governs its harvest. Pods form low on the plant, the crop lodges readily once it carries seed, and both together mean cutting close to the ground with losses that rise sharply if the crop goes down. Sowing on level, stone-free ground is a harvest decision made months in advance.',
         },
         {
           type: 'paragraph',

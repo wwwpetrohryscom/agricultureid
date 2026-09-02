@@ -96,7 +96,7 @@ export const fig: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'It is now grown commercially in Mediterranean-climate and other warm subtropical regions on multiple continents. Production and trade figures shift over time and should be obtained from primary sources such as FAOSTAT rather than assumed.',
+          text: 'It is now grown commercially in Mediterranean-climate and other warm subtropical regions on multiple continents. Production and trade figures shift over time and should be obtained from primary sources such as FAOSTAT and national agricultural statistics services rather than assumed.',
         },
       ],
     },

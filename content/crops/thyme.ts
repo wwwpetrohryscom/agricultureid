@@ -47,7 +47,7 @@ export const thyme: CropContent = {
       body: [
         {
           type: 'paragraph',
-          text: 'Thyme is grown in home gardens, herb nurseries, and, in some regions, commercial fields for dried herb and essential oil production. It is often grown alongside other Mediterranean herbs in mixed plantings suited to similar dry, sunny conditions.',
+          text: 'Thyme is not one aromatic profile but several: the species occurs as distinct chemotypes dominated by thymol, carvacrol, linalool or geraniol, and they look alike. Buying thyme for essential oil therefore means specifying a chemotype rather than a species, and a planting raised from unselected seed will be mixed.',
         },
         {
           type: 'paragraph',

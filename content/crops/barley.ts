@@ -147,7 +147,7 @@ export const barley: CropContent = {
       body: [
         {
           type: 'paragraph',
-          text: 'Establishment depends on producing an even, well-anchored stand at the correct depth into a firm, moist seedbed. Sowing date, seeding rate, and row spacing are set locally according to variety type, soil, and expected season length.',
+          text: 'Barley is sown into much the same seedbed as other small grains, but its end use is settled before the crop is: malting barley is grown to a protein specification that feed barley is not, and a crop that misses that specification is sold into a different market at a different price. Nitrogen rate, variety choice and harvest timing all follow from which of the two is being aimed at.',
         },
         {
           type: 'list',

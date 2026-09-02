@@ -71,8 +71,19 @@ describe('concepts — a page that is not one plant says so', () => {
   it('records the three claims that were wrong', () => {
     // These are the audit's findings, pinned so a future edit cannot quietly
     // restore the overclaim.
+    // Macadamia was the overclaim: the note said both species were verified
+    // and the corpus held neither. Wave 35 did the research the sentence
+    // presupposed, so both are held now — and the thing worth pinning is that
+    // the claim and the data agree, whichever way round they were fixed.
     const mac = CONCEPT_BY_SLUG.get('macadamia')!;
-    expect(mac.constituents.every((t) => t.heldAs === 'not-held')).toBe(true);
+    expect(mac.constituents.length).toBe(2);
+    for (const t of mac.constituents) {
+      expect(t.heldAs, t.scientificName).toBe('own-identity');
+      expect(IDENTITY_BY_SLUG.has(t.identitySlug!), t.identitySlug).toBe(true);
+      expect(
+        IDENTITY_BY_SLUG.get(t.identitySlug!)!.acceptedScientificName,
+      ).toBe(t.scientificName);
+    }
 
     const pumpkin = CONCEPT_BY_SLUG.get('pumpkin')!;
     const pepo = pumpkin.constituents.find(

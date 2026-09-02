@@ -86,7 +86,7 @@ export const zucchini: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'It is now grown widely across temperate and warm regions worldwide; production and trade figures change over time and are best obtained from primary sources such as FAOSTAT.',
+          text: 'It is now grown widely across temperate and warm regions worldwide; production and trade figures change over time and are best obtained from primary sources such as FAOSTAT and national agricultural statistics services rather than assumed.',
         },
       ],
     },

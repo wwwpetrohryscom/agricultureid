@@ -89,7 +89,7 @@ export const cranberry: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'Production and trade statistics are compiled by national and international bodies and are best obtained from primary sources such as FAOSTAT rather than assumed.',
+          text: 'Production and trade statistics are compiled by national and international bodies and are best obtained from primary sources such as FAOSTAT and national agricultural statistics services rather than assumed.',
         },
       ],
     },
