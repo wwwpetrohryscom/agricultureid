@@ -1,4 +1,5 @@
 import type { CropContent } from '@/types/content';
+import { africanRice } from './african-rice';
 import { alfalfa } from './alfalfa';
 import { almond } from './almond';
 import { aloeVera } from './aloe-vera';
@@ -27,6 +28,7 @@ import { cardamom } from './cardamom';
 import { carrot } from './carrot';
 import { cashew } from './cashew';
 import { cassava } from './cassava';
+import { castorBean } from './castor-bean';
 import { cauliflower } from './cauliflower';
 import { celery } from './celery';
 import { chamomile } from './chamomile';
@@ -64,9 +66,11 @@ import { grape } from './grape';
 import { grapefruit } from './grapefruit';
 import { grassPea } from './grass-pea';
 import { groundnut } from './groundnut';
+import { guar } from './guar';
 import { guava } from './guava';
 import { hazelnut } from './hazelnut';
 import { hemp } from './hemp';
+import { hops } from './hops';
 import { jackfruit } from './jackfruit';
 import { jute } from './jute';
 import { kale } from './kale';
@@ -157,10 +161,12 @@ import { walnut } from './walnut';
 import { watercress } from './watercress';
 import { watermelon } from './watermelon';
 import { wheat } from './wheat';
+import { whiteClover } from './white-clover';
 import { yam } from './yam';
 import { zucchini } from './zucchini';
 
 export const crops: CropContent[] = [
+  africanRice,
   alfalfa,
   almond,
   aloeVera,
@@ -189,6 +195,7 @@ export const crops: CropContent[] = [
   carrot,
   cashew,
   cassava,
+  castorBean,
   cauliflower,
   celery,
   chamomile,
@@ -226,9 +233,11 @@ export const crops: CropContent[] = [
   grapefruit,
   grassPea,
   groundnut,
+  guar,
   guava,
   hazelnut,
   hemp,
+  hops,
   jackfruit,
   jute,
   kale,
@@ -319,6 +328,7 @@ export const crops: CropContent[] = [
   watercress,
   watermelon,
   wheat,
+  whiteClover,
   yam,
   zucchini,
 ];

@@ -230,6 +230,7 @@ export const cowpea: CropContent = {
     { type: 'soil', slug: 'loam-soil' },
   ],
   relatedTopics: [
+    { type: 'crop', slug: 'guar' },
     { type: 'crop', slug: 'common-bean' },
     { type: 'crop', slug: 'groundnut' },
   ],

@@ -219,7 +219,10 @@ export const sunflower: CropContent = {
     { type: 'soil', slug: 'loam-soil' },
     { type: 'soil', slug: 'sandy-soil' },
   ],
-  relatedTopics: [{ type: 'crop', slug: 'wheat' }],
+  relatedTopics: [
+    { type: 'crop', slug: 'wheat' },
+    { type: 'crop', slug: 'castor-bean' },
+  ],
   connections: [
     { type: 'nutrient', slug: 'phosphorus' },
     { type: 'nutrient', slug: 'boron' },

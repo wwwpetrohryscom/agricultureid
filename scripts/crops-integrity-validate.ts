@@ -208,7 +208,37 @@ const cropSlugs = new Set(
   }
 }
 
-/* -- 5. recorded scope decisions ------------------------------------------- */
+/* -- 5. no quantitative claim in article prose ----------------------------- */
+/**
+ * Wave 35's factual audit found the corpus carries zero quantitative claims in
+ * prose across every crop article — numbers live in structured key facts, where
+ * they can be checked and updated, and the standing policy sends readers to
+ * primary datasets for figures.
+ *
+ * That was an observation, not a rule, so nothing stopped the next article
+ * carrying one. A number in prose is the factual claim most likely to go stale
+ * and hardest to check, and it is exactly what an article written quickly
+ * reaches for.
+ */
+{
+  // No trailing \b: the first version had one, and a word boundary after "%"
+  // never matches because both sides are non-word characters — so "40%" was
+  // invisible to the very rule written to catch it.
+  const QUANTITATIVE =
+    /\b\d[\d.,]*\s?(?:%|per cent|percent|°C|°F|(?:mm|cm|kg|ha|ppm|tonnes|t\/ha)\b)/;
+  for (const c of PUBLISHED_CONTENT.filter((x) => x.contentType === 'crop')) {
+    const t = articleText(c);
+    const m = QUANTITATIVE.exec(t);
+    if (m) {
+      const i = Math.max(0, m.index - 60);
+      fail(
+        `crop "${c.slug}" states a quantitative claim in prose ("…${t.slice(i, m.index + 40).trim()}…") — figures belong in structured key facts, where they can be checked`,
+      );
+    }
+  }
+}
+
+/* -- 6. recorded scope decisions ------------------------------------------- */
 for (const d of SCOPE_DECISIONS) {
   const at = `scope decision "${d.slug}"`;
   if (!ISO.test(d.decidedAt)) fail(`${at}: no ISO date`);

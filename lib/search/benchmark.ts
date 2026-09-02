@@ -1742,6 +1742,103 @@ export const BENCHMARKS: Benchmark[] = [
     kind: 'synonym',
     note: 'Moving taxon synonyms out of relationLabels must not cost their discoverability.',
   },
+
+  /* ---- Research campaign promotions (Wave 36) -----------------------------
+   * Five crops promoted out of the taxon table. Each asserts its own name, its
+   * own binomial and — where it has one — the trade name a reader is at least
+   * as likely to type. The guards below are the ones the promotions put at
+   * risk: white clover must not take "clover" from red clover, African rice
+   * must not take "rice", and castor must not take "bean".
+   */
+  { query: 'hops', titleIncludes: ['hops'], types: ['crop'], kind: 'exact' },
+  {
+    query: 'humulus lupulus',
+    titleIncludes: ['hops'],
+    types: ['crop'],
+    kind: 'scientific',
+  },
+  {
+    query: 'white clover',
+    titleIncludes: ['white clover'],
+    types: ['crop'],
+    kind: 'exact',
+  },
+  {
+    query: 'trifolium repens',
+    titleIncludes: ['white clover'],
+    types: ['crop'],
+    kind: 'scientific',
+  },
+  { query: 'guar', titleIncludes: ['guar'], types: ['crop'], kind: 'exact' },
+  {
+    query: 'cyamopsis tetragonoloba',
+    titleIncludes: ['guar'],
+    types: ['crop'],
+    kind: 'scientific',
+  },
+  {
+    query: 'cluster bean',
+    titleIncludes: ['guar'],
+    types: ['crop'],
+    kind: 'synonym',
+    note: 'Guar’s principal name in India. It lost to bean cultivars until term coverage was weighted properly.',
+  },
+  {
+    query: 'castor bean',
+    titleIncludes: ['castor bean'],
+    types: ['crop'],
+    kind: 'exact',
+  },
+  {
+    query: 'ricinus communis',
+    titleIncludes: ['castor bean'],
+    types: ['crop'],
+    kind: 'scientific',
+  },
+  {
+    query: 'african rice',
+    titleIncludes: ['african rice'],
+    types: ['crop'],
+    kind: 'exact',
+  },
+  {
+    query: 'oryza glaberrima',
+    titleIncludes: ['african rice'],
+    types: ['crop'],
+    kind: 'scientific',
+  },
+
+  {
+    query: 'clover',
+    types: ['crop'],
+    mustNotTopTypes: ['crop-taxon'],
+    kind: 'exact',
+    note: 'Ambiguous across several Trifolium species. Asserts a crop article, not which one.',
+  },
+  {
+    query: 'rice',
+    titleIncludes: ['rice'],
+    mustNotTop: ['african'],
+    types: ['crop'],
+    kind: 'exact',
+    note: 'The rice article must keep its own term after the second domestication was published.',
+  },
+  { query: 'beer hops', titleIncludes: ['hops'], kind: 'multiword' },
+  { query: 'guar gum', titleIncludes: ['guar'], kind: 'multiword' },
+  {
+    query: 'ricinoleic acid',
+    titleIncludes: ['castor bean'],
+    kind: 'multiword',
+    knownIssue:
+      'Castor is the only commercial source of ricinoleic acid, so this query has exactly one right answer, and the engine returns a quality attribute instead. Same root cause as "nerica": a distinctive technical term that appears in an article BODY is indexed at summary weight, which cannot outweigh a partial match in a title. Putting such terms in the names field would be the entity-synonym misuse Waves 27 and 32 both had to remove. The fix is a body-term index or a crop-level search alias, and both are search-model changes.',
+  },
+  {
+    query: 'nerica',
+    titleIncludes: ['african rice'],
+    kind: 'abbreviation',
+    knownIssue:
+      'NERICA is named only in the African rice article body, which is summary weight, so the query reaches the crop-calendar and rice pages first. Indexing article-body terms is a search-model change, not a content fix.',
+  },
 ];
 
 export function benchmarkIndex(): SearchIndex {
