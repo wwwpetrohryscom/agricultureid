@@ -88,6 +88,8 @@ After a Level 1 rollback all three should be 200.
 Verified 2026-09-02 by pushing a one-word change to a single publication and
 watching both projects:
 
+**A one-word change to one Journal publication**, pushed 01:11:10Z:
+
 ```
                     before                              after
 MAIN     6a9775fd7d09fa00082dd7b8 01:03:57Z   6a9775fd7d09fa00082dd7b8 01:03:57Z
@@ -96,6 +98,27 @@ JOURNAL  6a97775720d6b20008ff255a 01:09:43Z   6a9777afadd84a0008d74477 01:11:11Z
 
 The Journal built one second after the push. The knowledge platform's newest
 deploy did not change.
+
+**A change to this repository**, merged as #61:
+
+```
+                    before                              after
+MAIN     6a9777... (see above)               6a977a0e49ab1c0009d3df86 01:21:18Z
+JOURNAL  6a9777afadd84a0008d74477 01:11:11Z  6a9777afadd84a0008d74477 01:11:11Z
+```
+
+This project built. The Journal's newest deploy did not change.
+
+The two lifecycles are independent in both directions, which is the whole
+point: an article does not pay for a 1,571-route rebuild, and a data wave does
+not rebuild a publication.
+
+## IndexNow
+
+Both projects share a host, and IndexNow keys validate at the host root, so the
+existing key at `/8f700117e33b46399992b313b729d2ce.txt` already authorises
+submissions for `/journal/...` URLs. Nothing about IndexNow changes when the
+Journal publishes, and removing the routing does not invalidate anything.
 
 ## Two failure modes that are not rollback candidates
 
