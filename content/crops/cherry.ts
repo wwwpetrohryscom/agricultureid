@@ -273,6 +273,8 @@ export const cherry: CropContent = {
     { type: 'crop', slug: 'peach' },
     { type: 'crop', slug: 'plum' },
     { type: 'crop', slug: 'apricot' },
+
+    { type: 'crop', slug: 'sour-cherry' },
   ],
   glossaryTerms: [
     'perennial-crop',

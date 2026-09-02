@@ -238,6 +238,8 @@ export const blueberry: CropContent = {
     { type: 'crop', slug: 'cranberry' },
     { type: 'crop', slug: 'raspberry' },
     { type: 'crop', slug: 'blackberry' },
+
+    { type: 'crop', slug: 'lowbush-blueberry' },
   ],
   glossaryTerms: [
     'perennial-crop',

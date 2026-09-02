@@ -237,6 +237,8 @@ export const millet: CropContent = {
     { type: 'crop', slug: 'sorghum' },
     { type: 'crop', slug: 'oats' },
     { type: 'crop', slug: 'quinoa' },
+
+    { type: 'crop', slug: 'proso-millet' },
   ],
   glossaryTerms: ['annual-crop', 'crop-rotation', 'forage', 'yield'],
   geographicScope:

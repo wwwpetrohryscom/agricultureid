@@ -238,6 +238,8 @@ export const oilseedRape: CropContent = {
   relatedTopics: [
     { type: 'crop', slug: 'wheat' },
     { type: 'crop', slug: 'sugar-beet' },
+
+    { type: 'crop', slug: 'camelina' },
   ],
   glossaryTerms: ['annual-crop', 'crop-rotation', 'macronutrient', 'yield'],
   geographicScope:

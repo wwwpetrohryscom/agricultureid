@@ -233,6 +233,8 @@ export const cowpea: CropContent = {
     { type: 'crop', slug: 'guar' },
     { type: 'crop', slug: 'common-bean' },
     { type: 'crop', slug: 'groundnut' },
+
+    { type: 'crop', slug: 'winged-bean' },
   ],
   connections: [
     { type: 'nutrient', slug: 'nitrogen' },

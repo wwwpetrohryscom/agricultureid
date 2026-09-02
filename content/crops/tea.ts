@@ -234,6 +234,8 @@ export const tea: CropContent = {
   relatedTopics: [
     { type: 'crop', slug: 'coffee' },
     { type: 'crop', slug: 'cocoa' },
+
+    { type: 'crop', slug: 'yerba-mate' },
   ],
   glossaryTerms: ['perennial-crop', 'cultivar', 'yield'],
   geographicScope:

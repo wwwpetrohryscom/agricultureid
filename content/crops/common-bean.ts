@@ -240,6 +240,8 @@ export const commonBean: CropContent = {
   relatedTopics: [
     { type: 'crop', slug: 'pea' },
     { type: 'crop', slug: 'soybean' },
+
+    { type: 'crop', slug: 'lima-bean' },
   ],
   connections: [
     { type: 'nutrient', slug: 'nitrogen' },

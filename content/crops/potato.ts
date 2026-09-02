@@ -224,7 +224,10 @@ export const potato: CropContent = {
     { type: 'soil', slug: 'loam-soil' },
     { type: 'soil', slug: 'sandy-soil' },
   ],
-  relatedTopics: [{ type: 'crop', slug: 'tomato' }],
+  relatedTopics: [
+    { type: 'crop', slug: 'tomato' },
+    { type: 'crop', slug: 'oca' },
+  ],
   glossaryTerms: ['annual-crop', 'cultivar', 'soil-texture', 'yield'],
   geographicScope:
     'Global overview. Variety choice, seed tuber sourcing, and disease management are strongly region-specific given the wide range of environments in which potato is produced.',

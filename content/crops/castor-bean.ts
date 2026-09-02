@@ -182,6 +182,8 @@ export const castorBean: CropContent = {
   relatedTopics: [
     { type: 'crop', slug: 'sunflower' },
     { type: 'crop', slug: 'safflower' },
+
+    { type: 'crop', slug: 'jatropha' },
   ],
   glossaryTerms: ['crop-rotation'],
   geographicScope:

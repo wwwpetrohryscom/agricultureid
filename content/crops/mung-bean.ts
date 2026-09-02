@@ -232,6 +232,8 @@ export const mungBean: CropContent = {
   relatedTopics: [
     { type: 'crop', slug: 'lentil' },
     { type: 'crop', slug: 'chickpea' },
+
+    { type: 'crop', slug: 'adzuki-bean' },
   ],
   connections: [
     { type: 'nutrient', slug: 'nitrogen' },

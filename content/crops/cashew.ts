@@ -250,6 +250,8 @@ export const cashew: CropContent = {
     { type: 'crop', slug: 'coconut' },
     { type: 'crop', slug: 'oil-palm' },
     { type: 'crop', slug: 'mango' },
+
+    { type: 'crop', slug: 'brazil-nut' },
   ],
   glossaryTerms: [
     'perennial-crop',

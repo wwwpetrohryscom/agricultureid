@@ -333,10 +333,37 @@ export function search(
     const termCoverage = (matchedTerms.get(docIdx)?.size ?? 0) / nQ;
     const titleKey = tokenize(doc.title).join(' ');
     const titleExact = expandedQueries.has(titleKey) ? 50 : 0;
+    /**
+     * A document whose own name IS the query outranks one that merely contains
+     * it. Both bonuses answer the same failure in different fields.
+     *
+     * Wave 39 published Spelt, whose accepted name is the subspecies
+     * "Triticum aestivum subsp. spelta". Both wheat and spelt then carried
+     * every token of the query "triticum aestivum" at name weight, the scores
+     * tied, and the alphabetical tiebreak handed the species' own binomial to
+     * its subspecies. Equality of a whole name is a stronger signal than
+     * containment of one, and nothing else in the ranking expressed that.
+     *
+     * Smaller than the title bonus on purpose: a title is what the page is
+     * called, an alternative name is one of the things it is also called.
+     *
+     * Raising it to 50 was tried and reverted. It did not fix the case that
+     * motivated the attempt ("tart cherry" still returns sweet Cherry, whose
+     * raw field score dwarfs any fixed bonus) and it broke "reefer container".
+     * A constant cannot correct a ranking dominated by field frequency; that
+     * defect is recorded as a benchmark known issue instead.
+     */
+    const nameExact = doc.names?.some((n) =>
+      expandedQueries.has(tokenize(n).join(' ')),
+    )
+      ? 25
+      : 0;
     scored.push({
       doc,
       score:
-        score * (0.1 + 0.9 * termCoverage) * typePrior(doc.type) + titleExact,
+        score * (0.1 + 0.9 * termCoverage) * typePrior(doc.type) +
+        titleExact +
+        nameExact,
       matchedVia: [...(matchedVia.get(docIdx) ?? [])],
     });
   }
@@ -366,10 +393,26 @@ export function search(
   const isAnchor = (r: (typeof filtered)[number]) =>
     r.doc.route.includes('#') ? 1 : 0;
 
+  /**
+   * Among equals, the entity the corpus points at most is the better answer.
+   *
+   * A bare shared plant name is scored identically by every entity that
+   * legitimately carries it: "clover" is exactly 76 on red, white and berseem
+   * clover alike, and "ryegrass" is exactly 76 on both ryegrasses. Before this
+   * the tie fell to the alphabet, so Wave 39 publishing Berseem Clover moved
+   * the answer for "clover" from red clover to a minor forage legume — a
+   * change in what the reader sees that had nothing to do with either page.
+   *
+   * Inbound reference count is not a quality judgement and it cannot promote a
+   * document past one that scored higher. It only decides, between answers the
+   * scorer cannot separate, which one the rest of the corpus treats as
+   * central.
+   */
   filtered.sort(
     (a, b) =>
       b.score - a.score ||
       isAnchor(a) - isAnchor(b) ||
+      (b.doc.inboundRefs ?? 0) - (a.doc.inboundRefs ?? 0) ||
       a.doc.title.localeCompare(b.doc.title),
   );
 

@@ -1476,7 +1476,8 @@ export const WAVE_27_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'spelt',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -1508,7 +1509,8 @@ export const WAVE_27_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'einkorn',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -1537,7 +1539,8 @@ export const WAVE_27_IDENTITIES: readonly CropIdentity[] = [
     agreementNote:
       'Only one authority resolved this name. Plants of the World Online gives Triticum turgidum subsp. dicoccum; World Flora Online returned no placement for it, so this identity rests on a single source rather than on agreement.',
     taxonomySourceIds: ['powo-plants-of-the-world-online'],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'emmer',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -1603,7 +1606,8 @@ export const WAVE_27_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'foxtail-millet',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -1636,7 +1640,8 @@ export const WAVE_27_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'proso-millet',
     limitations: [
       'The name Panicum miliaceum is a homonym: more than one published name matches it exactly, and they resolve to different taxa. The accepted one was selected; Panicum miliaceum Blanco; Panicum miliaceum Walter.',
     ],
@@ -1840,7 +1845,8 @@ export const WAVE_27_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'wild-rice',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -1873,7 +1879,8 @@ export const WAVE_27_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'lima-bean',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -1970,7 +1977,8 @@ export const WAVE_27_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'adzuki-bean',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -2231,7 +2239,8 @@ export const WAVE_27_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'winged-bean',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -2363,7 +2372,8 @@ export const WAVE_27_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'camelina',
     limitations: [
       'The name Camelina sativa is a homonym: more than one published name matches it exactly, and they resolve to different taxa. The accepted one was selected; Camelina sativa Boiss..',
     ],
@@ -2535,7 +2545,8 @@ export const WAVE_27_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'niger-seed',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -2568,7 +2579,8 @@ export const WAVE_27_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'perilla',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -2600,7 +2612,8 @@ export const WAVE_27_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'chia',
     limitations: [
       'The name Salvia hispanica is a homonym: more than one published name matches it exactly, and they resolve to different taxa. The accepted one was selected; Salvia hispanica Garsault.',
     ],
@@ -2636,7 +2649,8 @@ export const WAVE_27_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'jatropha',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -2668,7 +2682,8 @@ export const WAVE_27_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'jojoba',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -2900,7 +2915,8 @@ export const WAVE_27_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'jerusalem-artichoke',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -3067,7 +3083,8 @@ export const WAVE_27_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'oca',
     lastVerifiedAt: '2026-09-02',
   },
   {

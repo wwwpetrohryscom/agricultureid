@@ -901,7 +901,8 @@ export const WAVE_30_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'berseem-clover',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -967,7 +968,8 @@ export const WAVE_30_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'italian-ryegrass',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -999,7 +1001,8 @@ export const WAVE_30_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'timothy',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -1032,7 +1035,8 @@ export const WAVE_30_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'cocksfoot',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -1064,7 +1068,8 @@ export const WAVE_30_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'tall-fescue',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -1228,7 +1233,8 @@ export const WAVE_30_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'sainfoin',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -1360,7 +1366,8 @@ export const WAVE_30_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'birdsfoot-trefoil',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -1393,7 +1400,8 @@ export const WAVE_30_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'napier-grass',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -1851,7 +1859,8 @@ export const WAVE_30_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'sisal',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -1917,7 +1926,8 @@ export const WAVE_30_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'abaca',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -2113,7 +2123,8 @@ export const WAVE_30_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'yerba-mate',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -2248,7 +2259,8 @@ export const WAVE_30_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'fenugreek',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -2345,7 +2357,8 @@ export const WAVE_30_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'star-anise',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -2474,7 +2487,8 @@ export const WAVE_30_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'switchgrass',
     limitations: [
       'The name Panicum virgatum is a homonym: more than one published name matches it exactly, and they resolve to different taxa. The accepted one was selected; Panicum virgatum Roxb. ex Steud..',
     ],
@@ -2541,7 +2555,8 @@ export const WAVE_30_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'stevia',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -2577,7 +2592,8 @@ export const WAVE_30_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'daikon',
     limitations: [
       'Used both as a vegetable and, under the name tillage radish, as a cover crop. The use is a choice of cultivar and management, not a different plant.',
     ],

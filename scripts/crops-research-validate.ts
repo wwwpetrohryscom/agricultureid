@@ -26,6 +26,7 @@ import { PROMOTION_NOTES } from '../data/crop-identity/promotion-notes';
 import { CROP_CONCEPTS } from '../data/crop-identity/concepts';
 import { SOURCE_MAP } from '../lib/sources/registry';
 import { PUBLISHED_CONTENT } from '../lib/content/registry';
+import { PUBLICATION_BY_SLUG } from '../data/crop-publication';
 import { allRoutes } from '../lib/seo/routes';
 
 const errors: string[] = [];
@@ -54,9 +55,23 @@ const queue = new Set(
   CROP_IDENTITIES.filter((c) => {
     if (noted.has(c.slug)) return false;
     const r = RESEARCH_BY_SLUG.get(c.slug);
-    // Published crops belong in the queue only if this campaign published them.
+    // Published crops belong in the queue only if this campaign published
+    // them, OR if a later wave's publication campaign did and says so.
+    //
+    // Wave 39 wrote 49 of the crops this campaign returned as
+    // READY_BUT_DEFER_EDITORIAL. Rebuilding the queue from "has no page"
+    // alone would have dropped all 49 out of it and then reported their
+    // research records as claims about crops the campaign was never
+    // answerable for — the campaign's own success erasing its record of
+    // having done the work. The publication layer is what accounts for
+    // them, so this reads that layer rather than relaxing the rule: a
+    // published crop stays in the queue only while something states, in
+    // checkable form, which wave published it.
     if (publishedCrops.has(c.slug))
-      return !!r && PROMOTING_OUTCOMES.includes(r.outcome);
+      return (
+        (!!r && PROMOTING_OUTCOMES.includes(r.outcome)) ||
+        PUBLICATION_BY_SLUG.get(c.slug)?.outcome === 'PUBLISHED'
+      );
     return true;
   }).map((c) => c.slug),
 );
@@ -149,7 +164,16 @@ for (const r of CROP_RESEARCH) {
       );
     if (IDENTITY_BY_SLUG.get(r.slug)?.profileDepth !== 'full-profile')
       fail(`${at}: promoted and the identity still says data-only`);
-  } else if (publishedCrops.has(r.slug)) {
+  } else if (
+    publishedCrops.has(r.slug) &&
+    PUBLICATION_BY_SLUG.get(r.slug)?.outcome !== 'PUBLISHED'
+  ) {
+    // A non-promoting research outcome with a page is a contradiction unless a
+    // later wave's publication campaign accounts for the page. Wave 39 wrote 49
+    // of the crops this campaign deferred, and that is not the campaign being
+    // wrong: the deferral was about editorial capacity, not evidence, and it
+    // was recorded as such precisely so that a later wave could take it up.
+    // What must not survive is a page nothing accounts for.
     fail(`${at}: outcome "${r.outcome}" and an article is published anyway`);
   }
   if (r.evidenceBasis.includes('SOURCE_CONSULTED') && !r.sourceIds?.length)

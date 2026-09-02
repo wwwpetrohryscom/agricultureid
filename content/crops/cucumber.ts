@@ -241,6 +241,8 @@ export const cucumber: CropContent = {
   relatedTopics: [
     { type: 'crop', slug: 'sweet-pepper' },
     { type: 'crop', slug: 'tomato' },
+
+    { type: 'crop', slug: 'bitter-gourd' },
   ],
   connections: [
     { type: 'nutrient', slug: 'nitrogen' },

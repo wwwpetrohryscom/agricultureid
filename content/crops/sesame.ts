@@ -233,6 +233,9 @@ export const sesame: CropContent = {
   relatedTopics: [
     { type: 'crop', slug: 'safflower' },
     { type: 'crop', slug: 'sunflower' },
+
+    { type: 'crop', slug: 'chia' },
+    { type: 'crop', slug: 'perilla' },
   ],
   glossaryTerms: ['annual-crop', 'yield', 'macronutrient'],
   geographicScope:

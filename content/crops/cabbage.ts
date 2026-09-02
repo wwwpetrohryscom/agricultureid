@@ -233,6 +233,8 @@ export const cabbage: CropContent = {
   relatedTopics: [
     { type: 'crop', slug: 'lettuce' },
     { type: 'crop', slug: 'spinach' },
+
+    { type: 'crop', slug: 'brussels-sprouts' },
   ],
   connections: [
     { type: 'nutrient', slug: 'nitrogen' },

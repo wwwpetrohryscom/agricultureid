@@ -232,6 +232,8 @@ export const blackcurrant: CropContent = {
   relatedTopics: [
     { type: 'crop', slug: 'blueberry' },
     { type: 'crop', slug: 'raspberry' },
+
+    { type: 'crop', slug: 'sea-buckthorn' },
   ],
   connections: [
     { type: 'nutrient', slug: 'nitrogen' },

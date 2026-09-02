@@ -235,6 +235,8 @@ export const pumpkin: CropContent = {
     { type: 'crop', slug: 'zucchini' },
     { type: 'crop', slug: 'cucumber' },
     { type: 'crop', slug: 'maize' },
+
+    { type: 'crop', slug: 'chayote' },
   ],
   glossaryTerms: ['annual-crop', 'crop-rotation', 'host-plant', 'yield'],
   geographicScope:

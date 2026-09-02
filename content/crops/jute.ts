@@ -237,6 +237,9 @@ export const jute: CropContent = {
   relatedTopics: [
     { type: 'crop', slug: 'flax' },
     { type: 'crop', slug: 'cotton' },
+
+    { type: 'crop', slug: 'abaca' },
+    { type: 'crop', slug: 'sisal' },
   ],
   glossaryTerms: ['annual-crop', 'yield', 'crop-rotation'],
   geographicScope:

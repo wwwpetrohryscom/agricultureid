@@ -237,6 +237,8 @@ export const coriander: CropContent = {
     { type: 'crop', slug: 'fennel' },
     { type: 'crop', slug: 'dill' },
     { type: 'crop', slug: 'cumin' },
+
+    { type: 'crop', slug: 'fenugreek' },
   ],
   glossaryTerms: ['annual-crop', 'cultivar', 'crop-rotation'],
   geographicScope:

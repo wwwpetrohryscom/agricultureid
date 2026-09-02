@@ -1,4 +1,5 @@
 import { SOURCES } from '@/data/sources';
+import { STANDING_PHRASES } from '@/lib/crops/editorial-boilerplate';
 import { ALL_CONTENT, PUBLISHED_CONTENT, refKey } from '@/lib/content/registry';
 import {
   allSemanticEdges,
@@ -145,6 +146,28 @@ export interface DupHit {
   intentional: boolean;
 }
 
+/**
+ * The corpus's registered standing language, as duplication markers.
+ *
+ * Read from `STANDING_PHRASES` rather than copied into the list above, so the
+ * two ways the corpus decides that repeated text is deliberate cannot drift
+ * apart. It is also the stricter source: a phrase only enters that registry if
+ * it occurs in at least 40 per cent of crop articles, recomputed from the
+ * corpus, so nothing can be declared intentional here that could not survive
+ * that test there.
+ */
+const normalisePhrase = (t: string) =>
+  t
+    .toLowerCase()
+    .replace(/[^a-z ]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+function isRegisteredStandingLanguage(text: string): boolean {
+  const n = normalisePhrase(text);
+  return STANDING_PHRASES.some((p) => n.includes(normalisePhrase(p.phrase)));
+}
+
 export function duplication(minPages = 4): DupHit[] {
   const byText = new Map<string, Set<string>>();
   for (const item of ALL_CONTENT) {
@@ -162,7 +185,9 @@ export function duplication(minPages = 4): DupHit[] {
     hits.push({
       text,
       pages: pages.size,
-      intentional: INTENTIONAL_MARKERS.some((m) => text.includes(m)),
+      intentional:
+        INTENTIONAL_MARKERS.some((m) => text.includes(m)) ||
+        isRegisteredStandingLanguage(text),
     });
   }
   return hits.sort((a, b) => b.pages - a.pages);

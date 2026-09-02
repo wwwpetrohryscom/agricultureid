@@ -222,6 +222,9 @@ export const sunflower: CropContent = {
   relatedTopics: [
     { type: 'crop', slug: 'wheat' },
     { type: 'crop', slug: 'castor-bean' },
+
+    { type: 'crop', slug: 'niger-seed' },
+    { type: 'crop', slug: 'jerusalem-artichoke' },
   ],
   connections: [
     { type: 'nutrient', slug: 'phosphorus' },

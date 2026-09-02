@@ -223,8 +223,40 @@ function titleForms(title: string): string[] {
   return [title, [...words.slice(0, -1), singular].join(' ')];
 }
 
+/**
+ * How many other published entities reference each one, by `type:slug`.
+ *
+ * Computed here rather than stored so it cannot go stale. Used only as a
+ * tiebreak in ranking — see the sort in `lib/search/engine.ts`.
+ */
+function inboundRefCounts(): Map<string, number> {
+  const REF_FIELDS = [
+    'relatedTopics',
+    'connections',
+    'commonDiseases',
+    'commonPests',
+    'suitableSoils',
+  ];
+  const counts = new Map<string, number>();
+  for (const item of PUBLISHED_CONTENT) {
+    const o = item as unknown as Record<
+      string,
+      { type: string; slug: string }[]
+    >;
+    const self = `${item.contentType}:${item.slug}`;
+    for (const f of REF_FIELDS)
+      for (const ref of o[f] ?? []) {
+        const key = `${ref.type}:${ref.slug}`;
+        if (key === self) continue;
+        counts.set(key, (counts.get(key) ?? 0) + 1);
+      }
+  }
+  return counts;
+}
+
 export function buildSearchDocuments(): SearchDoc[] {
   const docs: SearchDoc[] = [];
+  const inbound = inboundRefCounts();
 
   // Structured content (crops, soils, cultivars, breeds, …).
   for (const item of PUBLISHED_CONTENT) {
@@ -267,6 +299,7 @@ export function buildSearchDocuments(): SearchDoc[] {
       glossaryTerms: item.glossaryTerms,
       relationLabels,
       sources,
+      inboundRefs: inbound.get(`${item.contentType}:${item.slug}`) ?? 0,
       facets: {
         entityType: [item.contentType],
         category: item.category ? [item.category] : [],

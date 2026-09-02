@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { PUBLICATION_BY_SLUG } from '@/data/crop-publication';
 import { CROP_RESEARCH, RESEARCH_BY_SLUG } from '@/data/crop-research';
 import {
   EVIDENCE_SUFFICIENT_OUTCOMES,
@@ -73,10 +74,19 @@ describe('promotion required a source, not a queue position', () => {
       ).toBe(true);
   });
 
-  it('published exactly the promoted crops and no others', () => {
+  it('published exactly the promoted crops, plus the ones a later wave accounts for', () => {
+    // Wave 39 wrote 49 of the crops this campaign returned as
+    // READY_BUT_DEFER_EDITORIAL. That is the deferral being taken up, not the
+    // campaign being contradicted: it deferred on editorial capacity and said
+    // so, which is the whole reason that outcome is distinct from an evidence
+    // failure. What must still be impossible is a page that nothing accounts
+    // for, so the assertion is not relaxed — it now requires that every
+    // published crop is claimed either by this campaign or, in checkable form,
+    // by a later one.
     for (const r of CROP_RESEARCH)
       expect(published.has(r.slug), r.slug).toBe(
-        PROMOTING_OUTCOMES.includes(r.outcome),
+        PROMOTING_OUTCOMES.includes(r.outcome) ||
+          PUBLICATION_BY_SLUG.get(r.slug)?.outcome === 'PUBLISHED',
       );
   });
 
