@@ -15,6 +15,7 @@ import {
   groupCounts,
 } from '@/lib/crops/identity';
 import { CROP_GROUP_LABEL, IDENTITY_CAVEAT } from '@/types/crop-identity';
+import { DATA_ONLY_NOTICE } from '@/types/crop-qualification';
 import type { CropGroup } from '@/types/crop-identity';
 
 const TITLE = 'Verified Crop Taxa';
@@ -156,7 +157,10 @@ export default function CropTaxaPage() {
                             {c.primaryCommonName}
                           </Link>
                         ) : (
-                          <span className="text-ink-800">
+                          <span
+                            className="text-ink-800"
+                            title={DATA_ONLY_NOTICE}
+                          >
                             {c.primaryCommonName}
                           </span>
                         )}
@@ -202,7 +206,10 @@ export default function CropTaxaPage() {
         </p>
         <p className="mt-3 text-sm text-ink-700">
           The crops validator enforces this: it fails the build if a data-only
-          taxon acquires a URL.
+          taxon acquires a URL. Each one is assessed against the same
+          publication standard as the articles that do have pages, and the
+          assessment says what is missing — for almost all of them, the missing
+          thing is simply that nobody has written the article yet.
         </p>
       </section>
 
