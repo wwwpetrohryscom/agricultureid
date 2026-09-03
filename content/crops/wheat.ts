@@ -222,6 +222,10 @@ export const wheat: CropContent = {
     { type: 'crop', slug: 'durum-wheat' },
     { type: 'crop', slug: 'barley' },
     { type: 'crop', slug: 'rice' },
+
+    { type: 'crop', slug: 'spelt' },
+    { type: 'crop', slug: 'emmer' },
+    { type: 'crop', slug: 'einkorn' },
   ],
   glossaryTerms: [
     'annual-crop',

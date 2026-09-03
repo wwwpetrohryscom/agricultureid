@@ -95,7 +95,7 @@ export const walnut: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'Current production statistics, leading cultivars, and trade patterns shift over time and by region; up-to-date figures are best obtained from primary sources such as FAOSTAT and national agricultural statistics services rather than assumed.',
+          text: "Walnut area and cultivar mix move faster than most tree-nut statistics suggest, because plantings made during the price rise of the last two decades are still coming into bearing. Read current figures from FAOSTAT or the producing country's own statistics service rather than from any secondary summary, including this one.",
         },
       ],
     },

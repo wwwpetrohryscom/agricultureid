@@ -95,11 +95,22 @@ export function cropArticleCount(): number {
  * Order matters only in that longer phrases are removed first, so a short
  * registered phrase nested inside a longer one does not fragment it.
  */
+/**
+ * A token that cannot occur in prose, left where a standing phrase was.
+ *
+ * Removing a phrase and closing the gap joins the words on either side of it
+ * into a run that neither article ever contained. Wave 41 measured 2,407 pairs
+ * "sharing" a twelve-word run that was the soil-survey sentence with its
+ * registered middle deleted and its edges welded together. The marker keeps
+ * the edges apart.
+ */
+export const STANDING_PHRASE_MARKER = '\u0000';
+
 export function stripStandingPhrases(text: string): string {
   let t = text;
   for (const p of [...STANDING_PHRASES].sort(
     (a, b) => b.phrase.length - a.phrase.length,
   ))
-    t = t.split(p.phrase).join(' ');
+    t = t.split(p.phrase).join(` ${STANDING_PHRASE_MARKER} `);
   return t.replace(/\s+/g, ' ').trim();
 }

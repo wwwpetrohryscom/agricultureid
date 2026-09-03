@@ -181,6 +181,8 @@ export const spelt: CropContent = {
     { type: 'crop', slug: 'wheat' },
     { type: 'crop', slug: 'emmer' },
     { type: 'crop', slug: 'einkorn' },
+
+    { type: 'crop', slug: 'durum-wheat' },
   ],
   glossaryTerms: ['crop-rotation'],
   geographicScope:

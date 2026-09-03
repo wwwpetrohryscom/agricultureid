@@ -242,6 +242,8 @@ export const millet: CropContent = {
 
     { type: 'crop', slug: 'barnyard-millet' },
     { type: 'crop', slug: 'kodo-millet' },
+
+    { type: 'crop', slug: 'foxtail-millet' },
   ],
   glossaryTerms: ['annual-crop', 'crop-rotation', 'forage', 'yield'],
   geographicScope:

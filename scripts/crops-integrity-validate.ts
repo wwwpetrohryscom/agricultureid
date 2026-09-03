@@ -32,7 +32,11 @@ import { CROP_CONCEPTS } from '../data/crop-identity/concepts';
 import { SCOPE_DECISIONS } from '../data/crop-identity/scope-decisions';
 import { IDENTITY_BY_SLUG } from '../lib/crops/identity';
 import { PUBLISHED_CONTENT } from '../lib/content/registry';
-import { articleText } from '../lib/crops/content-depth';
+import {
+  articleText,
+  flaggedPairs,
+  sharedRunPairs,
+} from '../lib/crops/content-depth';
 import { SOURCE_MAP } from '../lib/sources/registry';
 
 const errors: string[] = [];
@@ -40,9 +44,8 @@ const fail = (m: string) => errors.push(m);
 const ISO = /^\d{4}-\d{2}-\d{2}$/;
 const norm = (s: string) => s.toLowerCase().replace(/\s+/g, ' ').trim();
 
-const cropSlugs = new Set(
-  PUBLISHED_CONTENT.filter((c) => c.contentType === 'crop').map((c) => c.slug),
-);
+const crops = PUBLISHED_CONTENT.filter((c) => c.contentType === 'crop');
+const cropSlugs = new Set(crops.map((c) => c.slug));
 
 /* -- 1. standing language must actually be standing ------------------------ */
 {
@@ -104,6 +107,89 @@ const cropSlugs = new Set(
   }
 }
 
+/* -- 2b. shared prose the overlap filter never measured --------------------
+ *
+ * `flaggedPairs` filters on Jaccard overlap and only then measures the shared
+ * run, so a long verbatim paragraph inside two articles about different plants
+ * is never measured at all. Wave 31 wrote down that Jaccard cannot tell
+ * vocabulary from a copied paragraph; the filter order reintroduced the blind
+ * spot, and a Wave 41 injection copied a paragraph from cherry to sour cherry
+ * and passed every gate.
+ *
+ * Shingling measures it directly, and what it found is a real body of shared
+ * prose in the older fruit and nut articles: a family of production-statistics
+ * caveats repeated across thirty-six to forty-five pages. Those are NOT
+ * standing language by this corpus's own test — every variant sits far below
+ * the forty-per-cent share that separates a policy from a shared sentence —
+ * and registering them to make the number go away would be exactly the
+ * laundering that rule exists to prevent.
+ *
+ * So the debt is measured rather than declared clean, and ratcheted rather
+ * than rewritten: these counts may fall and may not rise. Not one pair above
+ * twenty words involves an article written in Waves 39, 40 or 41, so the
+ * ratchet costs the current work nothing and makes copying a paragraph fail.
+ */
+const SHARED_RUN_BUDGET: readonly { floor: number; pairs: number }[] = [
+  { floor: 20, pairs: 277 },
+  { floor: 25, pairs: 102 },
+  { floor: 30, pairs: 39 },
+  { floor: 35, pairs: 9 },
+];
+{
+  const pairs = sharedRunPairs(crops);
+  for (const b of SHARED_RUN_BUDGET) {
+    const now = pairs.filter((p) => p.run >= b.floor).length;
+    if (now > b.pairs)
+      fail(
+        `crop articles sharing a run of ${b.floor}+ words: ${now} pairs, budget ${b.pairs} — the ratchet only turns one way, and a new pair means prose was copied`,
+      );
+    if (now < b.pairs)
+      fail(
+        `crop articles sharing a run of ${b.floor}+ words: ${now} pairs against a budget of ${b.pairs} — the debt was paid down and the budget was not lowered with it`,
+      );
+  }
+  /*
+   * The register keeps its own job: it is where a pair that survives review is
+   * recorded with a reason. What changed is that the corpus is now asked
+   * whether a registered pair is still flagged, in both directions.
+   */
+  const key = (a: string, b: string) => [a, b].sort().join('::');
+  const flagged = flaggedPairs(crops);
+  const flaggedKeys = new Map(flagged.map((p) => [key(p.a, p.b), p]));
+  /*
+   * "Resolved" was recorded to mean the shared AGRONOMY was rewritten, and the
+   * shared statistics caveat was left behind — so a resolved pair is not a
+   * pair with no shared run, and asking for that would be asking for a
+   * different rewrite than the one that was done. What it must be is better:
+   * the run has to be below the figure the resolution recorded. Two pairs were
+   * not — hazelnut/walnut sat at 42 of 42 and broccoli/cauliflower at 30 of 30
+   * — and both were rewritten in Wave 41 rather than re-recorded.
+   */
+  const runNow = new Map(
+    sharedRunPairs(crops).map((p) => [key(p.a, p.b), p.run]),
+  );
+  for (const r of RESOLVED_SIMILAR_PAIRS) {
+    const now = runNow.get(key(r.a, r.b)) ?? 0;
+    if (now >= r.runBefore)
+      fail(
+        `resolved pair ${r.a}/${r.b} recorded a ${r.runBefore}-word run before resolution and the corpus still measures ${now} — nothing was resolved`,
+      );
+  }
+  for (const r of REVIEWED_SIMILAR_PAIRS) {
+    const p = flaggedKeys.get(key(r.a, r.b));
+    if (!p) {
+      fail(
+        `reviewed pair ${r.a}/${r.b} is registered as flagged and the corpus no longer flags it`,
+      );
+      continue;
+    }
+    if (p.longestRun > r.longestRun)
+      fail(
+        `reviewed pair ${r.a}/${r.b} records a ${r.longestRun}-word shared run and the corpus now measures ${p.longestRun}`,
+      );
+  }
+}
+
 /* -- 3. the scope-note contract -------------------------------------------- */
 /**
  * Structured scope is the source of truth; prose is checked against it.
@@ -135,6 +221,7 @@ const cropSlugs = new Set(
         k.scopeStatement,
         k.splitCriterion,
         ...k.constituents.map((t) => t.role),
+        ...(k.excludes ?? []).map((x) => x.reason),
       ].join(' '),
     );
     const at = `concept "${k.slug}"`;
@@ -144,12 +231,26 @@ const cropSlugs = new Set(
       fail(
         `${at}: says constituents "have their own pages" and ${publishedConstituents(k.slug).length} of them do`,
       );
+    /*
+     * "has its own page" can be said of an excluded taxon as well as of a
+     * constituent — the chili pepper scope says it of sweet pepper, which is
+     * the crop the concept explicitly does NOT cover, and that is exactly the
+     * kind of statement an exclusion exists to make. The check counts both,
+     * and it still fails when the phrase describes nothing that has a page.
+     */
+    const withPages =
+      publishedConstituents(k.slug).length +
+      (k.excludes ?? []).filter(
+        (x) => x.resolvesTo && cropSlugs.has(x.resolvesTo.slug),
+      ).length;
     if (
       has('has its own page') &&
       !has('have their own pages') &&
-      publishedConstituents(k.slug).length < 1
+      withPages < 1
     )
-      fail(`${at}: says a constituent "has its own page" and none does`);
+      fail(
+        `${at}: says a constituent or exclusion "has its own page" and nothing it names does`,
+      );
     if (
       (has('held as a taxon') || has('held as taxa')) &&
       taxonOnly(k.slug).length < 1
@@ -318,12 +419,20 @@ console.log(
       c.slug,
     ]),
   );
+  /*
+   * The concept exception runs one way only.
+   *
+   * A parent listing a child's title says "this page also covers that", which
+   * is what a scope statement is for. A CHILD listing the parent's title says
+   * "this page is the umbrella", which is the umbrella cannibalisation Wave 32
+   * had to undo — and it was permitted here until a Wave 41 injection put
+   * "Cherry" on the sour cherry page and nothing objected.
+   */
   const linked = new Set<string>();
   for (const k of CROP_CONCEPTS)
     for (const t of k.constituents) {
       if (!t.identitySlug) continue;
       linked.add(`${k.slug}|${t.identitySlug}`);
-      linked.add(`${t.identitySlug}|${k.slug}`);
     }
   for (const c of PUBLISHED_CONTENT) {
     if (c.contentType !== 'crop') continue;

@@ -23,12 +23,29 @@ const crops = new Set(
 
 describe('concepts — a page that is not one plant says so', () => {
   it('declares a scope for every published multi-taxon page', () => {
+    // One direction only, since Wave 41. A page keyed to a genus or a species
+    // complex must declare a scope; a page keyed to one species may also need
+    // to, and nine of them did — wheat, millet, cherry, pear, plum, blueberry,
+    // chili pepper, cinnamon and mustard each name their principal species and
+    // cover a wider crop. Requiring the converse made declaring those scopes
+    // impossible, which is how six children got published without their
+    // parents noticing.
     for (const c of CROP_IDENTITIES) {
       const needs =
         (CONCEPT_REQUIRED_RANKS as readonly string[]).includes(c.taxonRank) &&
         c.profileDepth === 'full-profile';
-      expect(CONCEPT_BY_SLUG.has(c.slug), c.slug).toBe(needs);
+      if (needs) expect(CONCEPT_BY_SLUG.has(c.slug), c.slug).toBe(true);
     }
+  });
+
+  it('lets no concept describe a page that is not published', () => {
+    for (const k of CROP_CONCEPTS)
+      expect(
+        CROP_IDENTITIES.some(
+          (c) => c.slug === k.slug && c.profileDepth === 'full-profile',
+        ),
+        k.slug,
+      ).toBe(true);
   });
 
   it('leaves a hybrid that names one taxon alone', () => {
@@ -184,9 +201,15 @@ describe('crosswalk — a refusal that answers someone', () => {
   const top = (q: string) => search(idx, q, { limit: 1 }).results[0]?.doc;
 
   it('resolves every refused name that has an answer', () => {
-    expect(NAME_CROSSWALK.length).toBe(83);
-    const resolved = NAME_CROSSWALK.filter((x) => x.resolvesTo);
-    expect(resolved.length).toBe(79);
+    // Counted by which entries deliberately answer with nothing rather than by
+    // a total, which grew from 83 to 95 across Waves 39 to 41 and will grow
+    // again. The four nulls are the claim: three homonyms that resolve to a
+    // different plant under a different author, and one contested species.
+    const unresolved = NAME_CROSSWALK.filter((x) => !x.resolvesTo).map(
+      (x) => x.name,
+    );
+    expect(unresolved.length).toBe(4);
+    expect(NAME_CROSSWALK.length).toBeGreaterThan(unresolved.length);
   });
 
   it('never sends a homonym to a plant it is not', () => {

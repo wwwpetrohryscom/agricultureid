@@ -175,6 +175,8 @@ export const einkorn: CropContent = {
     { type: 'crop', slug: 'wheat' },
     { type: 'crop', slug: 'emmer' },
     { type: 'crop', slug: 'spelt' },
+
+    { type: 'crop', slug: 'durum-wheat' },
   ],
   glossaryTerms: ['crop-rotation'],
   geographicScope:

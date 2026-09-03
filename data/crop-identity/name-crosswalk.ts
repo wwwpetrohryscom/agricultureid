@@ -52,7 +52,7 @@ export const NAME_CROSSWALK: readonly NameCrosswalk[] = [
   {
     name: 'Plectranthus rotundifolius',
     kind: 'synonym',
-    resolvesTo: { type: 'crop-taxon', slug: 'hausa-potato' },
+    resolvesTo: { type: 'crop', slug: 'hausa-potato' },
     note: 'Both authorities accept Coleus rotundifolius.',
   },
   {
@@ -64,13 +64,13 @@ export const NAME_CROSSWALK: readonly NameCrosswalk[] = [
   {
     name: 'Echinochloa frumentacea',
     kind: 'synonym',
-    resolvesTo: { type: 'crop-taxon', slug: 'barnyard-millet' },
+    resolvesTo: { type: 'crop', slug: 'barnyard-millet' },
     note: 'Both authorities accept Echinochloa colona subsp. edulis.',
   },
   {
     name: 'Triticum spelta',
     kind: 'synonym',
-    resolvesTo: { type: 'crop-taxon', slug: 'spelt' },
+    resolvesTo: { type: 'crop', slug: 'spelt' },
     note: 'Both authorities accept Triticum aestivum subsp. spelta.',
   },
   {
@@ -142,7 +142,7 @@ export const NAME_CROSSWALK: readonly NameCrosswalk[] = [
   {
     name: 'Sechium edule',
     kind: 'synonym',
-    resolvesTo: { type: 'crop-taxon', slug: 'chayote' },
+    resolvesTo: { type: 'crop', slug: 'chayote' },
     note: 'Both authorities accept Sicyos edulis.',
   },
   {
@@ -154,7 +154,7 @@ export const NAME_CROSSWALK: readonly NameCrosswalk[] = [
   {
     name: 'Wasabia japonica',
     kind: 'synonym',
-    resolvesTo: { type: 'crop-taxon', slug: 'wasabi' },
+    resolvesTo: { type: 'crop', slug: 'wasabi' },
     note: 'Both authorities accept Eutrema japonicum.',
   },
   {
@@ -196,19 +196,19 @@ export const NAME_CROSSWALK: readonly NameCrosswalk[] = [
   {
     name: 'Brassica oleracea var. gemmifera',
     kind: 'use',
-    resolvesTo: { type: 'crop-taxon', slug: 'brussels-sprouts' },
+    resolvesTo: { type: 'crop', slug: 'brussels-sprouts' },
     note: 'Gemmifera Group of Brassica oleracea.',
   },
   {
     name: 'Brassica rapa subsp. pekinensis',
     kind: 'use',
-    resolvesTo: { type: 'crop-taxon', slug: 'chinese-cabbage' },
+    resolvesTo: { type: 'crop', slug: 'chinese-cabbage' },
     note: 'Pekinensis Group of Brassica rapa.',
   },
   {
     name: 'Brassica rapa subsp. chinensis',
     kind: 'use',
-    resolvesTo: { type: 'crop-taxon', slug: 'pak-choi' },
+    resolvesTo: { type: 'crop', slug: 'pak-choi' },
     note: 'Chinensis Group of Brassica rapa.',
   },
   {
@@ -412,31 +412,31 @@ export const NAME_CROSSWALK: readonly NameCrosswalk[] = [
   {
     name: 'Festuca arundinacea',
     kind: 'synonym',
-    resolvesTo: { type: 'crop-taxon', slug: 'tall-fescue' },
+    resolvesTo: { type: 'crop', slug: 'tall-fescue' },
     note: 'Neither authority resolves it. Both accept Lolium arundinaceum after the Festuca–Lolium transfer.',
   },
   {
     name: 'Schedonorus arundinaceus',
     kind: 'synonym',
-    resolvesTo: { type: 'crop-taxon', slug: 'tall-fescue' },
+    resolvesTo: { type: 'crop', slug: 'tall-fescue' },
     note: 'Not resolved by either authority; Lolium arundinaceum is accepted.',
   },
   {
     name: 'Pennisetum purpureum',
     kind: 'synonym',
-    resolvesTo: { type: 'crop-taxon', slug: 'napier-grass' },
+    resolvesTo: { type: 'crop', slug: 'napier-grass' },
     note: 'Both authorities accept Cenchrus purpureus.',
   },
   {
     name: 'Brachiaria brizantha',
     kind: 'synonym',
-    resolvesTo: { type: 'crop-taxon', slug: 'signal-grass' },
+    resolvesTo: { type: 'crop', slug: 'signal-grass' },
     note: 'Both authorities accept Urochloa brizantha.',
   },
   {
     name: 'Panicum maximum',
     kind: 'synonym',
-    resolvesTo: { type: 'crop-taxon', slug: 'guinea-grass' },
+    resolvesTo: { type: 'crop', slug: 'guinea-grass' },
     note: 'Both authorities accept Megathyrsus maximus.',
   },
   {
@@ -484,7 +484,7 @@ export const NAME_CROSSWALK: readonly NameCrosswalk[] = [
   {
     name: 'tillage radish',
     kind: 'use',
-    resolvesTo: { type: 'crop-taxon', slug: 'daikon' },
+    resolvesTo: { type: 'crop', slug: 'daikon' },
     note: 'A cover-crop use of daikon. One identity carrying both uses rather than two records for one plant.',
   },
   {
@@ -496,7 +496,7 @@ export const NAME_CROSSWALK: readonly NameCrosswalk[] = [
   {
     name: 'camelina as a cover crop',
     kind: 'use',
-    resolvesTo: { type: 'crop-taxon', slug: 'camelina' },
+    resolvesTo: { type: 'crop', slug: 'camelina' },
     note: 'Already held from Wave 27 with the cover-crop use recorded.',
   },
   {
@@ -522,6 +522,85 @@ export const NAME_CROSSWALK: readonly NameCrosswalk[] = [
     kind: 'cultivar',
     resolvesTo: { type: 'crop', slug: 'robusta-coffee' },
     note: 'A trade term for Coffea canephora. Promoted to its own page in Wave 32.',
+  },
+  /* ---- Wave 41: names that two published crops now answer to ---------------
+   *
+   * Waves 39 and 40 published thirty-one crops whose common names collide with
+   * something already in the corpus. A collision is not a defect — "cocoyam"
+   * really does name two crops in two genera on two continents — but a reader
+   * who types one of these needs to be told that, and until now nothing did.
+   */
+  {
+    name: 'cocoyam',
+    kind: 'ambiguous-common-name',
+    resolvesTo: { type: 'crop', slug: 'taro' },
+    note: 'Two crops in two genera: taro, Colocasia esculenta, and tannia, Xanthosoma sagittifolium, distinguished in West Africa as old and new cocoyam. Resolved to taro as the older and larger crop; the tannia page opens by explaining the distinction.',
+  },
+  {
+    name: 'African eggplant',
+    kind: 'ambiguous-common-name',
+    resolvesTo: { type: 'crop', slug: 'scarlet-eggplant' },
+    note: 'Names both Solanum aethiopicum and Solanum macrocarpon, which are separate African domesticates with separate pages. Resolved to scarlet eggplant, which the literature names among the five most important vegetables of Central and West Africa; gboma eggplant is the other.',
+  },
+  {
+    name: 'garden egg',
+    kind: 'ambiguous-common-name',
+    resolvesTo: { type: 'crop', slug: 'scarlet-eggplant' },
+    note: 'Used in West Africa for scarlet eggplant, for gboma eggplant and in places for Solanum melongena. Resolved to scarlet eggplant; the name cannot be assigned to a species from the name alone.',
+  },
+  {
+    name: 'ryegrass',
+    kind: 'ambiguous-common-name',
+    resolvesTo: { type: 'crop', slug: 'perennial-ryegrass' },
+    note: 'Names both Lolium perenne and Lolium multiflorum, which have separate pages. Resolved to perennial ryegrass as the crop the rest of the corpus points at most; a reader who meant the annual should read Italian ryegrass.',
+  },
+  {
+    name: 'red bean',
+    kind: 'ambiguous-common-name',
+    resolvesTo: { type: 'crop', slug: 'adzuki-bean' },
+    note: 'Names adzuki bean in East Asia, rice bean in parts of South Asia, and red kidney beans of Phaseolus vulgaris in Western markets. Resolved to adzuki bean, which is what the East Asian confectionery trade means by it.',
+  },
+  {
+    name: 'horse bean',
+    kind: 'ambiguous-common-name',
+    resolvesTo: { type: 'crop', slug: 'faba-bean' },
+    note: 'Names faba bean in Europe and jack bean in parts of the tropics. Resolved to faba bean; the two are different genera and different crops.',
+  },
+  {
+    name: 'Ceylon spinach',
+    kind: 'ambiguous-common-name',
+    resolvesTo: { type: 'crop', slug: 'waterleaf' },
+    note: 'Applied both to Talinum fruticosum and to Basella alba, which are unrelated. Resolved to waterleaf; Basella alba is held as a taxon and is the other sense.',
+  },
+  {
+    name: 'Chinese pearl barley',
+    kind: 'ambiguous-common-name',
+    resolvesTo: { type: 'crop', slug: 'jobs-tears' },
+    note: 'A trade name for Coix lacryma-jobi. The plant is not a barley and is not closely related to one; pearled barley is a milled product of Hordeum vulgare.',
+  },
+  {
+    name: 'yam bean',
+    kind: 'ambiguous-common-name',
+    resolvesTo: { type: 'crop', slug: 'jicama' },
+    note: 'Names three cultivated Pachyrhizus species and, in West Africa, the unrelated Sphenostylis stenocarpa. Resolved to jicama, Pachyrhizus erosus, which is the one in international trade.',
+  },
+  {
+    name: 'mesta',
+    kind: 'market-class',
+    resolvesTo: { type: 'crop', slug: 'kenaf' },
+    note: 'A South Asian fibre trade class covering kenaf and roselle together. Resolved to kenaf; production reported as mesta cannot be attributed to either species alone.',
+  },
+  {
+    name: 'Hibiscus cannabinus',
+    kind: 'synonym',
+    resolvesTo: { type: 'crop', slug: 'kenaf' },
+    note: 'Both authorities now accept Sabdariffa cannabina. The fibre trade, the research literature and the statistical record all still use the Hibiscus name.',
+  },
+  {
+    name: 'Talinum triangulare',
+    kind: 'synonym',
+    resolvesTo: { type: 'crop', slug: 'waterleaf' },
+    note: 'A synonym of Talinum fruticosum still in wide use in West African agricultural literature.',
   },
 ];
 

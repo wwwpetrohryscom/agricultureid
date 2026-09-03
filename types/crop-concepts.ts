@@ -40,6 +40,18 @@ export const CONCEPT_KINDS = [
   'clone-group-concept',
   /** An intergeneric hybrid spanning several nothospecies. */
   'nothogenus-concept',
+  /**
+   * A grouping by what the crops are grown FOR, spanning genera.
+   *
+   * Added in Wave 41 because two pages did not fit any of the above and were
+   * being filed as genus concepts, which was false and had a consequence:
+   * classing "mustard" as a Brassica genus concept made the Brassica hub look
+   * like a duplicate of it, when the hub covers ten Brassica crops and the
+   * mustard page covers three pungent-seed crops in three genera and excludes
+   * oilseed rape. The model has to match the evidence, and for these two the
+   * evidence is a use.
+   */
+  'agricultural-use-concept',
 ] as const;
 export type ConceptKind = (typeof CONCEPT_KINDS)[number];
 
@@ -52,6 +64,8 @@ export const CONCEPT_KIND_MEANING: Record<ConceptKind, string> = {
     'What is grown commercially is not a wild species but a set of clones, described by genome group or parentage.',
   'nothogenus-concept':
     'The crop is an intergeneric cross. Naming any one nothospecies would be wrong about the rest.',
+  'agricultural-use-concept':
+    'The page groups crops by what they are grown for rather than by taxon. The members may be in different genera and the boundary is agricultural: what belongs is what is grown and traded for the same purpose.',
 };
 
 /**
@@ -73,6 +87,51 @@ export const HELD_AS = [
 ] as const;
 export type HeldAs = (typeof HELD_AS)[number];
 
+/**
+ * How a constituent relates to the page that covers it.
+ *
+ * `heldAs` says how firmly the corpus holds the taxon. This says what kind of
+ * thing it is inside the concept, which is a different question and the one
+ * that decides whether a split would even make sense. A cultivar group and a
+ * cultivated species both sit under an umbrella and they are not the same
+ * case: promoting a species gives the reader a plant, promoting a cultivar
+ * group gives them a market category with a Latin name on it.
+ */
+export const RELATIONSHIP_KINDS = [
+  /** A cultivated species in its own right. */
+  'cultivated-species',
+  /** A subspecies or variety grown as a crop of its own. */
+  'infraspecific-taxon',
+  /** A named cultivar group of a species the concept or another page holds. */
+  'cultivar-group',
+  /** A wild species that contributed a genome to the cultivated material. */
+  'genome-donor',
+  /** A form defined by how it is grown or used rather than by taxonomy. */
+  'agricultural-form',
+  /** A hybrid between constituents of the concept. */
+  'hybrid',
+] as const;
+export type RelationshipKind = (typeof RELATIONSHIP_KINDS)[number];
+
+/**
+ * Whether the constituent has a page of its own.
+ *
+ * Recorded here and RECOMPUTED by the validator against the emitted route list.
+ * This is the parent–child scope contract: promoting a child changes what the
+ * corpus contains, and if the parent's scope record does not change with it,
+ * the parent is describing a corpus that no longer exists. The check fails in
+ * both directions, so an unpromoted child recorded as having a page fails too.
+ */
+export const ROUTE_STATUSES = [
+  /** A crop page exists at /crops/<slug>. */
+  'own-page',
+  /** Held as an identity, listed in the taxon table, with no page of its own. */
+  'taxon-row-only',
+  /** Not held by the corpus at all. */
+  'no-route',
+] as const;
+export type RouteStatus = (typeof ROUTE_STATUSES)[number];
+
 export interface ConceptConstituent {
   /** Accepted scientific name, as the authorities give it. */
   scientificName: string;
@@ -80,9 +139,54 @@ export interface ConceptConstituent {
   heldAs: HeldAs;
   /** Crop identity slug — required when heldAs is not 'not-held'. */
   identitySlug?: string;
+  /** What kind of thing this is inside the concept. */
+  relationshipKind: RelationshipKind;
+  /** Whether it has its own page. Recomputed by the validator. */
+  routeStatus: RouteStatus;
   /** Why this taxon sits inside the concept rather than beside it. */
   role: string;
 }
+
+/**
+ * A taxon the page's name might be taken to cover and deliberately does not.
+ *
+ * Exclusions are where a scope statement earns its keep. Saying what a page
+ * covers is easy and mostly obvious; saying what it does not cover is where a
+ * reader learns something, and it is the only way a scope can be wrong in a
+ * way anyone notices.
+ */
+export interface ConceptExclusion {
+  scientificName: string;
+  commonName: string;
+  /** Why the name reaches for it and the page does not cover it. */
+  reason: string;
+  /** Where the reader should go instead, if the corpus holds it. */
+  resolvesTo?: { type: string; slug: string };
+}
+
+/**
+ * How a concept page's name relates to the market data keyed against it.
+ *
+ * The distinction Wave 38 found the hard way: green coffee names the coffee
+ * CONCEPT, so coffee shows 535 market series and arabica correctly shows none.
+ * Market coverage must not leak from a concept to its children, and a
+ * declaration is what stops it happening silently.
+ */
+export const MARKET_GRANULARITIES = [
+  /** The commodity names exactly this taxon. */
+  'EXACT_ENTITY',
+  /** The commodity names the concept, not any one constituent. */
+  'CONCEPT_LEVEL',
+  /** The commodity is wider than the concept. */
+  'BROADER_THAN_ENTITY',
+  /** The commodity names one constituent, not the concept. */
+  'NARROWER_THAN_ENTITY',
+  /** Sources use the name for different scopes and it is not resolved. */
+  'AMBIGUOUS',
+  /** No market series is keyed to this page. */
+  'NO_MARKET_LINKAGE',
+] as const;
+export type MarketGranularity = (typeof MARKET_GRANULARITIES)[number];
 
 export interface CropConcept {
   /** Published crop page whose scope this describes. */
@@ -99,6 +203,12 @@ export interface CropConcept {
    * concepts; this is the standard those promotions were held to.
    */
   splitCriterion: string;
+  /** Taxa the name reaches for that this page does not cover. */
+  excludes?: readonly ConceptExclusion[];
+  /** How the market data keyed to this page relates to its scope. */
+  marketGranularity: MarketGranularity;
+  /** Why that granularity, in terms a reader can disagree with. */
+  marketGranularityNote: string;
   sourceIds: string[];
   reviewedAt: string;
 }

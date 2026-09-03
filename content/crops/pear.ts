@@ -121,7 +121,7 @@ export const pear: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'Current production volumes, leading cultivars, and trade patterns vary by region and shift over time; figures should be obtained from primary sources such as FAOSTAT and national agricultural statistics services rather than assumed.',
+          text: 'Pear area is split between European and Asian production that statistical systems frequently report together, so a single world figure conceals two crops with different markets and seasons. Take current numbers from FAOSTAT or a national service, and check which species they cover.',
         },
       ],
     },
@@ -131,7 +131,7 @@ export const pear: CropContent = {
       body: [
         {
           type: 'paragraph',
-          text: 'Pear trees require a period of winter chilling to break dormancy and flower normally the following spring; the chilling requirement varies by cultivar and species group and is a key factor in matching varieties to a given climate.',
+          text: 'A pear will not flower properly without enough winter cold behind it, and how much it needs differs between European and Asian types as well as between cultivars within each. That spread is wider than in apple, and it is the reason the two pear species are planted in different regions rather than side by side.',
         },
         {
           type: 'paragraph',
@@ -195,7 +195,7 @@ export const pear: CropContent = {
       body: [
         {
           type: 'paragraph',
-          text: 'Pear is grown both rain-fed and under irrigation, with water demand highest during cell division and fruit enlargement. Drip irrigation is widely used in modern orchards to apply water precisely to the root zone while limiting foliage wetting.',
+          text: 'Water shortage while the fruit is sizing shows up as small pears rather than as a stressed tree, which is why irrigated orchards target that window rather than the season as a whole. Drip keeps the foliage dry as well as the water placed, and on a crop that carries fire blight risk that second effect is worth as much as the first.',
         },
         {
           type: 'paragraph',
@@ -278,6 +278,8 @@ export const pear: CropContent = {
     { type: 'crop', slug: 'apple' },
     { type: 'crop', slug: 'peach' },
     { type: 'crop', slug: 'cherry' },
+
+    { type: 'crop', slug: 'asian-pear' },
   ],
   glossaryTerms: [
     'perennial-crop',
