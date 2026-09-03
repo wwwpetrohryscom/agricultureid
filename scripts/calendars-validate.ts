@@ -23,7 +23,20 @@ import type { SeasonalWindow } from '../types/calendar';
 import { SOURCE_MAP } from '../lib/sources/registry';
 import { PUBLISHED_CONTENT } from '../lib/content/registry';
 import { CANONICAL_JURISDICTIONS } from '../data/jurisdictions';
+import { NAME_CROSSWALK } from '../data/crop-identity/name-crosswalk';
+import { CROP_CONCEPTS } from '../data/crop-identity/concepts';
 import { getProfileByCode } from '../lib/geo/registry';
+import {
+  FAO_CALENDAR_ENTRIES,
+  FAO_CALENDAR_SNAPSHOT,
+  FAO_COUNTRIES,
+  FAO_CROP_MATCHES,
+  FAO_CROP_REFUSALS,
+  FAO_MATCH_ROUTES,
+  FAO_REFUSAL_REASONS,
+} from '../data/calendars/fao';
+
+const FAO_COUNTRY_CODES = new Set(FAO_COUNTRIES.map((c) => c.countryCode));
 
 const errors: string[] = [];
 const fail = (m: string) => errors.push(m);
@@ -102,9 +115,20 @@ for (const e of CROP_CALENDARS) {
   if (!CROP_SLUGS.has(e.cropRef)) {
     fail(`${at}: cropRef "${e.cropRef}" does not resolve to a published crop`);
   }
-  if (!getProfileByCode(e.countryCode)) {
+  /*
+   * A country code has to be a country, not a country this corpus publishes a
+   * page about. The geo layer holds forty profiles; the FAO calendar covers
+   * fifty-seven countries and forty-seven of them have no profile, which is
+   * the point of the dataset rather than a defect in it. So a code passes if
+   * the geo layer knows it OR the FAO country register declares it, and the
+   * register is itself reconciled against the snapshot below.
+   */
+  if (
+    !getProfileByCode(e.countryCode) &&
+    !FAO_COUNTRY_CODES.has(e.countryCode)
+  ) {
     fail(
-      `${at}: countryCode "${e.countryCode}" does not resolve in the geo layer`,
+      `${at}: countryCode "${e.countryCode}" is in neither the geo layer nor the declared FAO country register`,
     );
   }
   if (e.jurisdictionId && !JURISDICTION_IDS.has(e.jurisdictionId)) {
@@ -169,6 +193,117 @@ console.log(
 for (const c of CALENDAR_CONFIDENCES) {
   const n = CROP_CALENDARS.filter((x) => x.confidence === c).length;
   if (n) console.log(`  Confidence ${c.padEnd(14)}${n}`);
+}
+
+/* -- the FAO matching contract -------------------------------------------- */
+/**
+ * The ingestion's claim is that it accepted a hundred and six FAO crop names,
+ * refused a hundred and four with a reason, and matched nothing by guesswork.
+ * These rules put that against the corpus rather than reading it back.
+ *
+ * The one that carries the weight is the ambiguity check. The corpus already
+ * records which common names name more than one crop, and the matcher was told
+ * to obey that register rather than form its own opinion — so a refusal for
+ * ambiguity must be corroborated by an entry in the crosswalk, and a match on a
+ * name the crosswalk calls ambiguous is only allowed where the crosswalk sends
+ * the reader to a concept page that covers the whole group.
+ */
+{
+  const cropSlugs = new Set(
+    PUBLISHED_CONTENT.filter((c) => c.contentType === 'crop').map(
+      (c) => c.slug,
+    ),
+  );
+  const conceptSlugs = new Set(CROP_CONCEPTS.map((k) => k.slug));
+  const normName = (x: string) =>
+    x
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, ' ')
+      .trim();
+  const ambiguous = new Map(
+    NAME_CROSSWALK.filter((n) => n.kind === 'ambiguous-common-name').map(
+      (n) => [normName(n.name), n.resolvesTo?.slug],
+    ),
+  );
+
+  const namesSeen = new Set<string>();
+  for (const m of FAO_CROP_MATCHES) {
+    const at = `FAO match "${m.faoName}"`;
+    if (namesSeen.has(m.faoName)) fail(`${at}: listed twice`);
+    namesSeen.add(m.faoName);
+    if (!FAO_MATCH_ROUTES.includes(m.route))
+      fail(`${at}: route "${m.route}" is not in the vocabulary`);
+    if (!cropSlugs.has(m.cropRef))
+      fail(`${at}: resolves to "${m.cropRef}", which is not a published crop`);
+    const isConcept = conceptSlugs.has(m.cropRef);
+    if (m.granularity === 'EXACT_ENTITY' && isConcept)
+      fail(
+        `${at}: is recorded as exact and "${m.cropRef}" is a declared concept — a calendar reached through it is about the group`,
+      );
+    if (m.granularity === 'CONCEPT_LEVEL' && !isConcept)
+      fail(
+        `${at}: is recorded at concept level and "${m.cropRef}" is not a declared concept`,
+      );
+    const amb = ambiguous.get(normName(m.faoName));
+    if (amb !== undefined) {
+      if (!isConcept)
+        fail(
+          `${at}: matches a name the corpus records as ambiguous and resolves to "${m.cropRef}", which is not a concept — the register says this name does not identify one crop`,
+        );
+      else if (amb !== m.cropRef)
+        fail(
+          `${at}: matches an ambiguous name the crosswalk sends to "${amb}" and resolves it to "${m.cropRef}"`,
+        );
+    }
+  }
+  for (const r of FAO_CROP_REFUSALS) {
+    const at = `FAO refusal "${r.faoName}"`;
+    if (namesSeen.has(r.faoName)) fail(`${at}: is both matched and refused`);
+    namesSeen.add(r.faoName);
+    if (!FAO_REFUSAL_REASONS.includes(r.reason))
+      fail(`${at}: reason "${r.reason}" is not in the vocabulary`);
+    if (
+      r.reason === 'AMBIGUOUS_COMMON_NAME' &&
+      !ambiguous.has(normName(r.faoName))
+    )
+      fail(
+        `${at}: refused as ambiguous and the crosswalk holds no ambiguous-common-name entry for it — the refusal is an opinion rather than a reading of the register`,
+      );
+  }
+  if (namesSeen.size !== FAO_CALENDAR_SNAPSHOT.faoCropNames)
+    fail(
+      `FAO contract: accounts for ${namesSeen.size} crop names and the snapshot records ${FAO_CALENDAR_SNAPSHOT.faoCropNames}`,
+    );
+
+  const declaredCountries = new Set(FAO_COUNTRIES.map((c) => c.countryCode));
+  if (declaredCountries.size !== FAO_COUNTRIES.length)
+    fail('FAO country register: a country code is declared twice');
+  if (FAO_COUNTRIES.length !== FAO_CALENDAR_SNAPSHOT.countries)
+    fail(
+      `FAO country register: declares ${FAO_COUNTRIES.length} countries and the snapshot records ${FAO_CALENDAR_SNAPSHOT.countries}`,
+    );
+  for (const c of FAO_COUNTRIES)
+    if (!/^[A-Z]{3}$/.test(c.countryCode))
+      fail(
+        `FAO country "${c.faoName}": "${c.countryCode}" is not an alpha-3 code`,
+      );
+
+  /* Every entry must trace to a match, and every match must produce entries. */
+  const entryCrops = new Set(FAO_CALENDAR_ENTRIES.map((e) => e.cropRef));
+  const matchCrops = new Set(FAO_CROP_MATCHES.map((m) => m.cropRef));
+  for (const c of entryCrops)
+    if (!matchCrops.has(c))
+      fail(
+        `FAO entries reach crop "${c}" and no recorded match resolves to it`,
+      );
+  for (const e of FAO_CALENDAR_ENTRIES) {
+    if (!e.sourceReferences.includes('fao-crop-calendar'))
+      fail(`FAO entry "${e.id}": does not cite the FAO crop calendar`);
+    if (!declaredCountries.has(e.countryCode))
+      fail(
+        `FAO entry "${e.id}": country "${e.countryCode}" is not in the declared register`,
+      );
+  }
 }
 
 if (errors.length) {

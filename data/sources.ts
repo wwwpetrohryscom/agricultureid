@@ -2659,6 +2659,20 @@ export const SOURCES: Source[] = [
     reliability: 'authoritative',
   },
   {
+    id: 'fao-crop-calendar',
+    organization:
+      'Food and Agriculture Organization of the United Nations (FAO)',
+    title: 'FAO Crop Calendar — national summary sowing and harvesting periods',
+    url: 'https://data.apps.fao.org/catalog/dataset/crop-calendar-by-country-crop-and-activity',
+    accessDate: '2026-09-03',
+    sourceType: 'intergovernmental',
+    jurisdiction: 'Global',
+    language: 'en',
+    notes:
+      'Sowing and harvesting periods by country, agro-ecological zone, crop and activity, published under CC-BY 4.0 and served as CSV through a parameterised query endpoint. FAO states the data is validated by the respective national authorities. Each row carries its own lastUpdated date, which is recorded on every entry derived from it rather than replaced by the retrieval date.',
+    reliability: 'authoritative',
+  },
+  {
     id: 'ext-osu-extension',
     organization: 'Ohio State University Extension',
     title: 'Ohioline',
