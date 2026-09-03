@@ -19,6 +19,7 @@ import {
   CROP_SCOPE_REVIEWS,
   SCOPE_REVIEW_BY_SLUG,
 } from '@/data/crop-scope-review';
+import { WAVE_43_IDENTITIES } from '@/data/crop-identity/wave43';
 import { IDENTITY_BY_SLUG } from '@/lib/crops/identity';
 import { PUBLISHED_CONTENT } from '@/lib/content/registry';
 import { articleText } from '@/lib/crops/content-depth';
@@ -82,14 +83,24 @@ describe('published means published', () => {
     // what remains must be the pre-wave corpus. Later waves have to be
     // subtracted too, which is the point — an article nobody's campaign
     // accounts for would leave this number wrong.
+    const promoted = CROP_SCOPE_REVIEWS.filter(
+      (r) => r.outcome === 'PROMOTE_CHILD_PROFILE',
+    ).map((r) => r.slug);
+    /*
+     * The citrus concept page is a crop page with no campaign record: it was
+     * created to own a parent taxon rather than promoted from a queue. It is
+     * taken from the wave register that introduced its identity, so it names
+     * what it counted instead of adding one.
+     */
+    const newIdentityPages = WAVE_43_IDENTITIES.filter(
+      (i) => i.profileDepth === 'full-profile' && !promoted.includes(i.slug),
+    );
+    expect(newIdentityPages.map((i) => i.slug)).toEqual(['citrus']);
     const later =
       CROP_EXPANSION_CANDIDATES.filter((c) => c.recommendation === 'PUBLISH')
         .length +
-      CROP_SCOPE_REVIEWS.filter((r) => r.outcome === 'PROMOTE_CHILD_PROFILE')
-        .length +
-      // The citrus concept page, which is a crop page with no campaign record:
-      // it was created to own a parent taxon rather than promoted from a queue.
-      1;
+      promoted.length +
+      newIdentityPages.length;
     expect(crops.length - PUBLISHED.length - later).toBe(165);
   });
 });

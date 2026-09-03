@@ -129,6 +129,31 @@ new crops too, so "Jordan is absent" stays one true sentence. The exclusion is
 declared in `FAO_COUNTRIES_NOT_INGESTED` and gated — an entry naming an excluded
 country fails, and so does an excluded country the snapshot does not contain.
 
+## Reconciling a decline with a later publication
+
+Three layers recorded a crop as not published and this wave published it. That
+contradiction is real and is not resolved by deleting the decline: Wave 39 stopped
+mandarin because no page owned _Citrus × aurantium_, and that stop is what got the
+page built. The decline stands; the scope review is where the lifting is stated,
+and the publication, expansion and research validators now accept a page for a
+declined candidate **only** where a `PROMOTE_CHILD_PROFILE` scope review accounts
+for it.
+
+Two counts in the composition audit had gone stale by construction — Wave 40's
+`publishedAfter` was compared with the live corpus, which held until Wave 43
+published into two of its buckets. The first repair relaxed it to a floor. That was
+wrong and was replaced: the record measures what the bucket held at the end of
+**that** wave, and that quantity is exactly recomputable forever as the members it
+had before plus the ones the wave published into it. Nothing a later wave does
+changes either term, so the check stays an equality. The membership check was kept
+total in both directions, with later publications enumerated by mechanism rather
+than assumed — a future wave publishing some other way fails here until it is
+added, which is the point.
+
+Three tests carried a bare `+ 1` for the citrus page. A count that names nothing
+cannot be wrong out loud, so each now derives the page from the wave register that
+introduced its identity and asserts which page it is.
+
 ## What was deliberately not built
 
 - **No species page for the four record-owned parents.** A `taxon-scope-record`
