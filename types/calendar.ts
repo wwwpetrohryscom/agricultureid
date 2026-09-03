@@ -89,6 +89,19 @@ export interface CropCalendarEntry {
  * exactly like the exact-entity ones. A distinction that only a validator can
  * see is not a disclosure.
  */
+/**
+ * The sentence a page must carry when the source measured one FORM of the crop.
+ *
+ * The counterpart to the group-scope marker, pointing the other way. Wave 44
+ * found the dataset's largest unresolved label, at 292 rows, was broad beans
+ * harvested green — not the faba bean crop, and not a group of crops either.
+ * A window for a form shown without saying so is the same defect as a group's
+ * window shown as a species', and it is harder to spot because the page name
+ * and the crop name agree.
+ */
+export const CALENDAR_FORM_SCOPE_MARKER =
+  'Some of these windows are for one form of the crop, not the whole crop.';
+
 export const CALENDAR_GROUP_SCOPE_MARKER =
   'These windows are for the group, not for one species.';
 

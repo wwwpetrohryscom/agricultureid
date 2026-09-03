@@ -2992,7 +2992,8 @@ export const WAVE_27_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'arrowroot',
     limitations: [
       'The name Maranta arundinacea is a homonym: more than one published name matches it exactly, and they resolve to different taxa. The accepted one was selected; Maranta arundinacea Blanco; Maranta arundinacea Billb. ex Beurl..',
     ],

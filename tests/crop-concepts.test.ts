@@ -229,6 +229,7 @@ describe('crosswalk — a refusal that answers someone', () => {
       byKind.set(x.kind, [...(byKind.get(x.kind) ?? []), x.name]);
 
     expect([...byKind.keys()].sort()).toEqual([
+      'ambiguous-common-name',
       'homonym',
       'parent-taxon',
       'unresolved-taxon',

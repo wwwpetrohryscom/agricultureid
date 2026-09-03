@@ -292,8 +292,8 @@ export const NAME_CROSSWALK: readonly NameCrosswalk[] = [
   {
     name: 'spring onion',
     kind: 'synonym',
-    resolvesTo: { type: 'crop-taxon', slug: 'welsh-onion' },
-    note: 'An ambiguous common name applied both to Allium fistulosum and to immature Allium cepa. Kept as an alternative name on Welsh onion only.',
+    resolvesTo: { type: 'crop', slug: 'welsh-onion' },
+    note: 'An ambiguous common name applied both to Allium fistulosum and to immature Allium cepa. Kept as an alternative name on Welsh onion, which Wave 44 published as a page.',
   },
   {
     name: 'Prunus dulcis',
@@ -601,6 +601,58 @@ export const NAME_CROSSWALK: readonly NameCrosswalk[] = [
     kind: 'synonym',
     resolvesTo: { type: 'crop', slug: 'waterleaf' },
     note: 'A synonym of Talinum fruticosum still in wide use in West African agricultural literature.',
+  },
+
+  /* ---- Wave 44 — names the FAO calendar uses that name more than one crop --
+   *
+   * Seven labels in the FAO Crop Calendar denote more than one plant this
+   * corpus publishes, and each one is registered here rather than resolved,
+   * because the register is what the calendar matcher reads instead of forming
+   * its own opinion. Refusing an FAO label as ambiguous without an entry here
+   * would be a judgement rather than a reading, and the orphan validator says
+   * so.
+   */
+  {
+    name: 'Bean',
+    kind: 'ambiguous-common-name',
+    resolvesTo: null,
+    note: 'Names Phaseolus, Vigna and Vicia crops in different parts of the FAO country set. The dataset carries broad bean, lima bean and dry common bean as separate labels, which is the source distinguishing them from this one.',
+  },
+  {
+    name: 'Beans, harvested green',
+    kind: 'ambiguous-common-name',
+    resolvesTo: null,
+    note: 'Green beans in this country set are Phaseolus vulgaris, Phaseolus coccineus and immature cowpea pods depending on where the row comes from. The harvest form does not narrow which plant.',
+  },
+  {
+    name: 'Bitter eggplant',
+    kind: 'ambiguous-common-name',
+    resolvesTo: null,
+    note: 'Solanum aethiopicum and Solanum macrocarpon are both grown in Senegal, both are bitter and both are published here. The corpus already registers "African eggplant" for the same pair.',
+  },
+  {
+    name: 'Clover',
+    kind: 'ambiguous-common-name',
+    resolvesTo: null,
+    note: 'Red, white and berseem clover are published here and crimson and sweet clover are held as taxa. The dataset names red and white clover separately elsewhere, so the bare label is not either of them.',
+  },
+  {
+    name: 'Cress',
+    kind: 'ambiguous-common-name',
+    resolvesTo: null,
+    note: 'Garden cress and watercress are both sold as cress and are grown in entirely different systems, one in a seedbed and one in flowing water. This corpus holds the first as a taxon and publishes the second.',
+  },
+  {
+    name: 'Malanga cubaine',
+    kind: 'ambiguous-common-name',
+    resolvesTo: null,
+    note: 'Malanga names Xanthosoma in some Caribbean and Central African usage and Colocasia in others. Both are published here and the corpus already registers the same confusion under "cocoyam".',
+  },
+  {
+    name: 'Vetch',
+    kind: 'ambiguous-common-name',
+    resolvesTo: null,
+    note: 'Common vetch, hairy vetch and bitter vetch are all traded as vetch and the corpus holds the first two as taxa. The dataset carries hairy vetch separately, so the bare label is the source distinguishing something from it.',
   },
 
   /* ---- Wave 43 — the shared parent taxa -----------------------------------

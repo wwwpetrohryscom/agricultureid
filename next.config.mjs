@@ -33,6 +33,26 @@ const nextConfig = {
   outputFileTracingRoot: import.meta.dirname,
   // Deterministic trailing-slash behaviour keeps canonical URLs stable.
   trailingSlash: false,
+  /*
+   * One static-generation worker per 400 pages, rather than one per CPU.
+   *
+   * Next spawns a worker per core for static generation and each one loads the
+   * whole data layer, which is 55 MB of TypeScript modules — 3.3 MB of it the
+   * FAO crop calendar alone after Wave 44 ingested the complete source file.
+   * On a machine with plenty of RAM that is fine and the build is faster for
+   * it; in a build container it multiplies a large fixed cost by the core
+   * count. Wave 44's first deploy failed on Netlify with Node exit code 4, an
+   * internal evaluation failure of the kind a starved worker bootstrap
+   * produces, while the same commit built cleanly on a GitHub runner with four
+   * times the memory and under the full Netlify adapter locally.
+   *
+   * 1,831 pages at this floor is four or five workers wherever it runs, which
+   * is both bounded and reproducible. It trades build time for the build
+   * finishing.
+   */
+  experimental: {
+    staticGenerationMinPagesPerWorker: 400,
+  },
   async headers() {
     return [
       {

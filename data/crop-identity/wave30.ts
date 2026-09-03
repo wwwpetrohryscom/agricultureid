@@ -2233,7 +2233,8 @@ export const WAVE_30_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'anise',
     limitations: [
       'The name Pimpinella anisum is a homonym: more than one published name matches it exactly, and they resolve to different taxa. The accepted one was selected; Pimpinella anisum Georgi; Pimpinella anisum S.G.Gmel..',
     ],
@@ -2433,7 +2434,8 @@ export const WAVE_30_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'caraway',
     lastVerifiedAt: '2026-09-02',
   },
   {

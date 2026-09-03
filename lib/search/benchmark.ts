@@ -3721,6 +3721,139 @@ export const BENCHMARKS: Benchmark[] = [
     kind: 'scientific',
     note: 'Three published crops and one taxon row sit under this species and no page is about it, so a child answers the query. The guard says only that the answer must not be the oilseed form, which is the one a reader searching the species name is least likely to mean.',
   },
+
+  /* ---- Wave 44 FAO orphan research ----------------------------------------
+   *
+   * Nine crops published from taxa the corpus already held and the FAO Crop
+   * Calendar carried evidence for. The cases below are the ones with something
+   * to lose: several of the new pages share a word with a page that was
+   * already there — jute, spinach, onion, gourd, anise — and a new page that
+   * takes a query away from the right older one is a regression however good
+   * its own ranking looks.
+   */
+  {
+    query: 'jute mallow',
+    titleIncludes: ['jute mallow'],
+    types: ['crop'],
+    kind: 'exact',
+  },
+  {
+    query: 'molokhia',
+    titleIncludes: ['jute mallow'],
+    types: ['crop'],
+    kind: 'synonym',
+    note: 'The Egyptian name for the leaf crop of Corchorus olitorius.',
+  },
+  {
+    query: 'jute',
+    titleIncludes: ['jute'],
+    mustNotTop: ['mallow'],
+    types: ['crop'],
+    kind: 'exact',
+    note: 'The fibre concept keeps the bare name. Jute mallow is the same species harvested differently and must not take the query from it.',
+  },
+  {
+    query: 'bottle gourd',
+    titleIncludes: ['bottle gourd'],
+    types: ['crop'],
+    mustNotTop: ['bitter'],
+    kind: 'exact',
+  },
+  {
+    query: 'calabash',
+    titleIncludes: ['bottle gourd'],
+    types: ['crop'],
+    kind: 'synonym',
+  },
+  {
+    query: 'malabar spinach',
+    titleIncludes: ['malabar spinach'],
+    types: ['crop'],
+    kind: 'exact',
+  },
+  {
+    query: 'spinach',
+    titleIncludes: ['spinach'],
+    mustNotTop: ['malabar', 'water'],
+    types: ['crop'],
+    kind: 'exact',
+    note: 'Three published crops now carry "spinach" in their titles and only one of them is Spinacia oleracea.',
+  },
+  {
+    query: 'purslane',
+    titleIncludes: ['purslane'],
+    types: ['crop'],
+    kind: 'exact',
+  },
+  {
+    query: 'verdolaga',
+    titleIncludes: ['purslane'],
+    types: ['crop'],
+    kind: 'synonym',
+  },
+  {
+    query: 'welsh onion',
+    titleIncludes: ['welsh onion'],
+    types: ['crop'],
+    kind: 'exact',
+  },
+  {
+    query: 'scallion',
+    titleIncludes: ['welsh onion'],
+    types: ['crop'],
+    mustNotTop: ['dry bulb'],
+    kind: 'synonym',
+  },
+  {
+    query: 'onion',
+    titleIncludes: ['onion'],
+    mustNotTop: ['welsh'],
+    types: ['crop'],
+    kind: 'exact',
+    note: 'The bulb onion keeps the bare name against a new page whose title contains it.',
+  },
+  {
+    query: 'chives',
+    titleIncludes: ['chives'],
+    mustNotTop: ['garlic'],
+    types: ['crop'],
+    kind: 'exact',
+    note: 'Garlic chives is a different species held as a taxon row and its title contains this whole query.',
+  },
+  {
+    query: 'anise',
+    titleIncludes: ['anise'],
+    mustNotTop: ['star'],
+    types: ['crop'],
+    kind: 'exact',
+    note: 'Star anise is an unrelated tree in the Schisandraceae that shares the aroma compound and most of the name.',
+  },
+  {
+    query: 'star anise',
+    titleIncludes: ['star anise'],
+    types: ['crop'],
+    kind: 'exact',
+    note: 'The guard in the other direction, which is the one publishing anise put at risk.',
+  },
+  {
+    query: 'caraway',
+    titleIncludes: ['caraway'],
+    types: ['crop'],
+    kind: 'exact',
+  },
+  {
+    query: 'arrowroot',
+    titleIncludes: ['arrowroot'],
+    types: ['crop'],
+    kind: 'exact',
+  },
+  {
+    query: 'wheat kansas',
+    titleIncludes: ['wheat planting and harvest calendar'],
+    types: ['crop-calendar'],
+    kind: 'multiword',
+    note: 'Wave 44 ingested the whole FAO file and wheat gained 127 agro-ecological zone labels, which pushed every US state past the forty-name cap on the calendar document. Fixed by sorting named jurisdictions ahead of source zone codes, not by raising the cap.',
+  },
 ];
 
 export function benchmarkIndex(): SearchIndex {

@@ -235,6 +235,7 @@ export const jute: CropContent = {
     { type: 'farming-system', slug: 'mixed-farming' },
   ],
   relatedTopics: [
+    { type: 'crop', slug: 'jute-mallow' },
     { type: 'crop', slug: 'flax' },
     { type: 'crop', slug: 'cotton' },
 
