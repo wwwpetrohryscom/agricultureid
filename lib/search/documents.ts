@@ -26,6 +26,22 @@ import { TRADE_HUB_PATH } from '@/lib/trade/paths';
 import { ECONOMICS_PATH } from '@/lib/economics/paths';
 import { CLIMATE_RISK_PATH } from '@/lib/climate/paths';
 import { NAME_CROSSWALK } from '@/data/crop-identity/name-crosswalk';
+import { CROP_SEARCH_POINTERS } from '@/data/crop-aliases';
+
+/**
+ * Search pointers, keyed by the crop they reach. Wave 46 §45.
+ *
+ * A pointer is indexed like a name and means something different: the term
+ * belongs to the crop's subject matter, not to its vocabulary. "Ricinoleic
+ * acid" reaches castor bean because castor is the only commercial source of
+ * it, and castor bean is not called ricinoleic acid.
+ */
+const POINTERS_BY_CROP = (() => {
+  const m = new Map<string, string[]>();
+  for (const p of CROP_SEARCH_POINTERS)
+    m.set(p.cropSlug, [...(m.get(p.cropSlug) ?? []), p.term]);
+  return m;
+})();
 import { CROP_HUBS } from '@/data/crop-hubs';
 import { hubPath, membershipOf } from '@/lib/crops/hubs';
 import { CROP_TAXA_PATH } from '@/lib/crops/paths';
@@ -297,6 +313,7 @@ export function buildSearchDocuments(): SearchDoc[] {
       parent,
       summary: item.summary,
       glossaryTerms: item.glossaryTerms,
+      searchPointers: POINTERS_BY_CROP.get(item.slug),
       relationLabels,
       sources,
       inboundRefs: inbound.get(`${item.contentType}:${item.slug}`) ?? 0,

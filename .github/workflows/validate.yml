@@ -94,6 +94,9 @@ jobs:
       - name: Repeated prose family classification
         run: npm run crops:prose:validate
 
+      - name: Alias registry and search pointers
+        run: npm run crops:aliases:validate
+
       - name: Climate, drought and water validation
         run: npm run climate:validate
 

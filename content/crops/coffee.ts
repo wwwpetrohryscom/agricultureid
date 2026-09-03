@@ -6,7 +6,7 @@ export const coffee: CropContent = {
   contentType: 'crop',
   title: 'Coffee',
   scientificName: 'Coffea arabica and Coffea canephora (robusta)',
-  alternativeNames: ['Arabica coffee', 'Robusta coffee'],
+  alternativeNames: [],
   category: 'Beverage crop',
   subcategory: 'Tropical perennial shrub',
   botanicalFamily: 'Rubiaceae (madder family)',
