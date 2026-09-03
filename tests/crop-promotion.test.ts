@@ -134,8 +134,20 @@ describe('promotion — the umbrella pages keep their own terms', () => {
     expect(top(q)?.title).toBe(expected);
   });
 
+  /*
+   * Wave 46 corrected the first of these.
+   *
+   * "Triticum turgidum" is the species Wave 43 gave to the WHEAT page as the
+   * parent taxon durum wheat and emmer share, and the benchmark carried it as a
+   * known issue: the two children beat the page whose accepted name it is,
+   * because each carried the binomial inside a longer scientific name and the
+   * field weights summed. Saturating field frequency fixed it, and this
+   * expectation had encoded the defect. Every other row is a child's own
+   * binomial and still resolves to the child.
+   */
   it.each([
-    ['triticum turgidum', 'Durum Wheat'],
+    ['triticum turgidum', 'Wheat'],
+    ['triticum turgidum subsp. durum', 'Durum Wheat'],
     ['coffea arabica', 'Arabica Coffee'],
     ['coffea canephora', 'Robusta Coffee'],
     ['gossypium hirsutum', 'Upland Cotton'],
