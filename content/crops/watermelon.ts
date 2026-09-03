@@ -86,10 +86,6 @@ export const watermelon: CropContent = {
           type: 'paragraph',
           text: 'Watermelon is believed to have originated in Africa, where wild and semi-domesticated relatives of Citrullus lanatus are still found, before spreading through the Mediterranean, the Middle East, and Asia in antiquity and later reaching the Americas. It is now grown commercially in warm regions on every populated continent.',
         },
-        {
-          type: 'paragraph',
-          text: 'Production areas, leading cultivar types, and trade volumes change over time; current figures are best obtained from primary sources such as FAOSTAT and national agricultural statistics services rather than assumed.',
-        },
       ],
     },
     {

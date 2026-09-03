@@ -99,7 +99,7 @@ export const spinach: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'It is now grown across temperate and subtropical regions worldwide, in open fields and, for baby-leaf production, under protective structures in some areas. Current statistics on planted area, production, and trade by country are compiled by FAO and national agricultural agencies.',
+          text: 'It is now grown across temperate and subtropical regions worldwide, in open fields and, for baby-leaf production, under protective structures in some areas.',
         },
       ],
     },
@@ -174,10 +174,6 @@ export const spinach: CropContent = {
         {
           type: 'paragraph',
           text: 'Spinach has a shallow root system and requires frequent, consistent moisture, particularly during germination and rapid leaf expansion. Sprinkler and drip irrigation are both used depending on region, scale, and leaf type.',
-        },
-        {
-          type: 'paragraph',
-          text: 'Crop water requirements are estimated from evapotranspiration and local climate data, following reference methods published by FAO and national agricultural agencies.',
         },
       ],
     },

@@ -92,7 +92,7 @@ export const cauliflower: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'Cauliflower area shifts between seasons and between regions within a season, because the crop is grown in short successive plantings rather than as a single annual harvest. Any figure for it is a snapshot; take one from FAOSTAT or a national statistics service dated to the period you mean.',
+          text: 'Cauliflower area shifts between seasons and between regions within a season, because the crop is grown in short successive plantings rather than as a single annual harvest.',
         },
       ],
     },

@@ -88,7 +88,7 @@ export const sesame: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'It is grown today across tropical and subtropical regions worldwide, with production concentrated in parts of Asia and Africa. Production and trade figures are compiled by FAO and national statistical services.',
+          text: 'It is grown today across tropical and subtropical regions worldwide, with production concentrated in parts of Asia and Africa.',
         },
       ],
     },

@@ -98,10 +98,6 @@ export const kiwifruit: CropContent = {
           type: 'paragraph',
           text: 'Kiwifruit originates from wild Actinidia species native to central and eastern China. Selection and breeding, followed by international spread and commercialization during the twentieth century, established it as a globally traded fruit grown in a number of temperate and mild-winter regions outside its native range.',
         },
-        {
-          type: 'paragraph',
-          text: 'Current production areas, leading cultivars, and trade patterns change over time; up-to-date figures are best obtained from primary sources such as FAOSTAT and national agricultural statistics services rather than assumed.',
-        },
       ],
     },
     {

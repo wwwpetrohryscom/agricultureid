@@ -89,7 +89,7 @@ export const soybean: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'Soybean is now grown across the Americas, Asia, and increasingly other regions. Current data on planted area, production, and trade by country are compiled by FAO and national agricultural statistics agencies and should be taken from those primary sources.',
+          text: 'Soybean is now grown across the Americas, Asia, and increasingly other regions.',
         },
       ],
     },
@@ -164,10 +164,6 @@ export const soybean: CropContent = {
         {
           type: 'paragraph',
           text: 'Soybean is grown both rain-fed and under irrigation. Water demand is highest during flowering and pod fill, and moisture stress during this period can noticeably reduce yield.',
-        },
-        {
-          type: 'paragraph',
-          text: 'Where irrigation is used, scheduling is generally based on estimated crop evapotranspiration and local climate data, following methods published by FAO and national agricultural agencies.',
         },
       ],
     },

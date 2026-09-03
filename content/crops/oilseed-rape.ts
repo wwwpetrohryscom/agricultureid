@@ -91,7 +91,7 @@ export const oilseedRape: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'Oilseed rape is now grown across major temperate production regions, including Europe, North America, and parts of Asia. Production and trade statistics are compiled by bodies such as FAO and the European Commission and should be taken from those primary datasets.',
+          text: 'Oilseed rape is now grown across major temperate production regions, including Europe, North America, and parts of Asia.',
         },
       ],
     },

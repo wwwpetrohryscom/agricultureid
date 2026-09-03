@@ -91,10 +91,6 @@ export const datePalm: CropContent = {
           type: 'paragraph',
           text: 'Date palm has been cultivated since antiquity across the Middle East and North Africa, where it has long been central to oasis agriculture and food systems in arid environments. Cultivation has since spread to other hot, arid, and semi-arid regions of the world with suitable irrigation water supply.',
         },
-        {
-          type: 'paragraph',
-          text: 'Current production volumes, leading cultivars, and trade patterns vary by region and change over time; figures should be obtained from primary sources such as FAOSTAT and national agricultural statistics services rather than assumed.',
-        },
       ],
     },
     {

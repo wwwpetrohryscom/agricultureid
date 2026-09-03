@@ -100,10 +100,6 @@ export const grapefruit: CropContent = {
           type: 'paragraph',
           text: 'Grapefruit emerged in the Caribbean as a hybrid between pomelo and sweet orange and was subsequently selected and propagated as a distinct commercial fruit, later spreading to other subtropical citrus-growing regions worldwide.',
         },
-        {
-          type: 'paragraph',
-          text: 'Current production areas, leading cultivars, and trade patterns change over time; up-to-date figures are best obtained from primary sources such as FAOSTAT and national agricultural statistics services rather than assumed.',
-        },
       ],
     },
     {

@@ -71,7 +71,7 @@ export const ginger: CropContent = {
             {
               term: 'Growth habit',
               description:
-                'Perennial rhizomatous herb; leafy pseudostems arise annually from the underground rhizome, which is harvested and used for propagation',
+                'Perennial herb grown as an annual; the harvested rhizome is also the planting material, so each crop is taken out of the last one',
             },
             {
               term: 'Propagation',
@@ -92,7 +92,7 @@ export const ginger: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'It is grown today across warm, humid regions of Asia, Africa, and Latin America. Production and trade figures are compiled by FAO and national agricultural agencies.',
+          text: 'It is grown today across warm, humid regions of Asia, Africa, and Latin America.',
         },
       ],
     },

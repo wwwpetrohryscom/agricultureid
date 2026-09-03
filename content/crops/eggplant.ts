@@ -92,7 +92,7 @@ export const eggplant: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'It is now grown widely across warm-temperate, subtropical, and tropical regions; production and trade figures change over time and are best obtained from primary sources such as FAOSTAT and national agricultural statistics services rather than assumed.',
+          text: 'It is now grown widely across warm-temperate, subtropical, and tropical regions.',
         },
       ],
     },

@@ -93,7 +93,7 @@ export const sweetPepper: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'Sweet pepper is now grown across a wide range of climates in open-field and protected-culture systems. Current statistics on planted area, production, and trade by country are compiled by FAO and national agricultural agencies.',
+          text: 'Sweet pepper is now grown across a wide range of climates in open-field and protected-culture systems.',
         },
       ],
     },
@@ -168,10 +168,6 @@ export const sweetPepper: CropContent = {
         {
           type: 'paragraph',
           text: 'Consistent water supply throughout the growing cycle supports even fruit development, and irregular moisture is associated with certain fruit-quality disorders. Drip irrigation is widely used in both open-field and protected-culture production.',
-        },
-        {
-          type: 'paragraph',
-          text: 'Crop water requirements are estimated from evapotranspiration and local climate data, following reference methods published by FAO and national agricultural agencies.',
         },
       ],
     },

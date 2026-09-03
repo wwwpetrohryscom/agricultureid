@@ -81,7 +81,7 @@ export const vanilla: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'Madagascar is today the leading global producer, with additional significant production in Indonesia and other tropical countries. Production and trade statistics are compiled by FAO and national agricultural agencies.',
+          text: 'Madagascar is today the leading global producer, with additional significant production in Indonesia and other tropical countries.',
         },
       ],
     },

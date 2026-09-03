@@ -100,10 +100,6 @@ export const lablab: CropContent = {
           type: 'paragraph',
           text: 'Lablab is generally considered to have an African origin, with a long history of cultivation and diversity in Africa and South Asia. It is now grown throughout the tropics and subtropics for food, forage, and soil improvement.',
         },
-        {
-          type: 'paragraph',
-          text: 'Statistics on planted area and production are limited and often incomplete; available figures are compiled by FAO and national agencies and should be consulted directly.',
-        },
       ],
     },
     {

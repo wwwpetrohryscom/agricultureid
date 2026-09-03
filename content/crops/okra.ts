@@ -86,10 +86,6 @@ export const okra: CropContent = {
           type: 'paragraph',
           text: 'Okra is believed to have originated in Africa, with a long history of cultivation there before spreading to Asia, the Middle East, and the Americas through historical trade and, in the case of the Americas, the transatlantic slave trade. It remains an important crop across many tropical and subtropical regions today.',
         },
-        {
-          type: 'paragraph',
-          text: 'Production and trade figures change over time and by region; current data are best obtained from primary sources such as FAOSTAT and national agricultural statistics services rather than assumed.',
-        },
       ],
     },
     {

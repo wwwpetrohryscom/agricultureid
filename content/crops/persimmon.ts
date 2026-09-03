@@ -92,10 +92,6 @@ export const persimmon: CropContent = {
           type: 'paragraph',
           text: 'Persimmon (Diospyros kaki) originates from East Asia, where it has a very long history of cultivation, and has since spread to other subtropical and mild-temperate fruit-growing regions worldwide.',
         },
-        {
-          type: 'paragraph',
-          text: 'Current production areas, leading cultivars, and trade patterns change over time; up-to-date figures are best obtained from primary sources such as FAOSTAT and national agricultural statistics services rather than assumed.',
-        },
       ],
     },
     {
@@ -168,7 +164,7 @@ export const persimmon: CropContent = {
       body: [
         {
           type: 'paragraph',
-          text: 'Persimmon is grown both rain-fed and under irrigation, with water demand highest during fruit development. Drip irrigation is commonly used in commercial plantings to apply water efficiently to the root zone.',
+          text: 'Persimmon sheds fruit when it is stressed, and it sheds it late. The tree carries a heavy crop on brittle wood into autumn, well after most orchard fruit is off, so a dry spell in the last weeks before harvest arrives when the fruit is at its most valuable and the tree has least ability to compensate. Growers irrigate persimmon further into the season than they would a stone fruit for that reason.',
         },
         {
           type: 'paragraph',

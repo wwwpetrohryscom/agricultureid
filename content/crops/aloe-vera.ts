@@ -94,7 +94,7 @@ export const aloeVera: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'Commercial production today spans arid and semi-arid regions across the Americas, Asia, Africa, and parts of Europe. Production statistics are less comprehensively tracked than for major food crops and are best sourced from FAO and national agricultural agencies where available.',
+          text: 'Commercial production today spans arid and semi-arid regions across the Americas, Asia, Africa, and parts of Europe.',
         },
       ],
     },

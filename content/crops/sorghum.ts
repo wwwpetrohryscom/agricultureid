@@ -89,7 +89,7 @@ export const sorghum: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'Sorghum remains a staple food grain in parts of Africa and Asia and is a major feed and industrial grain crop in the Americas. Production and trade statistics are compiled by FAO and USDA and should be taken from those primary datasets.',
+          text: 'Sorghum remains a staple food grain in parts of Africa and Asia and is a major feed and industrial grain crop in the Americas.',
         },
       ],
     },

@@ -90,7 +90,7 @@ export const grape: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'Today grape is grown on every populated continent, from cool-climate wine regions to hot, irrigated table-grape production areas. Regional production and trade statistics are compiled by bodies such as FAO and should be sourced from those primary datasets rather than assumed.',
+          text: 'Today grape is grown on every populated continent, from cool-climate wine regions to hot, irrigated table-grape production areas.',
         },
       ],
     },

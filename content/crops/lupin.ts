@@ -94,10 +94,6 @@ export const lupin: CropContent = {
           type: 'paragraph',
           text: 'Old World lupins, including white and yellow lupin, have been cultivated around the Mediterranean since antiquity, while narrow-leafed lupin is an important modern grain crop in Australia and parts of Europe. A separate lupin, the Andean tarwi, was domesticated in South America.',
         },
-        {
-          type: 'paragraph',
-          text: 'Statistics on planted area, production, and trade by country are compiled by FAO and national agencies and should be consulted directly for current figures.',
-        },
       ],
     },
     {

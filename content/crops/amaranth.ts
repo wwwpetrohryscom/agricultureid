@@ -101,10 +101,6 @@ export const amaranth: CropContent = {
           type: 'paragraph',
           text: 'Grain amaranths were domesticated in the Americas and were important staples of Mesoamerican and Andean civilizations. Vegetable amaranths are grown throughout the warm regions of Africa, Asia, and the Americas, where several species are cultivated and gathered.',
         },
-        {
-          type: 'paragraph',
-          text: 'Statistics on planted area and production are limited and often incomplete; available figures are compiled by FAO and national agencies and should be consulted directly.',
-        },
       ],
     },
     {

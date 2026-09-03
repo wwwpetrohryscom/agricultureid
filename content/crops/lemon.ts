@@ -87,10 +87,6 @@ export const lemon: CropContent = {
           type: 'paragraph',
           text: 'Lemon is believed to have originated in Asia, arising through hybridization among ancestral citrus species, and spread historically along trade routes into the Mediterranean region and, later, to the Americas and other subtropical growing areas worldwide.',
         },
-        {
-          type: 'paragraph',
-          text: 'Current production volumes, leading cultivars, and trade patterns vary by region and change over time; figures should be obtained from primary sources such as FAOSTAT and national agricultural statistics services rather than assumed.',
-        },
       ],
     },
     {

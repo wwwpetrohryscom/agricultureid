@@ -60,22 +60,12 @@ export const REVIEWED_SIMILAR_PAIRS: readonly ReviewedSimilarPair[] = [
   {
     a: 'lemon',
     b: 'lime',
-    overlap: 0.176,
-    longestRun: 34,
+    overlap: 0.16,
+    longestRun: 20,
     verdict: 'LEGITIMATE_STANDARD_LANGUAGE',
     reason:
-      'The shared run is the corpus policy on production figures — that volumes and cultivars change and should be taken from FAOSTAT and national statistics rather than assumed. It appears in 44 of 160 crop articles, which is short of the share required to register it as standing language, so it stays visible to the metric. Rewriting it per crop would make a standing policy look like a citrus finding.',
-    reviewedAt: '2026-09-02',
-  },
-  {
-    a: 'blackberry',
-    b: 'raspberry',
-    overlap: 0.13,
-    longestRun: 29,
-    verdict: 'GENERIC_BUT_FACTUALLY_VALID',
-    reason:
-      'The shared run is a list of end uses — fresh market, IQF for manufacturing, jam and juice, bakery fillings, flavour extracts. Both caneberries genuinely go to those same markets in those same forms, and differentiating the sentence would make it less accurate rather than less repetitive. The agronomic prose that used to be shared here was rewritten in Wave 35.',
-    reviewedAt: '2026-09-02',
+      'Wave 42 recorded this pair at 34 words and called the shared text legitimate standard language, on the reasoning that the production-statistics caveat appeared in 44 of 160 articles — short of the share needed to register it as standing language, so it stayed visible to the metric. Wave 45 measured the same text as a FAMILY rather than a pair, found it in 123 of 257 articles in 90 wordings, and centralised it, which took this run from 34 words to 20. What is left is not a third statement: it is the registered fertiliser policy with a nine-word lead-in on one side and an eight-word clause on the other, welded together because the detector strips the policy from between them. Reduced, not resolved, and recorded at what it now measures.',
+    reviewedAt: '2026-09-03',
   },
 ];
 
@@ -98,6 +88,14 @@ export interface ResolvedSimilarPair {
  * makes a regression name itself.
  */
 export const RESOLVED_SIMILAR_PAIRS: readonly ResolvedSimilarPair[] = [
+  {
+    a: 'blackberry',
+    b: 'raspberry',
+    runBefore: 29,
+    wasSharing:
+      'An identical four-item list of end uses. Wave 42 accepted it as generic but factually valid; the outlets are in fact not the same, because the raspberry separates from its receptacle and the blackberry does not, which is why one dominates the frozen trade and the other travels better fresh. Both lists now say that.',
+    resolvedAt: '2026-09-03',
+  },
   {
     a: 'peach',
     b: 'plum',

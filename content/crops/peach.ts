@@ -16,7 +16,7 @@ export const peach: CropContent = {
   introduction: [
     {
       type: 'paragraph',
-      text: 'Peach orchards are established from grafted trees combining a fruiting cultivar with a rootstock chosen for size control, anchorage, and site adaptation, as with other tree fruit crops. The species includes both the familiar fuzzy-skinned peach and the smooth-skinned nectarine, which is a peach variant distinguished mainly by a single gene affecting skin texture rather than a separate species.',
+      text: 'Peach rootstock choice is dominated by what is in the soil rather than by tree size. Replanting peach after peach runs into peach tree short life and into ring nematode, and the rootstocks that matter commercially — Nemaguard and its relatives — are chosen for nematode resistance first. The species includes both the familiar fuzzy-skinned peach and the smooth-skinned nectarine, which is a peach variant distinguished mainly by a single gene affecting skin texture rather than a separate species.',
     },
     {
       type: 'paragraph',
@@ -95,7 +95,7 @@ export const peach: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'It is now grown commercially across temperate and subtropical regions on multiple continents. Production statistics and leading cultivars change over time and should be obtained from primary sources such as FAOSTAT and national agricultural statistics services rather than assumed.',
+          text: 'It is now grown commercially across temperate and subtropical regions on multiple continents.',
         },
       ],
     },
@@ -109,7 +109,7 @@ export const peach: CropContent = {
         },
         {
           type: 'paragraph',
-          text: "Spring frost during bloom is a significant climate risk for peach in many regions, since flowers and young fruitlets are frost-sensitive and damage can substantially reduce a season's crop.",
+          text: 'Peach blooms early enough to be the orchard crop most often caught by spring frost in continental climates, and it does so on wood that also has to survive winter cold. The two hazards are not independent: a mild autumn that delays hardening leaves the same buds exposed to both, which is why peach acreage retreats from continental interiors towards lake and coastal margins.',
         },
       ],
     },

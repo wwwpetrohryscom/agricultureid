@@ -108,7 +108,7 @@ export const barley: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'Barley is now grown across a wide range of temperate and semi-arid regions. Current data on planted area, production, and trade by country are compiled by FAO and national agricultural statistics agencies and should be drawn from those primary sources.',
+          text: 'Barley is now grown across a wide range of temperate and semi-arid regions.',
         },
       ],
     },
@@ -183,10 +183,6 @@ export const barley: CropContent = {
         {
           type: 'paragraph',
           text: 'Barley is grown both rain-fed, including in a number of semi-arid regions where its relative drought tolerance is valued, and under irrigation. Water demand is highest around stem elongation, heading, and grain filling.',
-        },
-        {
-          type: 'paragraph',
-          text: 'Crop water requirements are estimated from evapotranspiration and local climate; reference methods and data are published by FAO and national agricultural agencies.',
         },
       ],
     },

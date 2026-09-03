@@ -94,10 +94,6 @@ export const celery: CropContent = {
           type: 'paragraph',
           text: 'Celery derives from wild Apium graveolens populations native to marshy areas of the Mediterranean and parts of Asia, with the modern stalk-type crop developed through centuries of selection in Europe before spreading globally as a commercial vegetable.',
         },
-        {
-          type: 'paragraph',
-          text: 'Production and trade figures change over time and by region; current data are best obtained from primary sources such as FAOSTAT and national agricultural statistics services rather than assumed.',
-        },
       ],
     },
     {

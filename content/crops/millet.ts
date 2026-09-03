@@ -92,10 +92,6 @@ export const millet: CropContent = {
           type: 'paragraph',
           text: 'The different millet species were domesticated independently in different regions: pearl millet in the Sahel of West Africa, finger millet in East Africa (and separately in South Asia), and proso and foxtail millet in China. Today they remain most important across the semi-arid tropics of Africa and Asia.',
         },
-        {
-          type: 'paragraph',
-          text: 'Because "millet" covers several distinct species, production and trade statistics are typically reported by individual species; current figures are best obtained from primary sources such as FAOSTAT and national agricultural statistics services rather than assumed.',
-        },
       ],
     },
     {

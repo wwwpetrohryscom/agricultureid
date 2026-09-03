@@ -91,7 +91,7 @@ export const sunflower: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'Sunflower is now grown widely across the Americas, Europe, and Asia. Current data on planted area, production, and trade by country are compiled by FAO and national agricultural statistics agencies and should be drawn from those primary sources.',
+          text: 'Sunflower is now grown widely across the Americas, Europe, and Asia.',
         },
       ],
     },
@@ -166,10 +166,6 @@ export const sunflower: CropContent = {
         {
           type: 'paragraph',
           text: 'Sunflower is grown both rain-fed, taking advantage of its relatively deep rooting, and under irrigation in some regions. Water demand is highest around flowering and seed fill, when moisture stress can most affect yield.',
-        },
-        {
-          type: 'paragraph',
-          text: 'Where irrigation is used, scheduling is generally based on estimated crop evapotranspiration and local climate data, following methods published by FAO and national agricultural agencies.',
         },
       ],
     },

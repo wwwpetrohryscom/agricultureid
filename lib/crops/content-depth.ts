@@ -9,7 +9,10 @@
  * volume.
  */
 import type { AnyContent } from '@/types/content';
-import { stripStandingPhrases } from '@/lib/crops/editorial-boilerplate';
+import {
+  STANDING_PHRASE_MARKER,
+  stripStandingPhrases,
+} from '@/lib/crops/editorial-boilerplate';
 
 export interface DepthMeasures {
   words: number;
@@ -292,6 +295,93 @@ export function flaggedPairs(items: AnyContent[]): SimilarPair[] {
  * and report the windows that appear under two different slugs. Linear in the
  * corpus, and it detects exactly the thing the register is for.
  */
+/**
+ * Repeated text as FAMILIES rather than as pairs. Wave 45 §27.
+ *
+ * `sharedRunPairs` answers "which two articles share a run", which is the right
+ * question for a ratchet and the wrong one for remediation. A sentence repeated
+ * across thirty articles is ONE editorial decision and 435 pairs; reading the
+ * pairwise output gives a number that says nothing about the shape of the debt,
+ * and the largest family in this corpus — a methodology caveat in 123 articles
+ * — never appeared in the pairwise top of the list at all, because no single
+ * pair of the 123 shared a particularly long run.
+ *
+ * Each family is a maximal run: a repeated shingle grown word by word for as
+ * long as every article in its set continues to agree, then deduplicated
+ * against longer families that already cover the same articles.
+ */
+export interface ProseFamilyRun {
+  text: string;
+  run: number;
+  slugs: string[];
+  /**
+   * True where a registered standing phrase was stripped out of the middle of
+   * this run. The two halves either side of a policy sentence are then
+   * adjacent to the detector and look like one long shared run when they are
+   * two short ones with the corpus's own language between them.
+   */
+  weldedByPolicy: boolean;
+}
+
+export function sharedRunFamilies(
+  items: AnyContent[],
+  minRun = SHARED_RUN_IS_PROSE,
+): ProseFamilyRun[] {
+  const words = new Map<string, string[]>();
+  for (const item of items)
+    words.set(
+      (item as unknown as { slug: string }).slug,
+      comparableText(item).split(' ').filter(Boolean),
+    );
+
+  const byShingle = new Map<string, Set<string>>();
+  for (const [slug, w] of words)
+    for (let i = 0; i + minRun <= w.length; i += 1) {
+      const key = w.slice(i, i + minRun).join(' ');
+      const set = byShingle.get(key) ?? new Set<string>();
+      set.add(slug);
+      byShingle.set(key, set);
+    }
+
+  const grown: ProseFamilyRun[] = [];
+  for (const [key, slugs] of byShingle) {
+    if (slugs.size < 2) continue;
+    const list = [...slugs].sort();
+    const pos = list.map((s) => {
+      const w = words.get(s)!;
+      for (let i = 0; i + minRun <= w.length; i += 1)
+        if (w.slice(i, i + minRun).join(' ') === key) return { i, w };
+      return { i: -1, w };
+    });
+    let run = minRun;
+    for (;;) {
+      const next = pos.map((p) => p.w[p.i + run]);
+      if (next.some((x) => x === undefined) || new Set(next).size !== 1) break;
+      run += 1;
+    }
+    const p0 = pos[0]!;
+    const text = p0.w.slice(p0.i, p0.i + run).join(' ');
+    grown.push({
+      text,
+      run,
+      slugs: list,
+      weldedByPolicy: text.includes(STANDING_PHRASE_MARKER),
+    });
+  }
+
+  grown.sort((a, b) => b.run - a.run || b.slugs.length - a.slugs.length);
+  const kept: ProseFamilyRun[] = [];
+  for (const f of grown)
+    if (
+      !kept.some(
+        (k) =>
+          k.text.includes(f.text) && f.slugs.every((s) => k.slugs.includes(s)),
+      )
+    )
+      kept.push(f);
+  return kept;
+}
+
 export function sharedRunPairs(
   items: AnyContent[],
   minRun = SHARED_RUN_IS_PROSE,

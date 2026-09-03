@@ -91,7 +91,7 @@ export const artichoke: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'Italy, Spain, and Egypt are among the leading producers today, alongside significant production in the United States, particularly in coastal California. Production statistics are compiled by FAO and national agricultural agencies.',
+          text: 'Italy, Spain, and Egypt are among the leading producers today, alongside significant production in the United States, particularly in coastal California.',
         },
       ],
     },

@@ -87,7 +87,7 @@ export const mango: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'Mango is now grown across the tropics and warm subtropics, with major production concentrated in South and Southeast Asia, alongside significant production in Africa and the Americas. Production and trade figures are compiled by FAO and should be taken from primary datasets.',
+          text: 'Mango is now grown across the tropics and warm subtropics, with major production concentrated in South and Southeast Asia, alongside significant production in Africa and the Americas.',
         },
       ],
     },

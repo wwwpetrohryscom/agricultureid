@@ -93,7 +93,7 @@ export const rice: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'Rice is now grown on every inhabited continent, with the largest production concentrated in Asia. Current data on planted area, production, and trade by country are compiled by FAO and national statistical agencies and should be drawn from those primary sources.',
+          text: 'Rice is now grown on every inhabited continent, with the largest production concentrated in Asia.',
         },
       ],
     },

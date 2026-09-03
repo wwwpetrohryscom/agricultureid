@@ -92,7 +92,7 @@ export const jute: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'Production remains concentrated in South Asia today, with smaller cultivation in parts of Southeast Asia and elsewhere. Production and trade statistics are compiled by FAO and national agencies.',
+          text: 'Production remains concentrated in South Asia today, with smaller cultivation in parts of Southeast Asia and elsewhere.',
         },
       ],
     },

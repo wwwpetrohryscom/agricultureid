@@ -96,7 +96,7 @@ export const cotton: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'Today cotton is grown across warm-temperate and tropical regions on multiple continents. Production and trade statistics are compiled by bodies such as FAO and USDA and should be taken from those primary datasets rather than assumed.',
+          text: 'Today cotton is grown across warm-temperate and tropical regions on multiple continents.',
         },
       ],
     },

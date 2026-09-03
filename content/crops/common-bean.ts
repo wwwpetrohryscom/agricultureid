@@ -103,7 +103,7 @@ export const commonBean: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'Common bean is now grown across a broad range of climates on every populated continent. Current statistics on planted area, production, and trade by country are compiled by FAO and national agricultural agencies.',
+          text: 'Common bean is now grown across a broad range of climates on every populated continent.',
         },
       ],
     },
@@ -178,10 +178,6 @@ export const commonBean: CropContent = {
         {
           type: 'paragraph',
           text: 'Common bean is grown both rain-fed and under irrigation. Moisture stress during flowering and pod fill is a key yield-limiting factor, and consistent water supply during this period is important where irrigation is available.',
-        },
-        {
-          type: 'paragraph',
-          text: 'Crop water requirements are estimated from evapotranspiration and local climate data, following reference methods published by FAO and national agricultural agencies.',
         },
       ],
     },

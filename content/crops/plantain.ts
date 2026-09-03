@@ -95,10 +95,6 @@ export const plantain: CropContent = {
           type: 'paragraph',
           text: 'Cultivated bananas and plantains originated in Southeast Asia and the western Pacific from hybrids of wild Musa species, and plantains later became especially important in West and Central Africa, where a great diversity of cooking types is grown, as well as in Latin America and the Caribbean.',
         },
-        {
-          type: 'paragraph',
-          text: 'Statistics on planted area and production by country are compiled by FAO and national agencies and should be consulted directly for current figures.',
-        },
       ],
     },
     {

@@ -91,6 +91,9 @@ jobs:
       - name: Crop identity validation
         run: npm run crops:validate
 
+      - name: Repeated prose family classification
+        run: npm run crops:prose:validate
+
       - name: Climate, drought and water validation
         run: npm run climate:validate
 

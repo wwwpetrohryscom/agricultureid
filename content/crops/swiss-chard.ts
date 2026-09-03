@@ -112,10 +112,6 @@ export const swissChard: CropContent = {
           type: 'paragraph',
           text: 'Swiss chard derives from the wild sea beet of the Mediterranean and Atlantic coasts and has been grown as a leaf vegetable since antiquity. It is now cultivated worldwide in gardens and market production across temperate and warmer regions.',
         },
-        {
-          type: 'paragraph',
-          text: 'Because it is largely a fresh vegetable, detailed production statistics are limited; available figures are compiled by FAO and national agencies and should be consulted directly.',
-        },
       ],
     },
     {

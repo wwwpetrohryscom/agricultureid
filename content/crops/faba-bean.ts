@@ -100,10 +100,6 @@ export const fabaBean: CropContent = {
           type: 'paragraph',
           text: 'Faba bean is an ancient crop of the Old World, cultivated since antiquity across the Mediterranean basin, the Near East, and beyond, and later spread widely through temperate and highland regions. No truly wild ancestor is known with certainty.',
         },
-        {
-          type: 'paragraph',
-          text: 'Statistics on planted area, production, and trade by country are compiled by FAO and national agencies and should be consulted directly for current figures.',
-        },
       ],
     },
     {

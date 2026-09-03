@@ -86,10 +86,6 @@ export const broccoli: CropContent = {
           type: 'paragraph',
           text: 'Broccoli was selected from wild cabbage populations native to the Mediterranean coast, with the Italica group developed in Italy before spreading through Europe and, more recently, becoming a major vegetable crop in the Americas, Asia, and elsewhere.',
         },
-        {
-          type: 'paragraph',
-          text: 'Current area, production, and trade figures change over time and by region; they are best obtained from primary sources such as FAOSTAT and national agricultural statistics services rather than assumed.',
-        },
       ],
     },
     {

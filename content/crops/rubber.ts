@@ -89,7 +89,7 @@ export const rubber: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'Southeast Asia, particularly Thailand, Indonesia, and Vietnam, accounts for the large majority of natural rubber production today, with growing cultivation in parts of Africa. Production statistics are compiled by FAO and international rubber-sector organizations.',
+          text: 'Southeast Asia, particularly Thailand, Indonesia, and Vietnam, accounts for the large majority of natural rubber production today, with growing cultivation in parts of Africa.',
         },
       ],
     },

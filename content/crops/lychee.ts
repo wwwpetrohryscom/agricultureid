@@ -86,10 +86,6 @@ export const lychee: CropContent = {
           type: 'paragraph',
           text: 'Lychee originates from southern China and neighboring parts of Southeast Asia, where it has been cultivated for a very long history, and has since spread to other subtropical and tropical-margin regions worldwide.',
         },
-        {
-          type: 'paragraph',
-          text: 'Current production areas, leading cultivars, and trade patterns change over time; up-to-date figures are best obtained from primary sources such as FAOSTAT and national agricultural statistics services rather than assumed.',
-        },
       ],
     },
     {

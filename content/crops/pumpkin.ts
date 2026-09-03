@@ -94,7 +94,7 @@ export const pumpkin: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'Pumpkin is now grown widely across temperate and warm regions worldwide; production and trade figures change over time and are best obtained from primary sources such as FAOSTAT and national agricultural statistics services rather than assumed.',
+          text: 'Pumpkin is now grown widely across temperate and warm regions worldwide.',
         },
       ],
     },
@@ -139,7 +139,7 @@ export const pumpkin: CropContent = {
           type: 'list',
           items: [
             'Species and cultivar selection matched to fruit size, use (food or decorative), and local season length',
-            'Crop rotation with non-cucurbit crops to manage soil-borne disease and pest carryover',
+            'Multi-year rotation away from cucurbits, which a long-season storage crop can afford and a double-cropped summer squash often cannot',
             'Adequate pollinator activity, since fruit set depends on pollen transfer between separate male and female flowers',
             'Fruit thinning in some systems to concentrate plant resources on fewer, larger fruit',
           ],

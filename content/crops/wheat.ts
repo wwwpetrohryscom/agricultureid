@@ -88,10 +88,6 @@ export const wheat: CropContent = {
           type: 'paragraph',
           text: 'Wheat was among the first cereals domesticated in the Fertile Crescent of the Near East, and it spread across Europe, Asia, and North Africa over millennia before reaching the Americas and Oceania. Today it is grown on every inhabited continent, with major production in temperate regions of Asia, Europe, North America, and parts of the Southern Hemisphere.',
         },
-        {
-          type: 'paragraph',
-          text: 'National and regional statistics on area, production, and trade are compiled by bodies such as FAO and national statistical services. Figures change annually with weather and markets, so current values should be taken from those primary datasets rather than assumed.',
-        },
       ],
     },
     {
@@ -165,10 +161,6 @@ export const wheat: CropContent = {
         {
           type: 'paragraph',
           text: 'Wheat is grown both rain-fed and under irrigation. Water demand is highest around stem elongation, heading, and grain filling. In irrigated systems, scheduling aims to avoid stress at these sensitive stages while preventing waterlogging.',
-        },
-        {
-          type: 'paragraph',
-          text: 'Crop water requirements are estimated from evapotranspiration and local climate; methods and reference data are published by FAO and national services.',
         },
       ],
     },

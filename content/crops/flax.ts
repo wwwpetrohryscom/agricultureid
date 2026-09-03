@@ -89,7 +89,7 @@ export const flax: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'Today, fiber flax production is concentrated in parts of Western Europe, while linseed (oilseed) flax is grown across a wider range of temperate cropping regions. Production and trade figures are compiled by FAO, EU agricultural bodies, and national agencies.',
+          text: 'Today, fiber flax production is concentrated in parts of Western Europe, while linseed (oilseed) flax is grown across a wider range of temperate cropping regions.',
         },
       ],
     },

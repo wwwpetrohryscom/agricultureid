@@ -92,7 +92,7 @@ export const mustard: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'Major producers today include Canada, Russia, Nepal, and Myanmar for various mustard types, alongside significant production of Indian mustard in South Asia for both oil and condiment use. Production statistics are compiled by FAO and national agricultural agencies.',
+          text: 'Major producers today include Canada, Russia, Nepal, and Myanmar for various mustard types, alongside significant production of Indian mustard in South Asia for both oil and condiment use.',
         },
       ],
     },

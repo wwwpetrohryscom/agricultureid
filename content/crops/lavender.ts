@@ -153,7 +153,7 @@ export const lavender: CropContent = {
       body: [
         {
           type: 'paragraph',
-          text: 'Lavender tolerates drought well once established and requires only modest supplemental irrigation in most climates; overwatering is a far more common cause of plant loss than underwatering.',
+          text: 'Lavender is grown for oil as much as for flower, and the two aims pull irrigation in opposite directions: water through flowering builds biomass and dilutes the oil, while a dry finish concentrates it. A crop irrigated for yield of spike can therefore distil poorly. Plant loss in cultivation is more often from a wet root zone in winter than from summer drought, which is why the species is planted on ridges or slopes wherever the ground holds water.',
         },
         {
           type: 'paragraph',

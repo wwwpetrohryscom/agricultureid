@@ -98,7 +98,7 @@ export const yam: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'West Africa remains the leading production region today, with significant cultivation also found in the Caribbean, tropical Asia, and the Pacific. Production statistics are compiled by FAO and national agricultural agencies.',
+          text: 'West Africa remains the leading production region today, with significant cultivation also found in the Caribbean, tropical Asia, and the Pacific.',
         },
       ],
     },

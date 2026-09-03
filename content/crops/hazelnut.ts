@@ -97,10 +97,6 @@ export const hazelnut: CropContent = {
           type: 'paragraph',
           text: 'Corylus avellana is native to Europe and parts of Western Asia, where it has long grown wild in woodlands and hedgerows in addition to being cultivated. Commercial production has since expanded to other temperate regions with suitably mild winters.',
         },
-        {
-          type: 'paragraph',
-          text: 'Current production statistics, leading cultivars, and trade patterns shift over time and by region; up-to-date figures are best obtained from primary sources such as FAOSTAT and national agricultural statistics services rather than assumed.',
-        },
       ],
     },
     {
@@ -200,11 +196,11 @@ export const hazelnut: CropContent = {
       body: [
         {
           type: 'paragraph',
-          text: 'Hazelnut is grown both rain-fed and under irrigation depending on region, with water demand rising through nut development. Drip irrigation is widely used in modern plantings to apply water efficiently to the root zone.',
+          text: 'Hazelnut is a suckering shrub trained into a tree, and its root system is shallow and fibrous rather than deep, which makes it quick to show drought and quick to respond to water. The orchard floor complicates the decision: the nuts are harvested off the ground, so the surface has to be firm and clean at harvest, and irrigation that keeps the floor soft into autumn costs at pick-up what it gained in kernel fill.',
         },
         {
           type: 'paragraph',
-          text: 'Irrigation scheduling aims to avoid water stress during sensitive growth stages while preventing waterlogging, which hazelnut tolerates poorly.',
+          text: 'Hazelnut is intolerant of a waterlogged root zone and shows it as a slow decline rather than an obvious failure, so the scheduling problem is asymmetric: a dry spell costs kernel size in one season and a wet one costs the planting.',
         },
       ],
     },

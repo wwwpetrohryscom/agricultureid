@@ -95,10 +95,6 @@ export const pistachio: CropContent = {
           type: 'paragraph',
           text: 'Pistacia vera is native to a region spanning Central and Southwest Asia, where it has been cultivated for millennia in arid and semi-arid areas. Cultivation has since spread to other regions with a similarly hot, arid, continental climate.',
         },
-        {
-          type: 'paragraph',
-          text: 'Current production statistics, leading cultivars, and trade patterns shift over time and by region; up-to-date figures are best obtained from primary sources such as FAOSTAT and national agricultural statistics services rather than assumed.',
-        },
       ],
     },
     {
@@ -136,7 +132,7 @@ export const pistachio: CropContent = {
       body: [
         {
           type: 'paragraph',
-          text: 'Establishing a pistachio orchard begins with selecting a rootstock and cultivar suited to the site. Because the species is dioecious, orchard design must include a number of male pollinizer trees interplanted among the predominantly female planting, positioned to allow wind to carry pollen effectively to female flowers during bloom.',
+          text: 'A pistachio planting is a fifty-year commitment made on rootstock choice, because the species is grown on saline and alkaline ground that would kill most orchard crops and the rootstock is what survives it. Because the species is dioecious, orchard design must include a number of male pollinizer trees interplanted among the predominantly female planting, positioned to allow wind to carry pollen effectively to female flowers during bloom.',
         },
         {
           type: 'table',

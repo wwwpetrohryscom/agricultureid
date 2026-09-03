@@ -90,10 +90,6 @@ export const asparagus: CropContent = {
           type: 'paragraph',
           text: 'Asparagus is native to a broad region spanning Europe, North Africa, and western Asia, where it has been valued as a food plant since antiquity. It is now cultivated in temperate and some subtropical regions worldwide, with production concentrated where a distinct dormant season supports strong spear emergence.',
         },
-        {
-          type: 'paragraph',
-          text: 'Production and trade figures change over time and by region; current data are best obtained from primary sources such as FAOSTAT and national agricultural statistics services rather than assumed.',
-        },
       ],
     },
     {

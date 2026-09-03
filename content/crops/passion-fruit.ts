@@ -96,10 +96,6 @@ export const passionFruit: CropContent = {
           type: 'paragraph',
           text: 'Passion fruit originated in South America, with Brazil a center of diversity and, today, a leading producer. It is now grown throughout the tropics and subtropics, including East Africa, South and Southeast Asia, Australia, and the Pacific.',
         },
-        {
-          type: 'paragraph',
-          text: 'Statistics on planted area and production by country are compiled by FAO and national agencies and should be consulted directly for current figures.',
-        },
       ],
     },
     {

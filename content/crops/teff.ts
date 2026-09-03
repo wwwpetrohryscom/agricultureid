@@ -94,10 +94,6 @@ export const teff: CropContent = {
           type: 'paragraph',
           text: 'Teff was domesticated in the Ethiopian highlands, which remain by far the largest area of production and the center of its diversity. Cultivation for grain and forage has since spread to other countries, though it remains a minor crop globally.',
         },
-        {
-          type: 'paragraph',
-          text: 'Statistics on planted area and production are compiled by FAO and national agencies and should be consulted directly for current figures.',
-        },
       ],
     },
     {

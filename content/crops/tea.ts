@@ -89,7 +89,7 @@ export const tea: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'Major production today is concentrated in China, India, Kenya, Sri Lanka, and other parts of Asia and East Africa. Current production and trade figures are compiled by FAO and national tea-sector agencies.',
+          text: 'Major production today is concentrated in China, India, Kenya, Sri Lanka, and other parts of Asia and East Africa.',
         },
       ],
     },

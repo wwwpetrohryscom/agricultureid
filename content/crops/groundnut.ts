@@ -104,7 +104,7 @@ export const groundnut: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'It is now grown pantropically and in warm temperate regions worldwide. Current statistics on planted area, production, and trade by country are compiled by FAO and national agricultural agencies.',
+          text: 'It is now grown pantropically and in warm temperate regions worldwide.',
         },
       ],
     },
@@ -179,10 +179,6 @@ export const groundnut: CropContent = {
         {
           type: 'paragraph',
           text: 'Flowering, pegging, and pod-fill are all moisture-sensitive stages in groundnut. In some regions, drought stress late in the season has also been linked to an increased risk of fungal contamination associated with aflatoxin, a recognized food-safety concern managed through variety choice, timely harvest, and proper drying and storage.',
-        },
-        {
-          type: 'paragraph',
-          text: 'Crop water requirements are estimated from evapotranspiration and local climate data, following reference methods published by FAO and national agricultural agencies.',
         },
       ],
     },

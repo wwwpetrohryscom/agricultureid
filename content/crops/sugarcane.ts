@@ -92,7 +92,7 @@ export const sugarcane: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'Today, sugarcane is grown across a broad tropical and subtropical belt, with major production concentrated in parts of the Americas and South and Southeast Asia. Production and trade statistics are compiled by FAO and should be taken from those primary datasets.',
+          text: 'Today, sugarcane is grown across a broad tropical and subtropical belt, with major production concentrated in parts of the Americas and South and Southeast Asia.',
         },
       ],
     },

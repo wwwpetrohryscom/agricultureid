@@ -94,7 +94,7 @@ export const sage: CropContent = {
       body: [
         {
           type: 'paragraph',
-          text: 'Sage is well suited to hot, dry summers and mild winters and tolerates drought well once established. Many cultivars withstand moderate frost, though hardiness varies.',
+          text: 'Sage carries dense leaf hairs that cut water loss and give the foliage its grey cast, which is why a sage plant looks unstressed in weather that wilts a basil beside it. Hardiness is the more variable trait: garden sage takes moderate frost in most temperate plantings, while the ornamental and tender Salvia species sold under the same common name do not, and the difference matters when a planting is expected to overwinter.',
         },
         {
           type: 'paragraph',

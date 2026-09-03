@@ -81,7 +81,7 @@ export const clove: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'Indonesia, Madagascar, and the island of Zanzibar in Tanzania are today among the leading producing regions. Production and trade figures are compiled by FAO and national agricultural agencies.',
+          text: 'Indonesia, Madagascar, and the island of Zanzibar in Tanzania are today among the leading producing regions.',
         },
       ],
     },

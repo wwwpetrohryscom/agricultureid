@@ -92,10 +92,6 @@ export const blueberry: CropContent = {
           type: 'paragraph',
           text: 'Blueberry is native to North America, where wild Vaccinium species were long harvested before 20th-century breeding produced the cultivated highbush types that underlie most modern commercial production. Cultivation has since spread to other temperate and some subtropical regions with suitable acidic soils.',
         },
-        {
-          type: 'paragraph',
-          text: 'Production and trade statistics are compiled by national and international bodies and change over time with new plantings and market demand; current figures are best obtained from primary sources such as FAOSTAT and national agricultural statistics services rather than assumed.',
-        },
       ],
     },
     {

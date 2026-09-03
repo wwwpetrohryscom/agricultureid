@@ -89,7 +89,7 @@ export const orange: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'Today, orange production is concentrated in a number of subtropical and tropical growing regions worldwide. Production and trade statistics are compiled by FAO and national agencies and should be sourced from those primary datasets.',
+          text: 'Today, orange production is concentrated in a number of subtropical and tropical growing regions worldwide.',
         },
       ],
     },

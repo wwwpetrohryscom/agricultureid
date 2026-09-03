@@ -90,7 +90,7 @@ export const cinnamon: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'Sri Lanka remains the leading producer of true cinnamon today, while cassia-type bark is produced mainly in China, Indonesia, and Vietnam. Production and trade figures are compiled by FAO and national agricultural agencies.',
+          text: 'Sri Lanka remains the leading producer of true cinnamon today, while cassia-type bark is produced mainly in China, Indonesia, and Vietnam.',
         },
       ],
     },

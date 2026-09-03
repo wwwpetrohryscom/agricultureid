@@ -87,10 +87,6 @@ export const cranberry: CropContent = {
           type: 'paragraph',
           text: 'Cranberry is native to acidic bogs and wetlands of northeastern North America, where it was traditionally harvested from wild stands before cultivation in engineered beds developed into a commercial industry. Production remains concentrated in regions of North America with suitable wetland and water resources.',
         },
-        {
-          type: 'paragraph',
-          text: 'Production and trade statistics are compiled by national and international bodies and are best obtained from primary sources such as FAOSTAT and national agricultural statistics services rather than assumed.',
-        },
       ],
     },
     {

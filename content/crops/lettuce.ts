@@ -91,7 +91,7 @@ export const lettuce: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'Lettuce is now grown across a very wide range of countries and production systems. Current statistics on planted area, production, and trade by country are compiled by FAO and national agricultural agencies.',
+          text: 'Lettuce is now grown across a very wide range of countries and production systems.',
         },
       ],
     },
@@ -166,10 +166,6 @@ export const lettuce: CropContent = {
         {
           type: 'paragraph',
           text: 'Because of its shallow root system and high water content, lettuce requires frequent, consistent irrigation; moisture stress can reduce quality and increase the risk of tipburn and bitterness. Drip and sprinkler irrigation are both used in field production.',
-        },
-        {
-          type: 'paragraph',
-          text: 'Crop water requirements in open-field production are estimated from evapotranspiration and local climate data, following methods published by FAO and national agricultural agencies.',
         },
       ],
     },

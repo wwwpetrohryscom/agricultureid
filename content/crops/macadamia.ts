@@ -90,7 +90,7 @@ export const macadamia: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'Australia, South Africa, Kenya, and Hawaii are now among the leading producing regions, with additional plantings in other subtropical countries. Production statistics are compiled by FAO and national agricultural agencies.',
+          text: 'Australia, South Africa, Kenya, and Hawaii are now among the leading producing regions, with additional plantings in other subtropical countries.',
         },
       ],
     },

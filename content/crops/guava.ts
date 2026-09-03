@@ -86,10 +86,6 @@ export const guava: CropContent = {
           type: 'paragraph',
           text: 'Guava is native to the tropical Americas and has been widely distributed to tropical and subtropical regions worldwide, where it is now grown both as a commercial fruit crop and as a naturalized or dooryard tree in many areas.',
         },
-        {
-          type: 'paragraph',
-          text: 'Current production areas, leading cultivars, and trade patterns change over time; up-to-date figures are best obtained from primary sources such as FAOSTAT and national agricultural statistics services rather than assumed.',
-        },
       ],
     },
     {

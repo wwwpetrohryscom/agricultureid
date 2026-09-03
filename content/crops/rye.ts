@@ -86,10 +86,6 @@ export const rye: CropContent = {
           type: 'paragraph',
           text: 'Rye is thought to have originated as a weed in early wheat and barley fields in southwestern Asia, gradually becoming a crop in its own right as it was selected for cultivation on land too cold or poor for other cereals. It remains most important in cool-temperate regions of Europe and parts of North America and Asia.',
         },
-        {
-          type: 'paragraph',
-          text: 'Production and trade statistics vary by year and region and are best drawn from primary sources such as FAOSTAT rather than assumed.',
-        },
       ],
     },
     {

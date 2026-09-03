@@ -97,10 +97,6 @@ export const breadfruit: CropContent = {
           type: 'paragraph',
           text: 'Breadfruit was domesticated in the western Pacific and New Guinea region and carried across the Pacific by voyaging peoples over thousands of years. It was later introduced to the Caribbean and other tropical regions, where it is now widely grown.',
         },
-        {
-          type: 'paragraph',
-          text: 'Production is largely for local consumption and is not fully captured in international statistics; available figures are compiled by FAO and national agencies and should be consulted directly.',
-        },
       ],
     },
     {

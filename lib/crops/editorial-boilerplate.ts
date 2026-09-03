@@ -45,6 +45,27 @@ export interface StandingPhrase {
  */
 export const STANDING_PHRASE_MIN_SHARE = 0.4;
 
+/**
+ * The two methodology caveats Wave 45 took out of article prose.
+ *
+ * Held as constants because they are the corpus speaking about its own
+ * numbers, not a crop's agronomy. Before Wave 45 the first appeared in 123 of
+ * 257 crop articles in 90 distinct wordings and the second in 15; centralising
+ * them removed 156 sentences of prose, cut the corpus's longest shared run
+ * from 47 words to under 35, and — the part that matters more — replaced 90
+ * versions of one editorial policy with one.
+ *
+ * They are rendered by `CropMethodologyNote` on every crop page. The integrity
+ * validator forbids either sentence, and the openers they were cut at, from
+ * reappearing in article prose: a page that restates a centralised policy is
+ * how the ninety wordings happened the first time.
+ */
+export const CROP_STATISTICS_CAVEAT =
+  'Production, area and trade figures for any crop change from season to season and are compiled by FAO and by national agricultural statistics agencies. Take current numbers from those primary sources, dated to the period you mean, rather than from a secondary summary — including this one.';
+
+export const CROP_ET_METHODOLOGY_CAVEAT =
+  'Crop water requirements are estimated from reference evapotranspiration and local climate data, following methods published by FAO and national agricultural agencies. A requirement quoted without the reference method and the local climate behind it is not a number that can be applied to a field.';
+
 export const STANDING_PHRASES: readonly StandingPhrase[] = [
   {
     phrase:

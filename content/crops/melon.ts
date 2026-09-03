@@ -87,10 +87,6 @@ export const melon: CropContent = {
           type: 'paragraph',
           text: 'Melon is believed to have originated in Africa and Asia, where a wide range of wild and semi-domesticated Cucumis melo relatives are found, with subsequent diversification into the many market types grown around the world today. It is now cultivated commercially in warm regions across every populated continent.',
         },
-        {
-          type: 'paragraph',
-          text: 'Production areas, dominant market types, and trade patterns vary by region and change over time; current figures are best obtained from primary sources such as FAOSTAT and national agricultural statistics services rather than assumed.',
-        },
       ],
     },
     {

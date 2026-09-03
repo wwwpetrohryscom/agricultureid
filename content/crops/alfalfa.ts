@@ -92,7 +92,7 @@ export const alfalfa: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'Alfalfa is now grown across temperate and semi-arid regions on multiple continents as a major forage crop. Production statistics and regional importance vary and are best obtained from primary sources such as FAOSTAT and national agricultural statistics services rather than assumed.',
+          text: 'Alfalfa is now grown across temperate and semi-arid regions on multiple continents as a major forage crop.',
         },
       ],
     },

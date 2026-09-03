@@ -83,7 +83,7 @@ export const pecan: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'The United States and Mexico account for most global production, with additional plantings established in South Africa, Australia, Peru, and other regions with suitable climates. Production statistics are compiled by FAO and national agricultural agencies.',
+          text: 'The United States and Mexico account for most global production, with additional plantings established in South Africa, Australia, Peru, and other regions with suitable climates.',
         },
       ],
     },

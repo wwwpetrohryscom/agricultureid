@@ -97,10 +97,6 @@ export const fonio: CropContent = {
           type: 'paragraph',
           text: 'Fonio was domesticated in West Africa and has been cultivated there for a very long time. It remains concentrated in the savanna and highland zones of West Africa, where it is grown mainly by smallholder farmers.',
         },
-        {
-          type: 'paragraph',
-          text: 'Comprehensive production statistics are limited because much of the crop is grown for subsistence; available figures are compiled by FAO and national agencies and should be consulted directly.',
-        },
       ],
     },
     {

@@ -82,7 +82,7 @@ export const saffron: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'Iran is by far the world’s leading producer of saffron today, with additional production in India, Afghanistan, Spain, Greece, and Morocco. Production and trade statistics are compiled by FAO and national agricultural agencies.',
+          text: 'Iran is by far the world’s leading producer of saffron today, with additional production in India, Afghanistan, Spain, Greece, and Morocco.',
         },
       ],
     },

@@ -91,10 +91,6 @@ export const avocado: CropContent = {
           type: 'paragraph',
           text: 'Avocado is native to Mesoamerica, with the crop’s major horticultural races (commonly referred to as Mexican, Guatemalan, and West Indian) reflecting long domestication and diversification across that region before spreading through global trade to subtropical and tropical growing areas worldwide.',
         },
-        {
-          type: 'paragraph',
-          text: 'Production areas, dominant cultivars, and trade patterns change over time; current figures are best obtained from primary sources such as FAOSTAT and national agricultural statistics services rather than assumed.',
-        },
       ],
     },
     {

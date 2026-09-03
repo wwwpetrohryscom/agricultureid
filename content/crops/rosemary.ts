@@ -145,7 +145,7 @@ export const rosemary: CropContent = {
       body: [
         {
           type: 'paragraph',
-          text: 'Rosemary tolerates drought well once established and requires only modest supplemental irrigation in most climates. Overwatering is a more common problem than underwatering in cultivated settings.',
+          text: 'Rosemary roots deeply for a subshrub and, once a plant has made that root system, it draws on soil water a shallow-rooted herb cannot reach. Growers who irrigate it on a vegetable schedule lose plants: the species evolved on thin, sharply drained Mediterranean soils and its roots do not tolerate sitting wet. Where irrigation is used it is applied rarely and deeply rather than often and lightly.',
         },
         {
           type: 'paragraph',

@@ -97,10 +97,6 @@ export const kohlrabi: CropContent = {
           type: 'paragraph',
           text: 'Kohlrabi was developed in Europe from the wild cabbage lineage that gave rise to the diverse Brassica oleracea vegetables, and it is grown widely across Europe, Asia, and other temperate regions, being particularly popular in parts of central Europe and South and East Asia.',
         },
-        {
-          type: 'paragraph',
-          text: 'Because it is a fresh vegetable, detailed production statistics are limited; available figures are compiled by FAO and national agencies and should be consulted directly.',
-        },
       ],
     },
     {

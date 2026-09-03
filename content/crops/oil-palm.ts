@@ -90,7 +90,7 @@ export const oilPalm: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'Southeast Asia, particularly Indonesia and Malaysia, now accounts for the large majority of global production, with growing cultivation in West Africa and parts of Latin America. Current production and trade figures are compiled by FAO and national agencies.',
+          text: 'Southeast Asia, particularly Indonesia and Malaysia, now accounts for the large majority of global production, with growing cultivation in West Africa and parts of Latin America.',
         },
       ],
     },

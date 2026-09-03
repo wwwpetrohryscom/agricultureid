@@ -92,10 +92,6 @@ export const leek: CropContent = {
           type: 'paragraph',
           text: 'Leek derives from wild Allium ampeloprasum populations native to the Mediterranean region, with cultivation dating back to antiquity and long-standing importance in European cuisines, particularly in parts of northern and western Europe where it remains a significant winter vegetable.',
         },
-        {
-          type: 'paragraph',
-          text: 'Production and trade figures change over time and by region; current data are best obtained from primary sources such as FAOSTAT and national agricultural statistics services rather than assumed.',
-        },
       ],
     },
     {

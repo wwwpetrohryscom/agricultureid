@@ -121,7 +121,7 @@ export const pear: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'Pear area is split between European and Asian production that statistical systems frequently report together, so a single world figure conceals two crops with different markets and seasons. Take current numbers from FAOSTAT or a national service, and check which species they cover.',
+          text: 'Pear area is split between European and Asian production that statistical systems frequently report together, so a single world figure conceals two crops with different markets and seasons.',
         },
       ],
     },

@@ -91,10 +91,6 @@ export const raspberry: CropContent = {
           type: 'paragraph',
           text: 'Raspberry derives from wild Rubus idaeus populations native to temperate Europe and Asia, long selected and improved for larger, more uniform fruit. It is now grown commercially across temperate regions worldwide, with production concentrated where summers are mild.',
         },
-        {
-          type: 'paragraph',
-          text: 'Production and trade statistics vary by year and region and are best obtained from primary sources such as FAOSTAT and national agricultural statistics services rather than assumed.',
-        },
       ],
     },
     {
@@ -202,10 +198,10 @@ export const raspberry: CropContent = {
         {
           type: 'list',
           items: [
-            'Fresh-market eating berries',
-            'Individually quick-frozen (IQF) fruit for food manufacturing',
-            'Processed products including jam, juice, and bakery fillings',
-            'Flavoring and extract uses in food and beverage products',
+            'Fresh-market punnets, where the hollow receptacle-free fruit is fragile enough to set the whole supply chain',
+            'Individually quick-frozen fruit, the outlet that absorbs the machine-harvested crop',
+            'Purée and juice concentrate for dairy, bakery and beverage manufacture',
+            'Leaf, harvested separately from the fruit crop for herbal infusion',
           ],
         },
       ],

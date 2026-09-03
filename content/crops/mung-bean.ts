@@ -92,10 +92,6 @@ export const mungBean: CropContent = {
           type: 'paragraph',
           text: 'Mung bean is generally considered to have been domesticated in the Indian subcontinent, from where it spread across Asia. It remains most important in South and Southeast Asia, with expanding production in Australia and parts of Africa.',
         },
-        {
-          type: 'paragraph',
-          text: 'Statistics on planted area, production, and trade by country are compiled by FAO and national agencies and should be consulted directly for current figures.',
-        },
       ],
     },
     {

@@ -92,7 +92,7 @@ export const chiliPepper: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'The crop is grown today across warm cropping regions worldwide. Production and trade figures are compiled by FAO and national agricultural statistics services.',
+          text: 'The crop is grown today across warm cropping regions worldwide.',
         },
       ],
     },

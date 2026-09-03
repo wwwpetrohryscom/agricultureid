@@ -93,10 +93,6 @@ export const taro: CropContent = {
           type: 'paragraph',
           text: 'Taro is one of the oldest cultivated crops, generally considered to have been domesticated in South or Southeast Asia, from where it spread across the Pacific, into Africa, and to the Caribbean. It remains a culturally and nutritionally important staple in the Pacific Islands.',
         },
-        {
-          type: 'paragraph',
-          text: 'Statistics on planted area and production by country are compiled by FAO and national agencies and should be consulted directly for current figures.',
-        },
       ],
     },
     {

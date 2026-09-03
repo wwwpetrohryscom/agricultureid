@@ -69,7 +69,7 @@ export const turmeric: CropContent = {
             {
               term: 'Growth habit',
               description:
-                'Perennial rhizomatous herb; leafy pseudostems arise annually from the underground rhizome, which is harvested and used for propagation',
+                'Perennial herb lifted at leaf senescence; the rhizome is boiled and dried before it becomes the traded spice, unlike ginger, which is largely sold fresh',
             },
             {
               term: 'Propagation',
@@ -90,7 +90,7 @@ export const turmeric: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'India remains the leading producer and consumer of turmeric today, with significant cultivation also found across Southeast Asia and parts of Africa and Latin America. Production and trade figures are compiled by FAO and national agricultural agencies.',
+          text: 'India remains the leading producer and consumer of turmeric today, with significant cultivation also found across Southeast Asia and parts of Africa and Latin America.',
         },
       ],
     },
