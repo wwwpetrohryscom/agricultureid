@@ -13,6 +13,8 @@ import {
   CROP_EXPANSION_CANDIDATES,
 } from '@/data/crop-expansion';
 import { CROP_PUBLICATION_REVIEWS } from '@/data/crop-publication';
+import { CROP_SCOPE_REVIEWS } from '@/data/crop-scope-review';
+import { WAVE_43_IDENTITIES } from '@/data/crop-identity/wave43';
 import { PROMOTIONAL_PHRASES } from '@/types/crop-expansion';
 import { IDENTITY_BY_SLUG } from '@/lib/crops/identity';
 import { PUBLISHED_CONTENT } from '@/lib/content/registry';
@@ -38,8 +40,29 @@ describe('the two campaigns do not overlap', () => {
   });
 
   it('accounts for the corpus growth it claims', () => {
-    // 214 crop articles after Wave 39, recomputed rather than asserted.
-    expect(crops.length - PUBLISHED.length).toBe(214);
+    /*
+     * 214 crop articles after Wave 39, recomputed rather than asserted.
+     *
+     * Later waves add to `crops`, so what they added is subtracted the same
+     * way it was added — from the records that added it, never as a number.
+     * Wave 43 published four crops through scope-review promotions and one,
+     * the citrus concept page, through neither campaign: a concept page is not
+     * a candidate for promotion, it is the thing candidates get promoted
+     * under. It is identified by the wave register that introduced its
+     * identity, so a later wave subtracts its own additions from its own
+     * register rather than adjusting a number here.
+     */
+    const promoted = new Set(
+      CROP_SCOPE_REVIEWS.filter(
+        (r) => r.outcome === 'PROMOTE_CHILD_PROFILE',
+      ).map((r) => r.slug),
+    );
+    const newIdentityPages = WAVE_43_IDENTITIES.filter(
+      (i) => i.profileDepth === 'full-profile' && !promoted.has(i.slug),
+    );
+    expect(newIdentityPages.map((i) => i.slug)).toEqual(['citrus']);
+    const later = promoted.size + newIdentityPages.length;
+    expect(crops.length - PUBLISHED.length - later).toBe(214);
   });
 });
 

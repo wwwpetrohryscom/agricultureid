@@ -24,6 +24,23 @@ import {
 import { marketSnapshots } from '@/lib/markets/snapshot';
 import { getDataset } from '@/lib/data-ops/registry';
 import { PUBLISHED_CONTENT } from '@/lib/content/registry';
+import { allRoutes } from '@/lib/seo/routes';
+
+/*
+ * Only one of the four market datasets has a record page.
+ *
+ * `/datasets/[dataset]` builds a page per World Bank indicator snapshot plus
+ * the FAOSTAT trade matrix; the production, producer-price, trade-CL and USDA
+ * supply-use snapshots feed figures without having a record of their own. The
+ * source list linked all four regardless, so three-quarters of the "dataset
+ * record" links on this page were 404s. Derive the set rather than listing it,
+ * so publishing one of the missing records turns its link back on by itself.
+ */
+const datasetRoutes = new Set(
+  allRoutes()
+    .map((r) => r.path)
+    .filter((p) => p.startsWith('/datasets/')),
+);
 
 const TITLE = 'Agricultural Markets and Commodity Data';
 
@@ -184,13 +201,19 @@ export default function MarketsPage() {
                 <p className="mt-1 text-xs text-ink-500">
                   {snap.seriesCount.toLocaleString('en')} series ·{' '}
                   {snap.observationCount.toLocaleString('en')} observations ·
-                  read {snap.retrievedAt} ·{' '}
-                  <Link
-                    href={`/datasets/${datasetId}`}
-                    className="text-forest-700 hover:underline"
-                  >
-                    dataset record
-                  </Link>
+                  read {snap.retrievedAt}
+                  {datasetRoutes.has(`/datasets/${datasetId}`) ? (
+                    <>
+                      {' '}
+                      ·{' '}
+                      <Link
+                        href={`/datasets/${datasetId}`}
+                        className="text-forest-700 hover:underline"
+                      >
+                        dataset record
+                      </Link>
+                    </>
+                  ) : null}
                 </p>
               </li>
             );

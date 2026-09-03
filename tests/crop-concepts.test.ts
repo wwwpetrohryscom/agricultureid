@@ -8,6 +8,7 @@ import {
   AMBIGUOUS_BINOMIALS,
   HOMONYM_RESOLUTIONS,
 } from '@/data/crop-identity/homonyms';
+import { TAXON_SCOPE_OWNERSHIP } from '@/data/crop-taxon-ownership';
 import { NAME_CROSSWALK } from '@/data/crop-identity/name-crosswalk';
 import { CONCEPT_REQUIRED_RANKS } from '@/types/crop-concepts';
 import { CROP_IDENTITIES, IDENTITY_BY_SLUG } from '@/lib/crops/identity';
@@ -77,10 +78,20 @@ describe('concepts — a page that is not one plant says so', () => {
         } else {
           const id = IDENTITY_BY_SLUG.get(t.identitySlug!);
           expect(id, where).toBeDefined();
-          expect(
-            id!.taxonRank === 'cultivar-group',
-            `${where} heldAs=${t.heldAs}`,
-          ).toBe(t.heldAs === 'cultivar-group-only');
+          /*
+           * `cultivar-group-only` means the constituent names one thing and
+           * the corpus holds a narrower thing — pumpkin names Cucurbita pepo
+           * and the corpus holds its Zucchini Group. It is not a statement
+           * about rank: the citrus concept names the Sweet Orange, Grapefruit
+           * and Mandarin Groups directly, and for those the corpus holds
+           * exactly what the constituent names, so own-identity is correct
+           * however the rank reads. The test is whether the names differ.
+           */
+          const namesDiffer =
+            norm(t.scientificName) !== norm(id!.acceptedScientificName);
+          expect(namesDiffer, `${where} heldAs=${t.heldAs}`).toBe(
+            t.heldAs === 'cultivar-group-only',
+          );
         }
       }
   });
@@ -201,14 +212,35 @@ describe('crosswalk — a refusal that answers someone', () => {
   const top = (q: string) => search(idx, q, { limit: 1 }).results[0]?.doc;
 
   it('resolves every refused name that has an answer', () => {
-    // Counted by which entries deliberately answer with nothing rather than by
-    // a total, which grew from 83 to 95 across Waves 39 to 41 and will grow
-    // again. The four nulls are the claim: three homonyms that resolve to a
-    // different plant under a different author, and one contested species.
-    const unresolved = NAME_CROSSWALK.filter((x) => !x.resolvesTo).map(
-      (x) => x.name,
-    );
-    expect(unresolved.length).toBe(4);
+    /*
+     * Counted by REASON, not by total.
+     *
+     * The total grew from 83 to 95 across Waves 39 to 41 and to 101 in Wave
+     * 43, so a number is worthless here; what has to hold is that every entry
+     * answering with nothing has a reason the corpus recognises. Wave 43 added
+     * a fourth reason — a parent taxon whose scope is owned by a record rather
+     * than a page, where every possible destination is a child overstating
+     * itself — so the assertion is over the set of reasons and the membership
+     * of each, and an entry resolving nowhere for no stated reason fails it.
+     */
+    const unresolved = NAME_CROSSWALK.filter((x) => !x.resolvesTo);
+    const byKind = new Map<string, string[]>();
+    for (const x of unresolved)
+      byKind.set(x.kind, [...(byKind.get(x.kind) ?? []), x.name]);
+
+    expect([...byKind.keys()].sort()).toEqual([
+      'homonym',
+      'parent-taxon',
+      'unresolved-taxon',
+    ]);
+    // Homonyms and contested taxa resolve nowhere by rule, checked below and
+    // in the concepts validator. Parent taxa resolve nowhere only where the
+    // ownership layer gives them a record instead of a page.
+    for (const name of byKind.get('parent-taxon') ?? []) {
+      const owner = TAXON_SCOPE_OWNERSHIP.find((o) => o.parentTaxon === name);
+      expect(owner, name).toBeDefined();
+      expect(owner!.ownerKind, name).toBe('taxon-scope-record');
+    }
     expect(NAME_CROSSWALK.length).toBeGreaterThan(unresolved.length);
   });
 

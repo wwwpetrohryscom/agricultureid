@@ -1005,6 +1005,138 @@ export const CROP_CONCEPTS: readonly CropConcept[] = [
     ],
     reviewedAt: '2026-09-02',
   },
+
+  /* ---- Wave 43: the parent nobody owned ------------------------------------
+   * Orange, grapefruit and mandarin are three cultivar groups of one hybrid
+   * taxon, and until this record nothing in the corpus named that taxon. The
+   * scope they share had nowhere to be stated, which is why mandarin sat
+   * blocked for two waves: publishing it would have added a third page to a
+   * group whose shared facts still lived in no page at all.
+   */
+  {
+    slug: 'citrus',
+    kind: 'species-complex',
+    scopeStatement:
+      'This page covers citrus as a crop group and the hybrid structure the group shares. Nearly all cultivated citrus descends from three ancestral species, and under the treatment followed here sweet orange, grapefruit and mandarin are cultivar groups of a single hybrid, Citrus × aurantium, rather than three species. Each citrus crop keeps its own page and its own evidence; what sits here is what none of them can say alone.',
+    constituents: [
+      {
+        scientificName: 'Citrus × aurantium Sweet Orange Group',
+        commonName: 'Orange',
+        heldAs: 'own-identity',
+        identitySlug: 'orange',
+        relationshipKind: 'cultivar-group',
+        routeStatus: 'own-page',
+        role: 'The largest citrus crop by volume, and one of three cultivar groups of the hybrid this page exists to explain. Most of the world crop is juiced, which is why its market series measures a minority of it.',
+      },
+      {
+        scientificName: 'Citrus × aurantium Grapefruit Group',
+        commonName: 'Grapefruit',
+        heldAs: 'own-identity',
+        identitySlug: 'grapefruit',
+        relationshipKind: 'cultivar-group',
+        routeStatus: 'own-page',
+        role: 'A pummelo back-cross that Plants of the World Online sinks into Citrus × aurantium. Published separately as Citrus × paradisi by many sources, which is a naming difference rather than a different plant.',
+      },
+      {
+        scientificName: 'Citrus × aurantium Mandarin Group',
+        commonName: 'Mandarin',
+        heldAs: 'own-identity',
+        identitySlug: 'mandarin',
+        relationshipKind: 'cultivar-group',
+        routeStatus: 'own-page',
+        role: 'The easy-peeling citrus, covering clementine, satsuma and tangerine types. Blocked in Wave 39 and published in Wave 43 once this page existed to carry the shared scope.',
+      },
+      {
+        scientificName: 'Citrus × limon',
+        commonName: 'Lemon',
+        heldAs: 'own-identity',
+        identitySlug: 'lemon',
+        relationshipKind: 'hybrid',
+        routeStatus: 'own-page',
+        role: 'A separate hybrid rather than a group within Citrus × aurantium — citron crossed into the sour orange line. Its separateness is the point: not every citrus collapses into the same taxon.',
+      },
+      {
+        scientificName: 'Citrus × aurantiifolia',
+        commonName: 'Lime',
+        heldAs: 'own-identity',
+        identitySlug: 'lime',
+        relationshipKind: 'hybrid',
+        routeStatus: 'own-page',
+        role: 'Another distinct hybrid, and the name under which several unrelated limes are traded. The corpus publishes this one and resolves the others through the name register.',
+      },
+      {
+        scientificName: 'Citrus maxima',
+        commonName: 'Pomelo',
+        heldAs: 'own-identity',
+        identitySlug: 'pomelo',
+        relationshipKind: 'genome-donor',
+        routeStatus: 'own-page',
+        role: 'One of the three ancestral species rather than a hybrid, and a crop in its own right. Grapefruit and the sweet oranges carry its genome.',
+      },
+      {
+        scientificName: 'Citrus hystrix',
+        commonName: 'Makrut lime',
+        heldAs: 'own-identity',
+        identitySlug: 'kaffir-lime',
+        relationshipKind: 'cultivated-species',
+        routeStatus: 'own-page',
+        role: 'A species in its own right, grown for leaves rather than fruit. Blocked in Wave 40 for the same missing-parent reason as mandarin and published in Wave 43.',
+      },
+      {
+        scientificName: 'Citrus medica',
+        commonName: 'Citron',
+        heldAs: 'own-identity',
+        identitySlug: 'citron',
+        relationshipKind: 'genome-donor',
+        routeStatus: 'taxon-row-only',
+        role: 'The second ancestral species, held as a taxon. It is grown at small scale for rind and for ritual use, and its agricultural literature is thin next to its genetic importance.',
+      },
+      {
+        scientificName: 'Citrus japonica',
+        commonName: 'Kumquat',
+        heldAs: 'own-identity',
+        identitySlug: 'kumquat',
+        relationshipKind: 'cultivated-species',
+        routeStatus: 'taxon-row-only',
+        role: 'Held as a taxon. Long treated as Fortunella and returned to Citrus by both authorities, which is a placement change the name register carries.',
+      },
+      {
+        scientificName: 'Citrus australasica',
+        commonName: 'Finger lime',
+        heldAs: 'own-identity',
+        identitySlug: 'finger-lime',
+        relationshipKind: 'cultivated-species',
+        routeStatus: 'taxon-row-only',
+        role: 'An Australian species with a recent and small commercial history, held as a taxon.',
+      },
+    ],
+    splitCriterion:
+      'A citrus taxon earns its own page when its production system is separate — a different harvested organ, a different market, a different orchard decision. Mandarin earned it on seedless orchard layout and makrut lime on being a leaf crop. Citron, kumquat and finger lime have not: their published agronomy is citrus agronomy at a smaller scale.',
+    excludes: [
+      {
+        scientificName: 'Poncirus trifoliata',
+        commonName: 'Trifoliate orange',
+        reason:
+          'A rootstock and a breeding parent rather than a fruit crop, and placed in a separate genus by the treatment followed here. It reaches citrus growers as roots, which is a different subject from a citrus crop.',
+      },
+      {
+        scientificName: 'Citrus × sinensis',
+        commonName: 'Sweet orange, as a species name',
+        reason:
+          'Not a taxon this page excludes but a name it resolves: both this and Citrus × paradisi are sunk into Citrus × aurantium under the treatment followed here, so records published under them reach the orange and grapefruit pages.',
+        resolvesTo: { type: 'crop', slug: 'orange' },
+      },
+    ],
+    marketGranularity: 'NO_MARKET_LINKAGE',
+    marketGranularityNote:
+      'No commodity series is keyed to this page, and that is correct rather than a gap: citrus is reported crop by crop — oranges, lemons and limes, grapefruit, tangerines — so a citrus-level series does not exist to attach. The separation in the trade data runs opposite to the taxonomy, where the boundaries collapse.',
+    sourceIds: [
+      'wfo-world-flora-online',
+      'powo-plants-of-the-world-online',
+      'faostat',
+    ],
+    reviewedAt: '2026-09-03',
+  },
 ];
 
 export const CONCEPT_BY_SLUG = new Map(CROP_CONCEPTS.map((c) => [c.slug, c]));

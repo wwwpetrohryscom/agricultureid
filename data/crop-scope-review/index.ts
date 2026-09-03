@@ -815,9 +815,10 @@ export const CROP_SCOPE_REVIEWS: readonly CropScopeReview[] = [
   },
   {
     slug: 'mandarin',
-    wave: 'wave-41',
+    wave: 'wave-43',
     priorState: 'publication:BLOCKED_SCOPE',
-    outcome: 'DEFER_UNRESOLVED',
+    outcome: 'PROMOTE_CHILD_PROFILE',
+    conceptSlug: 'citrus',
     dimensionsInspected: [
       'accepted-taxonomy',
       'hybrid-members',
@@ -826,15 +827,15 @@ export const CROP_SCOPE_REVIEWS: readonly CropScopeReview[] = [
       'search-intent',
     ],
     finding:
-      'The identity resolves to Citrus × aurantium Mandarin Group, and so do circumscriptions that also contain orange and grapefruit, which the corpus publishes as separate pages. There is no citrus page to carry a concept, so declaring the scope would mean creating an umbrella above five existing pages — a larger change than a scope note and one this wave did not research.',
+      "Wave 39 stopped this crop because the identity resolves to Citrus × aurantium Mandarin Group and so do circumscriptions containing orange and grapefruit, with no citrus page to carry a concept. Wave 43 published that page and declared the hybrid's scope, so the block is gone and the crop is published: the trait that earns it a page is that seedlessness in mandarin is decided by orchard layout rather than by cultivar.",
     wouldChangeIf:
-      'A citrus concept page covering the hybrid complex, with the five published citrus crops declared as constituents. That is a wave of work, not a record.',
+      'Nothing outstanding. The condition Wave 39 named — a citrus concept above the five published citrus crops — was built before the child was promoted, which is the order the ownership rule requires.',
     sourceIds: [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
       'fao',
     ],
-    reviewedAt: '2026-09-02',
+    reviewedAt: '2026-09-03',
   },
   {
     slug: 'miscanthus',
@@ -860,9 +861,9 @@ export const CROP_SCOPE_REVIEWS: readonly CropScopeReview[] = [
   },
   {
     slug: 'turnip',
-    wave: 'wave-41',
+    wave: 'wave-43',
     priorState: 'expansion:DECLINE_SCOPE_UNRESOLVED',
-    outcome: 'DEFER_UNRESOLVED',
+    outcome: 'PROMOTE_CHILD_PROFILE',
     dimensionsInspected: [
       'accepted-taxonomy',
       'cultivar-groups',
@@ -870,21 +871,21 @@ export const CROP_SCOPE_REVIEWS: readonly CropScopeReview[] = [
       'market-terminology',
     ],
     finding:
-      'Turnip is the Brassica rapa Rapifera Group, and no page in this corpus owns Brassica rapa. Three B. rapa crops are published — chinese cabbage, pak choi and, in the same pattern, several others — and each is a cultivar group standing alone with no species-level page above it. Publishing a fourth would deepen that rather than resolve it.',
+      'Turnip is the Brassica rapa Rapifera Group and no page owned Brassica rapa. Wave 43 resolved that with a scope record rather than a species page, because the infraspecific classification of the species is contested between treatments while the agricultural forms are not — publishing a species page would have asserted one classification over the others. With the parent scope declared, turnip is published as a form beside chinese cabbage and pak choi, which is the arrangement the corpus already had for its siblings.',
     wouldChangeIf:
-      'A decision about whether Brassica rapa gets a species page above its cultivar groups, or whether cultivar groups stand alone. Either answer resolves turnip; the absence of an answer is what blocks it.',
+      'A decision to publish Brassica rapa as a species page would move the shared scope onto it and change what this page carries, though not whether it exists.',
     sourceIds: [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
       'fao',
     ],
-    reviewedAt: '2026-09-02',
+    reviewedAt: '2026-09-03',
   },
   {
     slug: 'swede',
-    wave: 'wave-41',
+    wave: 'wave-43',
     priorState: 'expansion:DECLINE_SCOPE_UNRESOLVED',
-    outcome: 'DEFER_UNRESOLVED',
+    outcome: 'PROMOTE_CHILD_PROFILE',
     dimensionsInspected: [
       'accepted-taxonomy',
       'cultivar-groups',
@@ -892,21 +893,22 @@ export const CROP_SCOPE_REVIEWS: readonly CropScopeReview[] = [
       'commodity-usage',
     ],
     finding:
-      'Swede is the Brassica napus Napobrassica Group — the same species as oilseed rape, grown for a root. The rapeseed concept declared in this wave explicitly excludes it, because a page about an oilseed cannot carry a fodder and vegetable root. No page in the corpus covers root brassicas.',
+      "Swede is the Brassica napus Napobrassica Group, and the rapeseed concept that owns Brassica napus explicitly excluded it — correctly, since a page about an oilseed cannot carry a fodder and vegetable root. That exclusion left swede with no owner at all, which was the block. Wave 43 published it as a root crop in its own right and the rapeseed concept's exclusion now points at a page rather than at nothing.",
     wouldChangeIf:
-      'The same decision as turnip: whether root brassicas are covered by a species page, a use-based page, or their own cultivar-group pages.',
+      'Nothing outstanding. The exclusion was the right call and the missing piece was the page it excluded to, which now exists.',
     sourceIds: [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
       'fao',
     ],
-    reviewedAt: '2026-09-02',
+    reviewedAt: '2026-09-03',
   },
   {
     slug: 'kaffir-lime',
-    wave: 'wave-41',
+    wave: 'wave-43',
     priorState: 'expansion:DECLINE_SCOPE_UNRESOLVED',
-    outcome: 'DEFER_UNRESOLVED',
+    outcome: 'PROMOTE_CHILD_PROFILE',
+    conceptSlug: 'citrus',
     dimensionsInspected: [
       'accepted-taxonomy',
       'hybrid-members',
@@ -914,15 +916,15 @@ export const CROP_SCOPE_REVIEWS: readonly CropScopeReview[] = [
       'search-intent',
     ],
     finding:
-      'Citrus hystrix is unambiguous as a taxon — both authorities agree — and it is blocked by the same missing citrus concept that blocks mandarin. It is also the citrus grown for its leaves rather than its fruit, which is the strongest independent case among the citrus candidates and is not enough on its own while the genus has no declared scope.',
+      'Citrus hystrix was unambiguous as a taxon and blocked by the same missing citrus concept that blocked mandarin. Wave 43 built it, and the species-level case Wave 40 recorded as already sufficient — a citrus grown for leaves rather than fruit, with pruning height and shade managed for leaf yield — carried the article.',
     wouldChangeIf:
-      'A citrus concept page. The species-level evidence for a leaf-harvest citrus is already sufficient.',
+      'Nothing outstanding. The genus scope now exists and the species evidence was sufficient before it.',
     sourceIds: [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
       'fao',
     ],
-    reviewedAt: '2026-09-02',
+    reviewedAt: '2026-09-03',
   },
 ];
 

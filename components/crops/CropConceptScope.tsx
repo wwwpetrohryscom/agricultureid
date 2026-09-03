@@ -3,12 +3,23 @@ import { CONCEPT_BY_SLUG } from '@/data/crop-identity/concepts';
 import { HOMONYM_RESOLUTIONS } from '@/data/crop-identity/homonyms';
 import { CONCEPT_KIND_MEANING } from '@/types/crop-concepts';
 import { CROP_TAXA_PATH } from '@/lib/crops/paths';
+import { constituentDestination } from '@/lib/crops/identity';
 
 const HELD_LABEL: Record<string, string> = {
   'own-identity': 'held as a verified taxon',
   'cultivar-group-only': 'held only as a cultivar group',
   'not-held': 'not held by this corpus',
 };
+
+/**
+ * What the reader gets when they follow the link, said before they follow it.
+ *
+ * A held taxon with no page of its own is listed in the verified-taxa
+ * register. Sending someone there under the same wording as a link to a full
+ * page would be the same mistake in nicer clothes, so the destination is
+ * named.
+ */
+const REGISTER_SUFFIX = ' — listed in the taxa register, no page of its own';
 
 /**
  * What this page covers, when that is more than one plant.
@@ -24,6 +35,29 @@ const HELD_LABEL: Record<string, string> = {
  * the macadamia species are named here precisely because the corpus does not
  * hold them, and a reader looking for one should not be left hunting.
  */
+function ConstituentHolding({
+  heldAs,
+  identitySlug,
+}: {
+  heldAs: string;
+  identitySlug?: string;
+}) {
+  const label = HELD_LABEL[heldAs] ?? heldAs;
+  if (heldAs === 'not-held') return <>{label}</>;
+  const dest = constituentDestination(identitySlug);
+  if (dest.kind === 'unheld') return <>{label}</>;
+  return (
+    <>
+      <Link href={dest.href} className="text-forest-700 hover:underline">
+        {label}
+      </Link>
+      {dest.kind === 'register' ? (
+        <span className="text-ink-600">{REGISTER_SUFFIX}</span>
+      ) : null}
+    </>
+  );
+}
+
 export function CropConceptScope({ slug }: { slug: string }) {
   const concept = CONCEPT_BY_SLUG.get(slug);
   if (!concept) return null;
@@ -72,22 +106,10 @@ export function CropConceptScope({ slug }: { slug: string }) {
                 <span className="block text-ink-600">{t.commonName}</span>
               </td>
               <td className="py-2 pr-3 align-top text-ink-700">
-                {t.heldAs === 'not-held' ? (
-                  HELD_LABEL[t.heldAs]
-                ) : t.identitySlug ? (
-                  <Link
-                    href={
-                      t.heldAs === 'own-identity'
-                        ? `/crops/${t.identitySlug}`
-                        : `/crops/${t.identitySlug}`
-                    }
-                    className="text-forest-700 hover:underline"
-                  >
-                    {HELD_LABEL[t.heldAs]}
-                  </Link>
-                ) : (
-                  HELD_LABEL[t.heldAs]
-                )}
+                <ConstituentHolding
+                  heldAs={t.heldAs}
+                  identitySlug={t.identitySlug}
+                />
               </td>
               <td className="py-2 align-top text-ink-700">{t.role}</td>
             </tr>

@@ -16,6 +16,8 @@ import { join, relative, sep } from 'node:path';
 import { SITE, SECTIONS } from '../lib/site';
 import { PUBLISHED_CONTENT, contentUrlPath } from '../lib/content/registry';
 import { sitemapPaths } from '../lib/seo/routes';
+import { FAO_CROP_MATCHES } from '../data/calendars/fao';
+import { CALENDAR_GROUP_SCOPE_MARKER } from '../types/calendar';
 
 /**
  * Paths this project forwards to a different Netlify project.
@@ -447,8 +449,70 @@ function main(): void {
   say(`  Oversized (> ${OVERSIZED_THRESHOLD}): ${oversized.length}`);
   for (const o of oversized.slice(0, 20)) say(`     - ${o.path}: ${o.n}`);
 
+  /* -- group-level calendars must say so ---------------------------------
+   *
+   * Checked here because this is the only place that reads what shipped. The
+   * FAO match layer records `granularity: 'CONCEPT_LEVEL'` for the thirteen
+   * names where the source measures a whole crop group; the calendars
+   * validator checks that field against the concept register; and until Wave
+   * 43 nothing checked that the reader was told. The negative half matters as
+   * much as the positive one — a marker pasted onto every calendar page would
+   * pass a presence check and disclose nothing.
+   */
+  const calendarScope: string[] = [];
+  for (const m of FAO_CROP_MATCHES) {
+    const page = byPath.get(`/crop-calendars/${m.cropRef}`);
+    if (!page) continue;
+    const html = readFileSync(page.file, 'utf8');
+    const marked = html.includes(CALENDAR_GROUP_SCOPE_MARKER);
+    if (m.granularity === 'CONCEPT_LEVEL' && !marked)
+      calendarScope.push(
+        `/crop-calendars/${m.cropRef}: FAO measures "${m.faoName}" at group level and the page does not say so`,
+      );
+    if (m.granularity === 'EXACT_ENTITY' && marked)
+      calendarScope.push(
+        `/crop-calendars/${m.cropRef}: carries the group-scope notice and the FAO match "${m.faoName}" is exact`,
+      );
+  }
+  say('\n--- Calendar scope disclosure ---');
+  say(
+    `  Group-level FAO matches: ${FAO_CROP_MATCHES.filter((m) => m.granularity === 'CONCEPT_LEVEL').length} · pages missing or misusing the notice: ${calendarScope.length}`,
+  );
+  for (const c of calendarScope) say(`     - ${c}`);
+
   say('');
   console.log(out.join('\n'));
+
+  /*
+   * The audit crawled, found and printed the defects — and exited 0.
+   *
+   * Wave 43 ran this by hand and read 41 broken internal links out of a CI
+   * step that had been green for every wave that produced them: 37 concept
+   * scope-table links to taxa the corpus holds but has never published, and
+   * four market "dataset record" links to records that do not exist. A crawl
+   * that reports a 404 without failing is a report, not a gate, and the
+   * difference is the whole reason the links survived.
+   *
+   * Only the two unambiguous classes fail. A link to a dynamic or noindex
+   * route resolves for a reader (`/explore` → `/search`), and a proxied
+   * `/journal` URL is served by another deployment; neither is broken. The
+   * orphan and depth figures above stay reports, because "no inbound anchor"
+   * is an editorial judgement rather than a broken promise.
+   */
+  const fatal = [
+    ...calendarScope,
+    ...brokenLinks.map((b) => `broken internal link: ${b.from} → ${b.to}`),
+    ...redirectLinks.map(
+      (r) => `link that only resolves via redirect: ${r.from} → "${r.raw}"`,
+    ),
+  ];
+  if (fatal.length) {
+    console.error(`\n  FAILED — ${fatal.length} link defect(s):\n`);
+    for (const f of fatal.slice(0, 40)) console.error(`    \u2717 ${f}`);
+    if (fatal.length > 40)
+      console.error(`    ... and ${fatal.length - 40} more`);
+    process.exit(1);
+  }
 }
 
 main();

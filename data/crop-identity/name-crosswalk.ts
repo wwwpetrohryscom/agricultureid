@@ -214,13 +214,13 @@ export const NAME_CROSSWALK: readonly NameCrosswalk[] = [
   {
     name: 'Brassica rapa subsp. rapa',
     kind: 'use',
-    resolvesTo: { type: 'crop-taxon', slug: 'turnip' },
+    resolvesTo: { type: 'crop', slug: 'turnip' },
     note: 'Rapifera Group of Brassica rapa.',
   },
   {
     name: 'Brassica napus var. napobrassica',
     kind: 'use',
-    resolvesTo: { type: 'crop-taxon', slug: 'swede' },
+    resolvesTo: { type: 'crop', slug: 'swede' },
     note: 'Napobrassica Group of Brassica napus — the same species as oilseed rape.',
   },
   {
@@ -334,13 +334,13 @@ export const NAME_CROSSWALK: readonly NameCrosswalk[] = [
   {
     name: 'Citrus deliciosa',
     kind: 'use',
-    resolvesTo: { type: 'crop-taxon', slug: 'mandarin' },
+    resolvesTo: { type: 'crop', slug: 'mandarin' },
     note: 'Both authorities resolve mandarin and clementine to Citrus × aurantium f. deliciosa. Published as the Mandarin Group.',
   },
   {
     name: 'Citrus clementina',
     kind: 'synonym',
-    resolvesTo: { type: 'crop-taxon', slug: 'mandarin' },
+    resolvesTo: { type: 'crop', slug: 'mandarin' },
     note: 'Resolves to the same taxon as Citrus deliciosa; not a separate crop.',
   },
   {
@@ -382,14 +382,14 @@ export const NAME_CROSSWALK: readonly NameCrosswalk[] = [
   {
     name: 'tangerine',
     kind: 'synonym',
-    resolvesTo: { type: 'crop-taxon', slug: 'mandarin' },
+    resolvesTo: { type: 'crop', slug: 'mandarin' },
     note: 'A market name within the mandarin group.',
   },
   {
     name: 'satsuma',
     kind: 'cultivar',
-    resolvesTo: { type: 'crop', slug: 'orange' },
-    note: 'A cultivar group within mandarin, which the corpus publishes inside the Citrus × aurantium complex.',
+    resolvesTo: { type: 'crop', slug: 'mandarin' },
+    note: 'A cultivar group within mandarin, which the corpus publishes inside the Citrus × aurantium complex. Pointed at the orange page from Wave 29 until Wave 43, because mandarin had no page and orange was the nearest citrus that did — the note said mandarin the whole time.',
   },
   {
     name: 'Cavendish banana',
@@ -601,6 +601,58 @@ export const NAME_CROSSWALK: readonly NameCrosswalk[] = [
     kind: 'synonym',
     resolvesTo: { type: 'crop', slug: 'waterleaf' },
     note: 'A synonym of Talinum fruticosum still in wide use in West African agricultural literature.',
+  },
+
+  /* ---- Wave 43 — the shared parent taxa -----------------------------------
+   *
+   * Six taxa in this corpus are the parent of two or more crop pages, and a
+   * reader typing one of them was being sent to whichever child happened to
+   * score highest: "Citrus × aurantium" returned Mandarin, one of three
+   * coequal cultivar groups of it. Each name is entered here against the owner
+   * the scope-ownership layer names, and the entries are checked against that
+   * layer rather than typed from memory.
+   *
+   * Four resolve nowhere. Their scope is owned by a record and not a page, so
+   * there is no destination that is not a child overstating itself. Recording
+   * the name with no destination is the corpus saying it knows what the name
+   * is and has nowhere honest to send it — which is what the four `null`
+   * entries above this block are for as well.
+   */
+  {
+    name: 'Citrus \u00d7 aurantium',
+    kind: 'parent-taxon',
+    resolvesTo: { type: 'crop', slug: 'citrus' },
+    note: 'The hybrid whose Sweet Orange, Grapefruit and Mandarin Groups are three separate crop pages here. The citrus page exists to carry what the three share, so it is the one destination that does not present a child as the taxon.',
+  },
+  {
+    name: 'Triticum turgidum',
+    kind: 'parent-taxon',
+    resolvesTo: { type: 'crop', slug: 'wheat' },
+    note: 'Durum wheat and emmer are both Triticum turgidum. The wheat page owns the scope the two share; sending the name to either child would make the other invisible.',
+  },
+  {
+    name: 'Brassica oleracea',
+    kind: 'parent-taxon',
+    resolvesTo: null,
+    note: 'Six published crops are cultivar groups of this species and no page is about the species itself. Cabbage currently answers the query on its own field scores; that is a ranking outcome, not a statement by this corpus that cabbage is Brassica oleracea in the sense the reader means.',
+  },
+  {
+    name: 'Brassica rapa',
+    kind: 'parent-taxon',
+    resolvesTo: null,
+    note: 'Chinese cabbage, pak choi and turnip are published forms of this species and turnip rape is held as a taxon. The infraspecific classification is contested, which is the reason there is no species page to send the name to.',
+  },
+  {
+    name: 'Beta vulgaris',
+    kind: 'parent-taxon',
+    resolvesTo: null,
+    note: 'Sugar beet, beetroot and chard are all Beta vulgaris. No page is about the species, and each of the three is a different crop with different agronomy, so none of them can hold the name.',
+  },
+  {
+    name: 'Capsicum annuum',
+    kind: 'parent-taxon',
+    resolvesTo: null,
+    note: 'Sweet pepper and chili pepper are both Capsicum annuum, separated by pungency rather than by taxon. Neither can carry the species name without absorbing the other.',
   },
 ];
 

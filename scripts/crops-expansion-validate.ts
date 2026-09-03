@@ -32,6 +32,10 @@ import {
   CROP_EXPANSION_CANDIDATES,
 } from '../data/crop-expansion';
 import { RESEARCH_BY_SLUG } from '../data/crop-research';
+import {
+  CROP_SCOPE_REVIEWS,
+  SCOPE_REVIEW_BY_SLUG,
+} from '../data/crop-scope-review';
 import { CROP_IDENTITIES, IDENTITY_BY_SLUG } from '../lib/crops/identity';
 import { PUBLISHED_CONTENT } from '../lib/content/registry';
 import { articleText } from '../lib/crops/content-depth';
@@ -114,9 +118,20 @@ for (const c of CROP_EXPANSION_CANDIDATES) {
         );
     }
   } else if (page) {
-    fail(
-      `${at}: recommends ${c.recommendation} and a crop page exists — the decision and the corpus disagree`,
-    );
+    /*
+     * A page for a candidate this wave declined is a contradiction unless a
+     * later wave accounts for it. Wave 40 declined turnip, swede and kaffir
+     * lime because no page owned their parent taxon; Wave 43 built the owners
+     * and promoted all three. That is not Wave 40 being wrong — the block was
+     * real and is what got it fixed — so the decline stands and the scope
+     * review is what has to say the block was lifted.
+     */
+    const promoted =
+      SCOPE_REVIEW_BY_SLUG.get(c.slug)?.outcome === 'PROMOTE_CHILD_PROFILE';
+    if (!promoted)
+      fail(
+        `${at}: recommends ${c.recommendation} and a crop page exists — the decision and the corpus disagree`,
+      );
   }
 
   /* -- regional significance, corroborated against the article ------------ */
@@ -192,6 +207,13 @@ const publishedThisWave = CROP_EXPANSION_CANDIDATES.filter(
   (c) => c.recommendation === 'PUBLISH',
 ).map((c) => c.slug);
 
+/** Crops published after this layer's wave, by the mechanisms that exist. */
+const publishedLater = new Set(
+  CROP_SCOPE_REVIEWS.filter((r) => r.outcome === 'PROMOTE_CHILD_PROFILE').map(
+    (r) => r.slug,
+  ),
+);
+
 for (const g of COMPOSITION_GAPS) {
   const at = `composition gap ${g.dimension}/${g.bucket}`;
   if (!COMPOSITION_DIMENSIONS.includes(g.dimension))
@@ -206,13 +228,25 @@ for (const g of COMPOSITION_GAPS) {
   const added = publishedThisWave.filter((s) =>
     inBucket(s, g.dimension, g.bucket),
   ).length;
-  if (g.publishedAfter !== after)
+  /*
+   * Both counts stay EXACT, and both are anchored to the wave rather than to
+   * now.
+   *
+   * `publishedAfter` used to be compared with the live count, which held until
+   * a later wave published into one of these buckets — Wave 43 put turnip and
+   * swede into two of them. Relaxing it to a floor would have been the wrong
+   * repair: the record is a measurement of what this bucket held at the end of
+   * THIS wave, and that quantity is recomputable forever as the members it had
+   * before plus the ones this wave published into it. Nothing a later wave
+   * does can change either term.
+   */
+  if (g.publishedBefore !== g.bucketBefore.length)
     fail(
-      `${at}: records ${g.publishedAfter} articles now and the corpus counts ${after}`,
+      `${at}: records ${g.publishedBefore} before the wave and lists ${g.bucketBefore.length} article(s)`,
     );
-  if (g.publishedBefore !== after - added)
+  if (g.publishedAfter !== g.bucketBefore.length + added)
     fail(
-      `${at}: records ${g.publishedBefore} before the wave and the corpus computes ${after - added} (${after} now, ${added} published into it here)`,
+      `${at}: records ${g.publishedAfter} articles at the end of the wave and the corpus computes ${g.bucketBefore.length + added} (${g.bucketBefore.length} before, ${added} published into it here)`,
     );
   if (added === 0)
     fail(
@@ -227,14 +261,32 @@ for (const g of COMPOSITION_GAPS) {
    * every count agreed with it. Recomputing the list is what makes a finding
    * about membership answerable.
    */
-  const before = [...cropPages.keys()]
-    .filter((s) => inBucket(s, g.dimension, g.bucket))
-    .filter((s) => !publishedThisWave.includes(s))
-    .sort();
+  const nowInBucket = [...cropPages.keys()].filter((s) =>
+    inBucket(s, g.dimension, g.bucket),
+  );
   const declared = [...g.bucketBefore].sort();
-  if (declared.join(',') !== before.join(','))
+  const missing = declared.filter((x) => !nowInBucket.includes(x));
+  const wronglyClaimed = declared.filter((x) => publishedThisWave.includes(x));
+  /*
+   * And the other direction, kept total.
+   *
+   * A crop in this bucket that is neither listed as prior nor published by
+   * this wave has to be a LATER wave's. `publishedLater` is the set of
+   * mechanisms by which that can have happened, enumerated rather than
+   * assumed: today the scope-review layer's promotions are the only one. A
+   * future wave that publishes some other way will fail here until it is added
+   * — which is the point. Dropping the direction instead would let an
+   * unexplained member sit in a bucket a finding is written about.
+   */
+  const unexplained = nowInBucket.filter(
+    (s) =>
+      !declared.includes(s) &&
+      !publishedThisWave.includes(s) &&
+      !publishedLater.has(s),
+  );
+  if (missing.length || wronglyClaimed.length || unexplained.length)
     fail(
-      `${at}: lists ${declared.length} article(s) in the bucket before the wave and the corpus computes ${before.length} — unlisted: ${before.filter((x) => !declared.includes(x)).join(', ') || 'none'}; listed but not there: ${declared.filter((x) => !before.includes(x)).join(', ') || 'none'}`,
+      `${at}: the bucket and the record disagree — no longer in the bucket: ${missing.join(', ') || 'none'}; listed as prior yet published by this wave: ${wronglyClaimed.join(', ') || 'none'}; in the bucket and accounted for by nothing: ${unexplained.join(', ') || 'none'}`,
     );
   if (g.finding.trim().length < 80)
     fail(`${at}: states a count without a finding`);
