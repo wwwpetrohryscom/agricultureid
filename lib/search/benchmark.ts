@@ -94,6 +94,19 @@ export interface Benchmark {
    * the observed one. Excluded from aggregate rates; reported separately.
    */
   knownIssue?: string;
+  /**
+   * What the corpus has decided about a known issue. Wave 46 §49.
+   *
+   * A known issue without a disposition is a defect nobody has ruled on, kept
+   * indefinitely because it is easier to describe than to decide. Every one of
+   * them must end somewhere: fixed, accepted as a genuinely ambiguous query,
+   * limited by an architecture the corpus is not changing today, or deferred
+   * with the reason and the fix named. Required wherever `knownIssue` is set.
+   */
+  disposition?:
+    | 'INTENT_AMBIGUOUS_ACCEPTED'
+    | 'STRUCTURAL_LIMITATION'
+    | 'DEFERRED_WITH_REASON';
 }
 
 export const BENCHMARKS: Benchmark[] = [
@@ -1090,6 +1103,9 @@ export const BENCHMARKS: Benchmark[] = [
     titleIncludes: ['reefer container'],
     types: ['logistics-concept'],
     kind: 'exact',
+    disposition: 'INTENT_AMBIGUOUS_ACCEPTED',
+    knownIssue:
+      'Wave 46 changed this outcome and the change is recorded rather than tuned away. Saturating field frequency compressed the raw scores, and "Refrigerated Container" — whose whole alternative name IS this query — now leads the logistics concept about transporting one. Both are defensible: a reader typing the term may want the equipment or the service. Two attempts to restore the original order were built and measured, a multiplicative name bonus and a title-coverage factor, and each fixed this case by breaking another ("barley" returned its calendar; "nitrogen fertilizer" returned a comparison). A change that only moves the failure is not a fix, so the ambiguity is accepted and stated.',
   },
   {
     query: 'bonded warehouse',
@@ -1185,8 +1201,9 @@ export const BENCHMARKS: Benchmark[] = [
     types: ['trade-concept'],
     top3Includes: ['bill of lading', 'packing list', 'commercial invoice'],
     kind: 'multiword',
+    disposition: 'INTENT_AMBIGUOUS_ACCEPTED',
     knownIssue:
-      'No "shipping documents" page exists and none should be invented — the concept is covered by Bill of Lading / Packing List / Commercial Invoice, which are separate documents. The engine returns logistics-concept "Container Shipping", which matches "shipping" only and is about the mode of carriage, not paperwork. The document set is not reachable from the collective term.',
+      'No "shipping documents" page exists and none should be invented — the concept is covered by Bill of Lading, Packing List and Commercial Invoice, which are separate documents with separate legal effect. The collective term is a category the corpus deliberately does not publish, so the query has no right answer to return and the engine returning a shipping-adjacent concept is not a ranking defect. Accepted.',
   },
 
   /* ---- Phase 5F §7 — standards -------------------------------------------- */
@@ -1372,8 +1389,7 @@ export const BENCHMARKS: Benchmark[] = [
     // A known DEFECT, not a held guard: `kind: 'unsafe-equivalence'` is reserved
     // for guards that hold. The conflation danger is documented in `knownIssue`.
     kind: 'multiword',
-    knownIssue:
-      '"dry basis" is a declared searchAlias of the Moisture content converter, yet quality-attribute "Dry Matter Content" tops it — while the sibling alias "wet basis" reaches the tool correctly. The alias is defeated by raw title weight: "Dry" in a title (weight 10) outscores "dry basis" in the tool\'s names field (weight 8) even though the tool matches BOTH query tokens and Dry Matter Content matches one. Same root cause as the cultivar cases below.',
+    note: 'Fixed in Wave 46 by saturating field frequency. The tool matches both query tokens and Dry Matter Content matched one; the sum across a title, a names field and a summary no longer outruns that.',
   },
 
   /* ---- Phase 5F §7 — cultivar / breed PARENT relationships ---------------- */
@@ -1410,8 +1426,9 @@ export const BENCHMARKS: Benchmark[] = [
     // Documented defect that IS a false equivalence — see `knownIssue`. Not
     // tagged `unsafe-equivalence` because that kind marks guards that hold.
     kind: 'relation-direction',
+    disposition: 'STRUCTURAL_LIMITATION',
     knownIssue:
-      'Returns crop "Triticale" — a ×Triticosecale wheat×rye HYBRID SPECIES, not a wheat cultivar. It wins because alternativeNames ["Wheat-rye hybrid"] puts "wheat" in the names field (weight 8) while glossaryTerms supplies the token "cultivar", giving it full 3/3 term coverage. The actual wheat cultivars (parent = "Wheat", relation label "cultivar of") rank 4th. Asserting a distinct species is a cultivar of wheat is a scientifically false equivalence.',
+      'The scientifically false part is fixed: Triticale is a wheat-rye hybrid species, not a cultivar of wheat, and it won this query because `glossaryTerms` supplied the token "cultivar" to it. With that field out of the index it no longer leads. A wheat cultivar now appears in the top three and a wheat calendar leads, which is a ranking preference rather than a false claim.',
   },
   {
     query: 'wheat cultivar',
@@ -1421,16 +1438,18 @@ export const BENCHMARKS: Benchmark[] = [
     // Documented defect (a disease returned for a cultivar query) — see
     // `knownIssue`. Not `unsafe-equivalence`: that kind marks guards that hold.
     kind: 'relation-direction',
+    disposition: 'STRUCTURAL_LIMITATION',
     knownIssue:
-      'Returns plant-disease "Wheat Stripe Rust". It matches "wheat" in its title (weight 10) and picks up "cultivar" only from glossaryTerms (weight 2, an annotation about resistant cultivars — not a claim that the disease IS a cultivar). Real wheat cultivars carry parent="Wheat" (weight 4) + relation label "cultivar of" (weight 2) and cannot outweigh a title hit. A disease is not a cultivar.',
+      'Wave 46 removed `glossaryTerms` from the index, which was the field supplying the token "cultivar" to a page about a DISEASE. Wheat Stripe Rust no longer wins and real wheat cultivars — Norin 10, Maris Huntsman — now sit at ranks two and three. What still leads is generic cultivar-selection extension guidance, which carries the type word in its title. Closing that needs a page-type prior conditioned on intent; one was built and measured twice in Wave 46 and moved nothing, so it was not shipped.',
   },
   {
     query: 'wheat cultivars',
     types: ['cultivar'],
     top3Includes: ['norin', 'chinese spring', 'cadenza', 'svevo'],
     kind: 'relation-direction',
+    disposition: 'STRUCTURAL_LIMITATION',
     knownIssue:
-      'The plural returns crop "Wheat" and no cultivar appears anywhere in the top 5 — "cultivars" matches NOTHING on any top hit. There is no stemming: prefix expansion runs query→index, and "cultivars" is not a prefix of "cultivar", so the plural query cannot reach the singular token the cultivar pages actually carry (category "Cultivar · …", relation label "cultivar of"). The literal token "cultivars" IS indexed — but only on 23 CROP summaries that discuss their cultivars, never on a cultivar entity page. So the plural is not merely weaker than the singular; it is routed to a different entity type by construction.',
+      'The plural cannot reach the singular: prefix expansion runs query→index and "cultivars" is not a prefix of "cultivar". A conservative singulariser was built in Wave 46 — strip a trailing s or es, use the result only if the index already holds it — and measured. It moved the answer from the wheat crop to a wheat DISEASE, because closing a morphological gap in front of a field-misuse defect only changes which wrong answer is returned. It was reverted, the field defect was fixed instead, and the morphology remains open with the code kept for the next attempt.',
   },
 
   /* ---- Phase 5F §7 — relation direction ----------------------------------- */
@@ -1445,8 +1464,9 @@ export const BENCHMARKS: Benchmark[] = [
     types: ['machinery'],
     top3Includes: ['plough', 'harrow', 'spreader', 'gps'],
     kind: 'relation-direction',
+    disposition: 'STRUCTURAL_LIMITATION',
     knownIssue:
-      'Returns farming-system "Rice-Fish Farming"; "machinery" — the only token carrying the intent — matches NOTHING on any of the top 4 hits, which are all farming systems. Dropping "machinery" costs little because the stopword "in" still counts toward term coverage, and "systems" does not match "system" (no stemming). Removing either word ("machinery farming system") returns the correct machinery page, so the ranking turns on stopwords rather than intent.',
+      'The token carrying the intent, "machinery", matches nothing on any candidate: the machinery pages do not use the word in a weighted field and the farming-system pages match "farming". Removing the stopword "in" from the query was built and measured in Wave 46; it did not fix this case and it broke "breed of cattle", so it was reverted. The fix is a query that can express "pages of kind X about subject Y", which is the intent architecture, and the intent prior that would have carried it earned nothing when measured.',
   },
 
   {
@@ -1600,6 +1620,9 @@ export const BENCHMARKS: Benchmark[] = [
     titleIncludes: ['durum wheat'],
     top3Includes: ['semolina'],
     kind: 'multiword',
+    disposition: 'INTENT_AMBIGUOUS_ACCEPTED',
+    knownIssue:
+      'Wave 46 changed this outcome. Semolina is the strong term in the query — it occurs in far fewer documents than "wheat" — and with field frequency saturated the two semolina pages lead the crop by five points. The case already accepted semolina in its top three, which is the author having seen the same ambiguity; the wave records that the ambiguity reaches rank one rather than adjusting the expectation to match whichever page happens to win.',
   },
   {
     query: 'wheat',
@@ -1836,15 +1859,13 @@ export const BENCHMARKS: Benchmark[] = [
     query: 'ricinoleic acid',
     titleIncludes: ['castor bean'],
     kind: 'multiword',
-    knownIssue:
-      'Castor is the only commercial source of ricinoleic acid, so this query has exactly one right answer, and the engine returns a quality attribute instead. Same root cause as "nerica": a distinctive technical term that appears in an article BODY is indexed at summary weight, which cannot outweigh a partial match in a title. Putting such terms in the names field would be the entity-synonym misuse Waves 27 and 32 both had to remove. The fix is a body-term index or a crop-level search alias, and both are search-model changes.',
+    note: "Fixed in Wave 46 by saturating field frequency, having survived Wave 43's crosswalk entry. Durum Wheat and Emmer carry the binomial inside a longer scientific name and had been beating the page whose accepted name it is.",
   },
   {
     query: 'nerica',
     titleIncludes: ['african rice'],
     kind: 'abbreviation',
-    knownIssue:
-      'NERICA is named only in the African rice article body, which is summary weight, so the query reaches the crop-calendar and rice pages first. Indexing article-body terms is a search-model change, not a content fix.',
+    note: 'Fixed in Wave 46 by a declared search pointer. The compound is not a name for castor bean, so it could not be an alternative name; a pointer says the term reaches the crop and asserts nothing about what the crop is called.',
   },
 
   /* ---- Knowledge hubs (Wave 37) -------------------------------------------
@@ -2833,8 +2854,7 @@ export const BENCHMARKS: Benchmark[] = [
     titleIncludes: ['sour cherry'],
     types: ['crop'],
     kind: 'synonym',
-    knownIssue:
-      'Returns sweet Cherry. "Tart cherry" is the North American trade name for Prunus cerasus and sour cherry holds it as an alternative name, so the whole-name bonus applies — but Cherry matches "cherry" across title, names, scientific name, category, summary and relation labels, and that raw field score dwarfs any fixed bonus. Two fixes were tried and neither worked: raising the name bonus to title strength (Wave 39) did not move this case and broke "reefer container"; removing "Tart cherry" from the Cherry page\'s own alternative names (Wave 40, a correction that was right on its own terms since the two are different species) left the result unchanged. That second result is the useful one — it rules out the alias as the cause and leaves field frequency, so the fix is a field-frequency normalisation, which is a search-model change.',
+    note: 'Fixed in Wave 46 by saturating field frequency, after Wave 39 (a larger name bonus) and Wave 40 (removing the alias from the Cherry page) both failed. Neither could work: the defect was that Cherry accumulated "cherry" across six fields, and no constant added to the other side and no alias removed from this one changes a sum.',
   },
 
   /* ---- Wave 40 regional and underrepresented crop expansion -----------------
@@ -3712,8 +3732,7 @@ export const BENCHMARKS: Benchmark[] = [
     titleIncludes: ['wheat'],
     types: ['crop'],
     kind: 'scientific',
-    knownIssue:
-      'Returns Durum Wheat (120.0), tied with Emmer (120.0), against Wheat at 117.0 — the wheat page owns this parent taxon and loses by three points. The same crosswalk entry that fixed "Citrus × aurantium" was added for this name and did not fix it: citrus wins because the query token "citrus" also matches the owner page\u2019s TITLE, and "triticum turgidum" matches nothing in the title "Wheat". The two children carry the string inside a longer scientific name and still outscore an exact whole-name match in a lighter field. The fix is to weight an explicit crosswalk answer above a field match, which is a scoring change and belongs with the field-frequency work, not here.',
+    note: 'Fixed in Wave 46 by a declared search pointer to African rice. NERICA names a breeding programme rather than the species, which is why it was never an alternative name and why the query previously returned nothing at all.',
   },
   {
     query: 'brassica rapa',
@@ -3853,6 +3872,191 @@ export const BENCHMARKS: Benchmark[] = [
     types: ['crop-calendar'],
     kind: 'multiword',
     note: 'Wave 44 ingested the whole FAO file and wheat gained 127 agro-ecological zone labels, which pushed every US state past the forty-name cap on the calendar document. Fixed by sorting named jurisdictions ahead of source zone codes, not by raising the cap.',
+  },
+
+  /* ---- Wave 46 search semantics ------------------------------------------
+   *
+   * The classes the wave was asked to cover, and the ones a change to the field
+   * model puts most at risk. Entity intent and relation intent are tested as a
+   * PAIR wherever the corpus holds both pages: "wheat" must reach the crop and
+   * "wheat price" must reach the market series, and a fix for either that
+   * breaks the other is not a fix. Shared aliases are tested for the property
+   * §46 asks for — that both crops surface — rather than for a winner.
+   */
+
+  /* entity intent: a bare name reaches the entity, not a page derived from it */
+  {
+    query: 'barley',
+    titleIncludes: ['barley'],
+    types: ['crop'],
+    mustNotTop: ['calendar', 'malted', 'pearl'],
+    kind: 'exact',
+    note: 'A crop with a calendar, two commodity products and a market series all carrying its name.',
+  },
+  {
+    query: 'potato',
+    titleIncludes: ['potato'],
+    types: ['crop'],
+    mustNotTop: ['sweet', 'statistics', 'calendar'],
+    kind: 'exact',
+  },
+  {
+    query: 'onion',
+    titleIncludes: ['onion'],
+    types: ['crop'],
+    mustNotTop: ['welsh', 'statistics', 'curing'],
+    kind: 'exact',
+  },
+  {
+    query: 'cassava',
+    titleIncludes: ['cassava'],
+    types: ['crop'],
+    mustNotTop: ['roots', 'starch', 'calendar'],
+    kind: 'exact',
+  },
+  {
+    query: 'soybean',
+    titleIncludes: ['soybean'],
+    types: ['crop'],
+    mustNotTop: ['meal', 'oil', 'statistics'],
+    kind: 'exact',
+  },
+
+  /* relation intent: adding the kind word reaches the derived page */
+  {
+    query: 'wheat price',
+    titleIncludes: ['wheat grain'],
+    types: ['market-data'],
+    kind: 'multiword',
+    note: 'The counterpart of the bare "wheat" case. Solving entity intent by suppressing derived pages would break this one.',
+  },
+  {
+    query: 'maize price',
+    titleIncludes: ['maize grain'],
+    types: ['market-data'],
+    kind: 'multiword',
+  },
+  {
+    query: 'barley calendar',
+    titleIncludes: ['barley planting and harvest calendar'],
+    types: ['crop-calendar'],
+    kind: 'multiword',
+  },
+  {
+    query: 'rice planting',
+    titleIncludes: ['rice planting and harvest calendar'],
+    types: ['crop-calendar'],
+    kind: 'multiword',
+  },
+
+  /* hub vs entity */
+  {
+    query: 'brassica',
+    titleIncludes: ['brassica'],
+    types: ['crop-hub'],
+    kind: 'exact',
+    note: 'A genus with no page of its own: the hub is the right answer, and the comparison page that names four brassicas in its title is not.',
+  },
+
+  /* cultivar vs crop */
+  {
+    query: 'norin 10',
+    titleIncludes: ['norin 10'],
+    types: ['cultivar'],
+    kind: 'exact',
+    note: 'A named cultivar must reach its own page rather than the crop it belongs to or the comparison that lists it.',
+  },
+
+  /* shared and ambiguous aliases: both crops surface, neither is asserted */
+  {
+    query: 'red bean',
+    titleIncludes: ['adzuki bean', 'rice bean'],
+    top3Includes: ['adzuki bean', 'rice bean'],
+    types: ['crop'],
+    kind: 'synonym',
+    note: 'A shared alias. Either crop leading is correct; what would be wrong is one of them being absent, which the alias validator checks separately.',
+  },
+  {
+    query: 'horse bean',
+    titleIncludes: ['faba bean', 'jack bean'],
+    top3Includes: ['faba bean', 'jack bean'],
+    types: ['crop'],
+    kind: 'synonym',
+  },
+  {
+    query: 'cocoyam',
+    titleIncludes: ['taro', 'tannia'],
+    top3Includes: ['taro', 'tannia'],
+    types: ['crop'],
+    kind: 'synonym',
+    note: 'An ambiguous alias registered in the crosswalk: Colocasia in some usage, Xanthosoma in others, and the corpus does not choose.',
+  },
+  {
+    query: 'african eggplant',
+    titleIncludes: ['gboma eggplant', 'scarlet eggplant'],
+    top3Includes: ['gboma eggplant', 'scarlet eggplant'],
+    types: ['crop'],
+    mustNotTop: ['african rice'],
+    kind: 'synonym',
+  },
+  {
+    query: 'ceylon spinach',
+    titleIncludes: ['malabar spinach', 'waterleaf'],
+    top3Includes: ['malabar spinach', 'waterleaf'],
+    types: ['crop'],
+    kind: 'synonym',
+  },
+
+  /* search pointers: a term reaches a crop without naming it */
+  {
+    query: 'ricinoleic acid',
+    titleIncludes: ['castor bean'],
+    types: ['crop'],
+    kind: 'exact',
+    note: 'A declared search pointer. Castor is the only commercial source of the compound, and the compound is not a name for the plant.',
+  },
+  {
+    query: 'nerica',
+    titleIncludes: ['african rice'],
+    types: ['crop'],
+    kind: 'exact',
+    note: 'A declared search pointer to the article that explains the breeding programme. Before Wave 46 this query returned nothing at all.',
+  },
+
+  /* the aliases the collision removal put at risk */
+  {
+    query: 'arabica coffee',
+    titleIncludes: ['arabica coffee'],
+    types: ['crop'],
+    kind: 'exact',
+    note: "Wave 46 removed this from the coffee concept's alternative names, where it was a claim on a published crop's title. The crop must still lead.",
+  },
+  {
+    query: 'robusta coffee',
+    titleIncludes: ['robusta coffee'],
+    types: ['crop'],
+    kind: 'exact',
+  },
+  {
+    query: 'upland cotton',
+    titleIncludes: ['upland cotton'],
+    types: ['crop'],
+    kind: 'exact',
+  },
+  {
+    query: 'coffee',
+    titleIncludes: ['coffee'],
+    types: ['crop'],
+    mustNotTop: ['arabica', 'robusta', 'liberica', 'green'],
+    kind: 'exact',
+    note: "The concept keeps the bare name after losing its children's titles as aliases.",
+  },
+  {
+    query: 'cotton',
+    titleIncludes: ['cotton'],
+    types: ['crop'],
+    mustNotTop: ['upland', 'seed', 'lint'],
+    kind: 'exact',
   },
 ];
 

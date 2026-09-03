@@ -71,6 +71,12 @@ export interface SearchDoc {
   parent?: string;
   summary: string;
   glossaryTerms?: string[];
+  /**
+   * Terms that should reach this document without naming it. Wave 46.
+   * Declared per term with a stated relationship; never an assertion that the
+   * entity is called this.
+   */
+  searchPointers?: string[];
   country?: string;
   region?: string;
   /** Human-readable relationship labels the entity participates in. */
@@ -110,6 +116,13 @@ export interface SearchResult {
   score: number;
   /** Why it matched (alias/typo/exact), for transparency. */
   matchedVia: string[];
+  /**
+   * The components the score was built from. Present on every result because
+   * the ranker builds the score BY summing this, rather than alongside it —
+   * a report assembled separately would be free to disagree with the ranking.
+   * Never rendered: the search UI shows results, not arithmetic.
+   */
+  parts?: import('@/lib/search/engine').ScoreParts;
 }
 
 export interface SearchResponse {

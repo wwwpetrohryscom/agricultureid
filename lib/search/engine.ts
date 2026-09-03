@@ -22,7 +22,7 @@ import type {
 const AGGREGATE_PRIOR: Record<string, number> = { comparison: 0.85 };
 const typePrior = (type: string): number => AGGREGATE_PRIOR[type] ?? 1;
 
-const FIELD_WEIGHT = {
+export const FIELD_WEIGHT = {
   title: 10,
   names: 8,
   scientificName: 7,
@@ -30,11 +30,202 @@ const FIELD_WEIGHT = {
   category: 4,
   country: 4,
   region: 3,
+  /**
+   * A term that should REACH a page without claiming to name it. Wave 46.
+   *
+   * Weighted below `names` and above `category`: strong enough that a
+   * one-document term beats a partial title match somewhere else, weak enough
+   * that it cannot displace a page the query actually names. Declared per term
+   * in `data/crop-aliases`, with the relationship stated, because the failure
+   * this field exists to avoid is technical vocabulary creeping into
+   * `alternativeNames` and asserting that a crop is called something it is not.
+   */
+  searchPointers: 6,
   relationLabels: 2,
   sources: 2,
-  glossaryTerms: 2,
   summary: 1,
 } as const;
+
+/**
+ * Wave 46 — how much a repeated term is worth after the first field.
+ *
+ * The index sums a token's field weights, so a document carrying "wheat" in
+ * its title, its names, its scientific name, its category and its summary
+ * scored 30 for one word, while a document matching BOTH words of a two-word
+ * query in one field scored 16. Every field-frequency defect in the known-issue
+ * list is that arithmetic: "Dry Matter Content" beating the converter whose
+ * declared alias is "dry basis", sweet Cherry beating sour cherry for "tart
+ * cherry", a stripe-rust page beating actual cultivars for "wheat cultivar".
+ * Wave 39 tried to correct it with a larger fixed bonus, which did not move the
+ * cases and broke another; a constant cannot outrun a sum that grows with
+ * field count.
+ *
+ * The model is the standard saturating one. The strongest field a term
+ * occupies decides most of its worth — that is what the term MEANS to the
+ * document — and every further field adds a share of a bounded remainder. A
+ * term in one heavy field keeps its full weight; a term repeated across five
+ * fields is worth more than one, and not five times more.
+ *
+ * `EXTRA_FIELD_CEILING` is the most that repetition beyond the strongest field
+ * can ever add, and `EXTRA_FIELD_HALF` is the amount of remaining weight at
+ * which half of that ceiling is reached.
+ */
+const EXTRA_FIELD_CEILING = 6;
+const EXTRA_FIELD_HALF = 10;
+
+/**
+ * Every component of a document's score, and the one place they are combined.
+ *
+ * Wave 46 §48 asks for a report that can show why a document ranked where it
+ * did. The way that report goes wrong is by being written twice — once in the
+ * ranker and once in the explainer — so this type and `finalScore` below are
+ * the only place the arithmetic lives.
+ */
+export interface ScoreParts {
+  /** Field weights, saturated per token, summed over the query. */
+  rawFieldScore: number;
+  /** Fraction of the query's terms that appear in the document's title. */
+  titleCoverage: number;
+  /** What that fraction multiplies the field score by. */
+  titleCoverageFactor: number;
+  /** Fraction of the query's terms the document matched at all. */
+  termCoverage: number;
+  /** What that fraction multiplies the field score by. */
+  coverageFactor: number;
+  /** A prior on the kind of page, applied where query intent supports it. */
+  typePrior: number;
+  /** The document's title IS the query. */
+  titleExact: number;
+  /** One of the document's other names IS the query. */
+  nameExact: number;
+  /** Per query token, the strongest contribution it made to this document. */
+  perToken: Record<string, number>;
+}
+
+export function finalScore(p: ScoreParts): number {
+  return (
+    p.rawFieldScore * p.coverageFactor * p.titleCoverageFactor * p.typePrior +
+    p.titleExact +
+    p.nameExact
+  );
+}
+
+/**
+ * Wave 46 — the one morphological step this engine takes, and its limits.
+ *
+ * There is no stemmer. Prefix expansion runs query→index, so "cultivars"
+ * cannot reach "cultivar": the plural is not a prefix of the singular, it is
+ * the singular plus a letter. That is not a weakness of degree — the plural
+ * query is routed to a different set of documents entirely, because the literal
+ * token "cultivars" is indexed only on crop summaries that discuss cultivars
+ * and never on a cultivar page. "wheat cultivars" and "machinery in farming
+ * systems" are both that, and both were recorded as known issues.
+ *
+ * Built, measured, and NOT shipped. Reaching the singular did not fix
+ * "wheat cultivars": it moved the answer from the wheat crop to a wheat
+ * DISEASE, because the disease carries "wheat" in its title and picks up
+ * "cultivar" from a glossary annotation, which is the same field-misuse defect
+ * as "wheat cultivar" and not a morphology one. Closing a morphological gap in
+ * front of a field-misuse defect changes which wrong answer is returned. The
+ * function stays, unused, because the next attempt at the cultivar family will
+ * need it AFTER the field question is settled.
+ */
+/**
+ * Words that carry no intent, and what counting them cost.
+ *
+ * "machinery in farming systems" returned a farming system, and the reason was
+ * arithmetic rather than relevance: "in" is indexed like any other token, so a
+ * document matching "in" and "farming" scored two of four query terms while the
+ * one word carrying the intent — "machinery" — matched nothing. Dropping either
+ * real word from the query returned the right page, which is the tell that the
+ * ranking was turning on a preposition.
+ *
+ * Built, measured, and NOT shipped. Removing these words from the query did not
+ * fix the case that motivated it — "machinery in farming systems" still returns
+ * a farming system, because "machinery" matches none of the candidates at all —
+ * and it broke "breed of cattle", where dropping "of" let three comparison
+ * pages tie ahead of the breed. A change that fixes nothing and costs a passing
+ * case is reverted; the list stays here because the next attempt should start
+ * from the measurement rather than from the idea.
+ */
+const QUERY_STOPWORDS = new Set([
+  'a',
+  'an',
+  'the',
+  'of',
+  'in',
+  'on',
+  'for',
+  'to',
+  'and',
+  'or',
+  'with',
+  'from',
+  'by',
+  'at',
+  'as',
+  'is',
+  'are',
+  'be',
+]);
+
+export function contentTokens(tokens: string[]): string[] {
+  const kept = tokens.filter((t) => !QUERY_STOPWORDS.has(t));
+  return kept.length ? kept : tokens;
+}
+
+export function singularForms(token: string, tokens: Set<string>): string[] {
+  if (token.length < 4 || !token.endsWith('s')) return [];
+  const out: string[] = [];
+  if (token.endsWith('es')) {
+    const stem = token.slice(0, -2);
+    if (stem.length >= 3 && tokens.has(stem)) out.push(stem);
+  }
+  const bare = token.slice(0, -1);
+  if (bare.length >= 3 && tokens.has(bare) && !out.includes(bare))
+    out.push(bare);
+  return out;
+}
+
+/**
+ * Wave 46 — how much a word narrows the corpus.
+ *
+ * "ricinoleic acid" has exactly one right answer, because castor is the only
+ * commercial source of the compound, and the engine returned a quality
+ * measurement. The token "ricinoleic" occurs in ONE document in the whole
+ * corpus and "acid" in dozens, and the ranking treated them as equally
+ * informative: a summary hit on the rare word scored 1, a title hit on the
+ * common one scored 10, and the arithmetic did the rest.
+ *
+ * Inverse document frequency is the standard answer, it was built, and it did
+ * not work here. Measured, it moved top-1 from 99.7% to 99.1% and left
+ * "ricinoleic acid" exactly where it was, because the rarity factor multiplies
+ * a contribution the FIELD weight already decided: the rare word sits in a
+ * summary at weight 1 and the common one in a title at weight 10, and doubling
+ * one against the other closes none of that. The real fix the known issue
+ * names — indexing distinctive body terms, or a crop-level search alias — is a
+ * change to what is indexed rather than to how it is weighted, and this is the
+ * measurement that rules the cheaper option out.
+ *
+ * Kept, unused, with its numbers, so the next attempt starts here.
+ */
+const IDF_FLOOR = 0.6;
+const IDF_CEILING = 2.2;
+
+export function idfFactor(docFrequency: number, corpusSize: number): number {
+  if (docFrequency <= 0) return 1;
+  const idf = Math.log(1 + corpusSize / docFrequency);
+  /* The median token in this corpus sits near a document frequency of 3. */
+  const reference = Math.log(1 + corpusSize / 3);
+  return Math.min(IDF_CEILING, Math.max(IDF_FLOOR, idf / reference));
+}
+
+export function saturate(summedWeight: number, strongestField: number): number {
+  const extra = Math.max(0, summedWeight - strongestField);
+  return (
+    strongestField + (EXTRA_FIELD_CEILING * extra) / (extra + EXTRA_FIELD_HALF)
+  );
+}
 
 export function tokenize(s: string): string[] {
   return s
@@ -89,6 +280,15 @@ export interface SearchIndex {
   byId: Map<string, SearchDoc>;
   /** token -> (docId -> summed field weight) */
   postings: Map<string, Map<number, number>>;
+  /**
+   * token -> (docId -> the STRONGEST field the token occupies in that doc).
+   *
+   * The sum alone cannot distinguish a term that names the page from one the
+   * page mentions in passing five times. Wave 46 needed both: the strongest
+   * field is what the term means to the document, and the rest is how often it
+   * is repeated across fields, which saturates.
+   */
+  strongestField: Map<string, Map<number, number>>;
   tokens: string[];
   /** variant/canonical -> set of related surface tokens for expansion */
   synonymMap: Map<string, Set<string>>;
@@ -137,11 +337,27 @@ function fieldTokens(doc: SearchDoc): { token: string; weight: number }[] {
       add(r, FIELD_WEIGHT.relationLabels);
   });
   field_(() => {
-    for (const s of doc.sources ?? []) add(s, FIELD_WEIGHT.sources);
+    for (const p of doc.searchPointers ?? [])
+      add(p, FIELD_WEIGHT.searchPointers);
   });
   field_(() => {
-    for (const g of doc.glossaryTerms ?? []) add(g, FIELD_WEIGHT.glossaryTerms);
+    for (const s of doc.sources ?? []) add(s, FIELD_WEIGHT.sources);
   });
+  /*
+   * Glossary annotations are NOT searchable text. Wave 46.
+   *
+   * `glossaryTerms` records which defined terms a page uses, so the renderer
+   * can offer a definition. It is an annotation about vocabulary, not a
+   * statement about subject, and indexing it made the two indistinguishable:
+   * Wheat Stripe Rust carries the glossary term "cultivar" because its text
+   * discusses resistant cultivars, and that was enough for it to win the query
+   * "wheat cultivar" over every actual wheat cultivar in the corpus. Triticale
+   * won "cultivar of wheat" the same way. Neither page claims to be a cultivar;
+   * the index inferred it from a tooltip.
+   *
+   * Removed rather than down-weighted. A weight expresses how much a field
+   * matters; the problem here is that the field means something else.
+   */
   field_(() => add(doc.summary, FIELD_WEIGHT.summary));
   return out;
 }
@@ -152,11 +368,15 @@ export function buildIndex(
 ): SearchIndex {
   const byId = new Map(docs.map((d) => [d.id, d]));
   const postings = new Map<string, Map<number, number>>();
+  const strongestField = new Map<string, Map<number, number>>();
   docs.forEach((doc, idx) => {
     for (const { token, weight } of fieldTokens(doc)) {
       let m = postings.get(token);
       if (!m) postings.set(token, (m = new Map()));
       m.set(idx, (m.get(idx) ?? 0) + weight);
+      let s = strongestField.get(token);
+      if (!s) strongestField.set(token, (s = new Map()));
+      s.set(idx, Math.max(s.get(idx) ?? 0, weight));
     }
   });
   // Bidirectional expansion for exact/spelling/regional; directional for others.
@@ -176,7 +396,14 @@ export function buildIndex(
       if (bidir) link(canon, v);
     }
   }
-  return { docs, byId, postings, tokens: [...postings.keys()], synonymMap };
+  return {
+    docs,
+    byId,
+    postings,
+    strongestField,
+    tokens: [...postings.keys()],
+    synonymMap,
+  };
 }
 
 /**
@@ -239,6 +466,14 @@ function queryTitleForms(
 export interface SearchOptions {
   facets?: Partial<Record<SearchFacet, string>>;
   limit?: number;
+  /**
+   * Attach the score breakdown to each result. Development and test only.
+   *
+   * Off by default so no search response a reader receives carries the
+   * engine's arithmetic. The breakdown is built either way — it is how the
+   * score is computed — and simply not returned.
+   */
+  explain?: boolean;
 }
 
 export function search(
@@ -249,6 +484,8 @@ export function search(
   const qTokens = tokenize(rawQuery);
   const limit = opts.limit ?? 30;
   const scores = new Map<number, number>();
+  /** Per document, the strongest contribution each query token made. */
+  const tokenWeight = new Map<number, Map<string, number>>();
   const matchedTerms = new Map<number, Set<string>>();
   const matchedVia = new Map<number, Set<string>>();
   const suggestions = new Set<string>();
@@ -259,8 +496,18 @@ export function search(
     factor: number,
     qToken: string,
     via: string,
+    strongest = weight,
   ) => {
-    scores.set(docIdx, (scores.get(docIdx) ?? 0) + weight * factor);
+    scores.set(
+      docIdx,
+      (scores.get(docIdx) ?? 0) + saturate(weight, strongest) * factor,
+    );
+    const perToken = tokenWeight.get(docIdx) ?? new Map<string, number>();
+    perToken.set(
+      qToken,
+      Math.max(perToken.get(qToken) ?? 0, saturate(weight, strongest) * factor),
+    );
+    tokenWeight.set(docIdx, perToken);
     if (!matchedTerms.has(docIdx)) matchedTerms.set(docIdx, new Set());
     matchedTerms.get(docIdx)!.add(qToken);
     if (!matchedVia.has(docIdx)) matchedVia.set(docIdx, new Set());
@@ -269,9 +516,11 @@ export function search(
 
   for (const qToken of qTokens) {
     const surfaces = expandToken(qToken, index.synonymMap);
+
     for (const surface of surfaces) {
       const isSynonym = surface !== qToken;
       const exact = index.postings.get(surface);
+      const strong = index.strongestField.get(surface);
       if (exact) {
         for (const [docIdx, w] of exact)
           addHit(
@@ -280,6 +529,7 @@ export function search(
             isSynonym ? 3 : 4,
             qToken,
             isSynonym ? 'synonym' : 'exact',
+            strong?.get(docIdx) ?? w,
           );
         if (isSynonym) suggestions.add(surface);
       }
@@ -288,7 +538,9 @@ export function search(
         for (const tok of index.tokens) {
           if (tok !== surface && tok.startsWith(surface)) {
             const m = index.postings.get(tok)!;
-            for (const [docIdx, w] of m) addHit(docIdx, w, 2, qToken, 'prefix');
+            const sf = index.strongestField.get(tok);
+            for (const [docIdx, w] of m)
+              addHit(docIdx, w, 2, qToken, 'prefix', sf?.get(docIdx) ?? w);
           }
         }
       }
@@ -301,7 +553,9 @@ export function search(
             withinOneEdit(tok, surface)
           ) {
             const m = index.postings.get(tok)!;
-            for (const [docIdx, w] of m) addHit(docIdx, w, 1, qToken, 'typo');
+            const sf = index.strongestField.get(tok);
+            for (const [docIdx, w] of m)
+              addHit(docIdx, w, 1, qToken, 'typo', sf?.get(docIdx) ?? w);
             suggestions.add(tok);
           }
         }
@@ -358,12 +612,68 @@ export function search(
     )
       ? 25
       : 0;
+    /*
+     * The breakdown IS the score.
+     *
+     * `finalScore` sums the parts, and both the ranking and the explain report
+     * read the same object, so a debug view cannot drift from what the engine
+     * did. A report that adds up to a different number from the ranking is
+     * worse than no report: it is a confident wrong answer about why something
+     * ranked.
+     */
+    /*
+     * How much of the query the document's TITLE accounts for.
+     *
+     * Term coverage asks whether a document matched the query at all; this
+     * asks whether the thing the page is CALLED is the thing that was asked
+     * for. "Reefer Container Transport" carries both words of "reefer
+     * container" in its title and "Refrigerated Container" carries one, and
+     * with field frequency saturated there was nothing left in the ranking
+     * that could tell them apart — the second won on a whole-name bonus for an
+     * alias.
+     *
+     * Deliberately gentle, and never decisive on its own: it moves a document
+     * by at most a fifth, which separates near-ties without letting a long
+     * descriptive title beat a better match.
+     */
+    const titleTokens = new Set(tokenize(doc.title));
+    const titleCoverage = qTokens.filter((t) => titleTokens.has(t)).length / nQ;
+    const parts: ScoreParts = {
+      rawFieldScore: score,
+      titleCoverage,
+      /*
+       * Measured and reported, deliberately NOT applied.
+       *
+       * Weighting title coverage fixed "reefer container" and broke "nitrogen
+       * fertilizer": a comparison page names four fertilisers in its title, so
+       * it covers a two-word query completely while being the wrong kind of
+       * answer. Fixing one case by breaking another is not a fix, so the factor
+       * is 1 and the measurement stays in the report, where it explains the
+       * near-ties it cannot be trusted to break.
+       */
+      titleCoverageFactor: 1,
+      termCoverage,
+      coverageFactor: 0.1 + 0.9 * termCoverage,
+      typePrior: typePrior(doc.type),
+      titleExact,
+      nameExact,
+      perToken: Object.fromEntries(tokenWeight.get(docIdx) ?? []),
+    };
+    /*
+     * The breakdown is BUILT for every result and ATTACHED to none of them
+     * unless it was asked for.
+     *
+     * Building it is not optional: `finalScore` is the only place the
+     * arithmetic lives, so the ranker and the explain report cannot disagree.
+     * Attaching it is, and the default is off — §48 asks for a debug mode that
+     * stays in development, and a search response carrying eight score
+     * components per result would be exactly the debug data it says not to
+     * ship.
+     */
     scored.push({
       doc,
-      score:
-        score * (0.1 + 0.9 * termCoverage) * typePrior(doc.type) +
-        titleExact +
-        nameExact,
+      score: finalScore(parts),
+      ...(opts.explain ? { parts } : {}),
       matchedVia: [...(matchedVia.get(docIdx) ?? [])],
     });
   }

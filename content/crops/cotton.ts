@@ -7,7 +7,7 @@ export const cotton: CropContent = {
   title: 'Cotton',
   scientificName:
     'Gossypium hirsutum (upland cotton); Gossypium barbadense (extra-long-staple cotton, including Pima and Egyptian types)',
-  alternativeNames: ['Upland cotton', 'Pima cotton'],
+  alternativeNames: ['Pima cotton'],
   category: 'Fiber crop',
   subcategory: 'Annual fiber and oilseed crop',
   botanicalFamily: 'Malvaceae (mallow family)',
