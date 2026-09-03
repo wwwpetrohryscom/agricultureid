@@ -12,7 +12,16 @@ import type { CropCalendarEntry } from '@/types/calendar';
  * parse cleanly and are deliberately excluded rather than published from a
  * contaminated extraction.
  */
-export const CROP_CALENDARS: CropCalendarEntry[] = [
+import { FAO_CALENDAR_ENTRIES } from './fao';
+
+/**
+ * Calendar entries authored against the USDA handbook in Wave 8, followed by
+ * the FAO Crop Calendar ingested in Wave 42. The two sources are kept in
+ * separate files because their provenance, vintage and geography differ, and
+ * merged here because a reader wants the crop's calendar, not the corpus's
+ * filing system.
+ */
+const USDA_CALENDARS: CropCalendarEntry[] = [
   {
     id: 'barley-fall-sown-barley-us-az',
     cropRef: 'barley',
@@ -4565,4 +4574,9 @@ export const CROP_CALENDARS: CropCalendarEntry[] = [
       'Values are state-level aggregates. Timing within a large state varies with latitude, elevation and local conditions.',
     ],
   },
+];
+
+export const CROP_CALENDARS: CropCalendarEntry[] = [
+  ...USDA_CALENDARS,
+  ...FAO_CALENDAR_ENTRIES,
 ];

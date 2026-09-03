@@ -595,14 +595,30 @@ export function buildSearchDocuments(): SearchDoc[] {
       type: 'crop-calendar',
       route: cropCalendarPath(cropSlug),
       title: `${crop.title} planting and harvest calendar`,
-      // Jurisdiction names ride at name weight so "wheat planting Kansas"
-      // reaches the calendar rather than the crop article.
+      /*
+       * Jurisdiction names ride at name weight so "wheat planting Kansas"
+       * reaches the calendar rather than the crop article.
+       *
+       * What must NOT ride there is the crop's own name repeated. Wave 42
+       * ingested the FAO crop calendar and every season label it publishes
+       * begins with the crop name — "Castor Bean — season 1" — so a calendar
+       * page accumulated the crop's title across a title, three names, a
+       * parent, a summary and a season label per zone, and started outranking
+       * the crop article for the crop's own name. A page about a crop is not a
+       * page called the crop, and its score should not be built from saying
+       * the crop's name more times.
+       *
+       * The composite names "<crop> calendar", "<crop> planting" and
+       * "<crop> harvest" went for the same reason: the title already contains
+       * every one of those words, so they added nothing a query could reach
+       * and three more copies of the crop's name to its score. "clover" was
+       * returning the red clover calendar.
+       */
       names: [
-        `${crop.title} calendar`,
-        `${crop.title} planting`,
-        `${crop.title} harvest`,
-        ...seasons,
-        ...jurisdictions,
+        ...seasons.filter(
+          (t) => !t.toLowerCase().startsWith(crop.title.toLowerCase()),
+        ),
+        ...jurisdictions.slice(0, 40),
       ],
       category: 'Crop calendar',
       parent: crop.title,

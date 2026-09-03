@@ -34,11 +34,14 @@ import { IDENTITY_BY_SLUG } from '../lib/crops/identity';
 import { allRoutes } from '../lib/seo/routes';
 import {
   CONCORDANCE,
+  TRADE_FEASIBILITY,
   LAYER_ASSESSMENTS,
   TRADE_MAPPING,
 } from '../data/crop-evidence';
 import {
   CONCORDANCE_KINDS,
+  TRADE_FEASIBILITY_DIMENSIONS,
+  TRADE_FEASIBILITY_OUTCOMES,
   GAP_REASONS,
   RESEARCHED_GAP_REASONS,
   TRADE_MAPPING_OUTCOMES,
@@ -527,16 +530,105 @@ for (const x of I) {
         fail(
           `${at}: classified as an exact crop and "${named}" is a multi-taxon concept — a series reached through it is about the concept`,
         );
+      /*
+       * A granularity that is not exact has to say why, at length. "Fresh
+       * oranges" and "oranges" differ by most of the world crop, and a
+       * classification that records the difference without explaining it
+       * leaves the next reader to rediscover which way it runs.
+       */
+      if (
+        (c.kind === 'NARROWER_THAN_CROP' ||
+          c.kind === 'BROADER_THAN_CROP' ||
+          c.kind === 'AMBIGUOUS') &&
+        c.note.trim().length < 100
+      )
+        fail(
+          `${at}: classified as "${c.kind}" with a note too short to say which part of the crop it covers, or which crops beyond it`,
+        );
+      if (c.kind === 'BROADER_THAN_CROP' && isConcept)
+        fail(
+          `${at}: is broader than its crop and that crop is a concept — the concept classification says this more precisely`,
+        );
     }
   }
-  // And in the other direction: every commodity that is not an exact mapping
-  // must be classified, so a new concept-level commodity cannot slip through.
-  for (const x of commodities) {
-    const named = x.sourceCrop?.slug;
-    const needs = !named || conceptSlugs.has(named);
-    if (needs && !byCommodity.has(x.slug))
+  /*
+   * And in the other direction: EVERY commodity must be classified.
+   *
+   * The rule used to require a classification only where the mapping was
+   * awkward — no source crop, or a concept. That left fifty-five mappings
+   * unexamined and looking exact, and sixteen of them were not: they cover
+   * part of the crop rather than the crop. Wave 42 classified all seventy-five
+   * and the requirement is now total, so an unclassified mapping is a mapping
+   * nobody has looked at rather than one nobody needed to.
+   */
+  for (const x of commodities)
+    if (!byCommodity.has(x.slug))
       fail(
-        `commodity "${x.slug}" ${named ? `names the concept "${named}"` : 'names no source crop'} and is not classified in the concordance`,
+        `commodity "${x.slug}" has no concordance classification — every commodity-to-crop mapping must state its granularity`,
+      );
+}
+
+/* -- 10b. the trade feasibility study ------------------------------------- */
+/**
+ * A feasibility study is the easiest kind of record to write and the easiest to
+ * write emptily: eight dimensions, eight paragraphs, an outcome. These rules
+ * check the parts that can be checked — that every dimension the model names is
+ * actually addressed, that each finding cites how it was established rather
+ * than what is believed, and that the outcome agrees with the findings. An
+ * outcome of SAFE_TO_INGEST with a blocking finding under it is the specific
+ * contradiction worth failing on.
+ */
+{
+  const at = 'trade feasibility study';
+  if (!TRADE_FEASIBILITY_OUTCOMES.includes(TRADE_FEASIBILITY.outcome))
+    fail(
+      `${at}: outcome "${TRADE_FEASIBILITY.outcome}" is not in the vocabulary`,
+    );
+  const seenDims = new Set<string>();
+  for (const f of TRADE_FEASIBILITY.findings) {
+    const w = `${at} · ${f.dimension}`;
+    if (!TRADE_FEASIBILITY_DIMENSIONS.includes(f.dimension))
+      fail(`${w}: dimension is not in the vocabulary`);
+    if (seenDims.has(f.dimension)) fail(`${w}: addressed twice`);
+    seenDims.add(f.dimension);
+    if (f.finding.trim().length < 80) fail(`${w}: says nothing checkable`);
+    if (f.evidence.trim().length < 40)
+      fail(
+        `${w}: records no evidence — a finding without a fetched URL, an observed response or a text read is a belief`,
+      );
+  }
+  for (const d of TRADE_FEASIBILITY_DIMENSIONS)
+    if (!seenDims.has(d)) fail(`${at}: never addressed the dimension "${d}"`);
+  const blocking = TRADE_FEASIBILITY.findings.filter((f) => f.blocking);
+  if (TRADE_FEASIBILITY.outcome === 'SAFE_TO_INGEST' && blocking.length)
+    fail(
+      `${at}: says it is safe to ingest and records ${blocking.length} blocking finding(s)`,
+    );
+  if (TRADE_FEASIBILITY.outcome !== 'SAFE_TO_INGEST' && !blocking.length)
+    fail(
+      `${at}: says "${TRADE_FEASIBILITY.outcome}" and records no blocking finding — something has to be in the way`,
+    );
+  if (
+    TRADE_FEASIBILITY.outcome === 'REQUIRES_DEDICATED_WAVE' &&
+    !TRADE_FEASIBILITY.prerequisites.length
+  )
+    fail(
+      `${at}: says a dedicated wave is needed and lists nothing it would do`,
+    );
+  for (const sid of TRADE_FEASIBILITY.sourceIds)
+    if (!SOURCE_MAP.has(sid)) fail(`${at}: names unknown source "${sid}"`);
+  /*
+   * And the study must not have quietly become data. Zero crop trade coverage
+   * is an acceptable outcome; zero coverage while a study says it is unsafe to
+   * model is the only consistent one.
+   */
+  if (TRADE_FEASIBILITY.outcome === 'NOT_SAFE_TO_MODEL') {
+    const tradeCoverage = allIntegrations().filter((c) =>
+      c.coverage.some((l) => l.layer === 'trade' && l.refs.length > 0),
+    ).length;
+    if (tradeCoverage > 0)
+      fail(
+        `${at}: says the instrument is not safe to model and ${tradeCoverage} crop(s) carry trade coverage`,
       );
   }
 }

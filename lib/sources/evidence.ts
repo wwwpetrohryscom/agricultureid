@@ -128,6 +128,8 @@ export const EVIDENCE_TIER: Record<string, EvidenceTier> = {
   'eppo-a2-list': 1,
   // Wave 8 — crop calendar sources.
   'usda-usual-planting-dates': 1,
+  // Wave 42 — the FAO crop calendar, validated by national authorities.
+  'fao-crop-calendar': 1,
   // Wave 7 — support programmes and administering agencies.
   'gov-us-usda-nrcs': 1,
   'gov-us-usda-fsa': 1,

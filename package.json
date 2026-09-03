@@ -95,6 +95,7 @@
     "crops:expansion:report": "tsx scripts/crops-expansion-report.ts",
     "crops:scope:validate": "tsx scripts/crops-scope-review-validate.ts",
     "crops:scope:report": "tsx scripts/crops-scope-review-report.ts",
+    "crops:evidence:report": "tsx scripts/crops-evidence-report.ts",
     "crop-hubs:validate": "tsx scripts/crop-hubs-validate.ts",
     "crop-hubs:report": "tsx scripts/crop-hubs-report.ts",
     "crops:integration:validate": "tsx scripts/crops-integration-validate.ts",

@@ -77,11 +77,34 @@ export interface LayerEvidenceAssessment {
  * general and not about arabica. Treating that as an exact crop mapping would
  * attribute a series to a plant it is not about.
  */
+/**
+ * How a commodity's crop scope relates to the crop it is keyed to.
+ *
+ * The vocabulary was three useful values and a pair of escape hatches, and
+ * Wave 42 classified the remaining sixty-one mappings against it and found two
+ * relationships it could not express. Both are common and both matter:
+ *
+ *   - a commodity that covers PART of a crop. "Fresh tomatoes" is not tomato
+ *     production; processing tomatoes are most of the world crop and are grown
+ *     as a separate crop with separate cultivars and separate machinery.
+ *     Counting the fresh series as the crop's market coverage overstates it.
+ *   - a commodity whose crop scope is WIDER than the page without naming a
+ *     concept. Rice statistics take in Oryza glaberrima where it is grown, and
+ *     this corpus publishes African rice separately.
+ *
+ * With those two added the vocabulary covers the six granularities the program
+ * requires: EXACT_CROP, BROADER_CROP_CONCEPT (concept level),
+ * BROADER_THAN_CROP, NARROWER_THAN_CROP, AMBIGUOUS and UNRESOLVED.
+ */
 export const CONCORDANCE_KINDS = [
   /** The commodity is the product of exactly this crop. */
   'EXACT_CROP',
   /** The commodity maps to a multi-taxon concept, not to one plant. */
   'BROADER_CROP_CONCEPT',
+  /** The commodity's crop scope takes in crops beyond this one. */
+  'BROADER_THAN_CROP',
+  /** The commodity covers part of this crop's production, not all of it. */
+  'NARROWER_THAN_CROP',
   /** The commodity comes from an animal. */
   'ANIMAL_PRODUCT',
   /** More than one crop could be meant. */
@@ -118,5 +141,65 @@ export interface TradeMappingAssessment {
   /** What was examined to reach it. */
   examined: readonly string[];
   wouldChangeIf: string;
+  assessedAt: string;
+}
+
+/* -------------------------------------------------------------------------- */
+/*  Trade ingestion feasibility                                               */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * Whether a legal instrument can safely become crop-level trade data.
+ *
+ * Separate from `TradeMappingOutcome`, which asks whether a crop key EXISTS.
+ * This asks whether reading it is safe, which is a different question and the
+ * one that decides whether anyone should start. An annex entry is a legal
+ * requirement: attaching it to the wrong taxon, the wrong jurisdiction or a
+ * superseded version is worse than having no trade coverage at all.
+ */
+export const TRADE_FEASIBILITY_OUTCOMES = [
+  /** The instrument can be ingested as it stands, under a stated contract. */
+  'SAFE_TO_INGEST',
+  /** Part of it can, and the boundary of that part is stated. */
+  'PARTIAL_SCOPE_ONLY',
+  /** Ingestible, and only with work that is a wave in itself. */
+  'REQUIRES_DEDICATED_WAVE',
+  /** It should not become crop data at all, for a stated reason. */
+  'NOT_SAFE_TO_MODEL',
+] as const;
+export type TradeFeasibilityOutcome =
+  (typeof TRADE_FEASIBILITY_OUTCOMES)[number];
+
+/** The things the study had to establish before it could reach an outcome. */
+export const TRADE_FEASIBILITY_DIMENSIONS = [
+  'legal-instrument-structure',
+  'botanical-scope',
+  'origin-destination-conditions',
+  'plant-vs-plant-product-distinction',
+  'amendments',
+  'currentness',
+  'supersession',
+  'machine-readable-extraction-safety',
+] as const;
+export type TradeFeasibilityDimension =
+  (typeof TRADE_FEASIBILITY_DIMENSIONS)[number];
+
+export interface TradeFeasibilityFinding {
+  dimension: TradeFeasibilityDimension;
+  /** What was found. Not what is believed. */
+  finding: string;
+  /** How it was established — a URL fetched, a response observed, a text read. */
+  evidence: string;
+  /** Whether this dimension alone would block ingestion. */
+  blocking: boolean;
+}
+
+export interface TradeFeasibilityStudy {
+  instrument: string;
+  outcome: TradeFeasibilityOutcome;
+  findings: readonly TradeFeasibilityFinding[];
+  /** What would have to be built before ingestion could start. */
+  prerequisites: readonly string[];
+  sourceIds: readonly string[];
   assessedAt: string;
 }
