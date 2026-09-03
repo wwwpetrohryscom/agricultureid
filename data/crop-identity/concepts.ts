@@ -311,8 +311,8 @@ export const CROP_CONCEPTS: readonly CropConcept[] = [
         heldAs: 'own-identity',
         identitySlug: 'jute-mallow',
         relationshipKind: 'cultivated-species',
-        routeStatus: 'taxon-row-only',
-        role: 'The higher-yielding species, also grown as a leaf vegetable — which is why the corpus holds it under a leaf-vegetable name.',
+        routeStatus: 'own-page',
+        role: 'The higher-yielding of the two fibre species, and the same plant grown as the leaf vegetable molokhia. Wave 44 published it under the leaf-vegetable name because the FAO calendar carries it that way in two countries; the fibre side of the species stays here.',
       },
       {
         scientificName: 'Corchorus capsularis',

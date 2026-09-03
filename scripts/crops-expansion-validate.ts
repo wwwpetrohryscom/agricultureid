@@ -33,9 +33,9 @@ import {
 } from '../data/crop-expansion';
 import { RESEARCH_BY_SLUG } from '../data/crop-research';
 import {
-  CROP_SCOPE_REVIEWS,
-  SCOPE_REVIEW_BY_SLUG,
-} from '../data/crop-scope-review';
+  promotedByLaterWave,
+  PROMOTED_BY_LATER_WAVE,
+} from '../lib/crops/promotion-mechanisms';
 import { CROP_IDENTITIES, IDENTITY_BY_SLUG } from '../lib/crops/identity';
 import { PUBLISHED_CONTENT } from '../lib/content/registry';
 import { articleText } from '../lib/crops/content-depth';
@@ -126,9 +126,7 @@ for (const c of CROP_EXPANSION_CANDIDATES) {
      * real and is what got it fixed — so the decline stands and the scope
      * review is what has to say the block was lifted.
      */
-    const promoted =
-      SCOPE_REVIEW_BY_SLUG.get(c.slug)?.outcome === 'PROMOTE_CHILD_PROFILE';
-    if (!promoted)
+    if (!promotedByLaterWave(c.slug))
       fail(
         `${at}: recommends ${c.recommendation} and a crop page exists — the decision and the corpus disagree`,
       );
@@ -208,11 +206,7 @@ const publishedThisWave = CROP_EXPANSION_CANDIDATES.filter(
 ).map((c) => c.slug);
 
 /** Crops published after this layer's wave, by the mechanisms that exist. */
-const publishedLater = new Set(
-  CROP_SCOPE_REVIEWS.filter((r) => r.outcome === 'PROMOTE_CHILD_PROFILE').map(
-    (r) => r.slug,
-  ),
-);
+const publishedLater = new Set(PROMOTED_BY_LATER_WAVE.keys());
 
 for (const g of COMPOSITION_GAPS) {
   const at = `composition gap ${g.dimension}/${g.bucket}`;

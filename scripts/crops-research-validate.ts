@@ -28,7 +28,7 @@ import { SOURCE_MAP } from '../lib/sources/registry';
 import { PUBLISHED_CONTENT } from '../lib/content/registry';
 import { PUBLICATION_BY_SLUG } from '../data/crop-publication';
 import { CROP_EXPANSION_CANDIDATES } from '../data/crop-expansion';
-import { CROP_SCOPE_REVIEWS } from '../data/crop-scope-review';
+import { PROMOTED_BY_LATER_WAVE } from '../lib/crops/promotion-mechanisms';
 import { allRoutes } from '../lib/seo/routes';
 
 const errors: string[] = [];
@@ -59,9 +59,7 @@ const accountedForByLaterWave = new Set([
   ...CROP_EXPANSION_CANDIDATES.filter(
     (c) => c.recommendation === 'PUBLISH',
   ).map((c) => c.slug),
-  ...CROP_SCOPE_REVIEWS.filter(
-    (r) => r.outcome === 'PROMOTE_CHILD_PROFILE',
-  ).map((r) => r.slug),
+  ...PROMOTED_BY_LATER_WAVE.keys(),
 ]);
 const conceptConstituents = new Set(
   CROP_CONCEPTS.flatMap((k) =>

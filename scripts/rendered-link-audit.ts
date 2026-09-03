@@ -17,7 +17,10 @@ import { SITE, SECTIONS } from '../lib/site';
 import { PUBLISHED_CONTENT, contentUrlPath } from '../lib/content/registry';
 import { sitemapPaths } from '../lib/seo/routes';
 import { FAO_CROP_MATCHES } from '../data/calendars/fao';
-import { CALENDAR_GROUP_SCOPE_MARKER } from '../types/calendar';
+import {
+  CALENDAR_FORM_SCOPE_MARKER,
+  CALENDAR_GROUP_SCOPE_MARKER,
+} from '../types/calendar';
 
 /**
  * Paths this project forwards to a different Netlify project.
@@ -460,19 +463,57 @@ function main(): void {
    * pass a presence check and disclose nothing.
    */
   const calendarScope: string[] = [];
-  for (const m of FAO_CROP_MATCHES) {
-    const page = byPath.get(`/crop-calendars/${m.cropRef}`);
-    if (!page) continue;
-    const html = readFileSync(page.file, 'utf8');
-    const marked = html.includes(CALENDAR_GROUP_SCOPE_MARKER);
-    if (m.granularity === 'CONCEPT_LEVEL' && !marked)
-      calendarScope.push(
-        `/crop-calendars/${m.cropRef}: FAO measures "${m.faoName}" at group level and the page does not say so`,
+  {
+    /*
+     * Aggregated per PAGE, not per match.
+     *
+     * Wave 43 checked each match on its own, which held while a calendar page
+     * drew on one FAO label. Wave 44 gave several pages more than one: the
+     * wheat calendar carries "Wheat" at group level and "Wheat, bread" at
+     * species level, so a per-match rule demanded the notice for one row and
+     * forbade it for the other on the same page. What a page has to say is
+     * whether ANY of its windows are broader or narrower than the crop, which
+     * is a fact about the page.
+     */
+    const byRef = new Map<string, typeof FAO_CROP_MATCHES>();
+    for (const m of FAO_CROP_MATCHES)
+      byRef.set(m.cropRef, [...(byRef.get(m.cropRef) ?? []), m]);
+    for (const [ref, ms] of byRef) {
+      const page = byPath.get(`/crop-calendars/${ref}`);
+      if (!page) continue;
+      const html = readFileSync(page.file, 'utf8');
+      const wantsGroup = ms.some((m) => m.granularity === 'CONCEPT_LEVEL');
+      const wantsForm = ms.some((m) => m.granularity === 'FORM_LEVEL');
+      const hasGroup = html.includes(CALENDAR_GROUP_SCOPE_MARKER);
+      const hasForm = html.includes(CALENDAR_FORM_SCOPE_MARKER);
+      const say = (
+        need: boolean,
+        has: boolean,
+        what: string,
+        label: string,
+      ) => {
+        if (need && !has)
+          calendarScope.push(
+            `/crop-calendars/${ref}: FAO measures ${label} and the page does not say so`,
+          );
+        if (!need && has)
+          calendarScope.push(
+            `/crop-calendars/${ref}: carries the ${what} notice and no FAO match on it is ${what}`,
+          );
+      };
+      say(
+        wantsGroup,
+        hasGroup,
+        'group-scope',
+        `"${ms.find((m) => m.granularity === 'CONCEPT_LEVEL')?.faoName}" at group level`,
       );
-    if (m.granularity === 'EXACT_ENTITY' && marked)
-      calendarScope.push(
-        `/crop-calendars/${m.cropRef}: carries the group-scope notice and the FAO match "${m.faoName}" is exact`,
+      say(
+        wantsForm,
+        hasForm,
+        'form-scope',
+        `"${ms.find((m) => m.granularity === 'FORM_LEVEL')?.faoName}" as one form of the crop`,
       );
+    }
   }
   say('\n--- Calendar scope disclosure ---');
   say(

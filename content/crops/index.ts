@@ -6,9 +6,11 @@ import { alfalfa } from './alfalfa';
 import { almond } from './almond';
 import { aloeVera } from './aloe-vera';
 import { amaranth } from './amaranth';
+import { anise } from './anise';
 import { apple } from './apple';
 import { apricot } from './apricot';
 import { arabicaCoffee } from './arabica-coffee';
+import { arrowroot } from './arrowroot';
 import { artichoke } from './artichoke';
 import { asianPear } from './asian-pear';
 import { asparagus } from './asparagus';
@@ -28,6 +30,7 @@ import { blackPepper } from './black-pepper';
 import { blackberry } from './blackberry';
 import { blackcurrant } from './blackcurrant';
 import { blueberry } from './blueberry';
+import { bottleGourd } from './bottle-gourd';
 import { brazilNut } from './brazil-nut';
 import { breadfruit } from './breadfruit';
 import { broccoli } from './broccoli';
@@ -36,6 +39,7 @@ import { buckwheat } from './buckwheat';
 import { cabbage } from './cabbage';
 import { camelina } from './camelina';
 import { capeGooseberry } from './cape-gooseberry';
+import { caraway } from './caraway';
 import { cardamom } from './cardamom';
 import { carrot } from './carrot';
 import { cashew } from './cashew';
@@ -52,6 +56,7 @@ import { chickpea } from './chickpea';
 import { chicory } from './chicory';
 import { chiliPepper } from './chili-pepper';
 import { chineseCabbage } from './chinese-cabbage';
+import { chives } from './chives';
 import { cinnamon } from './cinnamon';
 import { citrus } from './citrus';
 import { clove } from './clove';
@@ -108,6 +113,7 @@ import { jicama } from './jicama';
 import { jobsTears } from './jobs-tears';
 import { jojoba } from './jojoba';
 import { jute } from './jute';
+import { juteMallow } from './jute-mallow';
 import { kaffirLime } from './kaffir-lime';
 import { kale } from './kale';
 import { kapok } from './kapok';
@@ -130,6 +136,7 @@ import { lupin } from './lupin';
 import { lychee } from './lychee';
 import { macadamia } from './macadamia';
 import { maize } from './maize';
+import { malabarSpinach } from './malabar-spinach';
 import { mandarin } from './mandarin';
 import { mango } from './mango';
 import { mangosteen } from './mangosteen';
@@ -174,6 +181,7 @@ import { pomelo } from './pomelo';
 import { potato } from './potato';
 import { prosoMillet } from './proso-millet';
 import { pumpkin } from './pumpkin';
+import { purslane } from './purslane';
 import { quince } from './quince';
 import { quinoa } from './quinoa';
 import { radish } from './radish';
@@ -239,6 +247,7 @@ import { waterSpinach } from './water-spinach';
 import { watercress } from './watercress';
 import { waterleaf } from './waterleaf';
 import { watermelon } from './watermelon';
+import { welshOnion } from './welsh-onion';
 import { wheat } from './wheat';
 import { whiteClover } from './white-clover';
 import { wildRice } from './wild-rice';
@@ -256,9 +265,11 @@ export const crops: CropContent[] = [
   almond,
   aloeVera,
   amaranth,
+  anise,
   apple,
   apricot,
   arabicaCoffee,
+  arrowroot,
   artichoke,
   asianPear,
   asparagus,
@@ -278,6 +289,7 @@ export const crops: CropContent[] = [
   blackberry,
   blackcurrant,
   blueberry,
+  bottleGourd,
   brazilNut,
   breadfruit,
   broccoli,
@@ -286,6 +298,7 @@ export const crops: CropContent[] = [
   cabbage,
   camelina,
   capeGooseberry,
+  caraway,
   cardamom,
   carrot,
   cashew,
@@ -302,6 +315,7 @@ export const crops: CropContent[] = [
   chicory,
   chiliPepper,
   chineseCabbage,
+  chives,
   cinnamon,
   citrus,
   clove,
@@ -358,6 +372,7 @@ export const crops: CropContent[] = [
   jobsTears,
   jojoba,
   jute,
+  juteMallow,
   kaffirLime,
   kale,
   kapok,
@@ -380,6 +395,7 @@ export const crops: CropContent[] = [
   lychee,
   macadamia,
   maize,
+  malabarSpinach,
   mandarin,
   mango,
   mangosteen,
@@ -424,6 +440,7 @@ export const crops: CropContent[] = [
   potato,
   prosoMillet,
   pumpkin,
+  purslane,
   quince,
   quinoa,
   radish,
@@ -489,6 +506,7 @@ export const crops: CropContent[] = [
   watercress,
   waterleaf,
   watermelon,
+  welshOnion,
   wheat,
   whiteClover,
   wildRice,

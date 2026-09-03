@@ -30,6 +30,7 @@ import {
   SCOPE_REVIEW_BY_SLUG,
 } from '../data/crop-scope-review';
 import { CROP_CONCEPTS } from '../data/crop-identity/concepts';
+import { promotedByLaterWave } from '../lib/crops/promotion-mechanisms';
 import { NAME_CROSSWALK } from '../data/crop-identity/name-crosswalk';
 import { CROP_RESEARCH } from '../data/crop-research';
 import { CROP_PUBLICATION_REVIEWS } from '../data/crop-publication';
@@ -169,7 +170,18 @@ for (const r of CROP_SCOPE_REVIEWS) {
 
   if (r.outcome === 'PROMOTE_CHILD_PROFILE' && !publishedCrops.has(r.slug))
     fail(`${at}: says the child was promoted and no crop page exists`);
-  if (r.outcome !== 'PROMOTE_CHILD_PROFILE' && publishedCrops.has(r.slug))
+  /*
+   * Same reconciliation as the publication and expansion layers. Wave 41 kept
+   * jute mallow inside the jute umbrella, which was right about the fibre
+   * crop; Wave 44 found sixty-eight FAO calendar rows for the LEAF crop across
+   * two labels and wrote it up. The umbrella decision stands and the record
+   * that accounts for the page lives in another layer.
+   */
+  if (
+    r.outcome !== 'PROMOTE_CHILD_PROFILE' &&
+    publishedCrops.has(r.slug) &&
+    !promotedByLaterWave(r.slug)
+  )
     fail(
       `${at}: says ${r.outcome} and a crop page exists — the decision and the corpus disagree`,
     );

@@ -15,6 +15,7 @@ import {
 import { CROP_PUBLICATION_REVIEWS } from '@/data/crop-publication';
 import { CROP_SCOPE_REVIEWS } from '@/data/crop-scope-review';
 import { WAVE_43_IDENTITIES } from '@/data/crop-identity/wave43';
+import { PROMOTED_BY_LATER_WAVE } from '@/lib/crops/promotion-mechanisms';
 import { PROMOTIONAL_PHRASES } from '@/types/crop-expansion';
 import { IDENTITY_BY_SLUG } from '@/lib/crops/identity';
 import { PUBLISHED_CONTENT } from '@/lib/content/registry';
@@ -52,11 +53,7 @@ describe('the two campaigns do not overlap', () => {
      * identity, so a later wave subtracts its own additions from its own
      * register rather than adjusting a number here.
      */
-    const promoted = new Set(
-      CROP_SCOPE_REVIEWS.filter(
-        (r) => r.outcome === 'PROMOTE_CHILD_PROFILE',
-      ).map((r) => r.slug),
-    );
+    const promoted = new Set(PROMOTED_BY_LATER_WAVE.keys());
     const newIdentityPages = WAVE_43_IDENTITIES.filter(
       (i) => i.profileDepth === 'full-profile' && !promoted.has(i.slug),
     );

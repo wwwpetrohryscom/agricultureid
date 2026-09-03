@@ -1626,7 +1626,8 @@ export const WAVE_28_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'bottle-gourd',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -2410,7 +2411,8 @@ export const WAVE_28_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'welsh-onion',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -2442,7 +2444,8 @@ export const WAVE_28_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'chives',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -2636,7 +2639,8 @@ export const WAVE_28_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'purslane',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -2701,7 +2705,8 @@ export const WAVE_28_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'malabar-spinach',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -2734,7 +2739,8 @@ export const WAVE_28_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'jute-mallow',
     lastVerifiedAt: '2026-09-02',
   },
   {

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { PUBLICATION_BY_SLUG } from '@/data/crop-publication';
 import { CROP_EXPANSION_CANDIDATES } from '@/data/crop-expansion';
-import { CROP_SCOPE_REVIEWS } from '@/data/crop-scope-review';
+import { PROMOTED_BY_LATER_WAVE } from '@/lib/crops/promotion-mechanisms';
 import { CROP_RESEARCH, RESEARCH_BY_SLUG } from '@/data/crop-research';
 import {
   EVIDENCE_SUFFICIENT_OUTCOMES,
@@ -92,9 +92,7 @@ describe('promotion required a source, not a queue position', () => {
       ...CROP_EXPANSION_CANDIDATES.filter(
         (c) => c.recommendation === 'PUBLISH',
       ).map((c) => c.slug),
-      ...CROP_SCOPE_REVIEWS.filter(
-        (r) => r.outcome === 'PROMOTE_CHILD_PROFILE',
-      ).map((r) => r.slug),
+      ...PROMOTED_BY_LATER_WAVE.keys(),
     ]);
     for (const r of CROP_RESEARCH)
       expect(published.has(r.slug), r.slug).toBe(

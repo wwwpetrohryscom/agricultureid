@@ -24,6 +24,8 @@ import { SOURCE_MAP } from '../lib/sources/registry';
 import { PUBLISHED_CONTENT } from '../lib/content/registry';
 import { CANONICAL_JURISDICTIONS } from '../data/jurisdictions';
 import { NAME_CROSSWALK } from '../data/crop-identity/name-crosswalk';
+import { FAO_ORPHAN_RESEARCH } from '../data/fao-orphans';
+import { IDENTITY_BY_SLUG } from '../lib/crops/identity';
 import { CROP_CONCEPTS } from '../data/crop-identity/concepts';
 import { getProfileByCode } from '../lib/geo/registry';
 import {
@@ -248,6 +250,10 @@ for (const c of CALENDAR_CONFIDENCES) {
       push(CROP_ALIAS_INDEX, a);
   }
 
+  const ORPHAN_BY_NAME = new Map(
+    FAO_ORPHAN_RESEARCH.map((o) => [o.faoName, o]),
+  );
+
   const namesSeen = new Set<string>();
   for (const m of FAO_CROP_MATCHES) {
     const at = `FAO match "${m.faoName}"`;
@@ -258,10 +264,39 @@ for (const c of CALENDAR_CONFIDENCES) {
     if (!cropSlugs.has(m.cropRef))
       fail(`${at}: resolves to "${m.cropRef}", which is not a published crop`);
     const isConcept = conceptSlugs.has(m.cropRef);
-    if (m.granularity === 'EXACT_ENTITY' && isConcept)
-      fail(
-        `${at}: is recorded as exact and "${m.cropRef}" is a declared concept — a calendar reached through it is about the group`,
-      );
+    /*
+     * A concept page that is also a species page.
+     *
+     * The rule was written when every concept was a pure umbrella, and two of
+     * them are not: `wheat` carries the wheat concept AND is Triticum
+     * aestivum, `millet` carries the millet concept AND is Cenchrus
+     * americanus. FAO distinguishes "Wheat" from "Wheat, bread" and the
+     * corpus has to as well — the first is the group, the second is that
+     * page's own species, and calling the second group-level would be the same
+     * lie pointed the other way.
+     *
+     * The exception is not "it looks specific". It requires a research record
+     * that reached MAP_TO_EXISTING_CROP, naming exactly one botanical
+     * candidate, whose binomial IS the destination page's accepted name.
+     * Anything less specific — a MAP_TO_EXISTING_CONCEPT outcome, several
+     * candidates, a candidate that is some other species of the group — stays
+     * CONCEPT_LEVEL.
+     */
+    if (m.granularity === 'EXACT_ENTITY' && isConcept) {
+      const o = ORPHAN_BY_NAME.get(m.faoName);
+      const accepted = IDENTITY_BY_SLUG.get(m.cropRef)?.acceptedScientificName;
+      const binomial = (x: string) =>
+        normName(x.split(' ').slice(0, 2).join(' '));
+      const exactBySpecies =
+        o?.outcome === 'MAP_TO_EXISTING_CROP' &&
+        o.botanicalCandidates.length === 1 &&
+        !!accepted &&
+        binomial(o.botanicalCandidates[0]!) === normName(accepted);
+      if (!exactBySpecies)
+        fail(
+          `${at}: is recorded as exact and "${m.cropRef}" is a declared concept — a calendar reached through it is about the group unless the research names that page's own species`,
+        );
+    }
     if (m.granularity === 'CONCEPT_LEVEL' && !isConcept)
       fail(
         `${at}: is recorded at concept level and "${m.cropRef}" is not a declared concept`,

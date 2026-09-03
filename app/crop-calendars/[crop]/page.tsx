@@ -6,7 +6,11 @@ import { JsonLd } from '@/components/seo/JsonLd';
 import { webPageSchema, breadcrumbSchema } from '@/lib/schema/jsonld';
 import { buildMetadata } from '@/lib/seo/metadata';
 import { getSource } from '@/lib/sources/registry';
-import { CALENDAR_CAVEAT, CALENDAR_GROUP_SCOPE_MARKER } from '@/types/calendar';
+import {
+  CALENDAR_CAVEAT,
+  CALENDAR_FORM_SCOPE_MARKER,
+  CALENDAR_GROUP_SCOPE_MARKER,
+} from '@/types/calendar';
 import {
   cropsWithCalendars,
   calendarsForCrop,
@@ -47,6 +51,12 @@ const conceptLevelFaoNames = (slug: string) =>
     (m) => m.cropRef === slug && m.granularity === 'CONCEPT_LEVEL',
   ).map((m) => m.faoName);
 
+/** The forms of this crop the source measured separately, where it did. */
+const formLevelMatches = (slug: string) =>
+  FAO_CROP_MATCHES.filter(
+    (m) => m.cropRef === slug && m.granularity === 'FORM_LEVEL',
+  );
+
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { crop } = await params;
   const c = cropOf(crop);
@@ -69,6 +79,7 @@ export default async function CropCalendarPage({ params }: Params) {
   const groups = seasons.length > 0 ? seasons : [null];
   const sources = [...new Set(entries.flatMap((e) => e.sourceReferences))];
   const conceptNames = conceptLevelFaoNames(crop);
+  const formMatches = formLevelMatches(crop);
 
   return (
     <Container className="py-8 lg:py-10">
@@ -124,6 +135,22 @@ export default async function CropCalendarPage({ params }: Params) {
           this corpus. A window here is the usual timing for whatever the
           growers in that zone grow under that name, and it cannot be attributed
           to any one member of the group.
+        </aside>
+      )}
+
+      {formMatches.length > 0 && (
+        <aside
+          className="mt-6 rounded-lg border border-clay-300 bg-clay-50 p-4 text-sm text-ink-800"
+          aria-label="What these windows cover"
+        >
+          <span className="font-medium text-clay-900">
+            {CALENDAR_FORM_SCOPE_MARKER}
+          </span>{' '}
+          The source records{' '}
+          {formMatches.map((m) => `"${m.faoName}" (${m.form})`).join(' and ')}{' '}
+          as {formMatches.length === 1 ? 'an item' : 'items'} of its own. Those
+          rows describe that form, and the season column names which item each
+          window came from.
         </aside>
       )}
 

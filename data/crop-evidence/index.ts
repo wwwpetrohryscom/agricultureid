@@ -16,12 +16,12 @@ import type {
 export const LAYER_ASSESSMENTS: readonly LayerEvidenceAssessment[] = [
   {
     layer: 'calendars',
-    reachesAtAssessment: 106,
+    reachesAtAssessment: 148,
     reason: 'SOURCE_EXISTS_NOT_MAPPED',
     finding:
-      'Wave 38 recorded this layer as SOURCE_NOT_MACHINE_INGESTIBLE, and that was true of the source it was about: the USDA plain-text release parsed in Wave 8 returns 404 and the surviving PDF is font-encoded. It was never a finding about the layer, and Wave 42 was asked to look for another source rather than to accept it. The FAO Crop Calendar is served as CSV through a parameterised query endpoint under CC-BY 4.0, with periods FAO states are validated by national authorities, and it took the layer from 6 crops to 103 across 57 countries, and Wave 43 to 106: publishing citrus, mandarin and turnip falsified three of the recorded refusals, which a new liveness rule now recomputes rather than reads. What remains unmapped is the larger half of the dataset: 101 of its crop names reach nothing in this corpus, 3 more were refused because the corpus records them as naming more than one crop, and 9 names plus every row for Jordan were never read at all — a CSV-parsing loss recorded in the source file and scheduled for Wave 44.',
+      "Wave 38 recorded this layer as SOURCE_NOT_MACHINE_INGESTIBLE, and that was true of the source it was about: the USDA plain-text release parsed in Wave 8 returns 404 and the surviving PDF is font-encoded. It was never a finding about the layer, and Wave 42 was asked to look for another source rather than to accept it. The FAO Crop Calendar is served as CSV through a parameterised query endpoint under CC-BY 4.0, with periods FAO states are validated by national authorities, and it took the layer from 6 crops to 103 across 57 countries, Wave 43 to 106, and Wave 44 to 148. Wave 44 re-read the source file with a parser that handles the embedded newlines every Jordanian row carries, recovering 586 rows and 9 crop names Wave 42 had never seen, and researched all 100 names the matcher still could not reach: 52 of them turned out to be spelling variants, French names or FAO's own inverted labels for crops already published here, and 10 were forms of a crop rather than crops. What remains unmapped is 38 labels and 3 ambiguous ones, every one of them with a recorded outcome.",
     wouldRaiseCoverageBy:
-      'Publishing crops the FAO dataset already covers — its 104 unmatched names are a ready-made research queue, and most of them are exactly the regional crops Wave 40 was aimed at. Resolving the ambiguous names would need the underlying FAO crop identifiers rather than the English labels, which the dataset carries as cropId and which has not been reconciled with any botanical authority.',
+      'Publishing crops the dataset covers and this corpus does not. Wave 44 answered all 100 of the names the matcher could not reach and 38 of them still have no page destination: 18 are identities that need a second taxonomic authority, 13 are labels covering more than one plant, 4 are taxa held without an article, and 3 could not be attributed to a plant at all. The FAO crop identifiers are sequential internal codes and carry no botanical name, so they add nothing to the ambiguous cases.',
     sourceIds: ['usda-nass', 'fao', 'fao-crop-calendar'],
     assessedAt: '2026-09-03',
   },
@@ -41,7 +41,7 @@ export const LAYER_ASSESSMENTS: readonly LayerEvidenceAssessment[] = [
     reachesAtAssessment: 8,
     reason: 'SOURCE_EXISTS_NOT_MAPPED',
     finding:
-      'Registrations reach crops only through published cultivars, and the corpus holds 77 cultivars against 248 crops. The registers themselves cover far more species than that. The constraint is deliberate: Waves 7 to 10 established that 51 per cent of exact name matches between a register and a cultivar were cross-species homonyms — a wheat denomination matching a strawberry PBR — so matching is fail-closed on name AND species together.',
+      'Registrations reach crops only through published cultivars, and the corpus holds 77 cultivars against 257 crops. The registers themselves cover far more species than that. The constraint is deliberate: Waves 7 to 10 established that 51 per cent of exact name matches between a register and a cultivar were cross-species homonyms — a wheat denomination matching a strawberry PBR — so matching is fail-closed on name AND species together.',
     wouldRaiseCoverageBy:
       'Publishing more cultivars, each with a verified parent crop. Matching registrations directly to crops would mean relaxing the species check, which is the failure this corpus has already found once.',
     sourceIds: ['ec-agri', 'usda-nass'],
@@ -103,7 +103,7 @@ export const LAYER_ASSESSMENTS: readonly LayerEvidenceAssessment[] = [
   },
   {
     layer: 'soils',
-    reachesAtAssessment: 248,
+    reachesAtAssessment: 257,
     reason: 'NOT_APPLICABLE',
     finding:
       'Every published crop names at least one suitable soil, so there is no gap. Reported here so that a full row of the matrix is accounted for rather than only the empty ones.',
@@ -123,7 +123,7 @@ export const LAYER_ASSESSMENTS: readonly LayerEvidenceAssessment[] = [
   },
   {
     layer: 'relatedCrops',
-    reachesAtAssessment: 119,
+    reachesAtAssessment: 123,
     reason: 'NOT_APPLICABLE',
     finding:
       'Derived rather than sourced: a crop has related crops when it shares a genus, a concept scope, or enough pest and disease hosts with another published crop. A crop with none is a crop with no close relative published, which is a fact about the corpus rather than a gap in it.',

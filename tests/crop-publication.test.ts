@@ -20,6 +20,7 @@ import {
   SCOPE_REVIEW_BY_SLUG,
 } from '@/data/crop-scope-review';
 import { WAVE_43_IDENTITIES } from '@/data/crop-identity/wave43';
+import { PROMOTED_BY_LATER_WAVE } from '@/lib/crops/promotion-mechanisms';
 import { IDENTITY_BY_SLUG } from '@/lib/crops/identity';
 import { PUBLISHED_CONTENT } from '@/lib/content/registry';
 import { articleText } from '@/lib/crops/content-depth';
@@ -83,9 +84,7 @@ describe('published means published', () => {
     // what remains must be the pre-wave corpus. Later waves have to be
     // subtracted too, which is the point — an article nobody's campaign
     // accounts for would leave this number wrong.
-    const promoted = CROP_SCOPE_REVIEWS.filter(
-      (r) => r.outcome === 'PROMOTE_CHILD_PROFILE',
-    ).map((r) => r.slug);
+    const promoted = [...PROMOTED_BY_LATER_WAVE.keys()];
     /*
      * The citrus concept page is a crop page with no campaign record: it was
      * created to own a parent taxon rather than promoted from a queue. It is

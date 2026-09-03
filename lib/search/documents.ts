@@ -589,7 +589,23 @@ export function buildSearchDocuments(): SearchDoc[] {
     );
     if (!crop) continue;
     const seasons = seasonsForCrop(cropSlug);
-    const jurisdictions = [...new Set(entries.map((e) => e.jurisdictionName))];
+    /*
+     * Jurisdictions a reader might type, before the ones only the source uses.
+     *
+     * The list is capped, and after Wave 44 ingested the whole FAO file the cap
+     * started cutting off the useful half: wheat's calendar carries 169
+     * jurisdictions of which 127 are FAO agro-ecological zone labels like
+     * "Middle Badia (JOR008)", and "Kansas" fell past position forty behind
+     * them. Nobody searches for a zone code. Named administrative
+     * jurisdictions sort first, source zone labels after, and the cap then
+     * removes what nobody would have typed.
+     */
+    const isSourceZoneLabel = (n: string) => /\([A-Z]{2,4}\d+\)$/.test(n);
+    const jurisdictions = [
+      ...new Set(entries.map((e) => e.jurisdictionName)),
+    ].sort(
+      (a, b) => Number(isSourceZoneLabel(a)) - Number(isSourceZoneLabel(b)),
+    );
     docs.push({
       id: `calendar:${cropSlug}`,
       type: 'crop-calendar',

@@ -32,7 +32,7 @@ import {
   PUBLICATION_BY_SLUG,
 } from '../data/crop-publication';
 import { CROP_RESEARCH } from '../data/crop-research';
-import { SCOPE_REVIEW_BY_SLUG } from '../data/crop-scope-review';
+import { promotedByLaterWave } from '../lib/crops/promotion-mechanisms';
 import { CROP_IDENTITIES, IDENTITY_BY_SLUG } from '../lib/crops/identity';
 import { PUBLISHED_CONTENT } from '../lib/content/registry';
 import { articleText } from '../lib/crops/content-depth';
@@ -165,9 +165,7 @@ for (const r of CROP_PUBLICATION_REVIEWS) {
      * it. The stop was correct and stays recorded; the scope review is where
      * the lifting is stated.
      */
-    const promotedLater =
-      SCOPE_REVIEW_BY_SLUG.get(r.slug)?.outcome === 'PROMOTE_CHILD_PROFILE';
-    if (page && !promotedLater)
+    if (page && !promotedByLaterWave(r.slug))
       fail(
         `${at}: says ${r.outcome} and a crop page exists — the decision and the corpus disagree`,
       );
