@@ -95,10 +95,6 @@ export const mulberry: CropContent = {
           type: 'paragraph',
           text: 'White mulberry originated in eastern Asia and has been cultivated for silk production in China for thousands of years, spreading with sericulture across Asia and into Europe. Black mulberry is associated with western Asia, and red mulberry with North America. Mulberry is now grown widely for silk, fruit, and fodder.',
         },
-        {
-          type: 'paragraph',
-          text: 'Statistics on cultivated area for fruit and for sericulture are compiled by FAO and national agencies and should be consulted directly for current figures.',
-        },
       ],
     },
     {

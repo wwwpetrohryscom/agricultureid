@@ -93,10 +93,6 @@ export const carrot: CropContent = {
           type: 'paragraph',
           text: 'Cultivated carrot descends from wild Daucus carota populations native to Central Asia and the Near East, with orange-rooted types becoming dominant in Western Europe from roughly the sixteenth century onward. It is now grown across temperate and subtropical regions worldwide.',
         },
-        {
-          type: 'paragraph',
-          text: 'Current statistics on planted area, production, and trade by country are compiled by FAO and national agricultural agencies and should be consulted directly, since figures shift with weather and markets each season.',
-        },
       ],
     },
     {
@@ -170,10 +166,6 @@ export const carrot: CropContent = {
         {
           type: 'paragraph',
           text: 'Consistent soil moisture is important throughout the growing cycle, particularly during germination and root bulking; irregular watering is associated with root cracking and forking in some conditions. Drip and sprinkler irrigation are both used depending on region and scale.',
-        },
-        {
-          type: 'paragraph',
-          text: 'Crop water requirements are estimated from evapotranspiration and local climate data, following reference methods published by FAO and national agricultural agencies.',
         },
       ],
     },

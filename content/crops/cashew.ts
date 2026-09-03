@@ -95,10 +95,6 @@ export const cashew: CropContent = {
           type: 'paragraph',
           text: 'Cashew is native to tropical parts of South America, particularly Brazil, and was subsequently introduced to other tropical regions, including parts of Africa and Asia, where it has since become established as a significant smallholder and commercial crop.',
         },
-        {
-          type: 'paragraph',
-          text: 'Current production statistics, leading producing countries, and trade patterns shift over time; up-to-date figures are best obtained from primary sources such as FAOSTAT and national agricultural statistics services rather than assumed.',
-        },
       ],
     },
     {

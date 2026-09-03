@@ -90,7 +90,7 @@ export const coconut: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'Coconut is now grown throughout the tropics, with major production in South and Southeast Asia and significant cultivation across the Pacific, Africa, and Latin America. Current production statistics are compiled by FAO and national agencies.',
+          text: 'Coconut is now grown throughout the tropics, with major production in South and Southeast Asia and significant cultivation across the Pacific, Africa, and Latin America.',
         },
       ],
     },

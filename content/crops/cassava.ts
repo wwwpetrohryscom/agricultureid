@@ -93,7 +93,7 @@ export const cassava: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'It is now grown across tropical Africa, Asia, and Latin America, with Africa accounting for a large share of global production. Current production and trade figures are compiled by FAO and national statistical services.',
+          text: 'It is now grown across tropical Africa, Asia, and Latin America, with Africa accounting for a large share of global production.',
         },
       ],
     },

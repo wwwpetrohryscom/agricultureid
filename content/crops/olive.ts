@@ -88,7 +88,7 @@ export const olive: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'Production remains concentrated around the Mediterranean basin, with current production, cultivar, and trade figures compiled by FAO, national agencies, and, within the European Union, EU agricultural authorities.',
+          text: 'Production remains concentrated around the Mediterranean basin.',
         },
       ],
     },

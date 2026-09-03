@@ -93,10 +93,6 @@ export const almond: CropContent = {
           type: 'paragraph',
           text: 'Almond is native to a region spanning parts of Central and Southwest Asia and the Eastern Mediterranean, where it was domesticated in antiquity. Cultivation spread throughout the Mediterranean basin over subsequent centuries, and it was later introduced to other Mediterranean-type climate regions worldwide.',
         },
-        {
-          type: 'paragraph',
-          text: 'Current production statistics, leading cultivars, and trade patterns shift over time and by region; up-to-date figures are best obtained from primary sources such as FAOSTAT and national agricultural statistics services rather than assumed.',
-        },
       ],
     },
     {

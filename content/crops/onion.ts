@@ -94,10 +94,6 @@ export const onion: CropContent = {
           type: 'paragraph',
           text: 'Onion is believed to have originated in Central Asia, with cultivation extending into prehistory across the Near East and Mediterranean before spreading throughout the Old World and, later, to the Americas. It is now grown on every populated continent under an unusually broad range of climates.',
         },
-        {
-          type: 'paragraph',
-          text: 'Current data on planted area, production, and trade by country are compiled by FAO and national agricultural statistics agencies and should be consulted directly for up-to-date figures, since production shifts year to year with weather and markets.',
-        },
       ],
     },
     {
@@ -171,10 +167,6 @@ export const onion: CropContent = {
         {
           type: 'paragraph',
           text: 'Because of its shallow root system, onion generally requires frequent, light irrigation rather than infrequent deep watering, particularly during bulb bulking. Irrigation is commonly reduced or withheld in the weeks before harvest to encourage the neck to dry down and the bulb to cure properly.',
-        },
-        {
-          type: 'paragraph',
-          text: 'Crop water requirements are estimated from evapotranspiration and local climate data, using methods and reference values published by FAO and national agricultural agencies.',
         },
       ],
     },

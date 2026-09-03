@@ -106,7 +106,7 @@ export const tomato: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'Tomato is now grown across a very wide range of countries and climates, both in open fields and under protected culture. Current data on planted area, production, and trade by country are compiled by FAO and national agricultural statistics agencies.',
+          text: 'Tomato is now grown across a very wide range of countries and climates, both in open fields and under protected culture.',
         },
       ],
     },
@@ -181,10 +181,6 @@ export const tomato: CropContent = {
         {
           type: 'paragraph',
           text: 'Consistent water supply is important throughout the tomato growing cycle, and irregular watering is associated with certain fruit disorders. Both open-field and protected-culture systems commonly use drip irrigation to manage moisture precisely.',
-        },
-        {
-          type: 'paragraph',
-          text: 'Crop water requirements are estimated from evapotranspiration and local climate; reference methods and data are published by FAO and national agricultural agencies.',
         },
       ],
     },

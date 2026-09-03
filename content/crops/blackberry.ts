@@ -207,10 +207,10 @@ export const blackberry: CropContent = {
         {
           type: 'list',
           items: [
-            'Fresh-market eating berries',
-            'Individually quick-frozen (IQF) fruit for food manufacturing',
-            'Processed products including jam, juice, and bakery fillings',
-            'Flavoring and extract uses in food and beverage products',
+            'Fresh-market fruit, picked with the receptacle inside it, which makes it firmer in the punnet than a raspberry',
+            'Individually quick-frozen fruit, dominated by thornless erect cultivars bred for machine harvest',
+            'Jam and pie filling, where the seed size that limits fresh sales matters less',
+            'Juice and colour extract, drawing on the anthocyanin content',
           ],
         },
       ],

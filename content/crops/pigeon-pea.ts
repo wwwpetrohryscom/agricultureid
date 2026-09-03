@@ -97,10 +97,6 @@ export const pigeonPea: CropContent = {
           type: 'paragraph',
           text: 'Pigeon pea is generally considered to have been domesticated in the Indian subcontinent, from where it spread to Africa and, through the movement of people and trade, to the Caribbean and Latin America. India remains the largest producer and consumer.',
         },
-        {
-          type: 'paragraph',
-          text: 'Current figures on planted area, production, and trade by country are compiled by FAO and national statistical agencies and should be consulted directly for up-to-date values.',
-        },
       ],
     },
     {

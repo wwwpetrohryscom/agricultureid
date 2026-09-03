@@ -93,10 +93,6 @@ export const cabbage: CropContent = {
           type: 'paragraph',
           text: 'Cabbage descends from wild Brassica oleracea populations native to coastal areas of the Mediterranean and Atlantic Europe. Head-forming types were selected over centuries in Europe before cabbage spread globally through trade and colonization to become a staple vegetable on most continents.',
         },
-        {
-          type: 'paragraph',
-          text: 'Current statistics on planted area, production, and trade by country are compiled by FAO and national agricultural agencies and should be consulted directly for up-to-date figures.',
-        },
       ],
     },
     {
@@ -170,10 +166,6 @@ export const cabbage: CropContent = {
         {
           type: 'paragraph',
           text: 'Consistent soil moisture supports even head development, while irregular watering — particularly a dry period followed by heavy rain or irrigation — is associated with head splitting in mature crops. Drip and sprinkler irrigation are both used depending on region and scale.',
-        },
-        {
-          type: 'paragraph',
-          text: 'Crop water requirements are estimated from evapotranspiration and local climate data, following reference methods published by FAO and national agricultural agencies.',
         },
       ],
     },

@@ -93,7 +93,7 @@ export const strawberry: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'Strawberry is now cultivated commercially across temperate and subtropical regions worldwide. Production and trade statistics are compiled by FAO and national agencies and should be sourced from those primary datasets.',
+          text: 'Strawberry is now cultivated commercially across temperate and subtropical regions worldwide.',
         },
       ],
     },

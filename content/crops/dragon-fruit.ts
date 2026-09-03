@@ -100,10 +100,6 @@ export const dragonFruit: CropContent = {
           type: 'paragraph',
           text: 'Dragon fruit is native to the Americas, particularly Central America and Mexico, and has become a major cultivated fruit in Southeast Asia, notably Vietnam, as well as in other tropical and subtropical regions worldwide.',
         },
-        {
-          type: 'paragraph',
-          text: 'Statistics on planted area and production are compiled by FAO and national agencies and should be consulted directly for current figures.',
-        },
       ],
     },
     {

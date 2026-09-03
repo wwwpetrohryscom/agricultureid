@@ -92,10 +92,6 @@ export const cowpea: CropContent = {
           type: 'paragraph',
           text: 'Cowpea is widely regarded as having been domesticated in Africa, where the greatest diversity of the crop and its wild relatives occurs, before spreading to Asia and, later, to the Americas. Sub-Saharan Africa remains the center of production and consumption.',
         },
-        {
-          type: 'paragraph',
-          text: 'Statistics on planted area, production, and trade by country are compiled by FAO and national agencies and should be consulted directly for current figures.',
-        },
       ],
     },
     {

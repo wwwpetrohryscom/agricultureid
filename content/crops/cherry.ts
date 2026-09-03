@@ -97,7 +97,7 @@ export const cherry: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'Commercial production of both species is now established across temperate regions on multiple continents. Production statistics and leading cultivars change over time and are best obtained from primary sources such as FAOSTAT and national agricultural statistics services rather than assumed.',
+          text: 'Commercial production of both species is now established across temperate regions on multiple continents.',
         },
       ],
     },

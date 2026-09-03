@@ -94,10 +94,6 @@ export const loquat: CropContent = {
           type: 'paragraph',
           text: 'Loquat is native to south-central China and has been cultivated in China and Japan for a very long time. It has since spread to subtropical and mild-temperate regions worldwide, including the Mediterranean basin, South Asia, and the Americas.',
         },
-        {
-          type: 'paragraph',
-          text: 'Statistics on planted area and production by country are compiled by FAO and national agencies and should be consulted directly for current figures.',
-        },
       ],
     },
     {

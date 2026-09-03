@@ -90,10 +90,6 @@ export const oats: CropContent = {
           type: 'paragraph',
           text: 'Cultivated oats are believed to have emerged as a secondary crop, evolving from weedy forms growing alongside wheat and barley in ancient Near Eastern and European cropping systems before being selected as a crop in its own right. It is now grown widely across cool-temperate regions of Europe, North America, and other similar climates.',
         },
-        {
-          type: 'paragraph',
-          text: 'Current area, production, and trade figures shift with markets and seasonal conditions and are best obtained from primary datasets such as FAOSTAT rather than assumed.',
-        },
       ],
     },
     {

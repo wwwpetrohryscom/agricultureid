@@ -93,7 +93,7 @@ export const banana: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'Banana is now grown throughout the humid and sub-humid tropics, with major production concentrated in tropical Asia, Latin America, and Africa. Production and trade figures are compiled by FAO and should be taken from those primary datasets.',
+          text: 'Banana is now grown throughout the humid and sub-humid tropics, with major production concentrated in tropical Asia, Latin America, and Africa.',
         },
       ],
     },

@@ -92,7 +92,7 @@ export const lentil: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'It is now grown across a range of semi-arid and Mediterranean-type climates worldwide. Current statistics on planted area, production, and trade by country are compiled by FAO and national agricultural agencies.',
+          text: 'It is now grown across a range of semi-arid and Mediterranean-type climates worldwide.',
         },
       ],
     },
@@ -168,10 +168,6 @@ export const lentil: CropContent = {
           type: 'paragraph',
           text: 'Lentil is short, and that single fact governs its harvest. Pods form low on the plant, the crop lodges readily once it carries seed, and both together mean cutting close to the ground with losses that rise sharply if the crop goes down. Sowing on level, stone-free ground is a harvest decision made months in advance.',
         },
-        {
-          type: 'paragraph',
-          text: 'Where irrigation is available, crop water requirements are estimated from evapotranspiration and local climate data, following reference methods published by FAO and national agricultural agencies.',
-        },
       ],
     },
     {
@@ -194,7 +190,7 @@ export const lentil: CropContent = {
       body: [
         {
           type: 'paragraph',
-          text: 'Lentil is harvested once pods and foliage have dried at maturity, either by direct combining or by swathing followed by combining, depending on region and equipment. Because pods are borne low on a short plant, shattering and header losses are notable risks at harvest.',
+          text: 'Lentil ripens unevenly and stands barely above the ground, so much of the crop is swathed rather than cut standing and the header runs low enough to pick up stones. Because pods are borne low on a short plant, shattering and header losses are notable risks at harvest.',
         },
       ],
     },

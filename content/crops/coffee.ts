@@ -93,7 +93,7 @@ export const coffee: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'Today coffee is grown across the tropical belt, with major production in Latin America, Sub-Saharan Africa, and Asia. Current production and trade figures are compiled by FAO and national and international coffee-sector bodies.',
+          text: 'Today coffee is grown across the tropical belt, with major production in Latin America, Sub-Saharan Africa, and Asia.',
         },
       ],
     },

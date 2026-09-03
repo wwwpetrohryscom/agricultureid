@@ -94,7 +94,7 @@ export const hemp: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'Renewed interest in natural fibers, seed oil, and construction materials has led to expanded industrial hemp cultivation in parts of Europe, North America, and Asia under modern regulatory frameworks. Production statistics are compiled by FAO and national agencies where hemp is tracked as a distinct crop.',
+          text: 'Renewed interest in natural fibers, seed oil, and construction materials has led to expanded industrial hemp cultivation in parts of Europe, North America, and Asia under modern regulatory frameworks.',
         },
       ],
     },

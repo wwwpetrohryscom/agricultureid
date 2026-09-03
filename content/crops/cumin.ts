@@ -81,7 +81,7 @@ export const cumin: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'Today, India, alongside countries in the Middle East and North Africa, accounts for a large share of global production and trade. Production and price data are compiled by FAO and national agricultural and trade agencies.',
+          text: 'Today, India, alongside countries in the Middle East and North Africa, accounts for a large share of global production and trade.',
         },
       ],
     },

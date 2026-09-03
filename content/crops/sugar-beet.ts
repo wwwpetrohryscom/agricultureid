@@ -99,7 +99,7 @@ export const sugarBeet: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'Sugar beet is now grown across temperate production regions in Europe, North America, and parts of Asia. Production and trade statistics are compiled by bodies such as FAO and the European Commission and should be taken from those primary datasets.',
+          text: 'Sugar beet is now grown across temperate production regions in Europe, North America, and parts of Asia.',
         },
       ],
     },

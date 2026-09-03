@@ -85,7 +85,7 @@ export const safflower: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'It is grown today in semi-arid regions across several continents, with production and trade data compiled by FAO and national agricultural statistics agencies.',
+          text: 'It is grown today in semi-arid regions across several continents.',
         },
       ],
     },

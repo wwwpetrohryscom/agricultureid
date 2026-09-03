@@ -84,7 +84,7 @@ export const fennel: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'India is a major producer of fennel seed, while Italy and other European countries are notable producers of Florence fennel for the fresh vegetable market. Production statistics are compiled by FAO and national agricultural agencies.',
+          text: 'India is a major producer of fennel seed, while Italy and other European countries are notable producers of Florence fennel for the fresh vegetable market.',
         },
       ],
     },

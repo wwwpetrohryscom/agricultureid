@@ -102,7 +102,7 @@ export const cucumber: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'It is now grown across a wide range of climates in both open-field and protected-culture systems. Current statistics on planted area, production, and trade by country are compiled by FAO and national agricultural agencies.',
+          text: 'It is now grown across a wide range of climates in both open-field and protected-culture systems.',
         },
       ],
     },
@@ -177,10 +177,6 @@ export const cucumber: CropContent = {
         {
           type: 'paragraph',
           text: 'Cucumber has high water content and a relatively shallow root system, so consistent moisture is important throughout fruit development; moisture stress can lead to misshapen or bitter fruit in some conditions. Drip irrigation is widely used in both open-field and protected-culture production.',
-        },
-        {
-          type: 'paragraph',
-          text: 'Crop water requirements are estimated from evapotranspiration and local climate data, following reference methods published by FAO and national agricultural agencies.',
         },
       ],
     },

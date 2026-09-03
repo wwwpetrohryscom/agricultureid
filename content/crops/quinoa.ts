@@ -93,7 +93,7 @@ export const quinoa: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'Global interest since the late 20th century has driven expansion of cultivation beyond the Andes; current production and trade figures are best obtained from primary sources such as FAOSTAT and national agricultural statistics services rather than assumed.',
+          text: 'Global interest since the late 20th century has driven expansion of cultivation beyond the Andes.',
         },
       ],
     },

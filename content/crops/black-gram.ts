@@ -93,10 +93,6 @@ export const blackGram: CropContent = {
           type: 'paragraph',
           text: 'Black gram is generally considered to have been domesticated in the Indian subcontinent, which remains the center of its production and consumption, with additional cultivation elsewhere in Asia.',
         },
-        {
-          type: 'paragraph',
-          text: 'Statistics on planted area, production, and trade by country are compiled by FAO and national agencies and should be consulted directly for current figures.',
-        },
       ],
     },
     {

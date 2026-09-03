@@ -17,7 +17,7 @@ export const plum: CropContent = {
   introduction: [
     {
       type: 'paragraph',
-      text: 'Plum orchards are established from grafted trees combining a fruiting cultivar with a rootstock chosen for size control, anchorage, and site adaptation, as with other tree fruit crops. Two distinct species dominate commercial production: European plum (Prunus domestica), a hexaploid species used both fresh and for drying into prunes, and Japanese plum (Prunus salicina), a diploid species grown predominantly for the fresh market.',
+      text: 'Plum rootstock choice turns on drainage. Myrobalan is the long-standing general-purpose stock and Marianna is used where ground lies wet, because plum tolerates heavier and wetter soil than most stone fruit and is planted on ground a peach would not survive. Two distinct species dominate commercial production: European plum (Prunus domestica), a hexaploid species used both fresh and for drying into prunes, and Japanese plum (Prunus salicina), a diploid species grown predominantly for the fresh market.',
     },
     {
       type: 'paragraph',
@@ -96,7 +96,7 @@ export const plum: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'Commercial production of both species groups is now established across temperate regions on multiple continents. Production statistics and leading cultivars change over time and should be obtained from primary sources such as FAOSTAT and national agricultural statistics services rather than assumed.',
+          text: 'Commercial production of both species groups is now established across temperate regions on multiple continents.',
         },
       ],
     },
@@ -110,7 +110,7 @@ export const plum: CropContent = {
         },
         {
           type: 'paragraph',
-          text: "Spring frost during bloom is a significant climate risk for plum in many regions, since flowers and young fruitlets are frost-sensitive and damage can substantially reduce a season's crop.",
+          text: 'Frost at bloom separates the two commercial plum species rather than affecting them alike. Japanese plum flowers earlier than European plum and is correspondingly more exposed, which is one reason European types dominate where late frosts are routine and Japanese types dominate where they are not.',
         },
       ],
     },

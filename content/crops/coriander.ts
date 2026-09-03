@@ -85,7 +85,7 @@ export const coriander: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'Today it is grown widely across Asia, the Americas, Europe, and Africa. India is among the largest producers of coriander seed, while fresh cilantro is produced in many countries for local and export markets. Production statistics are compiled by FAO and national agricultural agencies.',
+          text: 'Today it is grown widely across Asia, the Americas, Europe, and Africa. India is among the largest producers of coriander seed, while fresh cilantro is produced in many countries for local and export markets.',
         },
       ],
     },

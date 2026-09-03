@@ -100,10 +100,6 @@ export const chicory: CropContent = {
           type: 'paragraph',
           text: 'Chicory is native to Europe and western Asia and has a long history of use. Leaf and witloof types are associated especially with Italy, Belgium, and neighboring countries, root chicory with parts of Europe, and forage chicory with temperate pastoral regions worldwide.',
         },
-        {
-          type: 'paragraph',
-          text: 'Statistics on planted area and production for the various chicory types are compiled by FAO and national agencies and should be consulted directly for current figures.',
-        },
       ],
     },
     {

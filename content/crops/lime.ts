@@ -111,10 +111,6 @@ export const lime: CropContent = {
           type: 'paragraph',
           text: 'Key lime is believed to have originated in Southeast Asia and spread historically through trade routes into the Middle East, the Mediterranean, and later the Americas. Persian lime is understood to be a later hybrid selection that has become the dominant type in much of the modern commercial trade due to its larger, seedless fruit.',
         },
-        {
-          type: 'paragraph',
-          text: 'Current production volumes, leading cultivars, and trade patterns vary by region and change over time; figures should be obtained from primary sources such as FAOSTAT and national agricultural statistics services rather than assumed.',
-        },
       ],
     },
     {

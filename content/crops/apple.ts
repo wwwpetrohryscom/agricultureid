@@ -87,10 +87,6 @@ export const apple: CropContent = {
           type: 'paragraph',
           text: 'The cultivated apple traces much of its ancestry to wild Malus populations native to Central Asia, with subsequent hybridization and selection as the crop moved along historical trade routes into Europe and, eventually, worldwide. It is now grown commercially across temperate regions on every populated continent.',
         },
-        {
-          type: 'paragraph',
-          text: 'Production statistics, leading cultivars, and trade patterns shift over time and by region; current figures are best obtained from primary sources such as FAOSTAT and national agricultural statistics services rather than assumed.',
-        },
       ],
     },
     {
@@ -163,7 +159,7 @@ export const apple: CropContent = {
       body: [
         {
           type: 'paragraph',
-          text: 'Apple is grown both rain-fed and under irrigation, with water demand highest during cell division and fruit enlargement. Drip irrigation is widely used in modern high-density orchards to apply water precisely to the root zone.',
+          text: "The apple crop's water year has a decisive early window. Cell division in the fruitlet finishes within roughly the first month after bloom and sets the number of cells a fruit will ever have; everything afterwards is expansion of cells that already exist. Stress in that first window costs size that no later irrigation recovers, which is why high-density orchards on dwarfing rootstocks — shallow-rooted by design — are irrigated from bloom rather than from the first sign of stress.",
         },
         {
           type: 'paragraph',

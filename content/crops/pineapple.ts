@@ -89,10 +89,6 @@ export const pineapple: CropContent = {
           type: 'paragraph',
           text: 'Pineapple originated in South America, where wild and semi-domesticated Ananas relatives are found, and was carried by indigenous peoples throughout the tropics of the Americas well before European contact. It subsequently spread through global trade to become a major tropical fruit crop grown across suitable regions of Asia, Africa, and Latin America.',
         },
-        {
-          type: 'paragraph',
-          text: 'Production volumes, leading cultivars, and trading patterns shift over time and by region; current figures are best obtained from primary sources such as FAOSTAT and national agricultural statistics services rather than assumed.',
-        },
       ],
     },
     {

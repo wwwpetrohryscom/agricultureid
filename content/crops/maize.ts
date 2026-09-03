@@ -89,7 +89,7 @@ export const maize: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'Maize is now grown on every inhabited continent under an enormous range of climates. Current data on planted area, production, and trade by country are compiled by FAO and national agricultural statistics agencies, and figures should be drawn from those primary sources rather than assumed.',
+          text: 'Maize is now grown on every inhabited continent under an enormous range of climates.',
         },
       ],
     },
@@ -164,10 +164,6 @@ export const maize: CropContent = {
         {
           type: 'paragraph',
           text: 'Maize is grown both rain-fed and under irrigation, depending on regional rainfall reliability. Water demand peaks around tasseling, silking, and early grain fill, and stress during this window has a disproportionate effect on yield.',
-        },
-        {
-          type: 'paragraph',
-          text: 'Where irrigation is used, scheduling is generally based on estimated crop evapotranspiration and local climate data, with methods and reference values published by FAO and national agricultural agencies.',
         },
       ],
     },

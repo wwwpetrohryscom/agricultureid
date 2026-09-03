@@ -92,10 +92,6 @@ export const bambaraGroundnut: CropContent = {
           type: 'paragraph',
           text: 'Bambara groundnut is native to West Africa, where its wild relatives occur and where it was domesticated, and it has since spread across sub-Saharan Africa and to parts of Asia and the Americas. It remains predominantly a smallholder crop.',
         },
-        {
-          type: 'paragraph',
-          text: 'Comprehensive statistics on planted area and production are limited because much of the crop is grown for subsistence; available figures are compiled by FAO and national agencies and should be consulted directly.',
-        },
       ],
     },
     {

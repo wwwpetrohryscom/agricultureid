@@ -97,10 +97,6 @@ export const blackcurrant: CropContent = {
           type: 'paragraph',
           text: 'Blackcurrant is native to temperate Europe and northern Asia and has long been cultivated in Europe. Production is concentrated in cooler European countries, where the crop is grown at commercial scale largely for the processing market.',
         },
-        {
-          type: 'paragraph',
-          text: 'Statistics on planted area and production by country are compiled by FAO and national agencies and should be consulted directly for current figures.',
-        },
       ],
     },
     {

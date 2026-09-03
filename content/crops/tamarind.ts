@@ -94,10 +94,6 @@ export const tamarind: CropContent = {
           type: 'paragraph',
           text: 'Tamarind is generally considered to be of tropical African origin, from where it was carried to South Asia in antiquity and became deeply associated with Indian cuisine, and later distributed throughout the tropics, including Southeast Asia and the Americas.',
         },
-        {
-          type: 'paragraph',
-          text: 'Statistics on planted area and production are limited and often incomplete; available figures are compiled by FAO and national agencies and should be consulted directly.',
-        },
       ],
     },
     {

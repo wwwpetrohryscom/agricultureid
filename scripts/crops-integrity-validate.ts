@@ -129,12 +129,20 @@ const cropSlugs = new Set(crops.map((c) => c.slug));
  * than rewritten: these counts may fall and may not rise. Not one pair above
  * twenty words involves an article written in Waves 39, 40 or 41, so the
  * ratchet costs the current work nothing and makes copying a paragraph fail.
+ *
+ * Wave 45 turned the ratchet: 277 → 42, 102 → 4, 39 → 0 and 9 → 0. Most of that
+ * came from one edit rather than from rewriting: two methodology
+ * caveats — where production figures come from, how a water requirement is
+ * estimated — were in 123 articles in 90 wordings, and centralising them into
+ * rendered constants removed 156 sentences. The corpus's longest shared run
+ * fell from 47 words to under 35 without a single fact being changed, which is
+ * the shape most of this debt turned out to have.
  */
 const SHARED_RUN_BUDGET: readonly { floor: number; pairs: number }[] = [
-  { floor: 20, pairs: 277 },
-  { floor: 25, pairs: 102 },
-  { floor: 30, pairs: 39 },
-  { floor: 35, pairs: 9 },
+  { floor: 20, pairs: 42 },
+  { floor: 25, pairs: 4 },
+  { floor: 30, pairs: 0 },
+  { floor: 35, pairs: 0 },
 ];
 {
   const pairs = sharedRunPairs(crops);
@@ -357,6 +365,38 @@ const SHARED_RUN_BUDGET: readonly { floor: number; pairs: number }[] = [
       if (flat.includes(f))
         fail(
           `crop "${c.slug}" claims global standing in its article prose ("${f}") — calendar and identity coverage do not establish importance, and no source in this corpus supports a superlative of that kind`,
+        );
+
+    /*
+     * A centralised policy may not come back as prose.
+     *
+     * Wave 45 took two methodology caveats out of 123 articles and put them in
+     * one rendered constant. The way they got to ninety wordings in the first
+     * place is that each new article restated them, so nothing about removing
+     * them stops it happening again. These are the openers the removal cut at,
+     * and a sentence starting one of them in article prose is the policy being
+     * rewritten rather than rendered.
+     *
+     * Narrow on purpose: the words themselves are ordinary and a crop page must
+     * still be able to say "production is concentrated in Kerala". What is
+     * forbidden is the METHODOLOGY sentence — where figures come from, that
+     * they change, how a water requirement is estimated — which is the corpus
+     * talking about its own numbers.
+     */
+    const CENTRALISED = [
+      'compiled by fao',
+      'from primary sources such as faostat',
+      'obtained from primary sources such as',
+      'national agricultural statistics services rather than assumed',
+      'should be consulted directly for current figures',
+      'crop water requirements are estimated from evapotranspiration',
+      'estimated from evapotranspiration and local climate',
+      'taken from those primary datasets',
+    ];
+    for (const f of CENTRALISED)
+      if (flat.includes(f))
+        fail(
+          `crop "${c.slug}" restates a centralised methodology caveat in its prose ("${f}") — the statistics and evapotranspiration notes are rendered from lib/crops/editorial-boilerplate.ts on every crop page`,
         );
   }
 }

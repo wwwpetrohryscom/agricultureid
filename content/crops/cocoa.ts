@@ -90,7 +90,7 @@ export const cocoa: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'West Africa, particularly Côte d’Ivoire and Ghana, now accounts for the large majority of global production, with significant cultivation also in Southeast Asia and Latin America. Production statistics are compiled by FAO and national and international cocoa-sector bodies.',
+          text: 'West Africa, particularly Côte d’Ivoire and Ghana, now accounts for the large majority of global production, with significant cultivation also in Southeast Asia and Latin America.',
         },
       ],
     },

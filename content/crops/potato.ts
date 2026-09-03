@@ -93,7 +93,7 @@ export const potato: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'Potato is now grown across a wide range of countries and climates. Current data on planted area, production, and trade by country are compiled by FAO and national agricultural statistics agencies and should be drawn from those primary sources.',
+          text: 'Potato is now grown across a wide range of countries and climates.',
         },
       ],
     },
@@ -168,10 +168,6 @@ export const potato: CropContent = {
         {
           type: 'paragraph',
           text: 'Potato has a relatively shallow root system and benefits from consistent soil moisture, particularly during tuber initiation and bulking. Both water deficit and waterlogging during this period can reduce yield and tuber quality.',
-        },
-        {
-          type: 'paragraph',
-          text: 'Crop water requirements are estimated from evapotranspiration and local climate; reference methods and data are published by FAO and national agricultural agencies.',
         },
       ],
     },

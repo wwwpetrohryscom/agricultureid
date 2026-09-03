@@ -93,7 +93,7 @@ export const chestnut: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'Today, leading producers include China, Turkey, South Korea, and countries in southern Europe. Production and trade figures are compiled by FAO and national agricultural agencies.',
+          text: 'Today, leading producers include China, Turkey, South Korea, and countries in southern Europe.',
         },
       ],
     },

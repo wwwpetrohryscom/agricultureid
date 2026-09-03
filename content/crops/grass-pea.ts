@@ -98,10 +98,6 @@ export const grassPea: CropContent = {
           type: 'paragraph',
           text: 'Grass pea is an ancient crop of the Near East and has long been cultivated across South Asia, the Horn of Africa, and the Mediterranean. It persists especially in drought- and flood-prone regions where its reliability is valued.',
         },
-        {
-          type: 'paragraph',
-          text: 'Statistics on planted area and production are compiled by FAO and national agencies and should be consulted directly for current figures.',
-        },
       ],
     },
     {

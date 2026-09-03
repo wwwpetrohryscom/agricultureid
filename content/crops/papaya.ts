@@ -91,10 +91,6 @@ export const papaya: CropContent = {
           type: 'paragraph',
           text: 'Papaya is native to the lowland tropics of Central America and southern Mexico, from where it spread widely through the tropics via early trade and later global dispersal, becoming a common dooryard and commercial fruit crop across tropical and warm subtropical regions worldwide.',
         },
-        {
-          type: 'paragraph',
-          text: 'Production areas, dominant cultivars, and trade volumes change over time and by region; current figures are best obtained from primary sources such as FAOSTAT and national agricultural statistics services rather than assumed.',
-        },
       ],
     },
     {

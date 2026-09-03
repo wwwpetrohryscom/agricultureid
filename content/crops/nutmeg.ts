@@ -84,7 +84,7 @@ export const nutmeg: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'Indonesia remains a leading producer today, alongside Grenada in the Caribbean, which developed significant nutmeg production after the crop’s introduction there in the nineteenth century. Production and trade statistics are compiled by FAO and national agricultural agencies.',
+          text: 'Indonesia remains a leading producer today, alongside Grenada in the Caribbean, which developed significant nutmeg production after the crop’s introduction there in the nineteenth century.',
         },
       ],
     },

@@ -82,7 +82,7 @@ export const cardamom: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'India remains a leading producer, alongside Guatemala, which became a major producer following the crop’s introduction there in the twentieth century. Production and trade statistics are compiled by FAO and national agricultural agencies.',
+          text: 'India remains a leading producer, alongside Guatemala, which became a major producer following the crop’s introduction there in the twentieth century.',
         },
       ],
     },

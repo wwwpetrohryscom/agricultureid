@@ -101,10 +101,6 @@ export const rocket: CropContent = {
           type: 'paragraph',
           text: 'Rocket is native to the Mediterranean region and western Asia, where it has long been gathered and grown, and it has become a globally popular salad crop, particularly with the growth of baby-leaf and mixed-salad markets.',
         },
-        {
-          type: 'paragraph',
-          text: 'Because it is largely a fresh, short-cycle vegetable, detailed production statistics are limited; available figures are compiled by FAO and national agencies and should be consulted directly.',
-        },
       ],
     },
     {

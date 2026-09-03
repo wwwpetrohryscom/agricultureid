@@ -100,7 +100,7 @@ export const garlic: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'It is now grown across temperate and subtropical regions worldwide. Current statistics on planted area, production, and trade by country are compiled by FAO and national agricultural agencies.',
+          text: 'It is now grown across temperate and subtropical regions worldwide.',
         },
       ],
     },
@@ -175,10 +175,6 @@ export const garlic: CropContent = {
         {
           type: 'paragraph',
           text: 'Because of its shallow root system, garlic requires regular moisture through vegetative growth and bulb development, with irrigation commonly reduced or withheld in the weeks before harvest to encourage proper curing.',
-        },
-        {
-          type: 'paragraph',
-          text: 'Crop water requirements are estimated from evapotranspiration and local climate data, using methods and reference values published by FAO and national agricultural agencies.',
         },
       ],
     },

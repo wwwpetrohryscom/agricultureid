@@ -144,7 +144,7 @@ export const thyme: CropContent = {
       body: [
         {
           type: 'paragraph',
-          text: 'Thyme tolerates drought well once established and requires only modest supplemental irrigation in most climates, with young plantings needing more consistent moisture during establishment.',
+          text: 'Thyme is the smallest and shallowest-rooted of the Mediterranean culinary subshrubs, which makes its water relations different from rosemary or sage despite the shared reputation for drought hardiness: it survives dry spells but a mature stand thins under them, and yield of leaf falls before the plants show stress. The establishment year is the one that needs consistent moisture, because a thyme seedling has almost no root reserve to draw on.',
         },
         {
           type: 'paragraph',

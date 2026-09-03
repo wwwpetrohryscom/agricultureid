@@ -86,7 +86,7 @@ export const blackPepper: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'Major production today spans South and Southeast Asia, with significant cultivation in India, Vietnam, and Indonesia among other countries. Production and trade figures are compiled by FAO and national agricultural agencies.',
+          text: 'Major production today spans South and Southeast Asia, with significant cultivation in India, Vietnam, and Indonesia among other countries.',
         },
       ],
     },

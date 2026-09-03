@@ -87,10 +87,6 @@ export const apricot: CropContent = {
           type: 'paragraph',
           text: 'Apricot is believed to have originated in Central and East Asia, with cultivation spreading over millennia along historical trade routes into the Mediterranean basin, the Middle East, and eventually to other temperate regions worldwide, including parts of North America, Australia, and South Africa.',
         },
-        {
-          type: 'paragraph',
-          text: 'Current production volumes, leading cultivars, and trade patterns vary by region and change over time; figures should be obtained from primary sources such as FAOSTAT and national agricultural statistics services rather than assumed.',
-        },
       ],
     },
     {
@@ -191,7 +187,7 @@ export const apricot: CropContent = {
       body: [
         {
           type: 'paragraph',
-          text: 'Apricot is grown both rain-fed and under irrigation, with water demand highest during fruit development. Drip irrigation is widely used to apply water precisely to the root zone while limiting foliage wetting, which can also help manage some fungal diseases.',
+          text: 'Apricot runs a short, front-loaded season: it blooms earlier than almost any other stone fruit and ripens within about three months of it, so the whole water demand is compressed into spring. The crop is also unusually prone to pit-hardening stress, a period midway through fruit growth when the seed coat lignifies and the fruit takes up little water; irrigating through it as though growth were continuous wastes water and can split fruit when expansion resumes.',
         },
         {
           type: 'paragraph',

@@ -86,7 +86,7 @@ export const zucchini: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'It is now grown widely across temperate and warm regions worldwide; production and trade figures change over time and are best obtained from primary sources such as FAOSTAT and national agricultural statistics services rather than assumed.',
+          text: 'It is now grown widely across temperate and warm regions worldwide.',
         },
       ],
     },
@@ -131,7 +131,7 @@ export const zucchini: CropContent = {
           type: 'list',
           items: [
             'Cultivar selection for fruit shape, color, and days to maturity',
-            'Crop rotation with non-cucurbit crops to manage soil-borne disease and pest carryover',
+            "Rotation planning complicated by the crop's short cycle, which tempts a second cucurbit planting into the same ground in one season",
             'Adequate pollinator activity, since fruit set depends on pollen transfer between separate male and female flowers',
             'Frequent harvesting, since fruit left on the plant quickly overmatures and can reduce further fruit set',
           ],

@@ -95,7 +95,7 @@ export const walnut: CropContent = {
         },
         {
           type: 'paragraph',
-          text: "Walnut area and cultivar mix move faster than most tree-nut statistics suggest, because plantings made during the price rise of the last two decades are still coming into bearing. Read current figures from FAOSTAT or the producing country's own statistics service rather than from any secondary summary, including this one.",
+          text: 'Walnut area and cultivar mix move faster than most tree-nut statistics suggest, because plantings made during the price rise of the last two decades are still coming into bearing.',
         },
       ],
     },
@@ -134,7 +134,7 @@ export const walnut: CropContent = {
       body: [
         {
           type: 'paragraph',
-          text: 'Establishing a walnut orchard begins with selecting a rootstock and cultivar suited to the site and market. Because dichogamy causes male and female flower maturity to be offset within many individual cultivars, orchards are commonly planted with two or more cultivars whose bloom timing complements one another, improving the chance that pollen is available when female flowers are receptive.',
+          text: 'A walnut orchard is laid out around pollination before it is laid out around anything else. Because dichogamy causes male and female flower maturity to be offset within many individual cultivars, orchards are commonly planted with two or more cultivars whose bloom timing complements one another, improving the chance that pollen is available when female flowers are receptive.',
         },
         {
           type: 'table',
@@ -192,7 +192,7 @@ export const walnut: CropContent = {
       body: [
         {
           type: 'paragraph',
-          text: 'Walnut is grown both rain-fed and under irrigation depending on region, with water demand rising through nut development and kernel fill. Drip irrigation is widely used in modern orchards to apply water efficiently to the root zone.',
+          text: "Walnut roots deeply and is correspondingly intolerant of a wet root zone: Phytophthora crown and root rot follows saturated soil, and on heavy ground it is the disease that decides the irrigation schedule rather than the crop's water demand. Kernel fill runs through the hottest part of late summer, so the crop needs water exactly when over-irrigation is most dangerous, and orchards are commonly managed on measured soil-water status rather than on a calendar.",
         },
         {
           type: 'paragraph',

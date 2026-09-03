@@ -106,10 +106,6 @@ export const chickpea: CropContent = {
           type: 'paragraph',
           text: 'Chickpea was domesticated in the Fertile Crescent, in what is now southeastern Turkey, as one of the founder crops of Near Eastern agriculture, and spread in antiquity to South Asia and the Mediterranean, regions that remain major production centers.',
         },
-        {
-          type: 'paragraph',
-          text: 'Current statistics on planted area, production, and trade by country are compiled by FAO and national agricultural agencies and should be consulted directly for up-to-date figures.',
-        },
       ],
     },
     {
@@ -184,10 +180,6 @@ export const chickpea: CropContent = {
           type: 'paragraph',
           text: 'Chickpea roots deeply and is grown largely on stored soil moisture, which is why it occupies the drier end of the pulse rotation. Ascochyta blight is the constraint that most often decides the crop: it is seed-borne and splashed through the canopy by rain, so a wet season in a susceptible variety can take a crop that had adequate water and nutrition.',
         },
-        {
-          type: 'paragraph',
-          text: 'Where irrigation is available, crop water requirements are estimated from evapotranspiration and local climate data, following reference methods published by FAO and national agricultural agencies.',
-        },
       ],
     },
     {
@@ -210,7 +202,7 @@ export const chickpea: CropContent = {
       body: [
         {
           type: 'paragraph',
-          text: 'Chickpea is harvested once pods and foliage have dried at maturity, by combining or, in some smallholder systems, by hand pulling. Shattering and lodging can cause losses, so harvest timing and method are matched to local conditions and equipment.',
+          text: 'Chickpea is cut when the plant has dried standing, and the desi and kabuli types diverge at this point: kabuli seed is large, thin-coated and bruises into a downgrade, so it is handled gently and often threshed at reduced cylinder speed. Shattering and lodging can cause losses, so harvest timing and method are matched to local conditions and equipment.',
         },
       ],
     },

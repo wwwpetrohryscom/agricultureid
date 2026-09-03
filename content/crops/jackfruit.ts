@@ -98,10 +98,6 @@ export const jackfruit: CropContent = {
           type: 'paragraph',
           text: 'Jackfruit is native to the rainforests of South and Southeast Asia, with India and Bangladesh long-standing centers of cultivation, and it has spread across the humid tropics of Asia, Africa, and the Americas. It is often grown as a backyard and agroforestry tree rather than in large plantations.',
         },
-        {
-          type: 'paragraph',
-          text: 'Statistics on planted area and production are limited and often incomplete; available figures are compiled by FAO and national agencies and should be consulted directly.',
-        },
       ],
     },
     {

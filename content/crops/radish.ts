@@ -89,7 +89,7 @@ export const radish: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'It is now grown worldwide, from small home-garden plantings to significant commercial production of daikon and winter types in parts of Asia; production and trade figures change over time and are best obtained from primary sources such as FAOSTAT and national agricultural statistics services rather than assumed.',
+          text: 'It is now grown worldwide, from small home-garden plantings to significant commercial production of daikon and winter types in parts of Asia.',
         },
       ],
     },
