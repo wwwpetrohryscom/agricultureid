@@ -122,7 +122,7 @@ export const LAYER_ASSESSMENTS: readonly LayerEvidenceAssessment[] = [
   },
   {
     layer: 'relatedCrops',
-    reachesAtAssessment: 110,
+    reachesAtAssessment: 114,
     reason: 'NOT_APPLICABLE',
     finding:
       'Derived rather than sourced: a crop has related crops when it shares a genus, a concept scope, or enough pest and disease hosts with another published crop. A crop with none is a crop with no close relative published, which is a fact about the corpus rather than a gap in it.',
@@ -225,6 +225,41 @@ export const CONCORDANCE: readonly ConcordanceClassification[] = [
     commoditySlug: 'sheep-milk',
     kind: 'ANIMAL_PRODUCT',
     note: 'From sheep. No crop mapping exists and none is a gap.',
+  },
+  /* ---- Wave 41: concepts declared, and their commodities classified --------
+   * Five commodity series turned out to name a concept the corpus had not yet
+   * declared. Declaring the concepts is what surfaced them: until Wave 41 the
+   * pages looked like species pages, so a series keyed to them looked exact.
+   */
+  {
+    commoditySlug: 'wheat-grain',
+    kind: 'BROADER_CROP_CONCEPT',
+    cropSlug: 'wheat',
+    note: 'Names the wheat concept, which covers bread wheat and the hulled wheats. Durum is the exception: it is reported separately and Wave 41 moved its series off this page onto durum wheat, where the source actually points.',
+  },
+  {
+    commoditySlug: 'millet-grain',
+    kind: 'BROADER_CROP_CONCEPT',
+    cropSlug: 'millet',
+    note: 'Names the millet concept, which spans four genera. No source resolves the series to a species, so none of the five published millets carries market data and that absence is correct rather than missing.',
+  },
+  {
+    commoditySlug: 'fresh-blueberries',
+    kind: 'BROADER_CROP_CONCEPT',
+    cropSlug: 'blueberry',
+    note: 'Names planted blueberry production across highbush and rabbiteye. Lowbush blueberry is a managed native stand sold frozen and is reported differently, so the series does not reach it.',
+  },
+  {
+    commoditySlug: 'dried-chillies',
+    kind: 'BROADER_CROP_CONCEPT',
+    cropSlug: 'chili-pepper',
+    note: 'Names pungent peppers across five Capsicum species and resolves none of them. Sweet pepper is a separate series because the trade divides these by pungency and use, not by taxon.',
+  },
+  {
+    commoditySlug: 'rapeseed',
+    kind: 'BROADER_CROP_CONCEPT',
+    cropSlug: 'oilseed-rape',
+    note: 'Names the rapeseed crop, which is Brassica napus and Brassica rapa subsp. oleifera together. The trade does not separate them and neither does the series.',
   },
 ];
 

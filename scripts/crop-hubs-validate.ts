@@ -23,6 +23,7 @@ import {
   HUB_MIN_TOTAL_MEMBERS,
   HUB_REFUSAL_REASONS,
 } from '../types/crop-hubs';
+import { membersOf } from '../lib/crops/hubs';
 import { CROP_HUBS, HUB_REFUSALS } from '../data/crop-hubs';
 import { hubPath, membershipOf } from '../lib/crops/hubs';
 import { CROP_IDENTITIES } from '../lib/crops/identity';
@@ -151,18 +152,35 @@ for (const h of CROP_HUBS) {
 
 /* -- 4. no hub duplicates a concept page ----------------------------------- */
 for (const h of CROP_HUBS) {
-  // A crop concept page already IS a genus or complex hub, with a declared
-  // scope and a constituent list. A second one is the same page at another URL.
+  /*
+   * A crop concept page already IS a hub when it covers the same crops.
+   *
+   * The test was "does the concept's identity sit in this genus", and that is
+   * not the same question. Wave 41 declared concepts for cherry, plum, pear,
+   * wheat and others: each groups two to five taxa under one crop name, and
+   * each has an identity in a genus that also holds crops the concept
+   * explicitly excludes. Cherry's identity is a Prunus and the Prunus hub
+   * covers almond, apricot and peach as well — one is not a second URL for the
+   * other.
+   *
+   * So the comparison is between what each actually covers, recomputed: the
+   * hub's derived member set against the concept's page plus its constituents.
+   * Equal sets are two URLs for one page; anything else is two pages.
+   */
+  const hubMembers = new Set(membersOf(h).map((c) => c.slug));
   const clash = CROP_CONCEPTS.find((k) => {
-    const id = CROP_IDENTITIES.find((c) => c.slug === k.slug);
-    if (!id) return false;
-    if (h.kind === 'BOTANICAL_GENUS_HUB')
-      return id.genus.replace(/×/g, '').trim() === h.memberKey;
-    return false;
+    const covers = new Set<string>([
+      k.slug,
+      ...k.constituents
+        .map((t) => t.identitySlug)
+        .filter((x): x is string => !!x),
+    ]);
+    if (covers.size !== hubMembers.size) return false;
+    return [...covers].every((x) => hubMembers.has(x));
   });
   if (clash)
     fail(
-      `hub "${h.slug}": the "${clash.slug}" concept page already covers this genus — two URLs for one page`,
+      `hub "${h.slug}": the "${clash.slug}" concept page covers exactly the same crops — two URLs for one page`,
     );
   if (conceptSlugs.has(h.slug))
     fail(`hub "${h.slug}": a crop concept already uses this slug`);

@@ -6,7 +6,7 @@ export const arabicaCoffee: CropContent = {
   contentType: 'crop',
   title: 'Arabica Coffee',
   scientificName: 'Coffea arabica',
-  alternativeNames: ['Arabica', 'Mountain coffee', 'Coffee'],
+  alternativeNames: ['Arabica', 'Mountain coffee'],
   category: 'Beverage crop',
   subcategory: 'Perennial evergreen shrub',
   botanicalFamily: 'Rubiaceae (madder family)',

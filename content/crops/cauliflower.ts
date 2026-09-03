@@ -92,7 +92,7 @@ export const cauliflower: CropContent = {
         },
         {
           type: 'paragraph',
-          text: 'Current area, production, and trade figures change over time and by region; they are best obtained from primary sources such as FAOSTAT and national agricultural statistics services rather than assumed.',
+          text: 'Cauliflower area shifts between seasons and between regions within a season, because the crop is grown in short successive plantings rather than as a single annual harvest. Any figure for it is a snapshot; take one from FAOSTAT or a national statistics service dated to the period you mean.',
         },
       ],
     },
@@ -176,7 +176,7 @@ export const cauliflower: CropContent = {
       body: [
         {
           type: 'paragraph',
-          text: 'Clubroot is a major soil-borne threat, causing swollen, distorted roots and stunted, poorly heading plants, and can persist in soil for many years once established. Downy mildew affects foliage under cool, humid conditions, while flea beetles damage seedling leaves and armyworms feed on foliage and curds.',
+          text: 'Clubroot swells and distorts the roots, and a plant that cannot take up water reliably is a plant that will not form a dense curd — which is why the disease costs cauliflower its grade before it costs it yield. Resting spores survive in soil for many years, so an infected field is a long-term constraint on where brassicas can go. Downy mildew marks the curd itself in cool, humid weather, and that is a direct rejection rather than a leaf problem.',
         },
         {
           type: 'paragraph',

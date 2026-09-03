@@ -68,16 +68,24 @@ describe('hubs are qualified, not enumerated', () => {
   });
 
   it('never duplicates a crop concept page', () => {
-    const conceptGenera = new Set(
-      CROP_CONCEPTS.map((k) =>
-        CROP_IDENTITIES.find((c) => c.slug === k.slug)
-          ?.genus.replace(/×/g, '')
-          .trim(),
-      ).filter(Boolean),
-    );
-    for (const h of CROP_HUBS)
-      if (h.kind === 'BOTANICAL_GENUS_HUB')
-        expect(conceptGenera.has(h.memberKey), h.slug).toBe(false);
+    // Compared on what each covers rather than on which genus the concept's
+    // identity happens to sit in. Cherry is a Prunus and the Prunus hub also
+    // covers almond, apricot and peach; one is not a second URL for the other.
+    for (const h of CROP_HUBS) {
+      const hubMembers = new Set(membersOf(h).map((c) => c.slug));
+      for (const k of CROP_CONCEPTS) {
+        const covers = new Set<string>([
+          k.slug,
+          ...k.constituents
+            .map((t) => t.identitySlug)
+            .filter((x): x is string => !!x),
+        ]);
+        const identical =
+          covers.size === hubMembers.size &&
+          [...covers].every((x) => hubMembers.has(x));
+        expect(identical, `${h.slug} vs ${k.slug}`).toBe(false);
+      }
+    }
   });
 });
 

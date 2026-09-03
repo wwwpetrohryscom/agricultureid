@@ -28,11 +28,15 @@ import {
   DISAGREEMENT_KINDS,
   DISAGREEMENT_KIND_MEANING,
   HELD_AS,
+  MARKET_GRANULARITIES,
+  RELATIONSHIP_KINDS,
+  ROUTE_STATUSES,
 } from '../types/crop-concepts';
 import { CROP_IDENTITIES, IDENTITY_BY_SLUG } from '../lib/crops/identity';
 import { SOURCE_MAP } from '../lib/sources/registry';
 import { PUBLISHED_CONTENT } from '../lib/content/registry';
 import { allRoutes } from '../lib/seo/routes';
+import { COMMODITIES_BY_CROP } from '../lib/crops/integration';
 
 const errors: string[] = [];
 const fail = (m: string) => errors.push(m);
@@ -68,14 +72,43 @@ for (const c of CROP_IDENTITIES) {
     fail(
       `crop "${c.slug}" is published at rank "${c.taxonRank}" — it names more than one taxon — and declares no concept scope`,
     );
-  if (has && !multi)
-    fail(
-      `crop "${c.slug}" declares a concept scope but its identity is a single taxon at rank "${c.taxonRank}"`,
-    );
+  /*
+   * The reverse prohibition — "only a multi-taxon identity may declare a
+   * scope" — was removed in Wave 41, and it is the one change in this file
+   * that is a relaxation rather than a tightening, so it is worth being
+   * explicit about why.
+   *
+   * It assumed that a page covering several plants would be KEYED to several
+   * plants. Nine pages disproved that: wheat, millet, cherry, pear, plum,
+   * blueberry, chili pepper, cinnamon and mustard are each keyed to their
+   * principal species and each name a wider crop, as their own scientific-name
+   * fields had been saying in prose all along. The prohibition made it
+   * impossible to declare their scope, and that silence is what let Waves 39
+   * and 40 publish six of the plants those pages were covering without any of
+   * the parents noticing.
+   *
+   * What replaces it is stricter, not looser: a concept must list at least one
+   * constituent that is a real identity distinct from the page's own, and the
+   * route status of every constituent is recomputed against the corpus. A page
+   * cannot now declare a scope it does not have, and it can no longer stay
+   * silent about one it does.
+   */
 }
 
+const conceptSeen = new Set<string>();
 for (const k of CROP_CONCEPTS) {
   const at = `concept "${k.slug}"`;
+  /*
+   * One page, one scope.
+   *
+   * Two concept records for the same slug are two answers to "what does this
+   * page cover", and nothing downstream chooses between them: the lookup map
+   * keeps whichever came last and the other is invisible. A Wave 41 injection
+   * duplicated the cherry concept and every gate passed.
+   */
+  if (conceptSeen.has(k.slug))
+    fail(`${at}: a second concept record declares a scope for the same page`);
+  conceptSeen.add(k.slug);
   if (!CONCEPT_KINDS.includes(k.kind))
     fail(`${at}: kind "${k.kind}" is not in the vocabulary`);
   else if (!CONCEPT_KIND_MEANING[k.kind]?.trim())
@@ -95,9 +128,87 @@ for (const k of CROP_CONCEPTS) {
     if (!SOURCE_MAP.has(s)) fail(`${at}: names unknown source "${s}"`);
   if (!k.sourceIds.length) fail(`${at}: cites no source`);
 
-  // A concept covering one taxon is not a concept.
-  if (k.constituents.length < 2)
-    fail(`${at}: declares ${k.constituents.length} constituent(s)`);
+  /*
+   * A concept covering one taxon is not a concept — but the count that matters
+   * is taxa, and the page's own taxon is one of them and is never listed as a
+   * constituent. One constituent plus the page is two plants under one name,
+   * which is exactly what cherry, pear, plum and cinnamon are.
+   */
+  if (k.constituents.length < 1)
+    fail(`${at}: declares no constituent — the page covers only its own taxon`);
+
+  if (
+    !(MARKET_GRANULARITIES as readonly string[]).includes(k.marketGranularity)
+  )
+    fail(
+      `${at}: marketGranularity "${k.marketGranularity}" is not in the vocabulary`,
+    );
+  if (k.marketGranularityNote.trim().length < 60)
+    fail(`${at}: states a market granularity without saying why`);
+  /**
+   * The declaration has to survive the corpus.
+   *
+   * `NO_MARKET_LINKAGE` is the one that can be checked outright, and it is the
+   * one most likely to go stale: a commodity keyed to the page later makes the
+   * claim false without anyone editing this record.
+   */
+  const conceptCommodities = [...(COMMODITIES_BY_CROP.get(k.slug) ?? [])];
+  if (k.marketGranularity === 'NO_MARKET_LINKAGE' && conceptCommodities.length)
+    fail(
+      `${at}: says no market series is keyed to it and ${conceptCommodities.length} is: ${conceptCommodities.join(', ')}`,
+    );
+  if (k.marketGranularity !== 'NO_MARKET_LINKAGE' && !conceptCommodities.length)
+    fail(
+      `${at}: declares market granularity "${k.marketGranularity}" and no commodity is keyed to the page at all`,
+    );
+  /**
+   * Market coverage must not leak from a concept to a child.
+   *
+   * A CONCEPT_LEVEL commodity measures the traded product of the whole
+   * concept. If the same commodity also resolves to a constituent that has its
+   * own page, the corpus is reporting one trade twice and attributing it to a
+   * species no source measured.
+   */
+  /*
+   * A note on what this rule can and cannot catch.
+   *
+   * A Wave 41 injection tried to construct the leak and could not: a commodity
+   * carries one `sourceCrop`, and `COMMODITIES_BY_CROP` reverses it, so one
+   * commodity reaches exactly one crop and the condition below is unreachable
+   * in the current model. The rule is kept as a guard on the model rather than
+   * on the data — if a commodity ever names several crops, this is what stops
+   * the same trade being counted on a concept and on its child — and it is
+   * recorded here that it has never fired and currently cannot, because a rule
+   * that silently cannot fail is worse than no rule at all.
+   */
+  if (k.marketGranularity === 'CONCEPT_LEVEL')
+    for (const t of k.constituents) {
+      if (!t.identitySlug || !publishedCrops.has(t.identitySlug)) continue;
+      const childCommodities = [
+        ...(COMMODITIES_BY_CROP.get(t.identitySlug) ?? []),
+      ];
+      const leaked = childCommodities.filter((c) =>
+        conceptCommodities.includes(c),
+      );
+      if (leaked.length)
+        fail(
+          `${at}: commodity ${leaked.join(', ')} is keyed to the concept AND to its constituent "${t.identitySlug}" — concept-level market coverage must not leak to a child`,
+        );
+    }
+  for (const x of k.excludes ?? []) {
+    const ex = `${at} exclusion "${x.scientificName}"`;
+    if (!x.reason.trim()) fail(`${ex}: says nothing about why it is excluded`);
+    if (
+      x.resolvesTo &&
+      !PUBLISHED_CONTENT.some(
+        (p) =>
+          p.contentType === x.resolvesTo!.type && p.slug === x.resolvesTo!.slug,
+      )
+    )
+      fail(
+        `${ex}: resolves to ${x.resolvesTo.type}:${x.resolvesTo.slug}, which is not published`,
+      );
+  }
 
   const seen = new Set<string>();
   for (const t of k.constituents) {
@@ -155,6 +266,85 @@ for (const k of CROP_CONCEPTS) {
           `${where}: says the corpus does not hold it, but identity "${found.slug}" carries that accepted name`,
         );
     }
+
+    /* -- the parent–child scope contract ---------------------------------
+     *
+     * `routeStatus` and `relationshipKind` are recomputed here rather than
+     * read. Promoting a child changes what the corpus contains, and a parent
+     * whose scope record does not change with it is describing a corpus that
+     * no longer exists — Wave 39 published five crops that concepts had listed
+     * as taxon rows, and nothing noticed because nothing was looking.
+     *
+     * The check fails in both directions on purpose: a constituent recorded as
+     * having a page that does not is the same class of error as the reverse.
+     */
+    if (!(RELATIONSHIP_KINDS as readonly string[]).includes(t.relationshipKind))
+      fail(
+        `${where}: relationshipKind "${t.relationshipKind}" is not in the vocabulary`,
+      );
+    if (!(ROUTE_STATUSES as readonly string[]).includes(t.routeStatus))
+      fail(`${where}: routeStatus "${t.routeStatus}" is not in the vocabulary`);
+    /*
+     * The name and the identity must be the same plant.
+     *
+     * `identitySlug` and `scientificName` were two independent fields: the
+     * checks confirmed that the slug resolved and that the name resolved, and
+     * never that they resolved to each other. A Wave 41 injection put apricot's
+     * binomial on the sour cherry constituent and every gate passed.
+     */
+    if (id) {
+      const exact = norm(t.scientificName) === norm(id.acceptedScientificName);
+      /*
+       * `cultivar-group-only` is the case where they legitimately differ: the
+       * constituent names the species and the corpus holds a cultivar group of
+       * it, which is the Wave 33 correction on pumpkin. The identity's name
+       * must then be the constituent's name plus a group epithet — narrower,
+       * not different.
+       */
+      const narrower =
+        t.heldAs === 'cultivar-group-only' &&
+        norm(id.acceptedScientificName).startsWith(
+          `${norm(t.scientificName)} `,
+        );
+      if (!exact && !narrower)
+        fail(
+          `${where}: names identity "${t.identitySlug}", whose accepted name is "${id.acceptedScientificName}" — the constituent and the identity are different plants`,
+        );
+    }
+
+    const actualRoute = !t.identitySlug
+      ? 'no-route'
+      : publishedCrops.has(t.identitySlug)
+        ? 'own-page'
+        : 'taxon-row-only';
+    if (t.routeStatus !== actualRoute)
+      fail(
+        `${where}: records routeStatus "${t.routeStatus}" and the corpus emits "${actualRoute}" — promoting a child without updating its parent leaves the parent describing a corpus that no longer exists`,
+      );
+    /*
+     * Rank and relationship must agree in both directions. A cultivar group
+     * recorded as a species overstates what it is; a species recorded as a
+     * cultivar group understates it, and that direction matters more, because
+     * the split criterion turns on it — promoting a species gives a reader a
+     * plant, promoting a cultivar group gives them a market category with a
+     * Latin name attached.
+     */
+    if (
+      id &&
+      id.taxonRank === 'cultivar-group' &&
+      t.relationshipKind !== 'cultivar-group'
+    )
+      fail(
+        `${where}: is a cultivar group by rank and is recorded as "${t.relationshipKind}"`,
+      );
+    if (
+      id &&
+      id.taxonRank !== 'cultivar-group' &&
+      t.relationshipKind === 'cultivar-group'
+    )
+      fail(
+        `${where}: is recorded as a cultivar group and the identity holds it at rank "${id.taxonRank}"`,
+      );
 
     // A constituent with its own page must be reachable from the concept page.
     if (id && publishedCrops.has(id.slug)) {
@@ -270,6 +460,25 @@ for (const c of CROP_IDENTITIES) {
       fail(`${at}: kind "${x.kind}" is not in the vocabulary`);
     if (!x.note?.trim() || x.note.length < 20)
       fail(`${at}: gives no explanation`);
+    /**
+     * A destination that has stopped being true.
+     *
+     * A crosswalk entry pointing at `crop-taxon` says "this name is not a
+     * page; here is the row that holds it". Publishing that crop makes the
+     * statement false, and Wave 41 found fifteen of them — every crop Waves 39
+     * and 40 promoted out of the taxon table left its own crosswalk entries
+     * behind, sending readers to a row when a page existed. It is the same
+     * defect as a concept whose constituent was promoted without the parent
+     * noticing, in a different layer, and it survived for the same reason:
+     * nothing recomputed the destination.
+     */
+    if (
+      x.resolvesTo?.type === 'crop-taxon' &&
+      publishedCrops.has(x.resolvesTo.slug)
+    )
+      fail(
+        `${at}: resolves to the taxon row for "${x.resolvesTo.slug}", which now has its own page`,
+      );
     if (x.resolvesTo) {
       const key = `${x.resolvesTo.type}:${x.resolvesTo.slug}`;
       const isTaxon =

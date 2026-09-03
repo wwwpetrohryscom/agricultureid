@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
+  STANDING_PHRASE_MARKER,
   STANDING_PHRASES,
   STANDING_PHRASE_MIN_SHARE,
   articlesContaining,
@@ -51,7 +52,19 @@ describe('standing language — the corpus repeating itself on purpose', () => {
 
   it('removes registered phrases from a comparison', () => {
     const t = `alpha ${STANDING_PHRASES[0]!.phrase} omega`;
-    expect(stripStandingPhrases(t)).toBe('alpha omega');
+    const stripped = stripStandingPhrases(t);
+    expect(stripped).not.toContain(STANDING_PHRASES[0]!.phrase);
+    expect(
+      stripped.split(' ').filter((w) => w !== STANDING_PHRASE_MARKER),
+    ).toEqual(['alpha', 'omega']);
+  });
+
+  it('leaves a boundary where a phrase was, so the edges do not weld', () => {
+    // Removing a phrase and closing the gap invents a run neither article had.
+    // Wave 41 measured 2,407 pairs "sharing" twelve words that were the two
+    // halves of the soil-survey sentence pushed together.
+    const t = `alpha ${STANDING_PHRASES[0]!.phrase} omega`;
+    expect(stripStandingPhrases(t)).toContain(STANDING_PHRASE_MARKER);
   });
 });
 

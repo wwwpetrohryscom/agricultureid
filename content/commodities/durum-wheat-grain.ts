@@ -11,7 +11,7 @@ export const durumWheatGrain: CommodityContent = {
   commodityClass: 'cereal-grain',
   physicalForm: 'whole-grain',
   harvestedPart: 'Caryopsis (grain), threshed from the ear',
-  sourceCrop: { type: 'crop', slug: 'wheat' },
+  sourceCrop: { type: 'crop', slug: 'durum-wheat' },
   summary:
     'Durum wheat grain is the harvested caryopsis of Triticum durum, a different species from common wheat and traded as its own commodity. Its hard, vitreous kernels are milled into semolina for pasta rather than into bread flour.',
   introduction: [

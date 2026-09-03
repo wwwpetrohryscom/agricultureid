@@ -113,7 +113,7 @@ export function articleText(item: AnyContent): string {
  * the least interesting reason. Stripping the names measures the prose around
  * the subject, which is where boilerplate would live.
  */
-function comparableText(item: AnyContent): string {
+export function comparableText(item: AnyContent): string {
   const c = item as unknown as Record<string, unknown>;
   const names = [
     String(c.title ?? ''),
@@ -246,6 +246,59 @@ export function flaggedPairs(items: AnyContent[]): SimilarPair[] {
       return { ...p, longestRun: r.length, longestRunText: r.text };
     })
     .sort((x, y) => y.overlap - x.overlap);
+}
+
+/**
+ * Every pair of crop articles that shares a run of at least
+ * `SHARED_RUN_IS_PROSE` words, found by shingling rather than by overlap.
+ *
+ * `flaggedPairs` filters on Jaccard overlap first and only then measures the
+ * shared run, which means a long verbatim paragraph inside two articles that
+ * are otherwise about different plants is never measured at all. Wave 31 wrote
+ * down that Jaccard cannot tell vocabulary from a copied paragraph; the filter
+ * order quietly reintroduced the same blind spot, and a Wave 41 injection
+ * copied a whole paragraph from cherry to sour cherry and passed every gate.
+ *
+ * Shingling is the direct test: hash every window of N words in every article
+ * and report the windows that appear under two different slugs. Linear in the
+ * corpus, and it detects exactly the thing the register is for.
+ */
+export function sharedRunPairs(
+  items: AnyContent[],
+  minRun = SHARED_RUN_IS_PROSE,
+): { a: string; b: string; run: number; text: string }[] {
+  const byShingle = new Map<string, Set<string>>();
+  const words = new Map<string, string[]>();
+  for (const item of items) {
+    const slug = (item as unknown as { slug: string }).slug;
+    const w = comparableText(item).split(' ').filter(Boolean);
+    words.set(slug, w);
+    for (let i = 0; i + minRun <= w.length; i += 1) {
+      const key = w.slice(i, i + minRun).join(' ');
+      const set = byShingle.get(key) ?? new Set<string>();
+      set.add(slug);
+      byShingle.set(key, set);
+    }
+  }
+  const best = new Map<string, { run: number; text: string }>();
+  for (const [key, slugs] of byShingle) {
+    if (slugs.size < 2) continue;
+    const list = [...slugs].sort();
+    for (let i = 0; i < list.length; i += 1)
+      for (let j = i + 1; j < list.length; j += 1) {
+        const k = `${list[i]}::${list[j]}`;
+        const prev = best.get(k);
+        if (!prev || minRun > prev.run) best.set(k, { run: minRun, text: key });
+      }
+  }
+  return [...best].map(([k, v]) => {
+    const [a, b] = k.split('::') as [string, string];
+    const run = longestSharedRun(
+      (words.get(a) ?? []).join(' '),
+      (words.get(b) ?? []).join(' '),
+    );
+    return { a, b, run: run.length, text: run.text || v.text };
+  });
 }
 
 export function measureDepth(
