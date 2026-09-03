@@ -78,6 +78,20 @@ export interface CropCalendarEntry {
 }
 
 /** Shown wherever a calendar is displayed. */
+/**
+ * The sentence a group-level calendar page must carry, and an exact-entity one
+ * must not.
+ *
+ * Held as a constant so the page renders it and the post-build audit looks for
+ * this exact string. `granularity: 'CONCEPT_LEVEL'` was recorded in the match
+ * layer from Wave 42 and checked by the calendars validator, and no reader ever
+ * saw it: the coffee, cotton, banana, jute and pumpkin calendar pages read
+ * exactly like the exact-entity ones. A distinction that only a validator can
+ * see is not a disclosure.
+ */
+export const CALENDAR_GROUP_SCOPE_MARKER =
+  'These windows are for the group, not for one species.';
+
 export const CALENDAR_CAVEAT =
   'Actual timing varies by cultivar, local weather, soil conditions and production system. Use local extension or agronomic guidance for field decisions.';
 

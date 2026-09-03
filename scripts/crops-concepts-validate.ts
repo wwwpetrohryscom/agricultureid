@@ -20,6 +20,7 @@ import {
   TAXONOMY_DISAGREEMENTS,
 } from '../data/crop-identity/taxonomy-disagreements';
 import { NAME_CROSSWALK } from '../data/crop-identity/name-crosswalk';
+import { TAXON_SCOPE_OWNERSHIP } from '../data/crop-taxon-ownership';
 import {
   CONCEPT_REQUIRED_RANKS,
   CONCEPT_KINDS,
@@ -32,7 +33,11 @@ import {
   RELATIONSHIP_KINDS,
   ROUTE_STATUSES,
 } from '../types/crop-concepts';
-import { CROP_IDENTITIES, IDENTITY_BY_SLUG } from '../lib/crops/identity';
+import {
+  CROP_IDENTITIES,
+  IDENTITY_BY_SLUG,
+  constituentDestination,
+} from '../lib/crops/identity';
 import { SOURCE_MAP } from '../lib/sources/registry';
 import { PUBLISHED_CONTENT } from '../lib/content/registry';
 import { allRoutes } from '../lib/seo/routes';
@@ -43,6 +48,20 @@ const fail = (m: string) => errors.push(m);
 const ISO = /^\d{4}-\d{2}-\d{2}$/;
 
 const routes = new Set(allRoutes().map((r) => r.path));
+const OWNERSHIP_BY_PARENT = new Map(
+  TAXON_SCOPE_OWNERSHIP.map((o) => [o.parentTaxon, o]),
+);
+
+/** Published crops by each alternative name they claim, lower-cased. */
+const CROPS_CLAIMING_NAME = new Map<string, string[]>();
+for (const c of PUBLISHED_CONTENT) {
+  if (c.contentType !== 'crop') continue;
+  for (const n of (c as { alternativeNames?: string[] }).alternativeNames ?? [])
+    CROPS_CLAIMING_NAME.set(n.toLowerCase(), [
+      ...(CROPS_CLAIMING_NAME.get(n.toLowerCase()) ?? []),
+      c.slug,
+    ]);
+}
 const publishedCrops = new Set(
   PUBLISHED_CONTENT.filter((c) => c.contentType === 'crop').map((c) => c.slug),
 );
@@ -242,9 +261,22 @@ for (const k of CROP_CONCEPTS) {
         fail(
           `${where}: names identity "${t.identitySlug}", which does not exist`,
         );
-      else if (id.taxonRank === 'cultivar-group')
+      /*
+       * The rule is about a MISMATCH, not about the rank.
+       *
+       * It was written for pumpkin, where the constituent names Cucurbita pepo
+       * and the corpus holds only the Zucchini Group of it — claiming
+       * own-identity there overstates what is held. Where the constituent
+       * names the cultivar group itself, as the citrus concept does for the
+       * Sweet Orange, Grapefruit and Mandarin Groups, the corpus holds exactly
+       * what the constituent names and own-identity is the truthful answer.
+       */
+      else if (
+        id.taxonRank === 'cultivar-group' &&
+        norm(t.scientificName) !== norm(id.acceptedScientificName)
+      )
         fail(
-          `${where}: claims its own identity, but "${t.identitySlug}" is a cultivar group — the corpus holds a cultivated form, not the species`,
+          `${where}: claims its own identity, but "${t.identitySlug}" is a cultivar group of it — the corpus holds a cultivated form, not the taxon this constituent names`,
         );
     } else if (t.heldAs === 'cultivar-group-only') {
       if (!id)
@@ -265,6 +297,28 @@ for (const k of CROP_CONCEPTS) {
         fail(
           `${where}: says the corpus does not hold it, but identity "${found.slug}" carries that accepted name`,
         );
+    }
+
+    /*
+     * The link the reader is actually offered has to go somewhere.
+     *
+     * `identitySlug` resolving inside the identity layer says the corpus holds
+     * the taxon. It says nothing about whether `/crops/<slug>` exists, and
+     * until Wave 43 the scope table assumed the two were the same question:
+     * thirty-seven links across sixteen concept pages pointed at pages that
+     * were never published. The rule re-derives the destination through the
+     * same function the component renders, so the check cannot drift from what
+     * ships.
+     */
+    const dest = constituentDestination(t.identitySlug);
+    if (dest.kind !== 'unheld') {
+      const target = dest.href.split('#')[0]!;
+      if (!routes.has(target))
+        fail(
+          `${where}: the scope table would link to "${dest.href}", which is not a route`,
+        );
+      if (dest.kind === 'register' && t.heldAs === 'not-held')
+        fail(`${where}: says not held and would still be linked`);
     }
 
     /* -- the parent–child scope contract ---------------------------------
@@ -344,6 +398,41 @@ for (const k of CROP_CONCEPTS) {
     )
       fail(
         `${where}: is recorded as a cultivar group and the identity holds it at rank "${id.taxonRank}"`,
+      );
+
+    /*
+     * A hybrid has to be nomenclaturally a hybrid.
+     *
+     * `relationshipKind: 'hybrid'` says "a hybrid between constituents of the
+     * concept" and nothing checked it. A Wave 43 injection recorded pomelo —
+     * Citrus maxima, one of the three ANCESTRAL species and the concept's own
+     * genome donor — as a hybrid of the concept it is a parent of, and every
+     * gate passed. Getting that backwards on a citrus page is not a
+     * bookkeeping slip: the whole point of the page is which taxa are the
+     * ancestors and which are the crosses.
+     *
+     * The check is the botanical convention and only that: a hybrid binomial
+     * puts a multiplication sign between the genus and the epithet
+     * ("Citrus × limon"). A nothogeneric name carries it as a PREFIX
+     * ("×Triticosecale rimpaui") and names a hybrid genus whose species are
+     * cultivated species in their own right, so it is excluded deliberately —
+     * triticale's two constituents are recorded as cultivated species and are
+     * right to be. Anything narrower than the marker — which cross, between
+     * which parents — the corpus states in the constituent's role and no rule
+     * can verify.
+     */
+    const infixHybrid = / × /.test(t.scientificName);
+    if (t.relationshipKind === 'hybrid' && !infixHybrid)
+      fail(
+        `${where}: is recorded as a hybrid and "${t.scientificName}" carries no hybrid marker — a parent species of the concept is not a cross within it`,
+      );
+    if (
+      infixHybrid &&
+      (t.relationshipKind === 'genome-donor' ||
+        t.relationshipKind === 'cultivated-species')
+    )
+      fail(
+        `${where}: "${t.scientificName}" is a hybrid name and it is recorded as "${t.relationshipKind}"`,
       );
 
     // A constituent with its own page must be reachable from the concept page.
@@ -503,6 +592,80 @@ for (const c of CROP_IDENTITIES) {
     if (x.kind === 'homonym' && x.resolvesTo)
       fail(
         `${at}: a homonym resolves to a different plant; sending a reader to "${x.resolvesTo.slug}" confirms the error they arrived with`,
+      );
+
+    /*
+     * An alias a page claims, sent somewhere else.
+     *
+     * "Satsuma" sat in the crosswalk pointing at the orange page from Wave 29
+     * to Wave 43, with a note that said "a cultivar group within mandarin" —
+     * true when written, because mandarin had no page and orange was the
+     * nearest citrus that did. Publishing mandarin made the destination wrong
+     * and nothing looked, because the note and the destination live in the
+     * same record and only the destination is machine-readable.
+     *
+     * The rule is deliberately narrow. It fires only where exactly ONE
+     * published page claims the name as its own alternative name: that page
+     * has made a claim, the crosswalk contradicts it, and one of them is
+     * wrong. Where two or more pages share an alias — "red bean", "cocoyam",
+     * "horse bean", "African eggplant" all legitimately do — the crosswalk is
+     * the layer that arbitrates and the rule stays out of it. This is not an
+     * alias-uniqueness rule and must not become one.
+     */
+    if (x.resolvesTo?.type === 'crop') {
+      const claimants = CROPS_CLAIMING_NAME.get(x.name.toLowerCase()) ?? [];
+      if (claimants.length === 1 && claimants[0] !== x.resolvesTo.slug)
+        fail(
+          `${at}: resolves to "${x.resolvesTo.slug}", but "${claimants[0]}" is the page that carries this name as an alternative name`,
+        );
+    }
+
+    /*
+     * A parent-taxon entry is read out of the ownership layer, not written.
+     *
+     * The failure this prevents is the one the entries were added to fix,
+     * pointed the other way: a name sent to a child that is only part of it.
+     * The ownership layer already decides who owns each shared parent, so the
+     * destination is derivable, and anything that disagrees with it is either
+     * a stale entry or an invented one. The `null` case is checked just as
+     * hard — a name whose owner IS a page may not be recorded as having
+     * nowhere to go.
+     */
+    if (x.kind === 'parent-taxon') {
+      const owner = OWNERSHIP_BY_PARENT.get(x.name);
+      if (!owner)
+        fail(
+          `${at}: recorded as a parent taxon, and no scope-ownership record names it`,
+        );
+      else if (owner.ownerKind === 'crop-concept') {
+        if (x.resolvesTo?.slug !== owner.ownerSlug)
+          fail(
+            `${at}: "${owner.parentTaxon}" is owned by the "${owner.ownerSlug}" page, and this entry resolves to ${x.resolvesTo ? `"${x.resolvesTo.slug}"` : 'nowhere'}`,
+          );
+      } else if (x.resolvesTo)
+        fail(
+          `${at}: "${owner.parentTaxon}" is owned by a record with no page, so resolving to "${x.resolvesTo.slug}" sends the reader to a child of it`,
+        );
+    }
+  }
+
+  /*
+   * Every shared parent taxon must be findable by its own name.
+   *
+   * The crosswalk was the layer that could answer "Citrus × aurantium" and it
+   * had no entry for it, so the query fell to whichever cultivar group scored
+   * best. Requiring the entry rather than merely validating the ones present
+   * is the difference between a register and a gate.
+   */
+  for (const o of TAXON_SCOPE_OWNERSHIP) {
+    const x = NAME_CROSSWALK.find((c) => c.name === o.parentTaxon);
+    if (!x)
+      fail(
+        `scope ownership "${o.parentTaxon}": is shared by ${o.publishedChildren.length} published crops and the name crosswalk does not carry it`,
+      );
+    else if (x.kind !== 'parent-taxon')
+      fail(
+        `crosswalk "${x.name}": is a shared parent taxon and is recorded as "${x.kind}"`,
       );
   }
 }

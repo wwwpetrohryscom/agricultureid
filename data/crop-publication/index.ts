@@ -371,7 +371,12 @@ export const CROP_PUBLICATION_REVIEWS: readonly CropPublicationReview[] = [
     searchReview: [
       { query: 'chinese cabbage', mustWin: 'Chinese Cabbage' },
       { query: 'brassica rapa pekinensis group', mustWin: 'Chinese Cabbage' },
-      { query: 'brassica rapa', mustNotWin: ['Chinese Cabbage'] },
+      // Wave 43 published turnip, so four cultivar groups now answer to the
+      // bare species name and no page owns Brassica rapa — its scope is held
+      // by a record, deliberately. So the guard is that the answer is a crop
+      // page and not a row in the taxon table, and no single form is asserted,
+      // for the same reason the "clover" case asserts no species.
+      { query: 'brassica rapa', mustNotWin: ['Turnip rape'] },
     ],
     sourcesConsulted: ['fao', 'cabi', 'usda-plants', 'cornell-cals', 'faostat'],
     reviewedAt: '2026-09-02',

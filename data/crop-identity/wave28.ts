@@ -2242,7 +2242,8 @@ export const WAVE_28_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'turnip',
     lastVerifiedAt: '2026-09-02',
   },
   {
@@ -2277,7 +2278,8 @@ export const WAVE_28_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'swede',
     lastVerifiedAt: '2026-09-02',
   },
   {

@@ -2139,7 +2139,8 @@ export const WAVE_29_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'mandarin',
     limitations: [
       'Mandarin, tangerine, clementine and satsuma are market names within this group. Both authorities resolve Citrus deliciosa and Citrus clementina to the same taxon, Citrus \u00d7 aurantium f. deliciosa.',
     ],
@@ -2306,7 +2307,8 @@ export const WAVE_29_IDENTITIES: readonly CropIdentity[] = [
       'wfo-world-flora-online',
       'powo-plants-of-the-world-online',
     ],
-    profileDepth: 'data-only',
+    profileDepth: 'full-profile',
+    cropPageSlug: 'kaffir-lime',
     lastVerifiedAt: '2026-09-02',
   },
   {

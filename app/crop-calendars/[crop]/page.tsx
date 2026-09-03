@@ -6,7 +6,7 @@ import { JsonLd } from '@/components/seo/JsonLd';
 import { webPageSchema, breadcrumbSchema } from '@/lib/schema/jsonld';
 import { buildMetadata } from '@/lib/seo/metadata';
 import { getSource } from '@/lib/sources/registry';
-import { CALENDAR_CAVEAT } from '@/types/calendar';
+import { CALENDAR_CAVEAT, CALENDAR_GROUP_SCOPE_MARKER } from '@/types/calendar';
 import {
   cropsWithCalendars,
   calendarsForCrop,
@@ -16,6 +16,7 @@ import {
   CALENDARS_HUB_PATH,
 } from '@/lib/calendars/registry';
 import { PUBLISHED_CONTENT, contentUrlPath } from '@/lib/content/registry';
+import { FAO_CROP_MATCHES } from '@/data/calendars/fao';
 import { RelatedTools } from '@/components/tools/RelatedTools';
 
 type Params = { params: Promise<{ crop: string }> };
@@ -26,6 +27,25 @@ export function generateStaticParams() {
 
 const cropOf = (slug: string) =>
   PUBLISHED_CONTENT.find((c) => c.contentType === 'crop' && c.slug === slug);
+
+/**
+ * The source's own item, where it is broader than this page.
+ *
+ * Thirteen of the FAO matches resolve at CONCEPT_LEVEL: FAO publishes one
+ * "Coffee" item and this corpus holds a coffee concept covering arabica,
+ * robusta and liberica, so the windows on that page are the group's and not
+ * any one species'. The distinction was recorded in the match layer from Wave
+ * 42, validated there, and never shown to a reader — the page said "Coffee"
+ * and the reader had no way to tell it from an exact match.
+ *
+ * Read from the match records rather than from the concept register, because
+ * what makes the timing broad is what the SOURCE measured, not what this
+ * corpus happens to model as a concept.
+ */
+const conceptLevelFaoNames = (slug: string) =>
+  FAO_CROP_MATCHES.filter(
+    (m) => m.cropRef === slug && m.granularity === 'CONCEPT_LEVEL',
+  ).map((m) => m.faoName);
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { crop } = await params;
@@ -48,6 +68,7 @@ export default async function CropCalendarPage({ params }: Params) {
   const seasons = seasonsForCrop(crop);
   const groups = seasons.length > 0 ? seasons : [null];
   const sources = [...new Set(entries.flatMap((e) => e.sourceReferences))];
+  const conceptNames = conceptLevelFaoNames(crop);
 
   return (
     <Container className="py-8 lg:py-10">
@@ -89,6 +110,22 @@ export default async function CropCalendarPage({ params }: Params) {
           </Link>
         </p>
       </header>
+
+      {conceptNames.length > 0 && (
+        <aside
+          className="mt-6 rounded-lg border border-clay-300 bg-clay-50 p-4 text-sm text-ink-800"
+          aria-label="What these windows cover"
+        >
+          <span className="font-medium text-clay-900">
+            {CALENDAR_GROUP_SCOPE_MARKER}
+          </span>{' '}
+          The source publishes {conceptNames.map((n) => `"${n}"`).join(' and ')}{' '}
+          as a single item, and {c.title.toLowerCase()} is a group of crops in
+          this corpus. A window here is the usual timing for whatever the
+          growers in that zone grow under that name, and it cannot be attributed
+          to any one member of the group.
+        </aside>
+      )}
 
       <aside
         className="mt-6 rounded-lg border border-olive-200 bg-olive-50/60 p-4 text-sm text-ink-700"

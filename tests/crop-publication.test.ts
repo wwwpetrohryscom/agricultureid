@@ -15,6 +15,10 @@ import { describe, expect, it } from 'vitest';
 import { CROP_PUBLICATION_REVIEWS } from '@/data/crop-publication';
 import { CROP_RESEARCH } from '@/data/crop-research';
 import { CROP_EXPANSION_CANDIDATES } from '@/data/crop-expansion';
+import {
+  CROP_SCOPE_REVIEWS,
+  SCOPE_REVIEW_BY_SLUG,
+} from '@/data/crop-scope-review';
 import { IDENTITY_BY_SLUG } from '@/lib/crops/identity';
 import { PUBLISHED_CONTENT } from '@/lib/content/registry';
 import { articleText } from '@/lib/crops/content-depth';
@@ -55,9 +59,21 @@ describe('the ready queue was answered, not counted', () => {
 });
 
 describe('published means published', () => {
-  it('has a page for every PUBLISHED decision and none for the others', () => {
-    for (const r of CROP_PUBLICATION_REVIEWS)
-      expect(bySlug.has(r.slug), r.slug).toBe(r.outcome === 'PUBLISHED');
+  it('has a page for every PUBLISHED decision, and for the others only where a later wave says so', () => {
+    // Wave 43 promoted mandarin after building the citrus concept that Wave 39
+    // had stopped it for. The stop stays recorded — it is what got the concept
+    // built — and the scope review is where the lifting is stated.
+    for (const r of CROP_PUBLICATION_REVIEWS) {
+      if (r.outcome === 'PUBLISHED') {
+        expect(bySlug.has(r.slug), r.slug).toBe(true);
+        continue;
+      }
+      if (!bySlug.has(r.slug)) continue;
+      expect(
+        SCOPE_REVIEW_BY_SLUG.get(r.slug)?.outcome,
+        `${r.slug} has a page after a ${r.outcome} decision`,
+      ).toBe('PROMOTE_CHILD_PROFILE');
+    }
   });
 
   it('accounts for the corpus growth it claims', () => {
@@ -66,9 +82,14 @@ describe('published means published', () => {
     // what remains must be the pre-wave corpus. Later waves have to be
     // subtracted too, which is the point — an article nobody's campaign
     // accounts for would leave this number wrong.
-    const later = CROP_EXPANSION_CANDIDATES.filter(
-      (c) => c.recommendation === 'PUBLISH',
-    ).length;
+    const later =
+      CROP_EXPANSION_CANDIDATES.filter((c) => c.recommendation === 'PUBLISH')
+        .length +
+      CROP_SCOPE_REVIEWS.filter((r) => r.outcome === 'PROMOTE_CHILD_PROFILE')
+        .length +
+      // The citrus concept page, which is a crop page with no campaign record:
+      // it was created to own a parent taxon rather than promoted from a queue.
+      1;
     expect(crops.length - PUBLISHED.length - later).toBe(165);
   });
 });

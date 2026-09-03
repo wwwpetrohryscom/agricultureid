@@ -32,6 +32,7 @@ import {
   FAO_COUNTRIES,
   FAO_CROP_MATCHES,
   FAO_CROP_REFUSALS,
+  FAO_COUNTRIES_NOT_INGESTED,
   FAO_MATCH_ROUTES,
   FAO_REFUSAL_REASONS,
 } from '../data/calendars/fao';
@@ -226,6 +227,27 @@ for (const c of CALENDAR_CONFIDENCES) {
     ),
   );
 
+  /*
+   * The matcher's contract, rebuilt from the live corpus.
+   *
+   * Title and alternative name are indexed separately because the contract
+   * treats them differently: a title match is decisive, an alias match only
+   * when exactly one crop carries the alias. Collapsing them into one index
+   * would lose that distinction and turn a refusal for shared-alias ambiguity
+   * into a false positive.
+   */
+  const CROP_TITLE_INDEX = new Map<string, string[]>();
+  const CROP_ALIAS_INDEX = new Map<string, string[]>();
+  for (const c of PUBLISHED_CONTENT) {
+    if (c.contentType !== 'crop') continue;
+    const push = (m: Map<string, string[]>, key: string) =>
+      m.set(normName(key), [...(m.get(normName(key)) ?? []), c.slug]);
+    push(CROP_TITLE_INDEX, c.title);
+    for (const a of (c as { alternativeNames?: string[] }).alternativeNames ??
+      [])
+      push(CROP_ALIAS_INDEX, a);
+  }
+
   const namesSeen = new Set<string>();
   for (const m of FAO_CROP_MATCHES) {
     const at = `FAO match "${m.faoName}"`;
@@ -269,11 +291,67 @@ for (const c of CALENDAR_CONFIDENCES) {
       fail(
         `${at}: refused as ambiguous and the crosswalk holds no ambiguous-common-name entry for it — the refusal is an opinion rather than a reading of the register`,
       );
+    /*
+     * A refusal that has stopped being true.
+     *
+     * "No crop in this corpus carries this name" is a statement about the
+     * corpus on the day it was written, and every wave that publishes a crop
+     * can falsify it. Wave 43 published citrus, mandarin and turnip; the FAO
+     * dataset names all three; and all three sat in this list as
+     * NO_CORPUS_MATCH with nothing looking, because the rules above check a
+     * refusal for a reason in the vocabulary and never for whether the reason
+     * still holds.
+     *
+     * The recomputation runs the matcher's own published contract — a title
+     * match, or a single alternative-name match, and nothing else. It is not a
+     * search: no fuzzy matching, no edit distance, no stemming. If that
+     * contract now finds a crop, the refusal is stale and the entries it
+     * withheld are owed to the corpus.
+     */
+    if (r.reason === 'NO_CORPUS_MATCH') {
+      const n = normName(r.faoName);
+      const byTitle = CROP_TITLE_INDEX.get(n) ?? [];
+      const byAlias = CROP_ALIAS_INDEX.get(n) ?? [];
+      if (byTitle.length)
+        fail(
+          `${at}: refused as reaching nothing, and crop "${byTitle[0]}" now carries that title`,
+        );
+      else if (byAlias.length === 1)
+        fail(
+          `${at}: refused as reaching nothing, and exactly one crop — "${byAlias[0]}" — now carries it as an alternative name`,
+        );
+    }
   }
   if (namesSeen.size !== FAO_CALENDAR_SNAPSHOT.faoCropNames)
     fail(
       `FAO contract: accounts for ${namesSeen.size} crop names and the snapshot records ${FAO_CALENDAR_SNAPSHOT.faoCropNames}`,
     );
+
+  /*
+   * A gap that is declared is a gap that can be closed. An undeclared one is
+   * indistinguishable from the source not having the data.
+   */
+  {
+    const byName = new Map(
+      FAO_COUNTRIES.map((c) => [c.faoName, c.countryCode]),
+    );
+    const excludedCodes = new Set<string>();
+    for (const x of FAO_COUNTRIES_NOT_INGESTED) {
+      const code = byName.get(x.faoName);
+      if (!code)
+        fail(
+          `FAO exclusion "${x.faoName}": names a country the snapshot does not contain`,
+        );
+      else excludedCodes.add(code);
+      if (!x.reason?.trim() || x.reason.length < 40)
+        fail(`FAO exclusion "${x.faoName}": gives no reason`);
+    }
+    for (const e of FAO_CALENDAR_ENTRIES)
+      if (excludedCodes.has(e.countryCode))
+        fail(
+          `FAO entry "${e.id}": names country "${e.countryCode}", which is recorded as not ingested`,
+        );
+  }
 
   const declaredCountries = new Set(FAO_COUNTRIES.map((c) => c.countryCode));
   if (declaredCountries.size !== FAO_COUNTRIES.length)

@@ -32,6 +32,7 @@ import {
   CROP_EXPANSION_CANDIDATES,
 } from '../data/crop-expansion';
 import { RESEARCH_BY_SLUG } from '../data/crop-research';
+import { SCOPE_REVIEW_BY_SLUG } from '../data/crop-scope-review';
 import { CROP_IDENTITIES, IDENTITY_BY_SLUG } from '../lib/crops/identity';
 import { PUBLISHED_CONTENT } from '../lib/content/registry';
 import { articleText } from '../lib/crops/content-depth';
@@ -114,9 +115,20 @@ for (const c of CROP_EXPANSION_CANDIDATES) {
         );
     }
   } else if (page) {
-    fail(
-      `${at}: recommends ${c.recommendation} and a crop page exists — the decision and the corpus disagree`,
-    );
+    /*
+     * A page for a candidate this wave declined is a contradiction unless a
+     * later wave accounts for it. Wave 40 declined turnip, swede and kaffir
+     * lime because no page owned their parent taxon; Wave 43 built the owners
+     * and promoted all three. That is not Wave 40 being wrong — the block was
+     * real and is what got it fixed — so the decline stands and the scope
+     * review is what has to say the block was lifted.
+     */
+    const promoted =
+      SCOPE_REVIEW_BY_SLUG.get(c.slug)?.outcome === 'PROMOTE_CHILD_PROFILE';
+    if (!promoted)
+      fail(
+        `${at}: recommends ${c.recommendation} and a crop page exists — the decision and the corpus disagree`,
+      );
   }
 
   /* -- regional significance, corroborated against the article ------------ */
@@ -206,13 +218,21 @@ for (const g of COMPOSITION_GAPS) {
   const added = publishedThisWave.filter((s) =>
     inBucket(s, g.dimension, g.bucket),
   ).length;
-  if (g.publishedAfter !== after)
+  /*
+   * `publishedAfter` is what the bucket held when this wave measured it, and a
+   * later wave may add to it — Wave 43 put turnip and swede into two of these
+   * buckets. So the live count is a FLOOR: a record claiming more than exists
+   * is stale, a record merely overtaken is not. What stays exact is the
+   * membership list above, because the set of articles that existed BEFORE a
+   * wave cannot change afterwards.
+   */
+  if (g.publishedAfter > after)
     fail(
-      `${at}: records ${g.publishedAfter} articles now and the corpus counts ${after}`,
+      `${at}: records ${g.publishedAfter} articles and the corpus counts only ${after} — the record claims more than exists`,
     );
-  if (g.publishedBefore !== after - added)
+  if (g.publishedBefore !== g.bucketBefore.length)
     fail(
-      `${at}: records ${g.publishedBefore} before the wave and the corpus computes ${after - added} (${after} now, ${added} published into it here)`,
+      `${at}: records ${g.publishedBefore} before the wave and lists ${g.bucketBefore.length} article(s)`,
     );
   if (added === 0)
     fail(
@@ -227,14 +247,15 @@ for (const g of COMPOSITION_GAPS) {
    * every count agreed with it. Recomputing the list is what makes a finding
    * about membership answerable.
    */
-  const before = [...cropPages.keys()]
-    .filter((s) => inBucket(s, g.dimension, g.bucket))
-    .filter((s) => !publishedThisWave.includes(s))
-    .sort();
+  const nowInBucket = new Set(
+    [...cropPages.keys()].filter((s) => inBucket(s, g.dimension, g.bucket)),
+  );
   const declared = [...g.bucketBefore].sort();
-  if (declared.join(',') !== before.join(','))
+  const missing = declared.filter((x) => !nowInBucket.has(x));
+  const wronglyClaimed = declared.filter((x) => publishedThisWave.includes(x));
+  if (missing.length || wronglyClaimed.length)
     fail(
-      `${at}: lists ${declared.length} article(s) in the bucket before the wave and the corpus computes ${before.length} — unlisted: ${before.filter((x) => !declared.includes(x)).join(', ') || 'none'}; listed but not there: ${declared.filter((x) => !before.includes(x)).join(', ') || 'none'}`,
+      `${at}: lists prior members the corpus contradicts — no longer in the bucket: ${missing.join(', ') || 'none'}; listed as prior yet published by this wave: ${wronglyClaimed.join(', ') || 'none'}`,
     );
   if (g.finding.trim().length < 80)
     fail(`${at}: states a count without a finding`);

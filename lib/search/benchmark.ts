@@ -3608,6 +3608,119 @@ export const BENCHMARKS: Benchmark[] = [
     kind: 'exact',
     note: 'A specific term must reach the child, which is what declaring an umbrella puts at risk.',
   },
+
+  /* ---- Wave 43 concept blockers and parent-taxon scope ----------------------
+   *
+   * Five crops were published in this wave and every one of them is a child of
+   * a taxon another published crop also sits under. That arrangement is what
+   * the cases below are about: a child must be reachable by its own name, a
+   * parent name must not be answered by one of its children, and the aliases
+   * the children carry must land on the right child.
+   *
+   * The parent-name cases are the ones with teeth. Before this wave
+   * "Citrus × aurantium" returned Mandarin — one of three coequal cultivar
+   * groups of that hybrid — because the hybrid's name appeared in three
+   * children's scientific names and nowhere else. Nothing was wrong with the
+   * ranking; the corpus simply had no record of where that name belongs.
+   */
+  {
+    query: 'mandarin',
+    titleIncludes: ['mandarin'],
+    types: ['crop'],
+    kind: 'exact',
+    note: 'Published in Wave 43 after being blocked in Wave 39 for want of a parent scope.',
+  },
+  {
+    query: 'tangerine',
+    titleIncludes: ['mandarin'],
+    types: ['crop'],
+    kind: 'synonym',
+    note: 'A market name for the mandarin group, not a separate crop.',
+  },
+  {
+    query: 'clementine',
+    titleIncludes: ['mandarin'],
+    types: ['crop'],
+    kind: 'synonym',
+  },
+  {
+    query: 'satsuma',
+    titleIncludes: ['mandarin'],
+    types: ['crop'],
+    mustNotTop: ['orange'],
+    kind: 'synonym',
+    note: 'The crosswalk sent this to the ORANGE page from Wave 29 to Wave 43, with a note that said mandarin. Mandarin had no page when the entry was written and the destination was never revisited when it got one. The guard is the half that would have caught it.',
+  },
+  {
+    query: 'makrut lime',
+    titleIncludes: ['makrut lime'],
+    types: ['crop'],
+    kind: 'exact',
+  },
+  {
+    query: 'kaffir lime',
+    titleIncludes: ['makrut lime'],
+    types: ['crop'],
+    kind: 'synonym',
+    note: 'The name the trade still uses reaches the page; the page is titled with the name that is not a slur in southern Africa.',
+  },
+  {
+    query: 'citrus hystrix',
+    titleIncludes: ['makrut lime'],
+    types: ['crop'],
+    kind: 'scientific',
+  },
+  {
+    query: 'turnip',
+    titleIncludes: ['turnip'],
+    types: ['crop'],
+    mustNotTop: ['rape'],
+    kind: 'exact',
+    note: 'Turnip rape is a different crop held as a taxon row, and its title begins with this whole query.',
+  },
+  {
+    query: 'swede',
+    titleIncludes: ['swede'],
+    types: ['crop'],
+    kind: 'exact',
+  },
+  {
+    query: 'rutabaga',
+    titleIncludes: ['swede'],
+    types: ['crop'],
+    mustNotTop: ['turnip'],
+    kind: 'synonym',
+    note: 'Swede is Brassica napus and turnip is Brassica rapa: different species, routinely confused, and now both published.',
+  },
+  {
+    query: 'citrus',
+    titleIncludes: ['citrus'],
+    types: ['crop'],
+    kind: 'exact',
+    note: 'The concept page published in Wave 43 to own the hybrid scope its children share.',
+  },
+  {
+    query: 'citrus × aurantium',
+    titleIncludes: ['citrus'],
+    types: ['crop'],
+    mustNotTop: ['mandarin', 'orange', 'grapefruit'],
+    kind: 'scientific',
+    note: 'Returned Mandarin before Wave 43. Three published crops are cultivar groups of this hybrid and no one of them is it; the concept page is. Fixed by recording the name against its owner in the crosswalk — a data change, not a scoring change.',
+  },
+  {
+    query: 'triticum turgidum',
+    titleIncludes: ['wheat'],
+    types: ['crop'],
+    kind: 'scientific',
+    knownIssue:
+      'Returns Durum Wheat (120.0), tied with Emmer (120.0), against Wheat at 117.0 — the wheat page owns this parent taxon and loses by three points. The same crosswalk entry that fixed "Citrus × aurantium" was added for this name and did not fix it: citrus wins because the query token "citrus" also matches the owner page\u2019s TITLE, and "triticum turgidum" matches nothing in the title "Wheat". The two children carry the string inside a longer scientific name and still outscore an exact whole-name match in a lighter field. The fix is to weight an explicit crosswalk answer above a field match, which is a scoring change and belongs with the field-frequency work, not here.',
+  },
+  {
+    query: 'brassica rapa',
+    mustNotTop: ['rape'],
+    kind: 'scientific',
+    note: 'Three published crops and one taxon row sit under this species and no page is about it, so a child answers the query. The guard says only that the answer must not be the oilseed form, which is the one a reader searching the species name is least likely to mean.',
+  },
 ];
 
 export function benchmarkIndex(): SearchIndex {

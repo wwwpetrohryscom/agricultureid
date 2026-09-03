@@ -13,6 +13,7 @@ import {
   CROP_EXPANSION_CANDIDATES,
 } from '@/data/crop-expansion';
 import { CROP_PUBLICATION_REVIEWS } from '@/data/crop-publication';
+import { CROP_SCOPE_REVIEWS } from '@/data/crop-scope-review';
 import { PROMOTIONAL_PHRASES } from '@/types/crop-expansion';
 import { IDENTITY_BY_SLUG } from '@/lib/crops/identity';
 import { PUBLISHED_CONTENT } from '@/lib/content/registry';
@@ -38,8 +39,12 @@ describe('the two campaigns do not overlap', () => {
   });
 
   it('accounts for the corpus growth it claims', () => {
-    // 214 crop articles after Wave 39, recomputed rather than asserted.
-    expect(crops.length - PUBLISHED.length).toBe(214);
+    // 214 crop articles after Wave 39, recomputed rather than asserted, with
+    // what later waves published subtracted the same way.
+    const later =
+      CROP_SCOPE_REVIEWS.filter((r) => r.outcome === 'PROMOTE_CHILD_PROFILE')
+        .length + 1; // the citrus concept page, which no campaign promoted
+    expect(crops.length - PUBLISHED.length - later).toBe(214);
   });
 });
 

@@ -16,10 +16,10 @@ import type {
 export const LAYER_ASSESSMENTS: readonly LayerEvidenceAssessment[] = [
   {
     layer: 'calendars',
-    reachesAtAssessment: 103,
+    reachesAtAssessment: 106,
     reason: 'SOURCE_EXISTS_NOT_MAPPED',
     finding:
-      'Wave 38 recorded this layer as SOURCE_NOT_MACHINE_INGESTIBLE, and that was true of the source it was about: the USDA plain-text release parsed in Wave 8 returns 404 and the surviving PDF is font-encoded. It was never a finding about the layer, and Wave 42 was asked to look for another source rather than to accept it. The FAO Crop Calendar is served as CSV through a parameterised query endpoint under CC-BY 4.0, with periods FAO states are validated by national authorities, and it took the layer from 6 crops to 103 across 57 countries. What remains unmapped is the larger half of the dataset: 104 of its 211 crop names reach nothing in this corpus, and 8 more were refused because the corpus records them as naming more than one crop.',
+      'Wave 38 recorded this layer as SOURCE_NOT_MACHINE_INGESTIBLE, and that was true of the source it was about: the USDA plain-text release parsed in Wave 8 returns 404 and the surviving PDF is font-encoded. It was never a finding about the layer, and Wave 42 was asked to look for another source rather than to accept it. The FAO Crop Calendar is served as CSV through a parameterised query endpoint under CC-BY 4.0, with periods FAO states are validated by national authorities, and it took the layer from 6 crops to 103 across 57 countries, and Wave 43 to 106: publishing citrus, mandarin and turnip falsified three of the recorded refusals, which a new liveness rule now recomputes rather than reads. What remains unmapped is the larger half of the dataset: 101 of its crop names reach nothing in this corpus, 3 more were refused because the corpus records them as naming more than one crop, and 9 names plus every row for Jordan were never read at all — a CSV-parsing loss recorded in the source file and scheduled for Wave 44.',
     wouldRaiseCoverageBy:
       'Publishing crops the FAO dataset already covers — its 104 unmatched names are a ready-made research queue, and most of them are exactly the regional crops Wave 40 was aimed at. Resolving the ambiguous names would need the underlying FAO crop identifiers rather than the English labels, which the dataset carries as cropId and which has not been reconciled with any botanical authority.',
     sourceIds: ['usda-nass', 'fao', 'fao-crop-calendar'],
@@ -41,7 +41,7 @@ export const LAYER_ASSESSMENTS: readonly LayerEvidenceAssessment[] = [
     reachesAtAssessment: 8,
     reason: 'SOURCE_EXISTS_NOT_MAPPED',
     finding:
-      'Registrations reach crops only through published cultivars, and the corpus holds 77 cultivars against 243 crops. The registers themselves cover far more species than that. The constraint is deliberate: Waves 7 to 10 established that 51 per cent of exact name matches between a register and a cultivar were cross-species homonyms — a wheat denomination matching a strawberry PBR — so matching is fail-closed on name AND species together.',
+      'Registrations reach crops only through published cultivars, and the corpus holds 77 cultivars against 248 crops. The registers themselves cover far more species than that. The constraint is deliberate: Waves 7 to 10 established that 51 per cent of exact name matches between a register and a cultivar were cross-species homonyms — a wheat denomination matching a strawberry PBR — so matching is fail-closed on name AND species together.',
     wouldRaiseCoverageBy:
       'Publishing more cultivars, each with a verified parent crop. Matching registrations directly to crops would mean relaxing the species check, which is the failure this corpus has already found once.',
     sourceIds: ['ec-agri', 'usda-nass'],
@@ -103,7 +103,7 @@ export const LAYER_ASSESSMENTS: readonly LayerEvidenceAssessment[] = [
   },
   {
     layer: 'soils',
-    reachesAtAssessment: 243,
+    reachesAtAssessment: 248,
     reason: 'NOT_APPLICABLE',
     finding:
       'Every published crop names at least one suitable soil, so there is no gap. Reported here so that a full row of the matrix is accounted for rather than only the empty ones.',
@@ -113,7 +113,7 @@ export const LAYER_ASSESSMENTS: readonly LayerEvidenceAssessment[] = [
   },
   {
     layer: 'climate',
-    reachesAtAssessment: 234,
+    reachesAtAssessment: 239,
     reason: 'NOT_RESEARCHED',
     finding:
       'Nine published crops name no climate reference. Waves 39 and 40 added 78 crops between them, every one of which names at least one, so the shortfall has not grown across two waves and 78 opportunities: it is the same nine pages. That is a strong reason to think it is an omission in those nine rather than a property of the layer. Whether those nine are genuinely unrelated to any of the 20 climate concept pages, or simply have not had the reference added, still has not been examined.',
@@ -123,7 +123,7 @@ export const LAYER_ASSESSMENTS: readonly LayerEvidenceAssessment[] = [
   },
   {
     layer: 'relatedCrops',
-    reachesAtAssessment: 114,
+    reachesAtAssessment: 119,
     reason: 'NOT_APPLICABLE',
     finding:
       'Derived rather than sourced: a crop has related crops when it shares a genus, a concept scope, or enough pest and disease hosts with another published crop. A crop with none is a crop with no close relative published, which is a fact about the corpus rather than a gap in it.',

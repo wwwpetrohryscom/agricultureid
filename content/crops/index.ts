@@ -53,6 +53,7 @@ import { chicory } from './chicory';
 import { chiliPepper } from './chili-pepper';
 import { chineseCabbage } from './chinese-cabbage';
 import { cinnamon } from './cinnamon';
+import { citrus } from './citrus';
 import { clove } from './clove';
 import { cocksfoot } from './cocksfoot';
 import { cocoa } from './cocoa';
@@ -107,6 +108,7 @@ import { jicama } from './jicama';
 import { jobsTears } from './jobs-tears';
 import { jojoba } from './jojoba';
 import { jute } from './jute';
+import { kaffirLime } from './kaffir-lime';
 import { kale } from './kale';
 import { kapok } from './kapok';
 import { kenaf } from './kenaf';
@@ -128,6 +130,7 @@ import { lupin } from './lupin';
 import { lychee } from './lychee';
 import { macadamia } from './macadamia';
 import { maize } from './maize';
+import { mandarin } from './mandarin';
 import { mango } from './mango';
 import { mangosteen } from './mangosteen';
 import { mashua } from './mashua';
@@ -206,6 +209,7 @@ import { stylo } from './stylo';
 import { sugarBeet } from './sugar-beet';
 import { sugarcane } from './sugarcane';
 import { sunflower } from './sunflower';
+import { swede } from './swede';
 import { sweetPepper } from './sweet-pepper';
 import { sweetPotato } from './sweet-potato';
 import { sweetcorn } from './sweetcorn';
@@ -224,6 +228,7 @@ import { tomatillo } from './tomatillo';
 import { tomato } from './tomato';
 import { triticale } from './triticale';
 import { turmeric } from './turmeric';
+import { turnip } from './turnip';
 import { ulluco } from './ulluco';
 import { uplandCotton } from './upland-cotton';
 import { vanilla } from './vanilla';
@@ -298,6 +303,7 @@ export const crops: CropContent[] = [
   chiliPepper,
   chineseCabbage,
   cinnamon,
+  citrus,
   clove,
   cocksfoot,
   cocoa,
@@ -352,6 +358,7 @@ export const crops: CropContent[] = [
   jobsTears,
   jojoba,
   jute,
+  kaffirLime,
   kale,
   kapok,
   kenaf,
@@ -373,6 +380,7 @@ export const crops: CropContent[] = [
   lychee,
   macadamia,
   maize,
+  mandarin,
   mango,
   mangosteen,
   mashua,
@@ -451,6 +459,7 @@ export const crops: CropContent[] = [
   sugarBeet,
   sugarcane,
   sunflower,
+  swede,
   sweetPepper,
   sweetPotato,
   sweetcorn,
@@ -469,6 +478,7 @@ export const crops: CropContent[] = [
   tomato,
   triticale,
   turmeric,
+  turnip,
   ulluco,
   uplandCotton,
   vanilla,

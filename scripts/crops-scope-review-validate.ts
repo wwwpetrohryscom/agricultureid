@@ -148,6 +148,21 @@ for (const r of CROP_SCOPE_REVIEWS) {
           `${at}: says it sits under "${r.conceptSlug}" and the concept layer places it under "${actual ?? 'nothing'}"`,
         );
     }
+  } else if (r.outcome === 'PROMOTE_CHILD_PROFILE' && r.conceptSlug) {
+    /*
+     * A promotion may name the concept it was promoted UNDER, and where it
+     * does the claim is checked the same way as a concept-bound outcome. It is
+     * optional rather than required: Wave 43 promoted four children, two under
+     * the citrus concept and two under parents that are owned by a scope record
+     * with no page, and demanding a concept for all four would have forced a
+     * page into existence to satisfy a field.
+     */
+    if (!conceptSlugs.has(r.conceptSlug))
+      fail(`${at}: names concept "${r.conceptSlug}", which does not exist`);
+    else if (conceptOf.get(r.slug) !== r.conceptSlug)
+      fail(
+        `${at}: was promoted under "${r.conceptSlug}" and the concept layer places it under "${conceptOf.get(r.slug) ?? 'nothing'}"`,
+      );
   } else if (r.conceptSlug) {
     fail(`${at}: says ${r.outcome} and names a concept anyway`);
   }

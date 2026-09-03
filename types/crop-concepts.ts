@@ -327,6 +327,18 @@ export const CROSSWALK_KINDS = [
   'homonym',
   /** A taxon the authorities do not agree on, which the corpus does not publish. */
   'unresolved-taxon',
+  /**
+   * An accepted taxon that no single page is about, whose shared scope one
+   * page or record owns.
+   *
+   * Distinct from `synonym`, which says two names mean the same thing. A
+   * parent taxon means something the destination page is only part of: three
+   * of this corpus's crops are cultivar groups of `Citrus × aurantium`, so
+   * sending that name to any one of them tells the reader a coequal child is
+   * the taxon. Where the owner is a record rather than a page there is nowhere
+   * honest to send the reader and the entry resolves nowhere.
+   */
+  'parent-taxon',
 ] as const;
 export type CrosswalkKind = (typeof CROSSWALK_KINDS)[number];
 
