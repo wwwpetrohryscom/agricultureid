@@ -164,16 +164,12 @@ export const anise: CropContent = {
     'Warm temperate to subtropical, needing a dry period at ripening. Rain on a ripening crop both shatters seed and costs aroma, which bounds where the crop can be grown reliably.',
   limitations: [
     'Production statistics frequently group anise with badian and fennel in a single trade category, so figures attributed to anise alone should be read with care.',
-    'The corpus holds no cultivar records for anise.',
+    'Anise is grown largely from farm-saved and locally traded seed, and formal variety registration for it is rare.',
   ],
   sourceReferences: [
     {
-      sourceId: 'fao',
-      citedFor: 'Crop calendar coverage across nine countries',
-    },
-    {
       sourceId: 'fao-crop-calendar',
-      citedFor: 'Sowing and harvest windows under the Anis and Anise labels',
+      citedFor: 'Sowing and harvest windows recorded across nine countries',
     },
     { sourceId: 'cabi', citedFor: 'Pimpinella anisum compendium data' },
     { sourceId: 'usda-grin', citedFor: 'Nomenclature and germplasm records' },

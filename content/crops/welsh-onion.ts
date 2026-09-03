@@ -178,16 +178,13 @@ export const welshOnion: CropContent = {
     'Cool to warm temperate, and hardier through winter than the common onion. It grows through a wider temperature range than a bulbing onion because it is not waiting on a daylength signal to finish.',
   limitations: [
     'Production statistics almost always merge Welsh onion with spring onions harvested green from common onion, which are a different species.',
-    'The corpus holds no cultivar records for Welsh onion.',
+    'Japanese and Chinese production uses distinct long-shaft types that are not registered as varieties in most of the countries growing them.',
   ],
   sourceReferences: [
     {
-      sourceId: 'fao',
-      citedFor: 'Crop calendar coverage under the Welsh onion label',
-    },
-    {
       sourceId: 'fao-crop-calendar',
-      citedFor: 'Sowing and harvest windows by agro-ecological zone',
+      citedFor:
+        'Sowing and harvest windows recorded under the Welsh onion label',
     },
     { sourceId: 'cabi', citedFor: 'Allium fistulosum compendium data' },
     {

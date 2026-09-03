@@ -163,16 +163,12 @@ export const chives: CropContent = {
     'Cool temperate and fully hardy, dying back in winter and regrowing early in spring. It tolerates cold far better than heat, and leaf quality falls in hot dry weather.',
   limitations: [
     'Chives are almost never reported separately in production statistics and are absorbed into herb categories.',
-    'The corpus holds no cultivar records for chives, although fine-leaved and coarse-leaved selections are distinguished in the trade.',
+    'Fine-leaved and coarse-leaved selections are distinguished in the trade and are largely maintained by division rather than registered.',
   ],
   sourceReferences: [
     {
-      sourceId: 'fao',
-      citedFor: 'Crop calendar coverage across five countries',
-    },
-    {
       sourceId: 'fao-crop-calendar',
-      citedFor: 'Sowing and harvest windows by agro-ecological zone',
+      citedFor: 'Sowing and harvest windows recorded across five countries',
     },
     { sourceId: 'cabi', citedFor: 'Allium schoenoprasum compendium data' },
     { sourceId: 'usda-plants', citedFor: 'Classification and distribution' },

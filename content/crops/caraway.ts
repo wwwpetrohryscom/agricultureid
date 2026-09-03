@@ -158,16 +158,12 @@ export const caraway: CropContent = {
     'Cool temperate with a winter cold enough to vernalise the rosette and a dry enough ripening period to allow swathing. Mild winters give poor bolting and unreliable seed set in the biennial types.',
   limitations: [
     'Production statistics for caraway are frequently grouped with anise, badian and fennel, so figures attributed to caraway alone should be read with care.',
-    'The corpus holds no cultivar records for caraway, although biennial and annual types are commercially distinct.',
+    'Biennial and annual types are commercially distinct and are selected on carvone content for the oil trade.',
   ],
   sourceReferences: [
     {
-      sourceId: 'fao',
-      citedFor: 'Crop calendar coverage across six countries',
-    },
-    {
       sourceId: 'fao-crop-calendar',
-      citedFor: 'Sowing and harvest windows under the Caraway, carum label',
+      citedFor: 'Sowing and harvest windows recorded across six countries',
     },
     { sourceId: 'cabi', citedFor: 'Carum carvi compendium data' },
     { sourceId: 'usda-grin', citedFor: 'Nomenclature and germplasm records' },

@@ -169,16 +169,12 @@ export const malabarSpinach: CropContent = {
     'A crop of hot humid conditions, damaged by frost and slow in cool weather. Its production window is the opposite of the temperate leaf vegetables it is often compared with, which is what makes it useful rather than redundant.',
   limitations: [
     'Production statistics for Malabar spinach are absorbed into general leafy vegetable categories in most reporting systems.',
-    'The corpus holds no cultivar records for this crop; green and red-stemmed forms are distinguished in trade but not registered.',
+    'Green and red-stemmed forms are distinguished in trade and are not formally registered varieties.',
   ],
   sourceReferences: [
     {
-      sourceId: 'fao',
-      citedFor: 'Crop calendar coverage across eight countries',
-    },
-    {
       sourceId: 'fao-crop-calendar',
-      citedFor: 'Sowing and harvest windows under the Indian spinach label',
+      citedFor: 'Sowing and harvest windows recorded across eight countries',
     },
     { sourceId: 'cabi', citedFor: 'Basella alba compendium data' },
     { sourceId: 'usda-grin', citedFor: 'Nomenclature and germplasm records' },

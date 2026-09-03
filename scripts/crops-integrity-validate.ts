@@ -35,6 +35,7 @@ import { PUBLISHED_CONTENT } from '../lib/content/registry';
 import {
   articleText,
   flaggedPairs,
+  fullProseText,
   sharedRunPairs,
 } from '../lib/crops/content-depth';
 import { SOURCE_MAP } from '../lib/sources/registry';
@@ -300,11 +301,62 @@ const SHARED_RUN_BUDGET: readonly { floor: number; pairs: number }[] = [
     'have their own pages',
   ];
   for (const c of PUBLISHED_CONTENT.filter((x) => x.contentType === 'crop')) {
-    const t = norm(articleText(c));
+    /*
+     * The FULL prose, not the body.
+     *
+     * A Wave 44 injection made its claim in the `summary` and every rule in
+     * this block passed, because `articleText` is introduction and sections
+     * and the summary is neither. Depth and similarity still measure the body;
+     * the integrity rules measure what a reader is shown.
+     */
+    const t = norm(fullProseText(c));
     for (const f of FORBIDDEN)
       if (t.includes(f))
         fail(
           `crop "${c.slug}" asserts corpus coverage in its article prose ("${f}") — that claim belongs in the structured concept scope, where it is checked`,
+        );
+
+    /*
+     * A crop calendar says WHEN, and nothing else.
+     *
+     * Wave 44 ingested calendar rows for forty-two more crops and the standing
+     * temptation with a dataset that size is to read coverage as importance:
+     * FAO records sowing windows for purslane in six countries, therefore
+     * purslane is a globally significant crop. It does not follow. A crop
+     * calendar establishes that a national authority described a season in a
+     * zone; it says nothing about area, production, importance, native range,
+     * domestication or climate suitability, and a wave that publishes from
+     * calendar evidence is exactly the wave that would overreach on it.
+     *
+     * A phrase list rather than a judgement, in the same shape as the rules
+     * above and the content validator's safety and prescription gates: these
+     * are claims about global standing that no source in this corpus supports,
+     * and an article that wants to make one has to find a source that does and
+     * a way of saying it that is not a superlative.
+     */
+    /*
+     * Compared on a harder normalisation than the rules above.
+     *
+     * `norm` here only lowercases and collapses whitespace, which is enough
+     * for phrases with no punctuation in them and silently wrong for these:
+     * "one of the world's most important" carries an apostrophe that may be
+     * typed as ' or ’, and a phrase list written without one matches nothing
+     * at all. The first version of this rule passed against an article that
+     * contained the claim verbatim.
+     */
+    const flat = t.replace(/[^a-z0-9 ]+/g, ' ').replace(/\s+/g, ' ');
+    const OVERREACH = [
+      'one of the world s most important',
+      'globally significant crop',
+      'of the first rank',
+      'grown at scale on every continent',
+      'the world s most widely grown',
+      'among the most important crops in the world',
+    ];
+    for (const f of OVERREACH)
+      if (flat.includes(f))
+        fail(
+          `crop "${c.slug}" claims global standing in its article prose ("${f}") — calendar and identity coverage do not establish importance, and no source in this corpus supports a superlative of that kind`,
         );
   }
 }

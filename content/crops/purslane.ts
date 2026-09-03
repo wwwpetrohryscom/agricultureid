@@ -172,16 +172,12 @@ export const purslane: CropContent = {
     'A hot-season crop that tolerates drought and moderate salinity better than any other leaf vegetable in this corpus. It is killed by frost and grows slowly in cool weather.',
   limitations: [
     'Production statistics rarely distinguish cultivated purslane from gathered material, and the crop is absent from most national vegetable statistics.',
-    'The corpus holds no cultivar records for purslane, although upright market types are distinct from the prostrate wild form.',
+    'Upright market types are distinct from the prostrate wild form and are largely maintained by growers rather than registered.',
   ],
   sourceReferences: [
     {
-      sourceId: 'fao',
-      citedFor: 'Crop calendar coverage across six countries',
-    },
-    {
       sourceId: 'fao-crop-calendar',
-      citedFor: 'Sowing and harvest windows by agro-ecological zone',
+      citedFor: 'Sowing and harvest windows recorded across six countries',
     },
     { sourceId: 'cabi', citedFor: 'Portulaca oleracea compendium data' },
     { sourceId: 'usda-plants', citedFor: 'Classification and distribution' },

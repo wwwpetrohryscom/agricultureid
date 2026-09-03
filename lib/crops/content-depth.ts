@@ -106,6 +106,35 @@ export function articleText(item: AnyContent): string {
 }
 
 /**
+ * Every prose field a reader sees, not just the body.
+ *
+ * `articleText` is the body — introduction and sections — because that is what
+ * depth and similarity are measured on, and it must stay that. It is the wrong
+ * text for an INTEGRITY rule. A Wave 44 injection put "one of the world's most
+ * important leaf vegetables, grown at scale on every continent" into a crop's
+ * `summary` and every prose gate passed, because the summary is not in the
+ * body: not the corpus-coverage rule, not the quantitative-claim rule, not the
+ * standing-language measurement. The summary is the field the search index
+ * weights highest and the first sentence a reader is shown.
+ *
+ * `geographicScope` and `climateContext` are here for the same reason. They are
+ * exactly where a claim about range and suitability would go, which is what
+ * §19 of the Wave 44 brief warns a calendar-driven wave against.
+ */
+export function fullProseText(item: AnyContent): string {
+  const c = item as unknown as Record<string, unknown>;
+  const extra = [c.summary, c.geographicScope, c.climateContext]
+    .filter((x): x is string => typeof x === 'string')
+    .join(' ');
+  const limitations = Array.isArray(c.limitations)
+    ? (c.limitations as unknown[])
+        .filter((x) => typeof x === 'string')
+        .join(' ')
+    : '';
+  return `${extra} ${articleText(item)} ${limitations}`.trim();
+}
+
+/**
  * Normalised text for comparison, with the crop's OWN names removed.
  *
  * Without that removal every comparison is dominated by how often each page

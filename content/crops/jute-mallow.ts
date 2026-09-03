@@ -164,17 +164,13 @@ export const juteMallow: CropContent = {
     'A hot-season crop that grows through temperatures at which temperate leafy vegetables bolt, which is much of its value in the cropping calendars that use it. It needs moisture through the cutting period and is grown irrigated where the season is dry.',
   limitations: [
     'Production statistics for this crop are largely absorbed into fibre jute or into undifferentiated leafy vegetable categories, so figures attributed to it should be read with care.',
-    'The corpus holds no cultivar records for jute mallow; local landraces dominate and are not registered.',
+    'Local landraces dominate the crop and no formal variety registration system covers it in its main producing countries.',
   ],
   sourceReferences: [
     {
-      sourceId: 'fao',
-      citedFor: 'Sowing and harvest windows recorded for Egypt and Jordan',
-    },
-    {
       sourceId: 'fao-crop-calendar',
       citedFor:
-        "Crop calendar entries under the Egyptian mallow and Jew's mallow labels",
+        "Sowing and harvest windows for Egypt and Jordan, under the Egyptian mallow and Jew's mallow labels",
     },
     { sourceId: 'cabi', citedFor: 'Corchorus olitorius compendium data' },
     { sourceId: 'usda-grin', citedFor: 'Nomenclature and germplasm records' },

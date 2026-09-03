@@ -167,16 +167,12 @@ export const arrowroot: CropContent = {
     'A humid tropical crop needing a long warm growing season and reliable moisture through rhizome fill. It does not tolerate frost and yields poorly where the season is shortened by drought.',
   limitations: [
     'Arrowroot is not separated in most national production statistics and is frequently absorbed into an undifferentiated roots and tubers category.',
-    'The corpus holds no cultivar records for arrowroot.',
+    'Planting material is held back from each harvest, so what a grower plants is whatever the previous cycle produced rather than a named variety.',
   ],
   sourceReferences: [
     {
-      sourceId: 'fao',
-      citedFor: 'Crop calendar coverage across three countries',
-    },
-    {
       sourceId: 'fao-crop-calendar',
-      citedFor: 'Sowing and harvest windows by agro-ecological zone',
+      citedFor: 'Sowing and harvest windows recorded across three countries',
     },
     { sourceId: 'cabi', citedFor: 'Maranta arundinacea compendium data' },
     { sourceId: 'usda-grin', citedFor: 'Nomenclature and germplasm records' },

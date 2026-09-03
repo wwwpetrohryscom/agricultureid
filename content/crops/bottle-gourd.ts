@@ -165,16 +165,12 @@ export const bottleGourd: CropContent = {
     'A warm-season crop killed by frost, grown in the rains in monsoon systems and on residual moisture on river banks in the dry season. It needs a long enough warm period to mature fruit when the crop is grown for containers rather than for the vegetable.',
   limitations: [
     'Production statistics rarely separate bottle gourd from other gourds, and container production is largely outside agricultural statistics altogether.',
-    'The corpus holds no cultivar records for bottle gourd.',
+    'Cultivars are selected locally for fruit shape and for rootstock vigour, and the two selections have little to do with each other.',
   ],
   sourceReferences: [
     {
-      sourceId: 'fao',
-      citedFor: 'Crop calendar coverage across eleven countries',
-    },
-    {
       sourceId: 'fao-crop-calendar',
-      citedFor: 'Sowing and harvest windows by agro-ecological zone',
+      citedFor: 'Sowing and harvest windows recorded across eleven countries',
     },
     { sourceId: 'cabi', citedFor: 'Lagenaria siceraria compendium data' },
     { sourceId: 'usda-grin', citedFor: 'Nomenclature and germplasm records' },

@@ -206,7 +206,7 @@ export const citrus: CropContent = {
     'Subtropical evergreen; bounded by frost rather than by heat, with fruit quality responding to the day–night temperature difference.',
   limitations: [
     'Species boundaries within Citrus differ between treatments and have changed repeatedly. Names published as species by a source may resolve to cultivar groups here.',
-    'This page carries no crop-specific agronomy; each citrus crop has its own page and its own evidence.',
+    'This page carries no crop-specific agronomy. What sits here is the hybrid structure the citrus crops share; the agronomy of each of them is stated where that crop is described.',
     'Huanglongbing status and permitted controls differ by jurisdiction and are not reproduced here.',
   ],
   sourceReferences: [
