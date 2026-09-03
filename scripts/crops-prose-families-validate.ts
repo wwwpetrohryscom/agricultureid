@@ -57,7 +57,17 @@ const byText = new Map(families.map((f) => [f.text, f]));
 /* -------------------------------------------------------------------------- */
 
 const surviving = PROSE_FAMILIES.filter((r) => !r.resolvedFrom);
-const recordByText = new Map(surviving.map((r) => [r.text, r]));
+/*
+ * Coverage is satisfied by ANY record naming the text, resolved or not.
+ *
+ * A record that claims a resolution and whose family is still standing is a
+ * defect the resolution rule below owns and reports precisely. Excluding
+ * resolved records here made that case surface first as "no record classifies
+ * it", which is true in a narrow sense and points at the wrong thing: the
+ * family is classified, and the classification says it was fixed when it was
+ * not.
+ */
+const recordByText = new Map(PROSE_FAMILIES.map((r) => [r.text, r]));
 
 for (const f of families)
   if (!recordByText.has(f.text))
