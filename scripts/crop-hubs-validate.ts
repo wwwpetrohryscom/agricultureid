@@ -41,6 +41,41 @@ const routes = new Set(allRoutes().map((r) => r.path));
 const publishedCrops = new Set(
   PUBLISHED_CONTENT.filter((c) => c.contentType === 'crop').map((c) => c.slug),
 );
+
+/**
+ * A hub may not be called what a crop is called. Wave 46.
+ *
+ * Wave 37 refused a hub for any genus that already has a concept page, on the
+ * reasoning that two pages over the same members are two URLs for one thing.
+ * It checked membership and not names, so a hub could still take a published
+ * crop's TITLE, and a Wave 46 injection did exactly that: the Brassica hub
+ * retitled "Cabbage" tied the cabbage crop at 126 points and every gate passed,
+ * with the alphabet deciding what a reader searching for cabbage was shown.
+ *
+ * It is the same defect as the three aliases Wave 46 removed from concept
+ * pages — a page claiming the name of a page that exists — in the layer that
+ * had not been asked the question.
+ */
+const cropTitles = new Map(
+  PUBLISHED_CONTENT.filter((c) => c.contentType === 'crop').map((c) => [
+    c.title
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, ' ')
+      .trim(),
+    c.slug,
+  ]),
+);
+for (const h of CROP_HUBS) {
+  const key = h.title
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim();
+  const owner = cropTitles.get(key);
+  if (owner)
+    fail(
+      `hub "${h.slug}": is titled "${h.title}", which is the title of published crop "${owner}" — a group and one of its members are not the same page, and a reader searching the name gets whichever the tiebreak prefers`,
+    );
+}
 const conceptSlugs = new Set(CROP_CONCEPTS.map((k) => k.slug));
 const families = new Set(CROP_IDENTITIES.map((c) => c.family));
 const genera = new Set(

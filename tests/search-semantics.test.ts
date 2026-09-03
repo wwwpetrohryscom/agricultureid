@@ -3,7 +3,7 @@
  */
 import { describe, expect, it } from 'vitest';
 import { BENCHMARKS, benchmarkIndex } from '@/lib/search/benchmark';
-import { search, finalScore, saturate } from '@/lib/search/engine';
+import { search, saturate } from '@/lib/search/engine';
 import { CROP_ALIASES, CROP_SEARCH_POINTERS } from '@/data/crop-aliases';
 import { PUBLISHED_CONTENT } from '@/lib/content/registry';
 
@@ -38,12 +38,37 @@ describe('the score breakdown is the score', () => {
     ]) {
       for (const r of search(index, q, { limit: 8, explain: true }).results) {
         expect(r.parts, `${q} → ${r.doc.title}`).toBeDefined();
-        expect(finalScore(r.parts!), `${q} → ${r.doc.title}`).toBeCloseTo(
-          r.score,
-          9,
-        );
+        const p = r.parts!;
+        /*
+         * Written out rather than delegated to the engine's own combiner.
+         * Calling `finalScore` here would make the test agree with the ranker
+         * by construction — which a Wave 46 injection proved, by adding a
+         * constant to that function and passing.
+         */
+        const independent =
+          p.rawFieldScore *
+            p.coverageFactor *
+            p.titleCoverageFactor *
+            p.typePrior +
+          p.titleExact +
+          p.nameExact;
+        expect(independent, `${q} → ${r.doc.title}`).toBeCloseTo(r.score, 9);
       }
     }
+  });
+});
+
+describe('no debug data reaches a reader', () => {
+  const index = benchmarkIndex();
+
+  it('attaches no score breakdown unless one was asked for', () => {
+    for (const r of search(index, 'wheat', { limit: 10 }).results)
+      expect(r.parts, r.doc.title).toBeUndefined();
+  });
+
+  it('attaches one when it is', () => {
+    for (const r of search(index, 'wheat', { limit: 3, explain: true }).results)
+      expect(r.parts, r.doc.title).toBeDefined();
   });
 });
 

@@ -10,12 +10,7 @@
  *   npm run search:explain -- "wheat cultivar"
  *   npm run search:explain -- "tart cherry" 8
  */
-import {
-  search,
-  finalScore,
-  FIELD_WEIGHT,
-  tokenize,
-} from '../lib/search/engine';
+import { search, FIELD_WEIGHT, tokenize } from '../lib/search/engine';
 import { benchmarkIndex } from '../lib/search/benchmark';
 import type { SearchDoc } from '../types/search';
 
@@ -89,7 +84,21 @@ res.results.forEach((r, i) => {
   console.log(
     `      ${'whole-name bonus'.padEnd(18)} ${p.nameExact.toFixed(2).padStart(8)}`,
   );
-  const recomputed = finalScore(p);
+  /*
+   * Recombined here, NOT by calling the ranker's own function.
+   *
+   * The first version of this check called `finalScore`, which the ranker also
+   * calls, so the two could never disagree: a Wave 46 injection added a
+   * constant to that function and the report agreed with the ranking about a
+   * score that was wrong. A check that shares its arithmetic with the thing it
+   * checks is a rule validating its own constant. The expression below is
+   * written out once more, deliberately, so that a change to one side and not
+   * the other is what fails.
+   */
+  const recomputed =
+    p.rawFieldScore * p.coverageFactor * p.titleCoverageFactor * p.typePrior +
+    p.titleExact +
+    p.nameExact;
   const agrees = Math.abs(recomputed - r.score) < 1e-9;
   if (!agrees) mismatches++;
   console.log(
