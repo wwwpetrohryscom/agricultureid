@@ -1,6 +1,6 @@
 # Cloudflare deployment
 
-Status: **live since 2026-11-18** (cut over 2026-11-18 ~13:30 UTC). agricultureid.com is served by Cloudflare
+Status: **live since 2026-11-18** (cut over 2026-11-18 ~21:25 UTC). agricultureid.com is served by Cloudflare
 Workers from a static export. It replaced Netlify (`docs/netlify-deployment.md`,
 retired).
 
