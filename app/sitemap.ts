@@ -2,6 +2,9 @@ import type { MetadataRoute } from 'next';
 import { absoluteUrl } from '@/lib/seo/metadata';
 import { allRoutes } from '@/lib/seo/routes';
 
+// Generated once at build time: the site is a static export.
+export const dynamic = 'force-static';
+
 /**
  * The site's sitemap, served by Next.js at `/sitemap.xml`.
  *

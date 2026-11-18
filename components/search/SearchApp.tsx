@@ -60,6 +60,11 @@ function highlight(text: string, terms: string[]) {
 
 export function SearchApp({ initialQuery = '' }: { initialQuery?: string }) {
   const [q, setQ] = useState(initialQuery);
+  // The page is prerendered once (static export), so `?q=` is read here, in
+  // the browser, rather than from server-side searchParams. Until it has been
+  // read, the URL must not be rewritten — or the effect below would strip the
+  // query a shared link arrived with.
+  const [urlRead, setUrlRead] = useState(false);
   const [index, setIndex] = useState<SearchIndex | null>(null);
   const [loadError, setLoadError] = useState(false);
   const [facet, setFacet] = useState<Partial<Record<SearchFacet, string>>>({});
@@ -77,14 +82,20 @@ export function SearchApp({ initialQuery = '' }: { initialQuery?: string }) {
     };
   }, []);
 
+  useEffect(() => {
+    const fromUrl = new URLSearchParams(window.location.search).get('q');
+    if (fromUrl) setQ(fromUrl);
+    setUrlRead(true);
+  }, []);
+
   // Reflect the query in the URL for shareable/bookmarkable searches.
   useEffect(() => {
-    if (typeof window === 'undefined') return;
+    if (typeof window === 'undefined' || !urlRead) return;
     const url = q.trim()
       ? `${window.location.pathname}?q=${encodeURIComponent(q.trim())}`
       : window.location.pathname;
     window.history.replaceState(null, '', url);
-  }, [q]);
+  }, [q, urlRead]);
 
   const response = useMemo(() => {
     if (!index || q.trim() === '') return null;

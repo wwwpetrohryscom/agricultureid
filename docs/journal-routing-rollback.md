@@ -1,5 +1,10 @@
 # Rolling back the /journal routing
 
+> **Netlify-era procedure.** On Cloudflare, /journal is routed by zone routes
+> owned by the `agricultureid-journal` Worker; removing those routes (or that
+> Worker) returns /journal to this site's 404. See
+> [`cloudflare-deployment.md`](cloudflare-deployment.md).
+
 The Journal is a separate Netlify project reached through two proxy rules in
 this repository's `netlify.toml`. Everything about the integration is those two
 rules plus a navigation entry and a sitemap line, so rollback is small and

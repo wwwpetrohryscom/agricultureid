@@ -1,5 +1,9 @@
 # Netlify deployment
 
+> **RETIRED 2026-11-18.** agricultureid.com moved to Cloudflare Workers; see
+> [`cloudflare-deployment.md`](cloudflare-deployment.md). This document is kept
+> as history of the Netlify era.
+
 Operational reference for hosting AgricultureID on Netlify. This replaces the
 Vercel operational instructions; historical phase reports that mention Vercel are
 release history and are left untouched.

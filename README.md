@@ -107,22 +107,27 @@ steps on every push and pull request to `main`.
 
 ## Deployment notes
 
-The project targets **Netlify** with zero required configuration — see
-[`docs/netlify-deployment.md`](docs/netlify-deployment.md) for the full
-operational reference (build settings, environment variables, DNS, rollback).
+Production is **Cloudflare Workers** serving a **static export** — see
+[`docs/cloudflare-deployment.md`](docs/cloudflare-deployment.md) for the full
+operational reference (build, deploy, routes, DNS, redirects, rollback).
 
-Netlify auto-detects Next.js and applies the official OpenNext adapter; do not
-add `@netlify/plugin-nextjs`. Build command is `npm run build` (pinned in
-`netlify.toml`), Node 20 comes from `.nvmrc`, and the publish directory is left
-blank for the adapter to set. Most pages are prerendered; `/search` and
-`/compare/custom` render on demand from `searchParams`, so `output: 'export'` is
-not usable. Security headers live only in `next.config.mjs`.
+```bash
+npm run build              # prebuild → next build (out/) → postbuild (_headers, _redirects)
+npx wrangler@4 deploy      # uploads out/ to the `agricultureid` Worker
+```
+
+`next.config.mjs` sets `output: 'export'`: every route is prerendered to
+`out/`. `/search` and `/compare/custom` are static shells that read their query
+string in the browser. Security headers live only in
+`cloudflare/security-headers.mjs`. `/journal` is a separate deployment (the
+`agricultureid-journal` repository and Worker) routed by Cloudflare on the same
+host (zone route `agricultureid.com/journal*`). Netlify (`docs/netlify-deployment.md`) is retired and `netlify.toml` now
+skips every build.
 
 **No environment variables are required.** `NEXT_PUBLIC_SITE_URL` should stay
 unset in production so canonical URLs, the sitemap, and Open Graph resolve to
-`https://agricultureid.com` — including on Deploy Previews, which are kept out
-of the index by `app/robots.ts` and a context-scoped `X-Robots-Tag`. Set it only
-when serving a genuinely different origin.
+`https://agricultureid.com`. Set it only when serving a genuinely different
+origin.
 
 ### Analytics consent (GDPR/ePrivacy)
 

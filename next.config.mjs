@@ -1,30 +1,20 @@
 /** @type {import('next').NextConfig} */
 
-// Security headers applied to every route. Kept conservative so they remain
-// compatible with static + serverless output on any host. No CSP is set, so the
-// one third-party runtime script (WebmasterID analytics) is compatible when it
-// loads. It is consent-gated and injected client-side only after an explicit
-// opt-in (see components/consent/ and components/analytics/Analytics.tsx), never
-// in the server-rendered HTML.
-//
-// This block is the SINGLE canonical source of production security headers.
-// Do not duplicate it in netlify.toml or a _headers file — two sources drift.
-// Netlify's Next.js adapter applies next.config `headers()` in full.
-const securityHeaders = [
-  { key: 'X-Content-Type-Options', value: 'nosniff' },
-  { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
-  { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
-  {
-    key: 'Permissions-Policy',
-    value: 'camera=(), microphone=(), geolocation=(), browsing-topics=()',
-  },
-  {
-    key: 'Strict-Transport-Security',
-    value: 'max-age=63072000; includeSubDomains; preload',
-  },
-];
-
+/*
+ * Production is a STATIC EXPORT served by Cloudflare Workers static assets
+ * (see docs/cloudflare-deployment.md). Every route is prerendered to `out/`;
+ * nothing renders on request.
+ *
+ * The two routes that used to read `searchParams` on the server — /search and
+ * /compare/custom — are static shells that read the query string in the
+ * browser, which is what lets this be an export at all.
+ *
+ * Security headers are NOT declared here any more. `headers()` does not apply
+ * to an export, so the single source is cloudflare/security-headers.mjs, which
+ * the post-build step writes into `out/_headers` for Cloudflare to apply.
+ */
 const nextConfig = {
+  output: 'export',
   reactStrictMode: true,
   poweredByHeader: false,
   // Pin the file-tracing root to this project. A lockfile can exist in a parent
@@ -53,13 +43,15 @@ const nextConfig = {
   experimental: {
     staticGenerationMinPagesPerWorker: 400,
   },
-  async headers() {
-    return [
-      {
-        source: '/:path*',
-        headers: securityHeaders,
-      },
-    ];
+  /*
+   * An export has no image optimiser. The one `next/image` on the site (the
+   * homepage hero) is served from WebP variants generated at build time by
+   * scripts/build-image-variants.mjs; lib/image-loader.ts maps each srcset width
+   * to its file. Any other source falls back to the original file unchanged.
+   */
+  images: {
+    loader: 'custom',
+    loaderFile: './lib/image-loader.ts',
   },
 };
 

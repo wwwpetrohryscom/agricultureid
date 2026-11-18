@@ -1,0 +1,31 @@
+// Cloudflare Workers deployment for agricultureid.com.
+// See docs/cloudflare-deployment.md. Deploy from a clean build:
+//   npm run build && npx wrangler@4 deploy
+{
+  "name": "agricultureid",
+  "account_id": "dc473bc4777ac1f776161ce969194ac1",
+  "compatibility_date": "2026-11-01",
+  "main": "cloudflare/worker.js",
+  "assets": {
+    "directory": "./out",
+    "binding": "ASSETS",
+    // /crops/wheat is served from out/crops/wheat.html. The trailing-slash
+    // form is redirected by out/_redirects first (308, as Next did).
+    "html_handling": "auto-trailing-slash",
+    // Unknown paths get out/404.html with a 404 status, without invoking the
+    // Worker.
+    "not_found_handling": "404-page",
+    // The Worker script runs ONLY for the legacy image-optimiser path; every
+    // other request is answered by the asset handler (free, uncounted).
+    "run_worker_first": ["/_next/image"],
+  },
+  // The apex serves the site. www is redirected to the apex by a zone
+  // Redirect Rule (dashboard), so it needs no route. /journal* is routed to
+  // the `agricultureid-journal` Worker, whose route is more specific and
+  // therefore wins.
+  "routes": [
+    { "pattern": "agricultureid.com/*", "zone_name": "agricultureid.com" },
+  ],
+  "workers_dev": false,
+  "preview_urls": false,
+}

@@ -1,5 +1,11 @@
 # AgricultureID Journal — routing architecture decision
 
+> **Superseded 2026-11-18.** On Cloudflare the split is one zone route
+> (`agricultureid.com/journal*`) to a separate `agricultureid-journal` Worker, not a Netlify proxy rewrite; see
+> [`cloudflare-deployment.md`](cloudflare-deployment.md). The reasoning for a
+> path on the same host, rather than a subdomain or a directory in this app,
+> still holds and is why the Cloudflare shape is what it is.
+
 Status: **decided and proven**, 2026-09-01.
 
 The question: `agricultureid.com/*` is served by one Netlify project and
