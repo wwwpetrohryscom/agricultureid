@@ -45,3 +45,9 @@ next-env.d.ts
 
 # Netlify CLI local state (site link, local build output)
 .netlify/
+
+# Build-time next/image variants (scripts/build-image-variants.ts)
+/public/_img/
+
+# Wrangler local state
+.wrangler/

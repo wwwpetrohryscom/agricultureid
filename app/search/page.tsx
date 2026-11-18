@@ -19,10 +19,9 @@ export const metadata: Metadata = {
   robots: { index: false, follow: true },
 };
 
-type Search = { searchParams: Promise<{ q?: string }> };
-
-export default async function SearchPage({ searchParams }: Search) {
-  const { q } = await searchParams;
+// Prerendered once for the static export. The query (`?q=`) is read in the
+// browser by SearchApp, so this page no longer renders on request.
+export default function SearchPage() {
   return (
     <Container className="py-8 lg:py-10">
       <PageIntro
@@ -31,7 +30,7 @@ export default async function SearchPage({ searchParams }: Search) {
         lead="Full-text search across every entity — with synonyms (corn → maize), scientific names, conservative typo tolerance, and faceted filtering."
         crumbs={pageBreadcrumbs(TITLE, PATH)}
       />
-      <SearchApp initialQuery={q ?? ''} />
+      <SearchApp />
     </Container>
   );
 }

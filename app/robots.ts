@@ -2,6 +2,9 @@ import type { MetadataRoute } from 'next';
 import { SITE } from '@/lib/site';
 import { isNonProductionDeploy } from '@/lib/deploy-context';
 
+// Generated once at build time: the site is a static export.
+export const dynamic = 'force-static';
+
 export default function robots(): MetadataRoute.Robots {
   // Deploy Previews and branch deploys are served on public *.netlify.app
   // hosts. Canonical tags, sitemap, JSON-LD and OG URLs always point at

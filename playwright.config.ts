@@ -5,6 +5,7 @@ import { defineConfig } from '@playwright/test';
  *
  * Not part of the default `npm test` / CI gate — it needs a browser binary
  * (`npx playwright install chromium`). It builds and serves the production app,
+ * (the static export in out/, served the way Cloudflare resolves paths),
  * then drives a real browser to prove the analytics-consent behaviour. Kept
  * separate from the Vitest `tests/` suite (different runner, different dir).
  */
@@ -19,7 +20,7 @@ export default defineConfig({
     trace: 'on-first-retry',
   },
   webServer: {
-    command: `npm run build && npx next start -p ${PORT}`,
+    command: `npm run build && node scripts/serve-out.mjs ${PORT}`,
     url: `http://localhost:${PORT}`,
     timeout: 240_000,
     reuseExistingServer: !process.env.CI,
